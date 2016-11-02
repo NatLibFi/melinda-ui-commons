@@ -24,8 +24,10 @@ export class MarcRecordPanel extends React.Component {
       'from-other': field.fromOther
     });
 
+    const key = field.tag === 'LDR' ? 'LDR' : field.uuid;
+
     return (
-      <span key={field.uuid} className={classes} onClick={() => this.handleFieldClick(field)}>
+      <span key={key} className={classes} onClick={() => this.handleFieldClick(field)}>
         <span className="tag">{field.tag}</span>
         <span className="pad">&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <span className="value">{field.value}</span>
@@ -42,9 +44,11 @@ export class MarcRecordPanel extends React.Component {
         'from-preferred': subfield.fromPreferred,
         'from-other': subfield.fromOther
       });
+      
+      const key = `${field.uuid}-${subfieldIndex}`;
 
       return (
-        <span key={subfieldIndex} className={classes}>
+        <span key={key} className={classes}>
           <span className="marker">‡</span>
           <span className="code">{subfield.code}</span>
           <span className="value">{subfield.value}</span>
