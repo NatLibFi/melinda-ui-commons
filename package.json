@@ -73,6 +73,7 @@
     "sinon": "^1.17.5",
     "sinon-as-promised": "^4.0.2",
     "sinon-chai": "^2.8.0",
-    "sinon-stub-promise": "^3.0.1"
+    "sinon-stub-promise": "^3.0.1",
+    "supertest": "^2.0.1"
   }
 }
