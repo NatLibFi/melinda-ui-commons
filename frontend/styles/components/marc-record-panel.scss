@@ -1,0 +1,22 @@
+.marc-record-panel {
+  font-family: 'Roboto Mono'; 
+  white-space: pre; 
+  overflow-x: auto;
+
+  .fieldList {
+    .code {
+      color: #e57373;
+      margin-right: 2px;
+    }
+    .marker {
+      color: #e57373;
+      margin-left: 2px;
+    }
+    .tag,
+    .ind1,
+    .ind2 {
+      color: #448aff;
+    } 
+  }
+  
+}
