@@ -2,7 +2,7 @@ import MarcRecord from 'marc-record-js';
 import {expect} from 'chai';
 import { removeLocalReference } from './remove-local-reference';
 import { FAKE_RECORD_FCC_SID, FAKE_RECORD, FAKE_DELETED_RECORD, FAKE_RECORD_SID_LOW, FAKE_RECORD_FOR_CLEANUP, FAKE_RECORD_ONLY_LOW_TEST, FAKE_RECORD_2_LOW } from '../test_helpers/fake-data';
-import { exceptCoreErrors } from 'server/utils';
+import { exceptCoreErrors } from '../utils';
 
 describe('removeLocalReference', () => {
 
