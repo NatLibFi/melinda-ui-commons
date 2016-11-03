@@ -8,3 +8,7 @@ export function markRecordAsDeleted(record) {
   record.leader = Array.from(record.leader).map((c, i) => i == 5 ? 'd' : c).join('');
   record.insertField(['STA','','','a','DELETED']);
 }
+
+export function isDataField(field) {
+  return field.subfields !== undefined && field.subfields.constructor === Array;
+}

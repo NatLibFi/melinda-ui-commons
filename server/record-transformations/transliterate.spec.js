@@ -14,7 +14,7 @@ export const FAKE_RECORD_CYRILLIC_AUTHOR = MarcRecord.fromString(
 100    ‡aЧайковский`);
 
 
-describe('transliterate', () => {
+describe.only('transliterate', () => {
   let result;
 
   describe('when record has cyrillic author in field 100', () => {
@@ -316,6 +316,20 @@ after applying transliteration:
 LDR    abČdefghijk
 001    28474
 008    ČČČČČČČČČČČČČČČČ
+
+
+normalizes link fields by removing obsolete encoding info:
+LDR    abcdefghijk
+001    28474
+100    ‡6880-01‡aČajkovskij
+880    ‡6100-01/NC‡aЧайковский
+
+after applying transliteration:
+LDR    abcdefghijk
+001    28474
+100    ‡6880-01‡aČajkovskij‡9ISO9 <TRANS>
+880    ‡6100-01‡aЧайковский‡9CYRILLIC <TRANS>
+880    ‡6100-01‡aTšaikovski‡9SFS4900 <TRANS>
 `;
 
 }
