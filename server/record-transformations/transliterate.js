@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as sfs4900 from 'sfs4900';
 import iso9 from 'iso_9';
+import uuid from 'node-uuid';
 
 const cyrillicCharacters = [
   'А', 'а', 'Б', 'б', 'В', 'в', 'Г', 'г', 'Д', 'д', 'Е', 'е', 'Ё', 'ё', 'Ж', 
@@ -31,6 +32,23 @@ export function transliterate(record) {
 
   return new Promise((resolve) => {
 
+    record.fields = record.fields.map(field => {
+      if (field.subfields === undefined) {
+        return field;
+      } else {
+        return _.assign({}, field, {
+          subfields: field.subfields
+            .map(subfield => {
+              let {code, value} = subfield;
+              if (subfield.code === '6') {
+                value = _.head(value.split('/'));
+              }
+              return {code, value};
+            })
+        });
+      }
+    });
+
     record.fields = record.fields.reduce((fields, field) => {
 
       if (shouldConvertField(field)) {
@@ -45,13 +63,10 @@ export function transliterate(record) {
        
         const isThereAlready = _.partial(fieldIsLessOrEqual, origField);
         if (record.fields.some(isThereAlready)) {
-         
           fields.push(field);
         } else {
-         
           fields.push(origField);  
         }
-        
         
       } else {
         fields.push(field);  
@@ -71,6 +86,7 @@ export function transliterate(record) {
 
         const sfs4900Transliterated = _.assign({}, field, {
           tag: '880',
+          uuid: uuid.v4(),
           subfields: field.subfields
             .filter(sub => sub.code !== '6')
             .filter(sub => !(sub.code === '9' && sub.value.indexOf('<TRANS>') !== -1))
@@ -87,6 +103,7 @@ export function transliterate(record) {
 
         const iso9Transliterated = {
           tag: linkedTag,
+          uuid: uuid.v4(),
           ind1: field.ind1,
           ind2: field.ind2,
           subfields: field.subfields
@@ -109,8 +126,6 @@ export function transliterate(record) {
               removeFields.push(field);    
             });
         }
-
-      
 
         const cyrillicNoteSubField = {code: '9', value: 'CYRILLIC <TRANS>'};
         if (!field.subfields.some(sub => _.isEqual(sub, cyrillicNoteSubField))) {
@@ -159,7 +174,7 @@ function sortNumericFields(fields) {
     return acc;
   }, []);
 
-  const numericFields = _.without(fields, nonNumericFields.map(item => item.field));
+  const numericFields = _.difference(fields, nonNumericFields.map(item => item.field));
 
   numericFields.sort((a, b) => {
     const byTag = parseInt(a.tag) - parseInt(b.tag);
@@ -203,7 +218,7 @@ function getLink(field) {
     .map(sub => sub.value)
     .map(link => link.split('-'));
 
-  return _.head(links);
+  return _.head(links) || [];
 }
 
 function transliterateSubfield(type) {
