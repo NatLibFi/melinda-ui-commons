@@ -14,7 +14,7 @@ export const FAKE_RECORD_CYRILLIC_AUTHOR = MarcRecord.fromString(
 100    ‡aЧайковский`);
 
 
-describe.only('transliterate', () => {
+describe('transliterate', () => {
   let result;
 
   describe('when record has cyrillic author in field 100', () => {
