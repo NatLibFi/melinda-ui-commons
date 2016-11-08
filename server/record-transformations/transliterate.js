@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import * as sfs4900 from 'sfs4900';
-import iso9 from 'iso_9';
+import * as iso9 from 'iso9_1995';
 import uuid from 'node-uuid';
 import { isDataField } from '../record-utils';
 
@@ -291,6 +291,6 @@ function sfs4900Convert(str) {
 
 function iso9Convert(str) {
   return {
-    result: iso9(str, 1)
+    result: iso9.convertToLatin(str)
   }; 
 }
