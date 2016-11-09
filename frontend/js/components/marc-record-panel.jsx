@@ -21,7 +21,8 @@ export class MarcRecordPanel extends React.Component {
     const classes = classNames('marc-field marc-field-controlfield', {
       'wasUsed': field.wasUsed,
       'from-preferred': field.fromPreferred,
-      'from-other': field.fromOther
+      'from-other': field.fromOther,
+      'has-changed': field.hasChanged
     });
 
     const key = field.tag === 'LDR' ? 'LDR' : field.uuid;
@@ -42,7 +43,8 @@ export class MarcRecordPanel extends React.Component {
       const classes = classNames('marc-subfield', {
         'is-selected': subfield.wasUsed,
         'from-preferred': subfield.fromPreferred,
-        'from-other': subfield.fromOther
+        'from-other': subfield.fromOther,
+        'has-changed': subfield.hasChanged
       });
       
       const key = `${field.uuid}-${subfieldIndex}`;
@@ -58,7 +60,8 @@ export class MarcRecordPanel extends React.Component {
     const classes = classNames('marc-field marc-field-datafield', {
       'is-selected': field.wasUsed,
       'from-preferred': field.fromPreferred,
-      'from-other': field.fromOther
+      'from-other': field.fromOther,
+      'has-changed': field.hasChanged
     });
 
     const i1 = field.ind1 || ' ';
