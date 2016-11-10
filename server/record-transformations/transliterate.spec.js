@@ -26,8 +26,8 @@ describe('transliterate', () => {
         .then(res => result = res)
         .catch(err => { throw err; })
         .then(() => {
-          field100 = _.head(result.fields.filter(field => field.tag === '100'));
-          fields880 = result.fields.filter(field => field.tag === '880');
+          field100 = _.head(result.record.fields.filter(field => field.tag === '100'));
+          fields880 = result.record.fields.filter(field => field.tag === '880');
         });
     });
 
@@ -74,10 +74,13 @@ describe('transliterate', () => {
     .map(s => s.trim())
     .filter(testDef => testDef.length > 0)
     .map(testDef => {
-      return {
-        heading: _.head(testDef.split(':\n')),
-        input: _.tail(testDef.split(':\n')).join(':\n')
-      };
+      const warnings = testDef.split('\n').filter(line => line.startsWith('warning')).map(str => str.substr(9));
+      const testDefWithoutWarnings = testDef.split('\n').filter(line => !line.startsWith('warning')).join('\n');
+
+      const heading = _.head(testDefWithoutWarnings.split(':\n'));
+      const input = _.tail(testDefWithoutWarnings.split(':\n')).join(':\n');
+      
+      return { heading, input, warnings };
     })
     .map(testDef => {
       return _.assign({}, testDef, {
@@ -90,15 +93,17 @@ describe('transliterate', () => {
   tests.forEach((test) => {
 
     const testName = `${test[0].heading}`;
+    const expectedResult = test[1];
+    
 
     const testFn = () => {
       return transliterate(test[0].record).then(result => {
-        expect(result.toString().split('\n')).to.eql(test[1].record.toString().split('\n'));
+        expect(result.record.toString().split('\n')).to.eql(expectedResult.record.toString().split('\n'));
+        expect(result.warnings).to.eql(expectedResult.warnings);
       });
     };
-
-
-    if (test[0].heading.startsWith('!')) {
+    
+    if (testName.startsWith('!')) {
       it.only(testName, testFn);
     } else {
       it(testName, testFn);
@@ -305,7 +310,7 @@ after applying transliteration:
 LDR    abcdefghijk
 001    28474
 100    ‡6880-01‡aČajkovskij
-
+warning: Kenttä 100 linkittää kenttään jota ei ole olemassa.
 
 does not handle cyrillic characters in leader or fixed fields:
 LDR    abČdefghijk
@@ -330,6 +335,63 @@ LDR    abcdefghijk
 100    ‡6880-01‡aČajkovskij‡9ISO9 <TRANS>
 880    ‡6100-01‡aЧайковский‡9CYRILLIC <TRANS>
 880    ‡6100-01‡aTšaikovski‡9SFS4900 <TRANS>
+
+
+should warn about mixed alphabet:
+LDR    abcdefghijk
+001    28474
+100    ‡aЧайковскийA
+
+after applying transliteration:
+LDR    abcdefghijk
+001    28474
+100    ‡6880-01‡aČajkovskijA‡9ISO9 <TRANS>
+880    ‡6100-01‡aЧайковскийA‡9CYRILLIC <TRANS>
+880    ‡6100-01‡aTšaikovskiA‡9SFS4900 <TRANS>
+warning: Kentässä 880a on sekä kyrillisiä että latinalaisia merkkejä.
+
+
+should warn about broken link subfields:
+LDR    abcdefghijk
+001    28474
+100    ‡6880-01‡aČajkovskij
+245    ‡6880-02‡aČajkovskij
+880    ‡6130-02‡aTšaikovski‡9SFS4900 <TRANS>
+880    ‡6160-03‡aTšaikovski‡9SFS4900 <TRANS>
+
+after applying transliteration:
+LDR    abcdefghijk
+001    28474
+100    ‡6880-01‡aČajkovskij
+245    ‡6880-02‡aČajkovskij
+880    ‡6130-02‡aTšaikovski‡9SFS4900 <TRANS>
+880    ‡6160-03‡aTšaikovski‡9SFS4900 <TRANS>
+warning: Kenttä 100 linkittää kenttään jota ei ole olemassa.
+warning: Kenttä 245 linkittää kenttään jota ei ole olemassa.
+warning: Kenttä 880 linkittää kenttään jota ei ole olemassa.
+warning: Kenttä 880 linkittää kenttään jota ei ole olemassa.
+
+
+should warn when original field has more subfields in transliterated (derived) content:
+LDR    abcdefghijk
+001    28474
+100    ‡6880-01‡aČajkovskij‡bExtra info
+245    ‡6880-02‡aČajkovskij‡9ISO9 <TRANS>
+880    ‡6100-01‡aЧайковский
+880    ‡6100-01‡aTšaikovski‡9SFS4900 <TRANS>
+880    ‡6245-02‡aЧайковский‡9CYRILLIC <TRANS>
+880    ‡6245-02‡aTšaikovski‡bExtra info‡9SFS4900 <TRANS>
+
+after applying transliteration:
+LDR    abcdefghijk
+001    28474
+100    ‡6880-01‡aČajkovskij‡9ISO9 <TRANS>
+245    ‡6880-02‡aČajkovskij‡9ISO9 <TRANS>
+880    ‡6100-01‡aЧайковский‡9CYRILLIC <TRANS>
+880    ‡6100-01‡aTšaikovski‡9SFS4900 <TRANS>
+880    ‡6245-02‡aЧайковский‡9CYRILLIC <TRANS>
+880    ‡6245-02‡aTšaikovski‡bExtra info‡9SFS4900 <TRANS>
+warning: Alkuperäisen tietueen kentässä 100 ja sen linkittämässä kentässä on eri määrä osakenttiä. Osakenttien sisältö häviää.
 `;
 
 }

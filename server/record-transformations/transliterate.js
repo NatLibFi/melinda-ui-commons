@@ -3,6 +3,8 @@ import * as sfs4900 from 'sfs4900';
 import * as iso9 from 'iso9_1995';
 import uuid from 'node-uuid';
 import { isDataField } from '../record-utils';
+import MarcRecord from 'marc-record-js';
+import XRegExp from 'xregexp';
 
 const cyrillicCharacters = [
   'А', 'а', 'Б', 'б', 'В', 'в', 'Г', 'г', 'Д', 'д', 'Е', 'е', 'Ё', 'ё', 'Ж', 
@@ -18,13 +20,23 @@ function shouldCreateTransliteratedFields(field) {
 
 export function transliterate(record) {
 
+  record.fields.forEach(field => {
+    if (field.uuid === undefined) {
+      field.uuid = uuid.v4();
+    }
+  });
+
   return new Promise((resolve) => {
+
+    const originalRecord = new MarcRecord(record);
 
     const fields = record.fields;
 
     record.fields = transformFields(fields);
 
-    resolve(record);
+    const warnings = checkForWarnings(originalRecord, record);
+
+    resolve({record, warnings});
 
   });
 }
@@ -35,6 +47,122 @@ const transformFields = _.flow(
   createTransliteratedFieldsFrom880,      // create transliterated fields for every cyrillic 880
   sortNumericFields                       // new fields were added, so they need to be sorted
 );
+
+function checkForWarnings(originalRecord, transformedRecord) {
+
+  // check for mixed alphabets
+  const mixedAlphabetsWarnings = transformedRecord.fields.reduce((acc, field) => {
+    if (field.subfields) {
+      const warnings = field.subfields
+        .filter(subfield => isMixedAlphabet(subfield.value))
+        .map(subfield => {
+          return `Kentässä ${field.tag}${subfield.code} on sekä kyrillisiä että latinalaisia merkkejä.`;
+        });
+      return _.concat(acc, warnings);
+
+    } else {
+
+      if (isMixedAlphabet(field.value)) {
+        const warning = `Kentässä ${field.tag} on sekä kyrillisiä että latinalaisia merkkejä.`;
+        return _.concat(acc, warning);
+      }
+    }
+    return acc;
+  }, []);
+
+
+  const brokenLinkWarnings = transformedRecord.fields
+    .filter(containsLinkSubfield)
+    .filter(field => {
+      const linkedField = transformedRecord.fields.find(isLinkedFieldOf(field));
+      return linkedField === undefined;
+    }).map(field => {
+      return `Kenttä ${field.tag} linkittää kenttään jota ei ole olemassa.`;
+    });
+
+  /*
+  const transliteratedContentChangedWarnings = transformedRecord.fields
+    .map(transformedField => {
+      const pairFieldFromOiriginal = originalRecord.fields.find(field => {
+
+        const originalLink = getLink(field);
+        const transformedLink = getLink(transformedField);
+
+        console.log(field.tag ,'===', transformedField.tag ,'&& _.isEqual(',originalLink,', ',transformedLink,')');
+
+        if (field.tag === transformedField.tag && _.isEqual(originalLink, transformedLink)) {
+          return true;
+        }
+
+        return field.uuid === transformedField.uuid;
+      });
+
+      return [transformedField, pairFieldFromOiriginal];
+    })
+    .filter(([, original]) => original !== undefined)
+    .filter(([transformed, original]) => {
+      if (transformed.subfields && original.subfields) {
+        const transformedDataSubfields = transformed.subfields.filter(subfield => subfield.code !== '9');
+        const originalDataSubfields = transformed.subfields.filter(subfield => subfield.code !== '9');
+        return !_.isEqual(transformedDataSubfields, originalDataSubfields);
+      } else {
+        return transformed.value !== original.value;
+      }
+    }).map(([transformed, original]) => {
+      console.log(transformed, original);
+      return `Kenttä ${transformed.tag} muuttui.`;
+    });
+    */
+
+  const subfieldCountMismatchWarnings = _.chain(originalRecord.fields)
+    .filter(containsLinkSubfield)
+    .filter(field => field.tag !== '880')
+    .flatMap(field => {
+      const linkedFields = transformedRecord.fields.filter(isLinkedFieldOf(field));
+      if (linkedFields === undefined) return [];
+
+      return linkedFields.map(linked => [field, linked]);
+    })
+    .filter(([field, linkedField]) => {
+      return _.difference(_.map(field.subfields, 'code'), _.map(linkedField.subfields, 'code')).length !== 0;
+    })
+    .map(([field, linkedField]) => {
+      return `Alkuperäisen tietueen kentässä ${field.tag} ja sen linkittämässä kentässä on eri määrä osakenttiä. Osakenttien sisältö häviää.`;
+    })
+    .uniq()
+    .value();
+
+  return _.concat(mixedAlphabetsWarnings, brokenLinkWarnings, subfieldCountMismatchWarnings);
+}
+
+function containsLinkSubfield(field) {
+  return (field.subfields && field.subfields.some(sub => sub.code === '6'));
+}
+function isLinkedFieldOf(queryField) {
+  const [queryTag, queryLinkNumber] = getLink(queryField);
+
+  return function(field) {
+    const linkInLinkedField = getLink(field);
+    const [linkTag, linkNumber] = linkInLinkedField;
+
+    const fieldMatchesQueryLinkTag = field.tag === queryTag;
+    const linkNumberMatchesQueryLinkNumber = linkNumber === queryLinkNumber;
+    const linkTagLinksBackToQueryField = linkTag === queryField.tag;
+
+    return fieldMatchesQueryLinkTag && linkNumberMatchesQueryLinkNumber && linkTagLinksBackToQueryField;
+  };
+}
+
+function isMixedAlphabet(str) {
+  const hasCyrillic = str.split('').filter(isCharacter).some(isCyrillicCharacter);
+  const hasOnlyCyrillic = str.split('').filter(isCharacter).every(isCyrillicCharacter);
+
+  return (hasCyrillic && !hasOnlyCyrillic);
+}
+
+function isCharacter(char) {
+  return XRegExp('[\\p{Cyrillic}|\\w]').test(char) && !/[0-9_]/.test(char);
+}
 
 function normalizeField(field) {
   return isDataField(field) ? normalize(field) : field;
@@ -141,7 +269,8 @@ function createTransliteratedFieldsFrom880(fieldList) {
           .filter(field => field.tag === iso9Transliterated.tag)
           .filter(field => field.subfields.some(sub => _.isEqual(sub, iso9link)))
           .forEach(field => {
-            fieldsForRemoval.push(field);    
+            iso9Transliterated.uuid = field.uuid;
+            fieldsForRemoval.push(field);
           });
           
       }
