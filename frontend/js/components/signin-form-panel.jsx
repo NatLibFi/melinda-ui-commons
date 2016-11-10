@@ -28,8 +28,9 @@ export class SigninFormPanel extends React.Component {
     this.setState({password: event.target.value});
   }
 
-  executeSignin() {
- 
+  executeSignin(event) {
+    event.preventDefault();
+    
     const {username, password} = this.state;
     this.props.startSession(username, password);
 
