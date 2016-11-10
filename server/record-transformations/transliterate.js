@@ -126,7 +126,8 @@ function checkForWarnings(originalRecord, transformedRecord) {
     .filter(([field, linkedField]) => {
       return _.difference(_.map(field.subfields, 'code'), _.map(linkedField.subfields, 'code')).length !== 0;
     })
-    .map(([field, linkedField]) => {
+    .map(offendingFieldPairs => {
+      const field = offendingFieldPairs[0];
       return `Alkuperäisen tietueen kentässä ${field.tag} ja sen linkittämässä kentässä on eri määrä osakenttiä. Osakenttien sisältö häviää.`;
     })
     .uniq()
