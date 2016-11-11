@@ -6,7 +6,7 @@ import sinonAsPromised from 'sinon-as-promised'; // eslint-disable-line
 import HttpStatus from 'http-status-codes';
 import { FAKE_RECORD, FAKE_RECORD_2, melindaClientUnableParseResponse } from './test_helpers/fake-data';
 
-describe.only('melinda io service', () => {
+describe('melinda io service', () => {
 
   before(() => {
     Promise.prototype.done = function() {};
