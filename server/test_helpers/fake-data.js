@@ -9,6 +9,14 @@ export const FAKE_RECORD = MarcRecord.fromString([
   '245 0  ‡aTest Title‡bTest field‡cTest content'
 ].join('\n'));
 
+export const FAKE_RECORD_2 = MarcRecord.fromString([
+  'LDR    abcdefghijk',
+  '001    28474',
+  '003    aaabbb',
+  '100    ‡aTest Author',
+  '245 0  ‡aFake_record_2',
+  '245 0  ‡aTest Title‡bTest field‡cTest content'
+].join('\n'));
 
 export const FAKE_DELETED_RECORD = MarcRecord.fromString([
   'LDR    abcdefghijk',
@@ -68,3 +76,12 @@ export const FAKE_RECORD_ONLY_LOW_TEST = MarcRecord.fromString([
   'SID    ‡btest-2‡c114',
   'LOW    ‡aTEST'
 ].join('\n'));
+
+export const melindaClientUnableParseResponse = {
+  messages:[], 
+  errors:[
+    {code:-1, message: 'melinda-api-client unable to parse: Fake update failure reason'}
+  ], 
+  triggers:[], 
+  warnings:[]
+};

@@ -2,11 +2,17 @@ import { logger } from './logger';
 import _ from 'lodash';
 import HttpStatus from 'http-status-codes';
 
+const DEFAULT_LOAD_OPTIONS = {
+  include_parent: 1
+};
+
 export function loadRecord(client, recordId, opts) {
 
   return new Promise((resolve, reject) => {
 
-    client.loadChildRecords(recordId, opts).then((records) => {
+    const loadOptions = _.assign({}, DEFAULT_LOAD_OPTIONS, opts);     
+
+    client.loadChildRecords(recordId, loadOptions).then((records) => {
       const record = _.head(records);
       const subrecords = _.tail(records);
 
@@ -56,8 +62,18 @@ export function updateAndReloadRecord(client, recordId, record) {
 
   }).catch(error => {
     logger.log('info', `Record update failed for ${recordId}`, error);
+    if (looksLikeMelindaClientParseError(error)) {
+
+      const reason = _.get(error, 'errors[0].message').substr('melinda-api-client unable to parse: '.length);
+
+      throw new RecordIOError(reason, HttpStatus.BAD_REQUEST);
+    }
     throw error;
   });
+}
+
+function looksLikeMelindaClientParseError(error) {
+  return _.get(error, 'errors[0].code') === -1 && _.get(error, 'errors[0].message','').startsWith('melinda-api-client unable to parse: ');
 }
 
 export function RecordIOError(message, statusCode) {
