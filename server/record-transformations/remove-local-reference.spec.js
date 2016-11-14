@@ -43,7 +43,7 @@ describe('removeLocalReference', () => {
         .catch(exceptCoreErrors(err => error = err));
     });
 
-    it('should remove the LOW field', () => {
+    it('removes the LOW field', () => {
       expect(result.record.getFields('LOW', 'a', LIBRARY_TAG).map(fieldAsString)).not.to.include('LOW $aTEST');
     });
 
@@ -61,7 +61,7 @@ describe('removeLocalReference', () => {
         .catch(err => error = err);
     });
 
-    it('shoud reject with error', () => {
+    it('rejects with error', () => {
       expect(error.message).to.equal('The record has unexpected SIDc value.');
     });
   });
@@ -73,10 +73,10 @@ describe('removeLocalReference', () => {
         .catch(err => error = err);
     });
 
-    it('should not reject with an error', () => {
+    it('does not reject with an error', () => {
       expect(error).to.equal(undefined);
     });
-    it('shoud not change the record', () => {
+    it('does not change the record', () => {
       expect(result.record.toString()).to.eql(FAKE_RECORD_FCC_SID.toString());
     });
   });
