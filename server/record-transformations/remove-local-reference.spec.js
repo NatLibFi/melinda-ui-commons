@@ -4,7 +4,7 @@ import { removeLocalReference } from './remove-local-reference';
 import { FAKE_RECORD_FCC_SID, FAKE_RECORD, FAKE_DELETED_RECORD, FAKE_RECORD_SID_LOW, FAKE_RECORD_FOR_CLEANUP, FAKE_RECORD_ONLY_LOW_TEST, FAKE_RECORD_2_LOW } from '../test_helpers/fake-data';
 import { exceptCoreErrors } from 'server/utils';
 
-describe('removeLocalReference', () => {
+describe.only('removeLocalReference', () => {
 
   const LIBRARY_TAG = 'test';
   const EXPECTED_LOCAL_ID = 111;
@@ -171,6 +171,10 @@ describe('removeLocalReference', () => {
       expect(result.record.getFields('300').map(fieldAsString)).to.eql([]);
     });
 
+    it('does not remove any fields that does not have the given library tag', () => {
+      expect(result.record.getFields('302').map(fieldAsString)).to.eql(['302 $aSub-A$5TEST-2']);
+    });
+
     it('removes all $5 with given library tag from fields that have multiple $5', () => { 
       expect(result.record.getFields('301').map(fieldAsString)).to.eql(['301 $aSub-A$5TEST-2']);
     });
@@ -184,7 +188,7 @@ describe('removeLocalReference', () => {
       expect(result.report).to.include('Removed field 300');
     });
     
-    it('reports the subfield $5 removals', () => { 
+    it('reports the subfield $5 removals', () => {
       expect(result.report).to.include('Removed subfield 5 with value TEST from field 301');
     });
     

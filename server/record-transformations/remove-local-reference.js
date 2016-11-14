@@ -91,8 +91,10 @@ function cleanupRecord(record, report, libraryTag) {
       const subfield5List = getSubfields(field, '5');
 
       if (subfield5List.length === 1) {
-        removeField(record, field);
-        report.push(`Removed field ${field.tag}`);  
+        if (subfield5List[0].value === libraryTag.toUpperCase()) {
+          removeField(record, field);
+          report.push(`Removed field ${field.tag}`);
+        }
       }
       
       if (subfield5List.length > 1) {
