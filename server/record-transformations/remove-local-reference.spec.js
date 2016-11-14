@@ -127,7 +127,7 @@ describe('removeLocalReference', () => {
     });
   });
 
-  describe('when delete unsued records option is true', () => {
+  describe('when delete unused records option is true', () => {
     
     describe('when a record has none of the following fields left: LOW/850/852/866', () => {
       
