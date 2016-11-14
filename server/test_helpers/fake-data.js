@@ -61,6 +61,7 @@ export const FAKE_RECORD_FOR_CLEANUP = MarcRecord.fromString([
   '245    ‡aSome content‡9TEST <DROP>',
   '300    ‡aSub-A‡5TEST',
   '301    ‡aSub-A‡5TEST‡5TEST-2',
+  '302    ‡aSub-A‡5TEST-2',
   'SID    ‡btest‡cFCC131',
   'SID    ‡btest-2‡c114'
 ].join('\n'));
