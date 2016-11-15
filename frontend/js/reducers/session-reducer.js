@@ -9,14 +9,14 @@ const INITIAL_STATE = Map({
 
 export default function session(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case CREATE_SESSION_START:
-    return createSessionStart(state);
-  case CREATE_SESSION_ERROR:
-    return createSessionError(state, action.error);
-  case CREATE_SESSION_SUCCESS:
-    return createSessionSuccess(state, action.userinfo);
-  case VALIDATE_SESSION_START:
-    return validateSessionStart(state);
+    case CREATE_SESSION_START:
+      return createSessionStart(state);
+    case CREATE_SESSION_ERROR:
+      return createSessionError(state, action.error);
+    case CREATE_SESSION_SUCCESS:
+      return createSessionSuccess(state, action.userinfo);
+    case VALIDATE_SESSION_START:
+      return validateSessionStart(state);
   }
   return state;
 }

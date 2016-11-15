@@ -10,7 +10,7 @@ export function transformRecord(action, recordParam, opts) {
   const record = new MarcRecord(recordParam);
 
   switch(action) {
-  case 'REMOVE-LOCAL-REFERENCE': return removeLocalReference(record, opts);
+    case 'REMOVE-LOCAL-REFERENCE': return removeLocalReference(record, opts);
   }
 
   throw new Error(`Unknown action ${action}`);
