@@ -39,6 +39,18 @@ function updateRecord(client, record) {
   
 }
 
+function createRecord(client, record) {
+  return new Promise((resolve, reject) => {
+    return client.createRecord(record).then(function(createResponse) {
+      resolve(createResponse);
+    }).catch(error => {
+      reject(error);
+    }).done();
+  });
+}
+
+
+
 export function updateAndReloadRecord(client, recordId, record) {
 
   const recordIdFromBody = _.get(_.head(record.get('001')), 'value');
@@ -71,6 +83,36 @@ export function updateAndReloadRecord(client, recordId, record) {
     throw error;
   });
 }
+
+export function createAndReloadRecord(client, record) {
+
+  return createRecord(client, record).then(function(updateResponse) {
+    const recordId = updateResponse.recordId;
+
+    logger.log('info', `Record created, id: ${recordId}`, updateResponse.messages);
+
+    return loadRecord(client, recordId, { include_parent: 1}).then(result => {
+      return _.assign({}, result, { recordId });
+      
+    }).catch(error => {
+      logger.log('info', `Error loading record ${recordId}`, error);
+      throw error;
+    });
+
+  }).catch(error => {
+    logger.log('info', 'Record creation failed', error);
+    if (looksLikeMelindaClientParseError(error)) {
+
+      const reason = _.get(error, 'errors[0].message').substr('melinda-api-client unable to parse: '.length);
+
+      throw new RecordIOError(reason, HttpStatus.BAD_REQUEST);
+    }
+    throw error;
+  });
+}
+
+
+
 
 function looksLikeMelindaClientParseError(error) {
   return _.get(error, 'errors[0].code') === -1 && _.get(error, 'errors[0].message','').startsWith('melinda-api-client unable to parse: ');

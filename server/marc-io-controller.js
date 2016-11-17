@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import HttpStatus from 'http-status-codes';
 import { readSessionMiddleware, requireSession } from './session-controller';
 import MarcRecord from 'marc-record-js';
-import { loadRecord, updateAndReloadRecord, RecordIOError } from './melinda-io-service';
+import { loadRecord, updateAndReloadRecord, createAndReloadRecord, RecordIOError } from './melinda-io-service';
 
 const MelindaClient = require('melinda-api-client');
 const alephUrl = readEnvironmentVariable('ALEPH_URL');
@@ -29,6 +29,7 @@ marcIOController.use(bodyParser.json({limit: '5mb'}));
 marcIOController.use(readSessionMiddleware);
 marcIOController.set('etag', false);
 
+marcIOController.options('/', cors(corsOptions));
 marcIOController.options('/:id', cors(corsOptions));
 
 marcIOController.get('/:id', cors(corsOptions), (req, res) => {
@@ -74,6 +75,34 @@ marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParam
       res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
     } else {
       logger.log('error', `Record update failed for ${recordId}`, error);
+      res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);  
+    }
+  });
+});
+
+marcIOController.post('/', cors(corsOptions), requireSession, requireBodyParams('record'), (req, res) => {
+  
+  const {username, password} = req.session;
+  const record = transformToMarcRecord(req.body.record);
+
+  const clientConfig = { 
+    ...defaultConfig,
+    user: username,
+    password: password
+  };
+
+  const client = new MelindaClient(clientConfig);
+
+  logger.log('info', 'Creating a new record');
+  createAndReloadRecord(client, record).then(result => {
+    logger.log('info', `Record ${req.params.id} created succesfully`);
+    res.send(result);
+  }).catch(error => {
+    if (error instanceof RecordIOError) {
+      logger.log('info', 'Record creation failed', error.message);
+      res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
+    } else {
+      logger.log('error', 'Record creation failed', error);
       res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);  
     }
   });
