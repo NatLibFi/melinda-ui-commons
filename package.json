@@ -32,7 +32,7 @@
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.15.0",
     "marc-record-js": "^0.3.1",
-    "marc-record-serializers": "^1.1.0",
+    "marc-record-serializers": "^1.1.1",
     "melinda-api-client": "^1.1.0",
     "node-uuid": "^1.4.7",
     "winston": "^2.2.0",
