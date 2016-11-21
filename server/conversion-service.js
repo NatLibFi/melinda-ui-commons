@@ -10,6 +10,7 @@ import promisify from 'es6-promisify';
 const mkdir = promisify(fs.mkdirs);
 const copy = promisify(fs.copy);
 const writeFile = promisify(fs.writeFile);
+const readFile = promisify(fs.readFile);
 const execPromise = promisify(exec, {multiArgs: true});
 const remove = promisify(fs.remove);
 const access = promisify(fs.access);
@@ -49,6 +50,20 @@ export function convertRecord(record, conversionId) {
       return copy(conversionDefinitionPath, jobDirectory);
     })
     .then(() => {
+      log('debug', `Updating ini file ${ini_file} with error file name = error.txt`);
+      return readFile(ini_file, 'utf8')
+        .then(contents => {
+          return contents
+            .split('\n')
+            .map(line => line.startsWith('ErrorLogFile') ? 'ErrorLogFile=error.txt' : line)
+            .join('\n');
+        })
+        .then(updatedContents => {
+          return writeFile(ini_file, updatedContents);
+        });
+
+    })
+    .then(() => {
       return remove(errorFileName);
     })
     .then(() => {
@@ -56,7 +71,7 @@ export function convertRecord(record, conversionId) {
       const encoded = ISO2709.toISO2709(record);
 
       log('debug', `Writing input file to ${inputFileName}`);
-      writeFile(inputFileName, encoded);
+      return writeFile(inputFileName, encoded);
     })
     .then(() => {
 
@@ -68,15 +83,23 @@ export function convertRecord(record, conversionId) {
     })
     .then(() => {
 
-      const errors = fs.readFileSync(errorFileName, 'utf8');
-      const result = fs.readFileSync(outputFileName, 'utf8');
-      
-      const convertedRecord = ISO2709.fromISO2709(result);
+      log('debug', 'Reading errors from disk');
+      return readFile(errorFileName, 'utf8').then(errors => {
+        log('debug', 'Reading result from disk');
+        return readFile(outputFileName, 'utf8').then(result => {
+          log('debug', 'Converting result to marc-record-js');
 
-      return {
-        record: convertedRecord,
-        errors: errors
-      };
+          const convertedRecord = ISO2709.fromISO2709(result);
+
+          log('debug', 'Done.');
+          return {
+            record: convertedRecord,
+            errors: errors
+          };
+
+        });
+      });
+
     }).then(result => {
 
       log('debug', `Removing ${inputFileName}`);
