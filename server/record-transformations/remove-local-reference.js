@@ -1,9 +1,8 @@
 import _ from 'lodash';
-import { recordIsUnused, markRecordAsDeleted } from '../record-utils';
 
 export function removeLocalReference(record, opts) {
 
-  const { libraryTag, expectedLocalId, deleteUnusedRecords } = opts;
+  const { libraryTag, expectedLocalId } = opts;
 
   if (libraryTag === undefined) {
     throw new Error('Mandatory option missing: libraryTag');
@@ -23,12 +22,7 @@ export function removeLocalReference(record, opts) {
     removeSIDFields(record, report, libraryTag, expectedLocalId);
     removeLOWFields(record, report, libraryTag);
 
-    if (deleteUnusedRecords && recordIsUnused(record)) {
-      markRecordAsDeleted(record);
-      report.push('Record was deleted.');
-    } else {
-      cleanupRecord(record, report, libraryTag);
-    }
+    cleanupRecord(record, report, libraryTag);
 
     return resolve({record, report});
   });

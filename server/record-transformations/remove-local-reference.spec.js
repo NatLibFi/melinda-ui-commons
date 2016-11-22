@@ -1,7 +1,7 @@
 import MarcRecord from 'marc-record-js';
 import {expect} from 'chai';
 import { removeLocalReference } from './remove-local-reference';
-import { FAKE_RECORD_FCC_SID, FAKE_RECORD, FAKE_DELETED_RECORD, FAKE_RECORD_SID_LOW, FAKE_RECORD_FOR_CLEANUP, FAKE_RECORD_ONLY_LOW_TEST, FAKE_RECORD_2_LOW } from '../test_helpers/fake-data';
+import { FAKE_RECORD_FCC_SID, FAKE_RECORD, FAKE_DELETED_RECORD, FAKE_RECORD_SID_LOW, FAKE_RECORD_FOR_CLEANUP } from '../test_helpers/fake-data';
 import { exceptCoreErrors } from '../utils';
 
 describe('removeLocalReference', () => {
@@ -125,39 +125,6 @@ describe('removeLocalReference', () => {
     it('should report that the record did not contain low tag', () => {
       expect(result.report).to.include('Record did not have LOW tag.');
     });
-  });
-
-  describe('when delete unused records option is true', () => {
-    
-    describe('when a record has none of the following fields left: LOW/850/852/866', () => {
-      
-      beforeEach(() => {
-        return removeLocalReference(record(FAKE_RECORD_ONLY_LOW_TEST), {libraryTag: LIBRARY_TAG, expectedLocalId: EXPECTED_LOCAL_ID, deleteUnusedRecords: true})
-          .then(res => result = res)
-          .catch(err => error = err);
-      });
-
-      it('should be deleted', () => {
-        expect(result.record.isDeleted()).to.equal(true);
-      });
-
-      it('should report the taken action', () => {
-        expect(result.report).to.include('Record was deleted.');
-      });
-    });
-
-    describe('when record still has some LOW fields left', () => {
-      beforeEach(() => {
-        return removeLocalReference(record(FAKE_RECORD_2_LOW), {libraryTag: LIBRARY_TAG, expectedLocalId: EXPECTED_LOCAL_ID, deleteUnusedRecords: true})
-          .then(res => result = res)
-          .catch(err => error = err);
-      });
-      it('should not be deleted', () => {
-        expect(result.record.isDeleted()).not.to.equal(true);
-      });
-    });
-
-
   });
 
   describe('cleanup record after operation', () => {
