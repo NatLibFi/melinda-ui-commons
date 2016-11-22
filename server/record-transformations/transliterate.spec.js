@@ -310,7 +310,7 @@ after applying transliteration:
 LDR    abcdefghijk
 001    28474
 100    ‡6880-01‡aČajkovskij
-warning: Kenttä 100 linkittää kenttään jota ei ole olemassa.
+warning: Kenttä 100 (880-01) linkittää kenttään jota ei ole olemassa.
 
 does not handle cyrillic characters in leader or fixed fields:
 LDR    abČdefghijk
@@ -348,7 +348,7 @@ LDR    abcdefghijk
 100    ‡6880-01‡aČajkovskijA‡9ISO9 <TRANS>
 880    ‡6100-01‡aЧайковскийA‡9CYRILLIC <TRANS>
 880    ‡6100-01‡aTšaikovskiA‡9SFS4900 <TRANS>
-warning: Kentässä 880a on sekä kyrillisiä että latinalaisia merkkejä.
+warning: Kentässä 880a (100-01) on sekä kyrillisiä että latinalaisia merkkejä.
 
 
 should warn about broken link subfields:
@@ -366,10 +366,10 @@ LDR    abcdefghijk
 245    ‡6880-02‡aČajkovskij
 880    ‡6130-02‡aTšaikovski‡9SFS4900 <TRANS>
 880    ‡6160-03‡aTšaikovski‡9SFS4900 <TRANS>
-warning: Kenttä 100 linkittää kenttään jota ei ole olemassa.
-warning: Kenttä 245 linkittää kenttään jota ei ole olemassa.
-warning: Kenttä 880 linkittää kenttään jota ei ole olemassa.
-warning: Kenttä 880 linkittää kenttään jota ei ole olemassa.
+warning: Kenttä 100 (880-01) linkittää kenttään jota ei ole olemassa.
+warning: Kenttä 245 (880-02) linkittää kenttään jota ei ole olemassa.
+warning: Kenttä 880 (130-02) linkittää kenttään jota ei ole olemassa.
+warning: Kenttä 880 (160-03) linkittää kenttään jota ei ole olemassa.
 
 
 should warn when original field has more subfields in transliterated (derived) content:
@@ -392,6 +392,19 @@ LDR    abcdefghijk
 880    ‡6245-02‡aЧайковский‡9CYRILLIC <TRANS>
 880    ‡6245-02‡aTšaikovski‡bExtra info‡9SFS4900 <TRANS>
 warning: Alkuperäisen tietueen kentässä 100 ja sen linkittämässä kentässä on eri määrä osakenttiä. Osakenttien sisältö häviää.
+
+
+should not create SFS4900 fields if source text contains unmapped cyrillic characters and warns about it:
+LDR    abcdefghijk
+001    28474
+100    ‡aЄ є, Ґ ґ, І і, Ї ї‡bThese are maybe Ukrainian characters
+
+after applying transliteration:
+LDR    abcdefghijk
+001    28474
+100    ‡6880-01‡aÊ ê, G̀ g̀, Ì ì, Ï ï‡bThese are maybe Ukrainian characters‡9ISO9 <TRANS>
+880    ‡6100-01‡aЄ є, Ґ ґ, І і, Ї ї‡bThese are maybe Ukrainian characters‡9CYRILLIC <TRANS>
+warning: Alkuperäisen tietueen kentässä 100 on merkkejä, joita ei ole määritelty SFS4900-venäjä translitteroinnissa. SFS4900 kenttää ei luotu.
 `;
 
 }

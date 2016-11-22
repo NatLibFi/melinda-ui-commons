@@ -6,14 +6,6 @@ import { isDataField } from '../record-utils';
 import MarcRecord from 'marc-record-js';
 import XRegExp from 'xregexp';
 
-const cyrillicCharacters = [
-  'А', 'а', 'Б', 'б', 'В', 'в', 'Г', 'г', 'Д', 'д', 'Е', 'е', 'Ё', 'ё', 'Ж', 
-  'ж', 'З', 'з', 'И', 'и', 'И', 'и', 'Й', 'й', 'Й', 'й', 'Й', 'й', 'К', 'к', 'Л', 'л', 'М', 'м', 
-  'Н', 'н', 'О', 'о', 'П', 'п', 'Р', 'р', 'С', 'с', 'Т', 'т', 'У', 'у', 'Ф', 'ф', 'Х', 'х', 'Ц', 
-  'ц', 'Ч', 'ч', 'Ш', 'ш', 'Щ', 'щ', 'Ъ', 'ъ', 'Ы', 'ы', 'Ь', 'ь', 'Э', 'э', 'Ю', 'ю', 'Я', 'я'
-];
-
-
 function shouldCreateTransliteratedFields(field) {
   return field.tag === '880' && fieldContainsCyrillicCharacters(field);
 }
@@ -36,6 +28,8 @@ export function transliterate(record) {
 
     const warnings = checkForWarnings(originalRecord, record);
 
+    record.fields = removeFailedTransliterations(record.fields);
+
     resolve({record, warnings});
 
   });
@@ -48,6 +42,27 @@ const transformFields = _.flow(
   sortNumericFields                       // new fields were added, so they need to be sorted
 );
 
+
+function removeFailedTransliterations(fieldList) {
+  const isSFSTransliteratedField = hasSubfieldValue(9, 'SFS4900 <TRANS>');
+
+  return fieldList
+    .filter(field => {
+      const failedSFS4900Transliteration = isSFSTransliteratedField(field) && fieldContainsCyrillicCharacters(field);
+      return !failedSFS4900Transliteration;
+    });
+
+}
+
+function hasSubfieldValue(expectedCode, expectedValue) {
+  const expectedSubfieldCodeStr = expectedCode.toString();
+  return function(field) {
+    return field.subfields && field.subfields.some(subfield => {
+      return subfield.code === expectedSubfieldCodeStr && subfield.value === expectedValue;
+    });
+  };
+}
+
 function checkForWarnings(originalRecord, transformedRecord) {
 
   // check for mixed alphabets
@@ -56,20 +71,21 @@ function checkForWarnings(originalRecord, transformedRecord) {
       const warnings = field.subfields
         .filter(subfield => isMixedAlphabet(subfield.value))
         .map(subfield => {
-          return `Kentässä ${field.tag}${subfield.code} on sekä kyrillisiä että latinalaisia merkkejä.`;
+          const link = getLink(field).join('-');
+          return `Kentässä ${field.tag}${subfield.code} (${link}) on sekä kyrillisiä että latinalaisia merkkejä.`;
         });
       return _.concat(acc, warnings);
 
     } else {
 
       if (isMixedAlphabet(field.value)) {
-        const warning = `Kentässä ${field.tag} on sekä kyrillisiä että latinalaisia merkkejä.`;
+        const link = getLink(field).join('-');
+        const warning = `Kentässä ${field.tag} ${link} on sekä kyrillisiä että latinalaisia merkkejä.`;
         return _.concat(acc, warning);
       }
     }
     return acc;
   }, []);
-
 
   const brokenLinkWarnings = transformedRecord.fields
     .filter(containsLinkSubfield)
@@ -77,42 +93,9 @@ function checkForWarnings(originalRecord, transformedRecord) {
       const linkedField = transformedRecord.fields.find(isLinkedFieldOf(field));
       return linkedField === undefined;
     }).map(field => {
-      return `Kenttä ${field.tag} linkittää kenttään jota ei ole olemassa.`;
+      const link = getLink(field).join('-');
+      return `Kenttä ${field.tag} (${link}) linkittää kenttään jota ei ole olemassa.`;
     });
-
-  /*
-  const transliteratedContentChangedWarnings = transformedRecord.fields
-    .map(transformedField => {
-      const pairFieldFromOiriginal = originalRecord.fields.find(field => {
-
-        const originalLink = getLink(field);
-        const transformedLink = getLink(transformedField);
-
-        console.log(field.tag ,'===', transformedField.tag ,'&& _.isEqual(',originalLink,', ',transformedLink,')');
-
-        if (field.tag === transformedField.tag && _.isEqual(originalLink, transformedLink)) {
-          return true;
-        }
-
-        return field.uuid === transformedField.uuid;
-      });
-
-      return [transformedField, pairFieldFromOiriginal];
-    })
-    .filter(([, original]) => original !== undefined)
-    .filter(([transformed, original]) => {
-      if (transformed.subfields && original.subfields) {
-        const transformedDataSubfields = transformed.subfields.filter(subfield => subfield.code !== '9');
-        const originalDataSubfields = transformed.subfields.filter(subfield => subfield.code !== '9');
-        return !_.isEqual(transformedDataSubfields, originalDataSubfields);
-      } else {
-        return transformed.value !== original.value;
-      }
-    }).map(([transformed, original]) => {
-      console.log(transformed, original);
-      return `Kenttä ${transformed.tag} muuttui.`;
-    });
-    */
 
   const subfieldCountMismatchWarnings = _.chain(originalRecord.fields)
     .filter(containsLinkSubfield)
@@ -133,7 +116,16 @@ function checkForWarnings(originalRecord, transformedRecord) {
     .uniq()
     .value();
 
-  return _.concat(mixedAlphabetsWarnings, brokenLinkWarnings, subfieldCountMismatchWarnings);
+
+  const isSFSTransliteratedField = hasSubfieldValue(9, 'SFS4900 <TRANS>');
+  const failedSFS4900TransliterationWarnings = transformedRecord.fields
+    .filter(field => isSFSTransliteratedField(field) && fieldContainsCyrillicCharacters(field))
+    .map(failedField => {
+      const originalTag = _.head(getLink(failedField));
+      return `Alkuperäisen tietueen kentässä ${originalTag} on merkkejä, joita ei ole määritelty SFS4900-venäjä translitteroinnissa. SFS4900 kenttää ei luotu.`;
+    });
+
+  return _.concat(mixedAlphabetsWarnings, brokenLinkWarnings, subfieldCountMismatchWarnings, failedSFS4900TransliterationWarnings);
 }
 
 function containsLinkSubfield(field) {
@@ -143,6 +135,7 @@ function isLinkedFieldOf(queryField) {
   const [queryTag, queryLinkNumber] = getLink(queryField);
 
   return function(field) {
+
     const linkInLinkedField = getLink(field);
     const [linkTag, linkNumber] = linkInLinkedField;
 
@@ -236,7 +229,7 @@ function containsCyrillicCharacters(str) {
 }
 
 function isCyrillicCharacter(char) {
-  return cyrillicCharacters.some(cyrillicCharacter => cyrillicCharacter === char);
+  return XRegExp('[\\p{Cyrillic}]').test(char);
 }
 
 
