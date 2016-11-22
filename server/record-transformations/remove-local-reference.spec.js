@@ -98,6 +98,23 @@ describe('removeLocalReference', () => {
     });
   });
 
+  describe('when record has local SID, expectedLocalId is undefined and skipLocalSidCheck is true', () => {
+  
+    beforeEach(() => {
+      return removeLocalReference(record(FAKE_RECORD_SID_LOW), {libraryTag: LIBRARY_TAG, expectedLocalId: undefined, skipLocalSidCheck: true})
+        .then(res => result = res);
+    });
+
+    it('should remove the SID field', () => {
+      expect(result.record.getFields('SID', 'b', LIBRARY_TAG).map(fieldAsString)).not.to.include('SID $btest$c111');
+    });
+
+    it('returned report should contain the information of the SID removal', () => {
+      expect(result.report).to.include('Removed SID: test');
+    });
+  });
+
+
   describe('when record has a LOW field with local library tag', () => {
   
     beforeEach(() => {

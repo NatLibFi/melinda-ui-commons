@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 export function removeLocalReference(record, opts) {
 
-  const { libraryTag, expectedLocalId } = opts;
+  const { libraryTag, expectedLocalId, skipLocalSidCheck } = opts;
 
   if (libraryTag === undefined) {
     throw new Error('Mandatory option missing: libraryTag');
@@ -19,7 +19,7 @@ export function removeLocalReference(record, opts) {
       return reject(new Error('The record has unexpected SIDc value.'));
     }
 
-    removeSIDFields(record, report, libraryTag, expectedLocalId);
+    removeSIDFields(record, report, libraryTag, expectedLocalId, skipLocalSidCheck);
     removeLOWFields(record, report, libraryTag);
 
     cleanupRecord(record, report, libraryTag);
@@ -43,13 +43,12 @@ function validateLocalSid(record, libraryTag, expectedLocalId) {
     });
 }
 
-function removeSIDFields(record, report, libraryTag, expectedLocalId) {
-  if (expectedLocalId === undefined) {
+function removeSIDFields(record, report, libraryTag, expectedLocalId, skipLocalSidCheck) {
+  if (expectedLocalId === undefined && skipLocalSidCheck !== true) {
     return;
   }
-  const normalizedExpectedLocalId = expectedLocalId.toString();
-  const lowercaseLibraryTag = libraryTag.toLowerCase();
-  const fieldsToRemove = record.getFields('SID', 'b', lowercaseLibraryTag, 'c', normalizedExpectedLocalId);
+  
+  const fieldsToRemove = getSIDFieldsForRemoval(record, libraryTag, expectedLocalId, skipLocalSidCheck);
   
   fieldsToRemove.forEach(field => {
     const removedLibraryTag = getSubfieldValues(field, 'b').join(',');
@@ -58,6 +57,18 @@ function removeSIDFields(record, report, libraryTag, expectedLocalId) {
 
   record.fields = _.difference(record.fields, fieldsToRemove);
 
+}
+
+function getSIDFieldsForRemoval(record, libraryTag, expectedLocalId, skipLocalSidCheck) {
+  
+  const lowercaseLibraryTag = libraryTag.toLowerCase();
+
+  if (skipLocalSidCheck) {
+    return record.getFields('SID', 'b', lowercaseLibraryTag);
+  } else {
+    const normalizedExpectedLocalId = expectedLocalId.toString();
+    return record.getFields('SID', 'b', lowercaseLibraryTag, 'c', normalizedExpectedLocalId);
+  }
 }
 
 function removeLOWFields(record, report, libraryTag) {
