@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 export function recordIsUnused(record) {
   // record is considered unused if it does not have any of the following fields: 
@@ -11,4 +12,12 @@ export function markRecordAsDeleted(record) {
 
 export function isDataField(field) {
   return field.subfields !== undefined && field.subfields.constructor === Array;
+}
+
+export function isComponentRecord(record) {
+
+  const bibliographicLevel = _.get(record, 'leader[7]', undefined);
+  
+  return ['a','b','d']
+    .some(level => bibliographicLevel === level);
 }
