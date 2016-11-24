@@ -6,11 +6,13 @@ import { isDataField } from '../record-utils';
 import MarcRecord from 'marc-record-js';
 import XRegExp from 'xregexp';
 
-function shouldCreateTransliteratedFields(field) {
-  return field.tag === '880' && fieldContainsCyrillicCharacters(field);
-}
+const defaultOptions = {
+  doSFS4900RusTransliteration: true
+};
 
-export function transliterate(record) {
+export function transliterate(record, options) {
+
+  options = _.assign({}, defaultOptions, options);
 
   record.fields.forEach(field => {
     if (field.uuid === undefined) {
@@ -24,7 +26,7 @@ export function transliterate(record) {
 
     const fields = record.fields;
 
-    record.fields = transformFields(fields);
+    record.fields = transformFields(options, fields);
 
     const warnings = checkForWarnings(originalRecord, record);
 
@@ -35,13 +37,24 @@ export function transliterate(record) {
   });
 }
 
-const transformFields = _.flow(
-  (fields) => fields.map(normalizeField), // normalize link subfields etc.
-  moveCyrillicFieldsTo880,                // move fields with cyrillic content to 880
-  createTransliteratedFieldsFrom880,      // create transliterated fields for every cyrillic 880
-  sortNumericFields                       // new fields were added, so they need to be sorted
-);
+function transformFields(options, fields) {
 
+  const transliterate880Fields = _.partial(createTransliteratedFieldsFrom880, options);
+
+  const transformComposition = _.flow(
+    (fields) => fields.map(normalizeField), // normalize link subfields etc.
+    moveCyrillicFieldsTo880,                // move fields with cyrillic content to 880
+    transliterate880Fields,                 // create transliterated fields for every cyrillic 880
+    sortNumericFields                       // new fields were added, so they need to be sorted
+  );
+
+  return transformComposition(fields);
+}
+
+
+function shouldCreateTransliteratedFields(field) {
+  return field.tag === '880' && fieldContainsCyrillicCharacters(field);
+}
 
 function removeFailedTransliterations(fieldList) {
   const isSFSTransliteratedField = hasSubfieldValue(9, 'SFS4900 <TRANS>');
@@ -233,8 +246,8 @@ function isCyrillicCharacter(char) {
 }
 
 
-function createTransliteratedFieldsFrom880(fieldList) {
-
+function createTransliteratedFieldsFrom880(options, fieldList) {
+  
   const fieldsForRemoval = [];
 
   const transliteratedFieldList = fieldList.reduce((fields, field) => {
@@ -244,10 +257,12 @@ function createTransliteratedFieldsFrom880(fieldList) {
       const link = getLinkSubfield(field).value;
       const [linkedTag, linkNumber] = link.split('-');
 
-      const sfs4900Transliterated = createSFS4900TransliteratedField(field, linkedTag, linkNumber);
+      if (options.doSFS4900RusTransliteration) {
+        const sfs4900Transliterated = createSFS4900TransliteratedField(field, linkedTag, linkNumber);
 
-      if (!containsField(fieldList, sfs4900Transliterated)) {
-        fields.push(sfs4900Transliterated);
+        if (!containsField(fieldList, sfs4900Transliterated)) {
+          fields.push(sfs4900Transliterated);
+        }
       }
 
       const iso9Transliterated = createISO9TransliteratedField(field, linkedTag, linkNumber);
