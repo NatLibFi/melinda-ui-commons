@@ -12,7 +12,7 @@ export function removeLocalReference(record, opts) {
     const report = [];
 
     if (record.isDeleted()) {
-      return reject(new Error('The record is deleted.'));
+      return reject(new Error('Tietue oli jo poistettu.'));
     }
 
     if(expectedLocalId && !validateLocalSid(record, libraryTag, expectedLocalId.toString())) {
@@ -52,7 +52,7 @@ function removeSIDFields(record, report, libraryTag, expectedLocalId, skipLocalS
   
   fieldsToRemove.forEach(field => {
     const removedLibraryTag = getSubfieldValues(field, 'b').join(',');
-    report.push(`Removed SID: ${removedLibraryTag}`);
+    report.push(`Poistettu SID: ${removedLibraryTag}`);
   });
 
   record.fields = _.difference(record.fields, fieldsToRemove);
@@ -77,11 +77,11 @@ function removeLOWFields(record, report, libraryTag) {
   
   fieldsToRemove.forEach(field => {
     const removedLibraryTag = getSubfieldValues(field, 'a').join(',');
-    report.push(`Removed LOW: ${removedLibraryTag}`);
+    report.push(`Poistettu LOW: ${removedLibraryTag}`);
   });
 
   if (fieldsToRemove.length === 0) {
-    report.push('Record did not have LOW tag.');
+    report.push('Tietueessa ei ollut LOW-kenttää.');
   }
 
   record.fields = _.difference(record.fields, fieldsToRemove);
@@ -98,14 +98,14 @@ function cleanupRecord(record, report, libraryTag) {
       if (subfield5List.length === 1) {
         if (subfield5List[0].value === libraryTag.toUpperCase()) {
           removeField(record, field);
-          report.push(`Removed field ${field.tag}`);
+          report.push(`Poistettu kenttä ${field.tag}`);
         }
       }
       
       if (subfield5List.length > 1) {
         subfield5List.filter(sub => sub.value === libraryTag.toUpperCase()).forEach(subfield => {
           removeSubfield(record, field, subfield);
-          report.push(`Removed subfield 5 with value ${subfield.value} from field ${field.tag}`);
+          report.push(`Poistettu osakenttä $5 (${subfield.value}) kentästä ${field.tag}`);
         });
       }      
     });
@@ -117,7 +117,7 @@ function cleanupRecord(record, report, libraryTag) {
 
       subfield9List.filter(replicationCommandMatcher(libraryTag)).forEach(subfield => {
         removeSubfield(record, field, subfield);
-        report.push(`Removed subfield 9 with value ${subfield.value} from field ${field.tag}`);
+        report.push(`Poistettu osakenttä $9 (${subfield.value}) kentästä ${field.tag}`);
       });
   
     });

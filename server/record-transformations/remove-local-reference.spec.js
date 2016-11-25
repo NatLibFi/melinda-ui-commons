@@ -30,7 +30,7 @@ describe('removeLocalReference', () => {
     });
 
     it('should reject with error', () => {
-      expect(error.message).to.equal('The record is deleted.');
+      expect(error.message).to.equal('Tietue oli jo poistettu.');
     });
 
   });
@@ -48,7 +48,7 @@ describe('removeLocalReference', () => {
     });
 
     it('returned report should contain the information of the LOW removal', () => {
-      expect(result.report).to.include('Removed LOW: TEST');
+      expect(result.report).to.include('Poistettu LOW: TEST');
     });
   });
 
@@ -94,7 +94,7 @@ describe('removeLocalReference', () => {
     });
 
     it('returned report should contain the information of the SID removal', () => {
-      expect(result.report).to.include('Removed SID: test');
+      expect(result.report).to.include('Poistettu SID: test');
     });
   });
 
@@ -110,7 +110,7 @@ describe('removeLocalReference', () => {
     });
 
     it('returned report should contain the information of the SID removal', () => {
-      expect(result.report).to.include('Removed SID: test');
+      expect(result.report).to.include('Poistettu SID: test');
     });
   });
 
@@ -128,7 +128,7 @@ describe('removeLocalReference', () => {
     });
 
     it('returned report should contain the information of the LOW removal', () => {
-      expect(result.report).to.include('Removed LOW: TEST');
+      expect(result.report).to.include('Poistettu LOW: TEST');
     });
   });
 
@@ -140,7 +140,7 @@ describe('removeLocalReference', () => {
     });
 
     it('should report that the record did not contain low tag', () => {
-      expect(result.report).to.include('Record did not have LOW tag.');
+      expect(result.report).to.include('Tietueessa ei ollut LOW-kenttää.');
     });
   });
 
@@ -169,19 +169,19 @@ describe('removeLocalReference', () => {
     });
     
     it('reports the field removals', () => { 
-      expect(result.report).to.include('Removed field 300');
+      expect(result.report).to.include('Poistettu kenttä 300');
     });
     
     it('reports the subfield $5 removals', () => {
-      expect(result.report).to.include('Removed subfield 5 with value TEST from field 301');
+      expect(result.report).to.include('Poistettu osakenttä $5 (TEST) kentästä 301');
     });
     
     it('reports the subfield $9 <KEEP> removals', () => { 
-      expect(result.report).to.include('Removed subfield 9 with value TEST <KEEP> from field 100');
+      expect(result.report).to.include('Poistettu osakenttä $9 (TEST <KEEP>) kentästä 100');
     });
     
     it('reports the subfield $9 <DROP> removals', () => { 
-      expect(result.report).to.include('Removed subfield 9 with value TEST <DROP> from field 245');
+      expect(result.report).to.include('Poistettu osakenttä $9 (TEST <DROP>) kentästä 245');
     });
     
   });
