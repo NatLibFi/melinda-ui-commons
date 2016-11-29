@@ -22,7 +22,8 @@ export class MarcRecordPanel extends React.Component {
       'wasUsed': field.wasUsed,
       'from-preferred': field.fromPreferred,
       'from-other': field.fromOther,
-      'has-changed': field.hasChanged
+      'has-changed': field.hasChanged,
+      'from-postmerge': field.fromPostmerge
     });
 
     const key = field.tag === 'LDR' ? 'LDR' : field.uuid;
@@ -44,7 +45,8 @@ export class MarcRecordPanel extends React.Component {
         'is-selected': subfield.wasUsed,
         'from-preferred': subfield.fromPreferred,
         'from-other': subfield.fromOther,
-        'has-changed': subfield.hasChanged
+        'has-changed': subfield.hasChanged,
+        'from-postmerge': subfield.fromPostmerge
       });
       
       const key = `${field.uuid}-${subfieldIndex}`;
@@ -61,7 +63,8 @@ export class MarcRecordPanel extends React.Component {
       'is-selected': field.wasUsed,
       'from-preferred': field.fromPreferred,
       'from-other': field.fromOther,
-      'has-changed': field.hasChanged
+      'has-changed': field.hasChanged,
+      'from-postmerge': field.fromPostmerge
     });
 
     const i1 = field.ind1 || ' ';
