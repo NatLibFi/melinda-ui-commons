@@ -1,0 +1,255 @@
+import React from 'react';
+import '../../styles/components/marc-record-editor';
+import _ from 'lodash';
+import uuid from 'node-uuid';
+import { Repeat, Map, List } from 'immutable';
+import MarcRecord from 'marc-record-js';
+
+// Until this has been merged, we are using custom version of draftjs: https://github.com/facebook/draft-js/pull/667
+import {getDefaultKeyBinding, KeyBindingUtil, Modifier, convertToRaw, EditorBlock, genKey, 
+  DefaultDraftBlockRenderMap, Editor, EditorState, ContentState, ContentBlock, CharacterMetadata} from '../vendor/draft-js';
+
+
+function fieldAsString(field) {
+  if (field.subfields) {
+    const subfields = field.subfields.map(sub => `‡${sub.code}${sub.value}`).join('');
+    return `${field.tag} ${field.ind1}${field.ind2} ${subfields}`;
+  } else {
+    return `${field.tag}    ${field.value}`;
+  }
+}
+
+export class MarcEditor extends React.Component {
+
+  static propTypes = {
+    record: React.PropTypes.object,
+    onFieldClick: React.PropTypes.func,
+    onRecordUpdate: React.PropTypes.func.isRequired
+  }
+ 
+  constructor(props) {
+    super(props);
+
+    if (props.record) {
+
+      const contentState = this.transformRecordToContentState(props.record);
+      const editorState = EditorState.createWithContent(contentState);
+      this.state = {editorState};
+
+    } else {
+  
+      const defaultContentState = ContentState.createFromText('');
+      this.state = {editorState: EditorState.createWithContent(defaultContentState)};
+
+    }
+
+    this.onChange = (editorState) => {
+
+      var startKey = editorState.getSelection().getStartKey();
+      var selectedBlock = editorState
+        .getCurrentContent()
+        .getBlockForKey(startKey);
+
+      let nextContentState = editorState.getCurrentContent();
+              
+      if (this.state.editorState.getCurrentContent() !== editorState.getCurrentContent()) {
+          
+        nextContentState = nextContentState.updateIn(['blockMap'], blockMap => {
+
+          let chars = this.applyStylesToFieldBlock(selectedBlock.getCharacterList(), selectedBlock.getText());
+          let updatedBlock = selectedBlock
+            .set('characterList', chars);
+            
+          return blockMap.set(selectedBlock.getKey(), updatedBlock);
+        });
+      }
+
+      let nextEditorState = EditorState.push(editorState, nextContentState);
+
+      this.setState({editorState: nextEditorState});
+      this.debouncedRecordUpdate(nextEditorState);
+    };
+
+    this.debouncedRecordUpdate = _.debounce(editorState => {
+
+      const raw = convertToRaw(editorState.getCurrentContent());
+      const recStr = raw.blocks.map(b => b.text).join('\n');
+
+      if (this._currentRecStr == recStr) {
+        return;
+      }
+
+      this._currentRecStr = recStr;
+
+      const updatedRecord = MarcRecord.fromString(recStr);
+      updatedRecord.fields.forEach(field => field.uuid = uuid.v4());
+      this._recordFromCurrentEditorContent = updatedRecord;
+      this.props.onRecordUpdate(this._recordFromCurrentEditorContent);
+
+    }, 250);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.updateEditorState(nextProps.record);
+  }
+
+  applyStylesToFieldBlock(chars, text) {
+    if (text.length < 8) return chars;
+
+    chars = chars
+      .set(0, CharacterMetadata.applyStyle(chars.get(0), 'tag'))
+      .set(1, CharacterMetadata.applyStyle(chars.get(1), 'tag'))
+      .set(2, CharacterMetadata.applyStyle(chars.get(2), 'tag'))
+      .set(4, CharacterMetadata.applyStyle(chars.get(4), 'ind'))
+      .set(5, CharacterMetadata.applyStyle(chars.get(5), 'ind'));
+
+    const textArray = text.split('');
+
+    textArray.forEach((char, index) => {
+      if (index < 6) return;
+
+      const previousCharacter = index > 0 ? textArray[index-1] : null;
+
+      if (char === '‡') {
+        chars = chars.set(index, CharacterMetadata.applyStyle(chars.get(index), 'sub'));
+      } else if (previousCharacter === '‡') {
+        chars = chars.set(index, CharacterMetadata.applyStyle(chars.get(index), 'sub'));
+      } else {
+        chars = chars.set(index, CharacterMetadata.EMPTY);
+      }      
+    });
+    return chars;
+  }
+
+  updateEditorState(record) {
+
+    if (record === this._recordFromCurrentEditorContent) {
+      return;
+    }
+    
+    if (record) {
+
+      const contentState = this.transformRecordToContentState(record);
+      const editorState = EditorState.push(this.state.editorState, contentState);
+
+      this.setState({editorState});
+    }
+  }
+
+  transformRecordToContentState(record) {
+ 
+    const LDR = {
+      tag: 'LDR',
+      value: record.leader
+    };
+
+    const fields = record.fields.slice();
+    fields.unshift(LDR);
+
+    const blocks = fields.map(this.transformFieldToBlock.bind(this));
+
+    const contentState = ContentState.createFromBlockArray(blocks);
+
+    return contentState;
+  }
+
+  transformFieldToBlock(field) {
+
+    const text = fieldAsString(field);
+    let chars = List(Repeat(CharacterMetadata.EMPTY, text.length));
+    chars = this.applyStylesToFieldBlock(chars, text);
+
+    const fieldType = field.subfields !== undefined ? 'datafield' : 'controlfield';
+
+    const contentBlock = new ContentBlock({
+      key: genKey(),
+      text,
+      characterList: chars,
+      type: 'field',
+      data: Map({ field, fieldType })
+    });
+
+    return contentBlock;
+  }
+
+  handleKeyCommand(command) {
+
+    if (command === 'add-subfield-marker') {
+
+      const {editorState} = this.state;
+   
+      var contentState = Modifier.insertText(editorState.getCurrentContent(), editorState.getSelection(), '‡', editorState.getCurrentInlineStyle(), null);
+      var newEditorState = EditorState.push(editorState, contentState, 'insert-characters');
+      this.onChange(EditorState.forceSelection(newEditorState, contentState.getSelectionAfter()));
+
+      return 'handled';
+    }
+
+    return 'not-handled';
+  }
+
+  render() {
+    const blockRenderMap = Map({
+      'field': {
+        element: 'div'
+      }
+    });
+
+    const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
+    const {editorState} = this.state;
+
+    const colorStyleMap = {
+      tag: {
+        color: '#448aff',
+      },
+      ind: {
+        color: '#448aff',
+      },
+      sub: {
+        color: '#e57373',
+      }
+    };
+
+    return (<div className="marc-record-editor">
+      <Editor 
+        editorState={editorState} 
+        onChange={this.onChange} 
+        handleKeyCommand={(e) => this.handleKeyCommand(e)}
+        blockRendererFn={fieldBlockRenderer} 
+        blockRenderMap={extendedBlockRenderMap}
+        customStyleMap={colorStyleMap}
+        keyBindingFn={myKeyBindingFn}
+        /> 
+      </div>
+    );
+  }
+}
+
+function fieldBlockRenderer(contentBlock) {
+  const type = contentBlock.getType();
+  const content = contentBlock.getText();
+  const key = contentBlock.getKey();
+
+  if (type === 'field') {
+    return {
+      component: EditorBlock,
+      editable: true,
+      props: { content, key }
+    };
+  }
+  return null;
+}
+
+const {hasCommandModifier} = KeyBindingUtil;
+
+function myKeyBindingFn(e) {
+  
+  if (e.keyCode === 117) {
+    return 'add-subfield-marker';
+  }
+
+  if (e.keyCode === 81 && hasCommandModifier(e)) {
+    return 'add-subfield-marker';
+  }
+  return getDefaultKeyBinding(e);
+}
