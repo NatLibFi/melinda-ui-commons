@@ -12,7 +12,7 @@ export class RecordPanel extends React.Component {
     showHeader: React.PropTypes.bool,
     title: React.PropTypes.string,
     editable: React.PropTypes.bool,
-    children: React.PropTypes.array,
+    children: React.PropTypes.oneOfType([ React.PropTypes.object, React.PropTypes.array ]),
     onRecordUpdate: React.PropTypes.func,
     onFieldClick: React.PropTypes.func
   }
@@ -81,18 +81,22 @@ export class RecordPanel extends React.Component {
   }
 
   renderPreview() {
-    return (
-      <div>
-        <div className="card-content">
-          <MarcRecordPanel 
-            record={this.props.record}
-            onFieldClick={this.props.onFieldClick} />
-        </div>
 
-        {this.props.children}
-      </div>
+    if (this.props.record !== undefined) {
+
+      return (
+        <div>
+          <div className="card-content">
+            <MarcRecordPanel record={this.props.record} onFieldClick={this.props.onFieldClick} />
+          </div>
+          {this.props.children}
+        </div>
+      );      
       
-    );
+    } else {
+      return (<div>{this.props.children}</div>);
+    }
+
   }
 
   renderEditor() {
@@ -102,6 +106,8 @@ export class RecordPanel extends React.Component {
           record={this.props.record} 
           onRecordUpdate={(record) => this.handleRecordUpdate(record)}
         />
+
+        {this.props.children}
       </div>
     );
   }
