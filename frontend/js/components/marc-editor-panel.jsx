@@ -56,10 +56,12 @@ export class MarcEditor extends React.Component {
           
         nextContentState = nextContentState.updateIn(['blockMap'], blockMap => {
 
+          
           let chars = this.applyStylesToFieldBlock(selectedBlock.getCharacterList(), selectedBlock.getText());
           let updatedBlock = selectedBlock
-            .set('characterList', chars);
-            
+            .set('characterList', chars)
+            .updateIn(['data', 'field'], field => _.set(field, 'hasBeenEdited', true));
+
           return blockMap.set(selectedBlock.getKey(), updatedBlock);
         });
       }
@@ -81,7 +83,15 @@ export class MarcEditor extends React.Component {
 
       this._currentRecStr = recStr;
 
-      const updatedRecord = MarcRecord.fromString(recStr);
+      const fieldsIncludingLeader = raw.blocks.map(this.convertBlockToField);
+      const leader = fieldsIncludingLeader.find(field => field.tag === 'LDR');
+      const fields = _.without(fieldsIncludingLeader, leader);
+
+      const updatedRecord = new MarcRecord({
+        leader: leader.value,
+        fields: fields
+      });
+
       updatedRecord.fields.forEach(field => field.uuid = uuid.v4());
       this._recordFromCurrentEditorContent = updatedRecord;
       this.props.onRecordUpdate(this._recordFromCurrentEditorContent);
@@ -91,6 +101,43 @@ export class MarcEditor extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.updateEditorState(nextProps.record);
+  }
+
+  convertBlockToField(block) {
+
+    const fieldLine = block.text;
+
+    var tag = fieldLine.substr(0,3);
+    var ind1 = fieldLine.substr(4,1);
+    var ind2 = fieldLine.substr(5,1);
+    var data = fieldLine.substr(7);
+
+    if (tag == 'LDR') {
+      return _.assign({}, block.data.field, { value: data });
+    } else {
+
+      if (data.substr(0,1) !== '‡') {
+        //controlfield
+        
+        return _.assign({}, block.data.field, { tag: tag, value: data });
+
+      } else {
+        
+        const subfields = data.substr(1).split('‡').map(function(codeAndValue) {
+          const code = codeAndValue.substr(0,1);
+          const value = codeAndValue.substr(1);
+          return {code, value};
+        });
+
+        return _.assign({}, block.data.field, {
+          tag, 
+          ind1, 
+          ind2, 
+          subfields
+        });
+
+      }
+    }
   }
 
   applyStylesToFieldBlock(chars, text) {

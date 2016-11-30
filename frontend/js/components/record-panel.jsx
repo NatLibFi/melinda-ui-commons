@@ -1,20 +1,20 @@
 import React from 'react';
 import { MarcRecordPanel } from './marc-record-panel';
-import { Preloader } from './preloader';
 import '../../styles/components/record-panel.scss';
 import {MarcEditor} from './marc-editor-panel';
+import classNames from 'classnames';
 
 export class RecordPanel extends React.Component {
 
   static propTypes = {
     record: React.PropTypes.object,
     error: React.PropTypes.object,
-    status: React.PropTypes.string,
     showHeader: React.PropTypes.bool,
     title: React.PropTypes.string,
     editable: React.PropTypes.bool,
     children: React.PropTypes.array,
-    onRecordUpdate: React.PropTypes.func
+    onRecordUpdate: React.PropTypes.func,
+    onFieldClick: React.PropTypes.func
   }
 
   constructor(props) {
@@ -33,13 +33,39 @@ export class RecordPanel extends React.Component {
 
   handleTabChange(event, nextTab) {
     event.preventDefault();
-    this.setState({currentTab: nextTab});
+    if (this.tabsEnabled()) {
+      this.setState({currentTab: nextTab});
+    }
+  }
+
+  handleRecordUpdate(nextRecord) {
+    if (this.props.onRecordUpdate) {
+      this.props.onRecordUpdate(nextRecord);  
+    }
+  }
+
+  tabsEnabled() {
+    return this.props.record !== undefined;
+  }
+
+  renderRecord() {
+    return (
+      <div>
+
+        {this.props.showHeader ? this.renderHeader() : null }
+        {this.state.currentTab == 'EDIT' ? this.renderEditor(): this.renderPreview()  }
+
+      </div>
+    );
   }
 
   renderHeader() {
-    
-    const previewTab = () => (<li className="tab col s2"><a href="#" onClick={(e) => this.handleTabChange(e, 'PREVIEW')}>Esikatselu</a></li>);
-    const editTab = () => (<li className="tab col s2"><a href="#" onClick={(e) => this.handleTabChange(e, 'EDIT')}>Muokkaus</a></li>);
+    const tabClasses = classNames('tab col s2', {
+      'tab-disabled': !this.tabsEnabled()
+    });
+
+    const previewTab = () => (<li className={tabClasses}><a href="#" onClick={(e) => this.handleTabChange(e, 'PREVIEW')}>Esikatselu</a></li>);
+    const editTab = () => (<li className={tabClasses}><a href="#" onClick={(e) => this.handleTabChange(e, 'EDIT')}>Muokkaus</a></li>);
 
     return (
       <div className="row row-no-bottom-margin">
@@ -54,35 +80,19 @@ export class RecordPanel extends React.Component {
     );
   }
 
-  renderRecord() {
-    return (
-      <div>
-        {this.props.showHeader ? this.renderHeader() : null }
-
-        {this.state.currentTab == 'EDIT' ? this.renderEditor(): this.renderPreview()  }
-      
-
-      </div>
-    );
-  }
-
   renderPreview() {
     return (
       <div>
         <div className="card-content">
-          <MarcRecordPanel record={this.props.record}/>
+          <MarcRecordPanel 
+            record={this.props.record}
+            onFieldClick={this.props.onFieldClick} />
         </div>
 
         {this.props.children}
       </div>
       
     );
-  }
-
-  handleRecordUpdate(nextRecord) {
-    if (this.props.onRecordUpdate) {
-      this.props.onRecordUpdate(nextRecord);  
-    }
   }
 
   renderEditor() {
@@ -96,49 +106,10 @@ export class RecordPanel extends React.Component {
     );
   }
 
-  renderError() {
-    return (
-      <div className="load-error red lighten-2">
-        <div className="heading">Tietueen lataus epäonnistui</div>
-        {this.props.error.message}
-      </div>
-    );
-  }
-
-  renderSpinner() {
-    return (
-      <div>
-        {this.props.showHeader ? this.renderHeader() : null }
-        <div className="card-content">
-          <Preloader />
-        </div>
-      </div>
-    );
-  }
-  renderEmpty() {
-    return (
-      <div>
-        {this.props.showHeader ? this.renderHeader() : null }
-      </div>
-    ); 
-  }
-  
-  renderContent() {
-
-    switch(this.props.status) {
-      case 'ERROR': return this.renderError();
-      case 'COMPLETE': return this.renderRecord();
-      case 'LOAD_ONGOING': return this.renderSpinner();
-      case 'NOT_LOADED': return this.renderEmpty();
-    }
-    
-    return null;
-  }
-
   render() {
     return (
-      <div className="marc-record-container card darken-1">
-        {this.renderContent()}
+      <div className="marc-record-container">
+        {this.renderRecord()}
       </div>
     );
   }

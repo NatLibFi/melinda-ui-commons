@@ -14,6 +14,12 @@ div.marc-record-container {
     .tab.title {
       text-align: left;
     }
+    .tab.tab-disabled > a {
+      color: #ccc;
+    }
+  }
+  .row-no-bottom-margin {
+    margin-bottom: 0px;
   }
 }
 
@@ -26,4 +32,3 @@ div.marc-record-container {
   padding: 10px 20px;
   color: #6b3636;
 }
-
