@@ -291,7 +291,7 @@ const {hasCommandModifier} = KeyBindingUtil;
 
 function myKeyBindingFn(e) {
   
-  if (e.keyCode === 117) {
+  if (e.keyCode === 118) {
     return 'add-subfield-marker';
   }
 
