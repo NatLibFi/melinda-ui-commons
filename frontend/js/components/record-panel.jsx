@@ -106,8 +106,6 @@ export class RecordPanel extends React.Component {
           record={this.props.record} 
           onRecordUpdate={(record) => this.handleRecordUpdate(record)}
         />
-
-        {this.props.children}
       </div>
     );
   }
