@@ -104,7 +104,7 @@ describe('transliterate', () => {
     };
     
     if (testName.startsWith('!')) {
-      it.only(testName, testFn);
+      it.only(testName, testFn); //eslint-disable-line
     } else {
       it(testName, testFn);
     }
