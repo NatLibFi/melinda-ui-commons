@@ -101,7 +101,7 @@ describe('removeLocalReference', () => {
   describe('when record has local SID with expected local id, but SID deletion is bypassed', () => {
   
     beforeEach(() => {
-      return removeLocalReference(record(FAKE_RECORD_SID_LOW), {libraryTag: LIBRARY_TAG, expectedLocalId: EXPECTED_LOCAL_ID}, bypassSIDdeletion: 1)
+      return removeLocalReference(record(FAKE_RECORD_SID_LOW), {libraryTag: LIBRARY_TAG, expectedLocalId: EXPECTED_LOCAL_ID, bypassSIDdeletion: true})
         .then(res => result = res)
         .catch(err => error = err);
     });
