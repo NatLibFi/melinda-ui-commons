@@ -98,6 +98,25 @@ describe('removeLocalReference', () => {
     });
   });
 
+  describe('when record has local SID with expected local id, but SID deletion is bypassed', () => {
+  
+    beforeEach(() => {
+      return removeLocalReference(record(FAKE_RECORD_SID_LOW), {libraryTag: LIBRARY_TAG, expectedLocalId: EXPECTED_LOCAL_ID, bypassSIDdeletion: true})
+        .then(res => result = res)
+        .catch(err => error = err);
+    });
+
+    it('should not remove the SID field', () => {
+      expect(result.record.getFields('SID', 'b', LIBRARY_TAG).map(fieldAsString)).to.include('SID $btest$c111');
+    });
+
+    it('returned report should contain the information of the SID removal', () => {
+      expect(result.report).to.include('Mahdollinen SID säilytetty replikointia varten');
+    });
+  });
+
+  
+  
   describe('when record has local SID, expectedLocalId is undefined and skipLocalSidCheck is true', () => {
   
     beforeEach(() => {

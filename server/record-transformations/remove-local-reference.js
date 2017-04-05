@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 export function removeLocalReference(record, opts) {
 
-  const { libraryTag, expectedLocalId, skipLocalSidCheck } = opts;
+  const { libraryTag, expectedLocalId, skipLocalSidCheck, bypassSIDdeletion } = opts;
 
   if (libraryTag === undefined) {
     throw new Error('Mandatory option missing: libraryTag');
@@ -19,7 +19,7 @@ export function removeLocalReference(record, opts) {
       return reject(new Error('The record has unexpected SIDc value.'));
     }
 
-    removeSIDFields(record, report, libraryTag, expectedLocalId, skipLocalSidCheck);
+    removeSIDFields(record, report, libraryTag, expectedLocalId, skipLocalSidCheck, bypassSIDdeletion);
     removeLOWFields(record, report, libraryTag);
 
     cleanupRecord(record, report, libraryTag);
@@ -43,7 +43,13 @@ function validateLocalSid(record, libraryTag, expectedLocalId) {
     });
 }
 
-function removeSIDFields(record, report, libraryTag, expectedLocalId, skipLocalSidCheck) {
+function removeSIDFields(record, report, libraryTag, expectedLocalId, skipLocalSidCheck, bypassSIDdeletion) {
+  
+  if (bypassSIDdeletion) {
+    report.push('Mahdollinen SID säilytetty replikointia varten');
+    return;
+  }
+  
   if (expectedLocalId === undefined && skipLocalSidCheck !== true) {
     return;
   }
