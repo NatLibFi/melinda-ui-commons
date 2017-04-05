@@ -46,7 +46,7 @@ function validateLocalSid(record, libraryTag, expectedLocalId) {
 function removeSIDFields(record, report, libraryTag, expectedLocalId, skipLocalSidCheck, bypassSIDdeletion) {
   
   if (bypassSIDdeletion) {
-    report.push(`Mahdollinen SID säilytetty replikointia varten`);
+    report.push('Mahdollinen SID säilytetty replikointia varten');
     return;
   }
   
