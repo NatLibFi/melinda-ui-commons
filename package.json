@@ -1,22 +1,32 @@
 {
-  "name": "melinda-ui-commons",
-  "version": "0.0.1",
-  "description": "Files shared between multiple melinda apps",
+  "name": "@natlibfi/melinda-ui-commons",
+  "version": "1.0.0",
+  "description": "Common modules for Melinda UI applications",
+  "keywords": [
+    "MARC",
+    "Melinda",
+    "transliteration"
+  ],
+  "author": {
+    "name": "The National Library of Finland"
+  },
+  "homepage": "https://github.com/natlibfi/melinda-ui-commons",
+  "bugs": {
+    "url": "https://github.com/natlibfi/melinda-ui-commons/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:natlibfi/melinda-ui-commons.git"
+  },
   "main": "index.js",
+  "license": "AGPL-3.0+",
   "scripts": {
     "test": "npm run test:frontend && npm run test:server",
     "test:frontend": "BABEL_ENV=test mocha --compilers js:babel-core/register --require ignore-styles --require ./frontend/test_helpers/test_bootstrap.js \"frontend/**/*@(.spec.js|.spec.jsx)\"",
     "test:frontend:watch": "npm run test:frontend -- --watch",
     "test:server": "BABEL_ENV=test mocha --compilers js:babel-core/register --require ./server/test_helpers/test_bootstrap.js \"./server/**/*@(.spec.js|.spec.jsx)\"",
     "test:server:watch": "npm run test:server -- --watch"
-  },
-  "keywords": [
-    "MARC",
-    "Melinda",
-    "transliteration"
-  ],
-  "author": "Pasi Tuominen <pasi.tuominen@gmail.com>",
-  "license": "MIT",
+  }, 
   "dependencies": {
     "body-parser": "^1.15.2",
     "classnames": "^2.2.5",
