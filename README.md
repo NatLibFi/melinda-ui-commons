@@ -2,13 +2,13 @@
 
 Common modules for Melinda UI applications:
 
-https://github.com/NatLibFi/marc-merge-ui
+[marc-merge-ui](https://github.com/NatLibFi/marc-merge-ui)
 
-https://github.com/NatLibFi/melinda-local-ref-removal-ui
+[melinda-local-ref-removal-ui](https://github.com/NatLibFi/melinda-local-ref-removal-ui)
 
-https://github.com/NatLibFi/melinda-transliteration-ui
+[melinda-transliteration-ui](https://github.com/NatLibFi/melinda-transliteration-ui)
 
-https://github.com/NatLibFi/melinda-eresource-tool
+[melinda-eresource-tool](https://github.com/NatLibFi/melinda-eresource-tool)
 
 ## License and copyright
 
