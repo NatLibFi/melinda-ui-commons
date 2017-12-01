@@ -26,12 +26,13 @@
 *
 */
 import React from 'react';
+import PropTypes from 'proptypes';
 import classNames from 'classnames';
 
 export class Preloader extends React.Component {
 
   static propTypes = {
-    size: React.PropTypes.string,
+    size: PropTypes.string,
   }
   
 

@@ -26,6 +26,7 @@
 *
 */
 import React from 'react';
+import PropTypes from 'proptypes';
 import '../../styles/components/marc-record-editor';
 import _ from 'lodash';
 import uuid from 'node-uuid';
@@ -49,9 +50,9 @@ function fieldAsString(field) {
 export class MarcEditor extends React.Component {
 
   static propTypes = {
-    record: React.PropTypes.object,
-    onFieldClick: React.PropTypes.func,
-    onRecordUpdate: React.PropTypes.func.isRequired
+    record: PropTypes.object,
+    onFieldClick: PropTypes.func,
+    onRecordUpdate: PropTypes.func.isRequired
   }
  
   constructor(props) {
