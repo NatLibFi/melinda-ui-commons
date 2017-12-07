@@ -35,7 +35,7 @@ import MarcRecord from 'marc-record-js';
 
 // Until this has been merged, we are using custom version of draftjs: https://github.com/facebook/draft-js/pull/667
 import {getDefaultKeyBinding, KeyBindingUtil, Modifier, convertToRaw, EditorBlock, genKey, 
-  DefaultDraftBlockRenderMap, Editor, EditorState, ContentState, ContentBlock, CharacterMetadata} from '../vendor/draft-js';
+  DefaultDraftBlockRenderMap, Editor, EditorState, ContentState, ContentBlock, CharacterMetadata} from 'draft-js';
 
 
 function fieldAsString(field) {
