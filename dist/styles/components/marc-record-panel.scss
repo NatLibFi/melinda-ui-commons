@@ -1,0 +1,28 @@
+.marc-record-panel {
+  font-family: 'monospace'; 
+  white-space: pre-wrap; 
+  overflow-x: auto;
+
+  .fieldList {
+    .code {
+      color: #e57373;
+      margin-right: 2px;
+    }
+    .marker {
+      color: #e57373;
+      margin-left: 2px;
+    }
+    .tag,
+    .ind1,
+    .ind2 {
+      color: #448aff;
+    }
+    .has-changed {
+      background-color: #e1f5fe;
+    }
+    .has-been-edited {
+      background-color: #a5d6a7; 
+    }
+  }
+  
+}

@@ -21,6 +21,9 @@
   "main": "index.js",
   "license": "AGPL-3.0+",
   "scripts": {
+    "build": "npm run build:frontend && npm run build:server && cp -r frontend/styles dist",
+    "build:frontend": "NODE_ENV=production babel frontend/js --ignore node_modules,spec.js --out-dir dist/frontend --source-maps",
+    "build:server": "NODE_ENV=production babel server --ignore node_modules,test_helpers,spec.js --out-dir dist/server --source-maps",
     "test": "npm run test:frontend && npm run test:server",
     "test:frontend": "BABEL_ENV=test mocha --compilers js:babel-core/register --require ignore-styles --require ./frontend/test_helpers/test_bootstrap.js \"frontend/**/*@(.spec.js|.spec.jsx)\"",
     "test:frontend:watch": "npm run test:frontend -- --watch",
@@ -29,6 +32,7 @@
   },
   "dependencies": {
     "@natlibfi/melinda-api-client": "^1.1.6",
+    "autoprefixer": "^7.2.2",
     "body-parser": "^1.18.2",
     "classnames": "^2.2.5",
     "cookie-parser": "^1.4.3",
