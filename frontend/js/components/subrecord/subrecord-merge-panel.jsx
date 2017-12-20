@@ -71,6 +71,7 @@ export class SubrecordMergePanel extends React.Component {
    
     const { subrecords } = this.props;
 
+    const totalRows = subrecords.length;
     const items = subrecords.map((subrecord, i) => {
      
       const {rowId, sourceRecord, targetRecord, mergedRecord, selectedAction, isExpanded, mergeError, saveStatus, saveRecordError, isCompacted, isMergeActionAvailable, isCopyActionAvailable} = subrecord;
@@ -79,6 +80,8 @@ export class SubrecordMergePanel extends React.Component {
         key={rowId}
         rowIndex={i}
         rowId={rowId}
+        currentRow={i + 1}
+        totalRows={totalRows}
         isExpanded={isExpanded}
         actionsEnabled={this.props.actionsEnabled}
         selectedAction={selectedAction}
@@ -167,9 +170,18 @@ export class SubrecordMergePanel extends React.Component {
   }
 
   render() {
+    const otherSubrecordCount = this.props.subrecords.filter((row) => row.sourceRecord).length;
+    const preferredSubrecordCount = this.props.subrecords.filter((row) => row.targetRecord).length;
     return (
       
       <table className="bordered subrecord-merge-panel">
+        <thead>
+          <tr>
+            <td>{otherSubrecordCount} osakohdetta</td>
+            <td>{preferredSubrecordCount} osakohdetta</td>
+            <td></td>
+          </tr>
+        </thead>
         <tbody>
           {this.renderSubrecordList()}
         </tbody>

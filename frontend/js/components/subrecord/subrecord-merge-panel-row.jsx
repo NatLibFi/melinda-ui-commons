@@ -48,6 +48,8 @@ export class SubrecordMergePanelRow extends React.Component {
     mergedRecord: PropTypes.object,
     selectedAction: PropTypes.string,
     rowIndex: PropTypes.number.isRequired,
+    currentRow: PropTypes.number.isRequired,
+    totalRows: PropTypes.number.isRequired,
     isExpanded: PropTypes.bool,
     actionsEnabled: PropTypes.bool,
     onRemoveRow: PropTypes.func.isRequired,
@@ -186,7 +188,7 @@ export class SubrecordMergePanelRow extends React.Component {
   }
 
   render() {
-    const {rowId, sourceRecord, targetRecord, mergedRecord, selectedAction, connectDragSource, connectDropTarget, isOver, isExpanded, mergeError, actionsEnabled, isCompacted, isMergeActionAvailable, isCopyActionAvailable} = this.props;
+    const {rowId, sourceRecord, targetRecord, mergedRecord, selectedAction, connectDragSource, connectDropTarget, isOver, isExpanded, mergeError, actionsEnabled, isCompacted, isMergeActionAvailable, isCopyActionAvailable, currentRow, totalRows} = this.props;
 
     const isEmptyRow = sourceRecord === undefined && targetRecord === undefined;
 
@@ -203,6 +205,9 @@ export class SubrecordMergePanelRow extends React.Component {
       <tr className={rowClasses}>
 
         <td>
+          <div className="row-indicator">
+            {currentRow}/{totalRows}
+          </div>
           {this.renderSubrecordPanel(sourceRecord, ItemTypes.SOURCE_SUBRECORD, rowId, isExpanded, actionsEnabled)}
         </td>
         <td>

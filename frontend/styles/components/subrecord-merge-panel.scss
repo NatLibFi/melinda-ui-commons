@@ -8,6 +8,16 @@
     @include marc-colors();
   }
 
+  thead {
+    tr {
+      td {
+        padding: 0px 5px;
+        font-size: small;
+        color: #9e9e9e;
+      }
+    }
+  }
+
   tr:not(.is-compacted) {
     .empty-droppable {
       height: 110px;
