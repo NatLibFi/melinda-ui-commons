@@ -62,6 +62,7 @@ export class MarcEditor extends React.Component {
 
       const contentState = this.transformRecordToContentState(props.record);
       const editorState = EditorState.createWithContent(contentState);
+      this._currentRecStr = props.record.toString();
       this.state = {editorState};
 
     } else {
@@ -111,7 +112,14 @@ export class MarcEditor extends React.Component {
 
       this._currentRecStr = recStr;
 
-      const fieldsIncludingLeader = raw.blocks.map(this.convertBlockToField);
+      const fieldsIncludingLeader = raw.blocks.map((block) => {
+        if (block.data.field.hasBeenEdited !== true) return block.data.field;
+
+        const field = this.convertBlockToField(block);
+        field.uuid = uuid.v4();
+
+        return field;
+      });
       const leader = fieldsIncludingLeader.find(field => field.tag === 'LDR');
       const fields = _.without(fieldsIncludingLeader, leader);
 
@@ -120,7 +128,6 @@ export class MarcEditor extends React.Component {
         fields: fields
       });
 
-      updatedRecord.fields.forEach(field => field.uuid = uuid.v4());
       this._recordFromCurrentEditorContent = updatedRecord;
       this.props.onRecordUpdate(this._recordFromCurrentEditorContent);
 
