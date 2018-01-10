@@ -34,13 +34,20 @@ import { ErrorMessagePanel } from './error-message-panel';
 export class MergeValidationErrorMessagePanel extends React.Component {
 
   static propTypes = {
-    error: PropTypes.instanceOf(Error)
+    error: PropTypes.instanceOf(Error),
+    warning: PropTypes.bool,
+    onDismiss: PropTypes.func
+  }
+
+  static defaultProps = {
+    warning: false
   }
 
   render() {
+    const { onDismiss, warning } = this.props;
     const title = this.props.error.message;
     const messageList = this.props.error.failureMessages;
 
-    return <ErrorMessagePanel title={title} messageList={messageList} />;
+    return <ErrorMessagePanel title={title} messageList={messageList} onDismiss={onDismiss} warning={warning} />;
   }
 }

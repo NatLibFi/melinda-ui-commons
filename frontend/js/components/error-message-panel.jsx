@@ -28,6 +28,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+
 import '../../styles/components/error-message-panel.scss';
 
 export class ErrorMessagePanel extends React.Component {
@@ -35,7 +37,9 @@ export class ErrorMessagePanel extends React.Component {
   static propTypes = {
     title: PropTypes.string,
     message: PropTypes.string,
-    messageList: PropTypes.array
+    messageList: PropTypes.array,
+    warning: PropTypes.bool,
+    onDismiss: PropTypes.func
   }
 
   renderTitle() {
@@ -52,11 +56,11 @@ export class ErrorMessagePanel extends React.Component {
 
   render() {
     return (
-      <div className="red lighten-2 error-message-panel">
+      <div className={classNames({'red': !this.props.warning, 'yellow': this.props.warning}, 'lighten-2', 'error-message-panel')}>
         { this.props.title ? this.renderTitle() : null }
         { this.props.message ? this.renderMessage() : null }
         { this.props.messageList ? this.renderMessageList() : null }
-        
+        { this.props.warning ? <button className="waves-effect waves-light btn" onClick={this.props.onDismiss} name="dismiss">Hylkää</button> : null }
       </div>
     );
   }
