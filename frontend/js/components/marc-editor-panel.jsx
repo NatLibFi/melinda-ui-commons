@@ -26,7 +26,7 @@
 *
 */
 import React from 'react';
-import PropTypes from 'proptypes';
+import PropTypes from 'prop-types';
 import '../../styles/components/marc-record-editor';
 import _ from 'lodash';
 import uuid from 'node-uuid';

@@ -26,7 +26,7 @@
 *
 */
 import React from 'react';
-import PropTypes from 'proptypes';
+import PropTypes from 'prop-types';
 import { MarcRecordPanel } from './marc-record-panel';
 import '../../styles/components/record-panel.scss';
 import {MarcEditor} from './marc-editor-panel';

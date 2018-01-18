@@ -46,7 +46,6 @@
     "marc-record-js": "^0.3.2",
     "marc-record-serializers": "^1.4.0",
     "node-uuid": "^1.4.8",
-    "proptypes": "^1.1.0",
     "winston": "^2.4.0",
     "xml2js": "^0.4.19"
   },
@@ -72,6 +71,7 @@
     "js-cookie": "^2.2.0",
     "jsdom": "^11.5.1",
     "mocha": "^4.0.1",
+    "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-addons-test-utils": "^15.6.2",
     "react-dnd": "^2.5.4",

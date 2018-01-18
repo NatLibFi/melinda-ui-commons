@@ -26,7 +26,7 @@
 *
 */
 import React from 'react';
-import PropTypes from 'proptypes';
+import PropTypes from 'prop-types';
 import * as sessionActionCreators from '../action-creators/session-actions';
 import {connect} from 'react-redux';
 import '../../styles/components/signin-form-panel.scss';

@@ -26,7 +26,7 @@
 *
 */
 import React from 'react';
-import PropTypes from 'proptypes';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import '../../styles/components/marc-record-panel';
 import _ from 'lodash';
