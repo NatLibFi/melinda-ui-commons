@@ -54,16 +54,17 @@ export class DroppableEmptySubRecordPanel extends React.Component {
 const emptySlotTarget = {
   drop(props, monitor, component) {
 
-    const { type, rowId } = props;
+    const { rowId } = props;
     const item = monitor.getItem();
     
     const fromRowId = item.rowId;
+    const dragType = item.dragType;
     const toRowId = rowId;
 
-    if (type == ItemTypes.SOURCE_SUBRECORD) {
+    if (dragType == ItemTypes.SOURCE_SUBRECORD) {
       component.props.onChangeSourceRow(fromRowId, toRowId);
     }
-    if (type == ItemTypes.TARGET_SUBRECORD) {
+    if (dragType == ItemTypes.TARGET_SUBRECORD) {
       component.props.onChangeTargetRow(fromRowId, toRowId);
     }
 
@@ -71,7 +72,8 @@ const emptySlotTarget = {
 
   canDrop(props, monitor) {
     const item = monitor.getItem();
-    return (props.type == item.type);
+
+    return (props.dragType == item.dragType);
   }
 
 };

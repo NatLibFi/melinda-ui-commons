@@ -54,8 +54,8 @@ class SubRecordPanelDragSource extends React.Component {
 
 const subrecordSource = {
   beginDrag(props) {
-    const { type, rowId } = props;
-    return { type, rowId };
+    const { type, dragType, rowId } = props;
+    return { type, dragType, rowId };
   },
   canDrag(props) {
     if (props && props.isExpanded) {

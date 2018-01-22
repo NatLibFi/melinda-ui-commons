@@ -74,6 +74,20 @@ export class SubrecordMergePanelRow extends React.Component {
     isCompacted: PropTypes.bool.isRequired,
     isMergeActionAvailable: PropTypes.bool.isRequired,
     isCopyActionAvailable: PropTypes.bool.isRequired,  
+    isSwapped: PropTypes.bool,
+    swappingEnabled: PropTypes.bool,
+    onSwapSubrecordRow: PropTypes.func
+  };
+
+  static defaultProps = {
+    isSwapped: false,
+    swappingEnabled: false
+  };
+
+  isSwapped() {
+    const { isSwapped, swappingEnabled } = this.props;
+
+    return swappingEnabled && isSwapped;
   }
 
   handleSourceFieldClick(field) {
@@ -96,9 +110,11 @@ export class SubrecordMergePanelRow extends React.Component {
     this.props.onSaveRecord(this.props.rowId, recordId, record);
   }
 
+  handleSwapRecords() {
+    this.props.onSwapSubrecordRow(this.props.rowId);
+  }
 
-  renderSubrecordPanel(record, type, rowId, isExpanded, dragEnabled) {
-
+  renderSubrecordPanel(record, type, dragType, rowId, isExpanded, dragEnabled) {
     const { isCompacted, onChangeSourceRow, onChangeTargetRow } = this.props;
 
     if (record) {
@@ -107,10 +123,10 @@ export class SubrecordMergePanelRow extends React.Component {
 
       const fieldClickHandler = type === ItemTypes.SOURCE_SUBRECORD ? this.handleSourceFieldClick.bind(this) : undefined;
       return (
-        <DraggableSubRecordPanel isCompacted={isCompacted} isExpanded={isExpanded} dragEnabled={dragEnabled} record={record} type={type} rowId={rowId} onFieldClick={fieldClickHandler} showHeader title={title}/>
+        <DraggableSubRecordPanel isCompacted={isCompacted} isExpanded={isExpanded} dragEnabled={dragEnabled} record={record} type={type} dragType={dragType} rowId={rowId} onFieldClick={fieldClickHandler} showHeader title={title}/>
       );
     } else {
-      return <DropTargetEmptySubRecordPanel type={type} rowId={rowId} onChangeSourceRow={onChangeSourceRow} onChangeTargetRow={onChangeTargetRow} />;
+      return <DropTargetEmptySubRecordPanel type={type} dragType={dragType} rowId={rowId} onChangeSourceRow={onChangeSourceRow} onChangeTargetRow={onChangeTargetRow} />;
     }
   }
 
@@ -187,8 +203,32 @@ export class SubrecordMergePanelRow extends React.Component {
     ); 
   }
 
+  renderSubrecordSwapButton() {
+    const { actionsEnabled, isSwapped } = this.props;
+
+    const containerClasses = classNames('subrecord-row-swap-button-container', {
+      'fixed-action-btn': actionsEnabled,
+      'horizontal': actionsEnabled
+    });
+
+    const iconClasses = classNames('btn-floating', 'btn-small', 'waves-light', 'subrecord-row-swap-button', 'blue', {
+      'disabled': !actionsEnabled,
+      'waves-effect': actionsEnabled,
+      'active': isSwapped,
+      'lighten-2': !isSwapped
+    });
+
+    return (
+      <div className={containerClasses} >
+        <a className={iconClasses} onClick={this.handleSwapRecords.bind(this)}>
+          <i className="large material-icons">swap_horiz</i>
+        </a>
+      </div>
+    );
+  }
+
   render() {
-    const {rowId, sourceRecord, targetRecord, mergedRecord, selectedAction, connectDragSource, connectDropTarget, isOver, isExpanded, mergeError, actionsEnabled, isCompacted, isMergeActionAvailable, isCopyActionAvailable, currentRow, totalRows} = this.props;
+    const {rowId, mergedRecord, sourceRecord, targetRecord, selectedAction, connectDragSource, connectDropTarget, isOver, isExpanded, mergeError, actionsEnabled, swappingEnabled, isCompacted, isMergeActionAvailable, isCopyActionAvailable, currentRow, totalRows} = this.props;
 
     const isEmptyRow = sourceRecord === undefined && targetRecord === undefined;
 
@@ -201,6 +241,8 @@ export class SubrecordMergePanelRow extends React.Component {
       'is-compacted': isCompacted
     });
 
+    const isSwapped = this.isSwapped();
+
     return connectDragSource(connectDropTarget(
       <tr className={rowClasses}>
 
@@ -208,10 +250,12 @@ export class SubrecordMergePanelRow extends React.Component {
           <div className="row-indicator">
             {currentRow}/{totalRows}
           </div>
-          {this.renderSubrecordPanel(sourceRecord, ItemTypes.SOURCE_SUBRECORD, rowId, isExpanded, actionsEnabled)}
+          {this.renderSubrecordPanel(isSwapped ? targetRecord : sourceRecord, ItemTypes.SOURCE_SUBRECORD, isSwapped ? ItemTypes.TARGET_SUBRECORD : ItemTypes.SOURCE_SUBRECORD, rowId, isExpanded, actionsEnabled)}
         </td>
         <td>
-          {this.renderSubrecordPanel(targetRecord, ItemTypes.TARGET_SUBRECORD, rowId, isExpanded, actionsEnabled)}
+          {swappingEnabled ? this.renderSubrecordSwapButton(): null}
+
+          {this.renderSubrecordPanel(isSwapped ? sourceRecord : targetRecord, ItemTypes.TARGET_SUBRECORD, isSwapped ? ItemTypes.SOURCE_SUBRECORD : ItemTypes.TARGET_SUBRECORD, rowId, isExpanded, actionsEnabled)}
         </td>
         <td>
          { isEmptyRow ? this.renderRemoveRowButton(rowId) : this.renderMergedSubrecordPanel(mergedRecord, rowId, isExpanded, mergeError, {isMergeActionAvailable, isCopyActionAvailable, selectedAction, actionsEnabled}) }
@@ -221,6 +265,8 @@ export class SubrecordMergePanelRow extends React.Component {
     ));
 
   }
+
+
 }
 
 const rowSource = {
