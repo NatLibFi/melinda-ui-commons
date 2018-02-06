@@ -29,39 +29,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Card, { CardHeader, CardContent } from 'material-ui/Card';
+import { withStyles } from 'material-ui/styles';
+import { red, yellow } from 'material-ui/colors';
+import Button from 'material-ui/Button';
 
 import '../../styles/components/error-message-panel.scss';
 
-export class ErrorMessagePanel extends React.Component {
+const styles = () => ({
+  warning: {
+    backgroundColor: yellow[300]
+  },
+  error: {
+    backgroundColor: red[300]
+  }
+});
+
+class ErrorMessagePanel extends React.Component {
 
   static propTypes = {
     title: PropTypes.string,
     message: PropTypes.string,
     messageList: PropTypes.array,
     warning: PropTypes.bool,
-    onDismiss: PropTypes.func
-  }
-
-  renderTitle() {
-    return <div className="heading">{this.props.title}</div>;
-  }
-
-  renderMessage() {
-    return <p>{this.props.message}</p>;
-  }
-
-  renderMessageList() {
-    return <pre>{this.props.messageList.join('\n')}</pre>;
+    onDismiss: PropTypes.func,
+    classes: PropTypes.object.isRequired
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <div className={classNames({'red': !this.props.warning, 'yellow': this.props.warning}, 'lighten-2', 'error-message-panel')}>
-        { this.props.title ? this.renderTitle() : null }
-        { this.props.message ? this.renderMessage() : null }
-        { this.props.messageList ? this.renderMessageList() : null }
-        { this.props.warning ? <button className="waves-effect waves-light btn" onClick={this.props.onDismiss} name="dismiss">Hylkää</button> : null }
-      </div>
+      <Card elevation={0} square className={classNames({[classes.error]: !this.props.warning, [classes.warning]: this.props.warning})}>
+        {this.props.title && <CardHeader title={this.props.title} />}
+
+        <CardContent>
+          {this.props.message}
+
+          {this.props.messageList && <pre>{this.props.messageList.join('\n')}</pre>}
+
+          {this.props.warning && <Button variant="raised" color="primary" onClick={this.props.onDismiss} name="dismiss">Hylkää</Button>}
+        </CardContent>
+      </Card>
     );
   }
 }
+
+export default withStyles(styles)(ErrorMessagePanel);

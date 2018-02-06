@@ -32,8 +32,9 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import '../../../styles/components/subrecord-panel';
 import { MarcRecordPanel } from 'commons/components/marc-record-panel';
-import { RecordPanel } from 'commons/components/record-panel';
+import RecordPanel from 'commons/components/record-panel';
 import { SaveButtonPanel } from '../save-button-panel';
+import Card, { CardContent } from 'material-ui/Card';
 
 export class SubRecordPanel extends React.Component {
 
@@ -94,12 +95,8 @@ export class SubRecordPanel extends React.Component {
       .map(toOnlySubfields('773', ['g','q']))
       .filter(f => f.subfields.length !== 0);
 
-    const classes = classNames({
+    const classes = classNames('marc-record', 'marc-record-subrecord', {
       'is-dragging': isDragging,
-      'card': true,
-      'darken-1': true,
-      'marc-record': true,
-      'marc-record-subrecord': true,
       'marc-record-source': this.props.type == 'SOURCE',
       'marc-record-target': this.props.type == 'TARGET',
       'marc-record-merged': this.props.type == 'MERGED'
@@ -111,9 +108,10 @@ export class SubRecordPanel extends React.Component {
 
     const res = isExpanded ? record : trimmedRecord;
 
+
     if (isExpanded) {
       return (
-        <div className={classes}>
+        <Card className={classes}>
           <RecordPanel 
             showHeader={this.props.showHeader}
             editable={this.props.editable}
@@ -125,16 +123,15 @@ export class SubRecordPanel extends React.Component {
             { this.props.saveButtonVisible ? this.renderSaveButton() : null }
 
           </RecordPanel>
-        </div>
+        </Card>
       );
     } else {
-
-      return (
-        <div className={classes}>
-          <div className="card-content">
+      return(
+        <Card className={classes}> 
+          <CardContent>
             <MarcRecordPanel record={res} onFieldClick={this.props.onFieldClick} />
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       );
 
     }

@@ -29,16 +29,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../../styles/components/save-button-panel.scss';
-import classNames from 'classnames';
 import { Preloader } from 'commons/components/preloader';
+import Button from 'material-ui/Button';
+import { withStyles } from 'material-ui/styles';
+import { red, green } from 'material-ui/colors';
 
-export class SaveButtonPanel extends React.Component {
+const styles = (theme) => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    '& * + *': {
+      marginLeft: theme.spacing.unit
+    } 
+  },
+  error: {
+    color: red[300]
+  },
+  success: {
+    color: green[300]
+  }
+});
+
+class SaveButtonPanel extends React.Component {
 
   static propTypes = {
     enabled: PropTypes.bool.isRequired,
     error: PropTypes.object,
     status: PropTypes.string.isRequired,
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    classes: PropTypes.object.isRequired
   }
 
   handleClick(event) {
@@ -51,30 +70,26 @@ export class SaveButtonPanel extends React.Component {
   }
 
   renderMessages() {
-    const {error, status} = this.props;
+    const { error, status, classes } = this.props;
 
     if (error !== undefined) {
-      return (<span className="save-status save-status-error valign">{error.message}</span>);
+      return (<span className={classes.error}>{error.message}</span>);
     }
     if (status === 'UPDATE_SUCCESS') {
-      return (<span className="save-status save-status-success valign">Tietue on tallennettu</span>); 
+      return (<span className={classes.success}>Tietue on tallennettu</span>); 
     }
     return null;
   }
 
   render() {
 
-    const {enabled, status} = this.props;
+    const { enabled, status, classes } = this.props;
 
     const showPreloader = status === 'UPDATE_ONGOING';
 
-    const buttonClasses = classNames('valign', {
-      'disabled': !enabled
-    });
-
     return (
-      <div className="save-button-panel valign-wrapper">
-        <a href="#" className={buttonClasses} onClick={(e) => this.handleClick(e)}>TALLENNA</a>
+      <div className={classes.root}>
+        <Button variant="raised" disabled={!enabled} onClick={(e) => this.handleClick(e)} color="primary">TALLENNA</Button>
         
         {showPreloader ? <Preloader size="small" /> : this.renderMessages()}     
         
@@ -82,3 +97,5 @@ export class SaveButtonPanel extends React.Component {
     );
   }
 }
+
+export default withStyles(styles)(SaveButtonPanel);

@@ -27,7 +27,7 @@
 */
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import { CircularProgress } from 'material-ui/Progress';
 
 export class Preloader extends React.Component {
 
@@ -35,23 +35,12 @@ export class Preloader extends React.Component {
     size: PropTypes.string,
   }
   
-
   render() {
-    const preloaderClasses = classNames('preloader-wrapper', 'active', this.props.size);
+    let size = 40;
 
-    return (
-      <div className={preloaderClasses}>
-        <div className="spinner-layer spinner-blue-only">
-          <div className="circle-clipper left">
-            <div className="circle" />
-          </div><div className="gap-patch">
-            <div className="circle" />
-          </div><div className="circle-clipper right">
-            <div className="circle" />
-          </div>
-        </div>
-      </div>
+    if (this.props.size === 'small') size = 30;
+    else if (this.props.size === 'big') size = 50;
 
-    );
+    return <CircularProgress size={size} />;
   }
 }

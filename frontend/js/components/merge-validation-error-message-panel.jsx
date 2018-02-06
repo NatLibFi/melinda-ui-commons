@@ -29,7 +29,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ErrorMessagePanel } from './error-message-panel';
+import ErrorMessagePanel from './error-message-panel';
 
 export class MergeValidationErrorMessagePanel extends React.Component {
 

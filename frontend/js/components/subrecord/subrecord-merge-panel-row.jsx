@@ -33,9 +33,11 @@ import { SubrecordActionTypes, ItemTypes } from '../../constants';
 import { DropTargetEmptySubRecordPanel } from './droppable-subrecord-empty-panel';
 import { DraggableSubRecordPanel } from './draggable-subrecord-panel';
 import { SubRecordPanel } from './subrecord-panel';
-import { SubrecordActionButton } from './subrecord-action-button';
+import SubrecordActionButton from './subrecord-action-button';
 import { DropTarget, DragSource } from 'react-dnd';
 import { MergeValidationErrorMessagePanel } from '../merge-validation-error-message-panel';
+import Button from 'material-ui/Button';
+import Icon from 'material-ui/Icon';
 
 import '../../../styles/components/subrecord-merge-panel-row.scss';
 
@@ -76,7 +78,7 @@ export class SubrecordMergePanelRow extends React.Component {
     isCopyActionAvailable: PropTypes.bool.isRequired,  
     isSwapped: PropTypes.bool,
     swappingEnabled: PropTypes.bool,
-    onSwapSubrecordRow: PropTypes.func
+    onSwapSubrecordRow: PropTypes.func,
   };
 
   static defaultProps = {
@@ -118,7 +120,6 @@ export class SubrecordMergePanelRow extends React.Component {
     const { isCompacted, onChangeSourceRow, onChangeTargetRow } = this.props;
 
     if (record) {
-
       const title = type === ItemTypes.SOURCE_SUBRECORD ? 'Poistuva tietue' : 'Säilyvä tietue';
 
       const fieldClickHandler = type === ItemTypes.SOURCE_SUBRECORD ? this.handleSourceFieldClick.bind(this) : undefined;
@@ -143,9 +144,8 @@ export class SubrecordMergePanelRow extends React.Component {
       );
     }
     if (mergedSubrecord) {
-
       return (
-        <div className="fill-height">
+        <React.Fragment>
           { isCompacted ? null  : <SubrecordActionButton onChangeAction={this.props.onChangeAction} rowId={rowId} {...opts} /> }
           <SubRecordPanel 
             isExpanded={isExpanded} 
@@ -163,7 +163,7 @@ export class SubrecordMergePanelRow extends React.Component {
             editable
             title="Yhdistetty"
              />
-        </div>
+        </React.Fragment>
       );
     } else {
       return (<SubrecordActionButton onChangeAction={this.props.onChangeAction} rowId={rowId} {...opts} />);
@@ -172,9 +172,9 @@ export class SubrecordMergePanelRow extends React.Component {
 
   renderRemoveRowButton(rowId) {
     return (
-      <button onClick={() => this.props.onRemoveRow(rowId)} className="btn-floating btn-hover-opaque btn-small waves-effect waves-light black remove-fab remove-fab-emptyrow">
-        <i className="material-icons">clear</i>
-      </button>
+      <Button variant="fab" onClick={() => this.props.onRemoveRow(rowId)} className="remove-empty-row"> 
+        <Icon>clear</Icon>
+      </Button>
     );
   }
 
@@ -189,41 +189,27 @@ export class SubrecordMergePanelRow extends React.Component {
 
   renderExpandRowButton(rowId) {
     return (
-      <button onClick={() => this.props.onExpandRow(rowId)} className="btn-floating btn-hover-opaque btn-small waves-effect waves-light black remove-fab remove-fab-emptyrow">
-        <i className="material-icons">expand_more</i>
-      </button>
-    ); 
+      <Button variant="fab" onClick={() => this.props.onExpandRow(rowId)} className="expand-row"> 
+        <Icon>expand_more</Icon>
+      </Button>
+    );
   }
 
   renderCompressRowButton(rowId) {
     return (
-      <button onClick={() => this.props.onCompressRow(rowId)} className="btn-floating btn-hover-opaque btn-small waves-effect waves-light black remove-fab remove-fab-emptyrow">
-        <i className="material-icons">expand_less</i>
-      </button>
-    ); 
+      <Button variant="fab" onClick={() => this.props.onCompressRow(rowId)} className="compress-row"> 
+        <Icon>expand_less</Icon>
+      </Button>
+    );
   }
 
   renderSubrecordSwapButton() {
     const { actionsEnabled, isSwapped } = this.props;
 
-    const containerClasses = classNames('subrecord-row-swap-button-container', {
-      'fixed-action-btn': actionsEnabled,
-      'horizontal': actionsEnabled
-    });
-
-    const iconClasses = classNames('btn-floating', 'btn-small', 'waves-light', 'subrecord-row-swap-button', 'blue', {
-      'disabled': !actionsEnabled,
-      'waves-effect': actionsEnabled,
-      'active': isSwapped,
-      'lighten-2': !isSwapped
-    });
-
     return (
-      <div className={containerClasses} >
-        <a className={iconClasses} onClick={this.handleSwapRecords.bind(this)}>
-          <i className="large material-icons">swap_horiz</i>
-        </a>
-      </div>
+      <Button className={classNames('swap-button', { 'active': isSwapped })} variant="fab" color="secondary" aria-label="swap" disabled={!actionsEnabled} onClick={this.handleSwapRecords.bind(this)}>
+        <Icon>swap_horiz</Icon>
+      </Button>
     );
   }
 
@@ -245,7 +231,6 @@ export class SubrecordMergePanelRow extends React.Component {
 
     return connectDragSource(connectDropTarget(
       <tr className={rowClasses}>
-
         <td>
           <div className="row-indicator">
             {currentRow}/{totalRows}
@@ -253,7 +238,7 @@ export class SubrecordMergePanelRow extends React.Component {
           {this.renderSubrecordPanel(isSwapped ? targetRecord : sourceRecord, ItemTypes.SOURCE_SUBRECORD, isSwapped ? ItemTypes.TARGET_SUBRECORD : ItemTypes.SOURCE_SUBRECORD, rowId, isExpanded, actionsEnabled)}
         </td>
         <td>
-          {swappingEnabled ? this.renderSubrecordSwapButton(): null}
+          {swappingEnabled && !isCompacted ? this.renderSubrecordSwapButton(): null}
 
           {this.renderSubrecordPanel(isSwapped ? sourceRecord : targetRecord, ItemTypes.TARGET_SUBRECORD, isSwapped ? ItemTypes.SOURCE_SUBRECORD : ItemTypes.TARGET_SUBRECORD, rowId, isExpanded, actionsEnabled)}
         </td>
@@ -265,8 +250,6 @@ export class SubrecordMergePanelRow extends React.Component {
     ));
 
   }
-
-
 }
 
 const rowSource = {

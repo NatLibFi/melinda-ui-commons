@@ -31,28 +31,72 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { SubrecordActionTypes } from '../../constants';
 import classNames from 'classnames';
+import Button from 'material-ui/Button';
+import Icon from 'material-ui/Icon';
+import { red, green, blue, yellow } from 'material-ui/colors';
+import { withStyles } from 'material-ui/styles';
 
-export class SubrecordActionButton extends React.Component {
+const styles = (theme) => ({
+  actionButtonSelector: {
+    '& > *': {
+      marginLeft: theme.spacing.unit
+    }
+  },
+  red: {
+    backgroundColor: red[500],
+    '&:hover': {
+      backgroundColor: red[600]
+    }
+  },
+  green: {
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[600]
+    }
+  },
+  blue: {
+    backgroundColor: blue[500],
+    '&:hover': {
+      backgroundColor: blue[600]
+    }
+  },
+  yellow: {
+    backgroundColor: yellow[500],
+    '&:hover': {
+      backgroundColor: yellow[600]
+    }
+  }
+});
 
+class SubrecordActionButton extends React.Component {
   static propTypes = {
     rowId: PropTypes.string.isRequired,
     onChangeAction: PropTypes.func.isRequired,
     selectedAction: PropTypes.string,
     isMergeActionAvailable: PropTypes.bool,
     isCopyActionAvailable: PropTypes.bool,
-    actionsEnabled: PropTypes.bool
+    actionsEnabled: PropTypes.bool,
+    classes: PropTypes.object.isRequired
   } 
 
-  componentDidUpdate() {
-    window.$ && window.$(this._button).closeFAB();  
+  constructor() {
+    super();
+
+    this.state = {
+      open: false
+    };
   }
 
   selectAction(type) {
-    const {rowId, onChangeAction} = this.props;
+    const { rowId, onChangeAction } = this.props;
 
     return () => {
       if (this.props.actionsEnabled) {
         onChangeAction(rowId, type);
+
+        this.setState(() => ({
+          open: false
+        }));
       }
     };
   }
@@ -90,22 +134,6 @@ export class SubrecordActionButton extends React.Component {
     return this.renderButton(color, icon, this.selectAction(actionType));
   }
 
-  renderUnsetButton() {
-    return this.renderButton('yellow', 'more_vert', this.selectAction(SubrecordActionTypes.UNSET));
-  }
-
-  renderBlockButton() {
-    return this.renderButton('red', 'block', this.selectAction(SubrecordActionTypes.BLOCK));
-  }
-
-  renderMergeButton() {
-    return this.renderButton('green', 'queue', this.selectAction(SubrecordActionTypes.MERGE));
-  }
-
-  renderCopyButton() {
-    return this.renderButton('blue', 'forward', this.selectAction(SubrecordActionTypes.COPY));
-  }
-
   isActionAvailable(actionType) {
     const {isMergeActionAvailable, isCopyActionAvailable} = this.props;
     if (actionType === SubrecordActionTypes.COPY) return isCopyActionAvailable;
@@ -113,38 +141,38 @@ export class SubrecordActionButton extends React.Component {
     return true;
   }
 
+  handleToggle = () => {
+    this.setState((state) => ({
+      open: !state.open
+    }));
+  }
+
   render() {
 
-    const {selectedAction, actionsEnabled} = this.props;
+    const { selectedAction, actionsEnabled, classes } = this.props;
 
-    const {UNSET, BLOCK, MERGE, COPY} = SubrecordActionTypes;
+    const { UNSET, BLOCK, MERGE, COPY } = SubrecordActionTypes;
 
     const buttons = [BLOCK, MERGE, COPY]
       .filter(actionType => this.isActionAvailable(actionType))
-      .map(actionType => actionType === selectedAction ? UNSET : actionType)
-      .map(actionType => <li key={actionType}>{this.renderActionButton(actionType)}</li>);
-   
-    const color = this.getColor(selectedAction);
-    const selectedIconClasses = classNames('btn-floating', 'btn-small', 'waves-light', 'subrecord-action-button', color, {
-      'disabled': !actionsEnabled,
-      'waves-effect': actionsEnabled
-    });
-
-    const containerClasses = classNames('subrecord-action-button-container', {
-      'fixed-action-btn': actionsEnabled,
-      'click-to-toggle': actionsEnabled,
-      'horizontal': actionsEnabled
-    });
+      .map(actionType => actionType === selectedAction ? UNSET : actionType);
 
     return (
-      <div className={containerClasses} ref={(c) => this._button = c}>
-        <a className={selectedIconClasses}>
-          <i className="large material-icons">{this.getIcon(selectedAction)}</i>
-        </a>
+      <div className="action-button-container">
+        <Button className={classNames('action-button', classes[this.getColor(selectedAction)])} variant="fab" aria-label="swap" disabled={!actionsEnabled} onClick={this.handleToggle}>
+          <Icon>{this.getIcon(selectedAction)}</Icon>
+        </Button>
 
-        {actionsEnabled ? <ul className="open-left">{ buttons }</ul> : null}
-
+        <div className={classNames('action-button-selector', classes.actionButtonSelector, {open: this.state.open})}>
+          {buttons.map((actionType) => (
+            <Button key={actionType} className={classNames('action-button', classes[this.getColor(actionType)])} variant="fab" aria-label="swap" disabled={!actionsEnabled} onClick={this.selectAction(actionType)}>
+              <Icon>{this.getIcon(actionType)}</Icon>
+            </Button>
+          ))}
+        </div>
       </div>
     );
   }
 }
+
+export default withStyles(styles)(SubrecordActionButton);

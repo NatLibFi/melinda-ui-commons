@@ -29,7 +29,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-export class SubrecordHeader extends React.Component {
+import Grid from 'material-ui/Grid';
+import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
+import Icon from 'material-ui/Icon';
+import Checkbox from 'material-ui/Checkbox';
+import { FormControlLabel } from 'material-ui/Form';
+import { withStyles } from 'material-ui/styles';
+
+const styles = (theme) => ({
+  root: {
+    margin: (theme.spacing.unit * 2) + 'px ' + theme.spacing.unit + 'px'
+  }
+});
+
+class SubrecordHeader extends React.Component {
 
   static propTypes = {
     setCompactSubrecordView: PropTypes.func.isRequired,
@@ -37,70 +51,61 @@ export class SubrecordHeader extends React.Component {
     actionsEnabled: PropTypes.bool.isRequired,
     swappingEnabled: PropTypes.bool,
     onSwapEverySubrecordRow: PropTypes.func,
+    classes: PropTypes.object.isRequired
   };
   
   static defaultProps = {
     swappingEnabled: false
   };
 
-  toggleCompactView(event) {
-    const isEnabled = event.target.checked;
+  toggleCompactView = (e) => {
+    const isEnabled = e.target.checked;
 
     this.props.setCompactSubrecordView(isEnabled);    
   }
 
-  swapEverySubrecordRow() {
+  swapEverySubrecordRow = () => {
     this.props.onSwapEverySubrecordRow();
   }
 
   render() {
-    const { actionsEnabled, swappingEnabled } = this.props;
-
-    const iconClasses = classNames('btn-floating', 'btn-small', 'waves-light', 'blue', 'lighten-2',  {
-      'disabled': !actionsEnabled,
-      'waves-effect': actionsEnabled
-    });
+    const { actionsEnabled, swappingEnabled, classes } = this.props;
 
     return (
-      
-      <div className="row subrecord-header">
-        <div className="col s3">
+      <div className={classNames('subrecord-header', classes.root)}>
+        <Grid container>
+          <Grid item xs={3}>
+            <Typography variant="headline">
+              Osakohteet
+            </Typography>
+          </Grid>
 
-          <div className="row">
+          {swappingEnabled ? (
+            <Grid item xs={2} className="swap-all-button-container">
+              <Button className={classNames('swap-all-button')} variant="fab" color="secondary" aria-label="swap" disabled={!actionsEnabled} onClick={this.swapEverySubrecordRow}>
+                <Icon>swap_horiz</Icon>
+              </Button>
+            </Grid>
+          ) : <Grid item xs={2} /> }
 
-            <div className="col s4"><h5>Osakohteet</h5></div>
-           
-          </div>
-        </div>
+          <Grid item xs={3} />
 
-        {swappingEnabled ? (
-          <div className="col s2 subrecord-all-swap-button-container">
-            <div>
-              <a className={iconClasses} onClick={() => this.swapEverySubrecordRow()}>
-                <i className="large material-icons">swap_horiz</i>
-              </a>
-            </div>
-          </div>
-        ): <div className="col s2" /> }
-
-        <div className="col s4 offset-s3">
-          <p>
-            <input 
-              type="checkbox" 
-              id="compact-subrecords-checkbox" 
-              value="compact-subrecords-view"
-              className="filled-in"
-              checked={this.props.compactSubrecordView} 
-              onChange={(e) => this.toggleCompactView(e)}
-              ref={(c) => this._compactViewCheckBox = c}
+          <Grid item xs={4}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="compact-subrecords-view"
+                  checked={this.props.compactSubrecordView}
+                  onChange={this.toggleCompactView}
+                />
+              }
+              label="Pienennä käsitellyt osakohteet"
             />
-            
-           
-
-            <label htmlFor="compact-subrecords-checkbox">Pienennä käsitellyt osakohteet</label>
-          </p>
-        </div>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 }
+
+export default withStyles(styles)(SubrecordHeader);

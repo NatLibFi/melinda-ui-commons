@@ -36,7 +36,6 @@ import { ItemTypes } from '../../constants';
 import { SubrecordActionButtonContainer } from './subrecord-action-button';
 import { DragDropSubrecordMergePanelRow } from './subrecord-merge-panel-row';
 import { SubrecordMergePanelNewRow } from './subrecord-merge-panel-new-row';
-
 import '../../../styles/components/subrecord-merge-panel.scss';
 
 export class SubrecordMergePanel extends React.Component {
@@ -181,14 +180,14 @@ export class SubrecordMergePanel extends React.Component {
   render() {
     const otherSubrecordCount = this.props.subrecords.filter((row) => row.sourceRecord).length;
     const preferredSubrecordCount = this.props.subrecords.filter((row) => row.targetRecord).length;
+
     return (
-      
-      <table className="bordered subrecord-merge-panel">
+      <table className="subrecord-merge-panel">
         <thead>
           <tr>
             <td>{otherSubrecordCount} osakohdetta</td>
             <td>{preferredSubrecordCount} osakohdetta</td>
-            <td></td>
+            <td/>
           </tr>
         </thead>
         <tbody>

@@ -29,7 +29,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as sessionActionCreators from '../action-creators/session-actions';
 import {connect} from 'react-redux';
+import Card, { CardActions, CardContent, CardHeader } from 'material-ui/Card';
+import TextField from 'material-ui/TextField';
+import Icon from 'material-ui/Icon';
+import Button from 'material-ui/Button';
+import { LinearProgress } from 'material-ui/Progress';
+import { withStyles } from 'material-ui/styles';
+
 import '../../styles/components/signin-form-panel.scss';
+
+const styles = theme => ({
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  }
+});
 
 export class SigninFormPanel extends React.Component {
 
@@ -38,6 +51,7 @@ export class SigninFormPanel extends React.Component {
     startSession: PropTypes.func.isRequired,
     createSessionErrorMessage: PropTypes.string,
     sessionState: PropTypes.string,
+    classes: PropTypes.object.isRequired
   }
   constructor() {
     super();
@@ -66,14 +80,12 @@ export class SigninFormPanel extends React.Component {
 
   renderPreloader() {
     return (
-      <div className="progress">
-        <div className="indeterminate" />
-      </div>
+      <LinearProgress />
     );
   }
 
   disableDuringSignin() {
-    return this.props.sessionState === 'SIGNIN_ONGOING' ? 'disabled':'';
+    return this.props.sessionState === 'SIGNIN_ONGOING';
   }
 
   render() {
@@ -83,44 +95,48 @@ export class SigninFormPanel extends React.Component {
     const signinButtonLabel = 'Kirjaudu';
 
     const {username, password} = this.state;
-
+    const { classes } = this.props;
     return (
 
-      <div className="card signin-panel valign">
+      <Card className='signin-panel'>
       
-        <div className="card-panel teal lighten-2">
-          <h4>{title}</h4>
-        </div>
+        <CardHeader title={title} color="primary"/>
 
-        <div className="card-content">
+        <CardContent>
          
           <form>
-            <div className="col s2 offset-s1 input-field">
-              <input id="username" type="text" className="validate" value={username} onChange={this.updateUsername.bind(this)}/>
-              <label htmlFor="username">{usernameLabel}</label>
-            </div>
+            <TextField
+              id="username"
+              label={usernameLabel}
+              value={username}
+              onChange={this.updateUsername.bind(this)}
+            />
 
-            <div className="col s2 offset-s1 input-field">
-              <input id="password" type="password" className="validate" value={password} onChange={this.updatePassword.bind(this)}/>
-              <label htmlFor="password">{passwordLabel}</label>
-            </div>
+            <TextField
+              id="password"
+              type="password"
+              label={passwordLabel}
+              value={password}
+              onChange={this.updatePassword.bind(this)}
+            />
 
             <div className="spacer" />
             {this.props.sessionState === 'SIGNIN_ERROR' ? this.props.createSessionErrorMessage : <span>&nbsp;</span>}
             <div className="spacer" />
 
-            <div className="right-align">
-              <button className="btn waves-effect waves-light" disabled={this.disableDuringSignin()} type="submit" name="action" onClick={this.executeSignin.bind(this)}>{signinButtonLabel}
-                <i className="material-icons right">send</i>
-              </button>
-            </div>
+            <CardActions>
+              <Button className={classes.button} variant="raised" color="primary" disabled={this.disableDuringSignin()} type="submit" name="action" onClick={this.executeSignin.bind(this)}>
+                {signinButtonLabel}
+                <Icon className={classes.rightIcon}>send</Icon>
+              </Button>
+            </CardActions>
           </form>
         
-        </div>
+        </CardContent>
 
         {this.props.sessionState === 'SIGNIN_ONGOING' ? this.renderPreloader():''}
           
-      </div>
+      </Card>
 
     );
   }
@@ -136,4 +152,4 @@ function mapStateToProps(state) {
 export const SigninFormPanelContainer = connect(
   mapStateToProps,
   sessionActionCreators
-)(SigninFormPanel);
+)(withStyles(styles)(SigninFormPanel));

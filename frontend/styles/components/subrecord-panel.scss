@@ -22,11 +22,18 @@
   }  
 }
 
-.subrecord-all-swap-button-container > div {
-  transform: translate(50%, 50%);
-  height: 60px;
-
-  a {
-    transform: translate(-50%, -50%);  
+.subrecord-header {
+  .swap-all-button-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    
+    .swap-all-button {
+      transition: all .3s ease-out;
+      width: 36px;
+      height: 36px;
+      color: white;
+    }
   }
+  
 }

@@ -3,6 +3,8 @@
 .subrecord-merge-panel {
 
   table-layout: fixed;
+  border-collapse: collapse;
+  width: 100%;
 
   .marc-record {
     @include marc-colors();
@@ -18,11 +20,20 @@
     }
   }
 
+  tr {
+    border-bottom: 1px solid #d0d0d0;
+
+    td {
+
+    }
+  }
+
   tr:not(.is-compacted) {
     .empty-droppable {
       height: 110px;
       border: 2px dashed #CCC;
       border-radius: 5px;
+      box-sizing: border-box;
 
       &.can-drop {
         border-color: #c8e6c9;
@@ -66,7 +77,7 @@
 
   td {
     position: relative;
-    transition: background-image 0.2s ease-in-out;
+    padding: 15px 5px;
   }
 
   .merge-action-button {
@@ -75,12 +86,16 @@
     left: -18px;
   }
 
-  .remove-fab-emptyrow {
+  .remove-empty-row, .expand-row, .compress-row {
     position: absolute; 
-    top:10px;
+    top: 10px;
     right: 10px;
 
-    opacity: 0.2;
+    width: 36px;
+    height: 36px;
+
+    opacity: 0.5;
+
     &:hover {
       opacity: 0.8;
     }
@@ -96,6 +111,7 @@
     transition: background-color 150ms ease-in;
     transition-delay: 0ms;
     z-index: 1;
+
     &:hover:not(.disabled) {
       transition-delay: 300ms;
       cursor: pointer;
@@ -107,48 +123,77 @@
     padding: 0;
   }
 
-  td {
-    position: relative;
-  }
-
-  .subrecord-row-swap-button-container, .subrecord-action-button-container {
-      
-    position: absolute; 
+  .swap-button, .action-button-container {
+    position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    left: -18px;
-    padding-bottom: 2px;
-    height: 0px;
+    left: 0px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .action-button-selector {
+    position: absolute;
+    flex-direction: row;
+    top: 0px;
+    left: 36px;
+    transition: all .3s ease-out;
+    display: none;
+  }
+
+  .action-button-selector.open {
     display: flex;
-    align-items: center;
-    z-index: 1;
-
-    &.fixed-action-btn > ul.open-left {
-      bottom: auto;
-      height: auto;
-      position: relative;
-      right: auto;
-      text-align: left;
-      top: initial;
-      transform: initial;
-    }
-    &.fixed-action-btn.horizontal {
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: left;
-    }
-
-    ul.open-left > li {
-      margin: 0px 10px 0 0;
-    }
-
-    .subrecord-row-swap-button, .subrecord-action-button {
-      margin: 0px 10px 0 0;
-    }
-
   }
-  .subrecord-row-swap-button.active {
-    transform: rotate(0.5turn); 
+
+  .swap-button, .action-button {
+    transform: translate(-50%, -50%);
+    transition: all .3s ease-out;
+    width: 36px;
+    height: 36px;
+    color: white;
   }
+
+  .swap-button.active {
+    transform: rotateY(0.5turn) translate(50%, -50%);
+  }
+
+  // .subrecord-row-swap-button-container, .subrecord-action-button-container {
+      
+  //   position: absolute; 
+  //   top: 50%;
+  //   transform: translateY(-50%);
+  //   left: -18px;
+  //   padding-bottom: 2px;
+  //   height: 0px;
+  //   display: flex;
+  //   align-items: center;
+  //   z-index: 1;
+
+  //   &.fixed-action-btn > ul.open-left {
+  //     bottom: auto;
+  //     height: auto;
+  //     position: relative;
+  //     right: auto;
+  //     text-align: left;
+  //     top: initial;
+  //     transform: initial;
+  //   }
+  //   &.fixed-action-btn.horizontal {
+  //     padding: 0;
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: left;
+  //   }
+
+  //   ul.open-left > li {
+  //     margin: 0px 10px 0 0;
+  //   }
+
+  //   .subrecord-row-swap-button, .subrecord-action-button {
+  //     margin: 0px 10px 0 0;
+  //   }
+
+  // }
+  // .subrecord-row-swap-button.active {
+  //   transform: rotate(0.5turn); 
+  // }
 }

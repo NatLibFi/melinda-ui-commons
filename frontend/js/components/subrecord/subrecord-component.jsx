@@ -27,7 +27,7 @@
 */
 
 import React from 'react';
-import { SubrecordHeader } from './subrecord-header';
+import SubrecordHeader from './subrecord-header';
 import { DraggableSubrecordMergePanelContainer } from './subrecord-merge-panel';
 import PropTypes from 'prop-types';
 
