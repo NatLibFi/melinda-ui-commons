@@ -19,14 +19,21 @@
     "url": "git@github.com:natlibfi/melinda-ui-commons.git"
   },
   "main": "index.js",
+  "files": [
+    "dist"
+  ],
   "license": "AGPL-3.0+",
   "scripts": {
+    "prepare": "npm run build",
+    "build:server": "babel server --ignore node_modules,spec.js --out-dir dist/server --source-maps",
+    "build:frontend": "babel frontend --ignore node_modules,spec.js --out-dir dist/frontend --source-maps",
+    "build": "npm run build:server && npm run build:frontend",
     "test": "npm run test:frontend && npm run test:server",
     "test:frontend": "BABEL_ENV=test mocha --compilers js:babel-core/register --require ignore-styles --require ./frontend/test_helpers/test_bootstrap.js \"frontend/**/*@(.spec.js|.spec.jsx)\"",
     "test:frontend:watch": "npm run test:frontend -- --watch",
     "test:server": "BABEL_ENV=test mocha --compilers js:babel-core/register --require ./server/test_helpers/test_bootstrap.js \"./server/**/*@(.spec.js|.spec.jsx)\"",
     "test:server:watch": "npm run test:server -- --watch"
-  }, 
+  },
   "dependencies": {
     "body-parser": "^1.15.2",
     "classnames": "^2.2.5",
