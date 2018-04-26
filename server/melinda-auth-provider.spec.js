@@ -29,7 +29,6 @@ import {expect} from 'chai';
 import { authProvider } from './melinda-auth-provider';
 import { __RewireAPI__ as AuthProviderRewireAPI } from './melinda-auth-provider';
 import sinon from 'sinon';
-import sinonAsPromised from 'sinon-as-promised'; // eslint-disable-line
 
 describe('melinda auth provider', () => {
 

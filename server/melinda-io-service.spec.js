@@ -29,7 +29,6 @@ import {expect} from 'chai';
 import { RecordIOError, loadRecord, updateAndReloadRecord } from './melinda-io-service';
 import { __RewireAPI__ as RewireAPI } from './melinda-io-service';
 import sinon from 'sinon';
-import sinonAsPromised from 'sinon-as-promised'; // eslint-disable-line
 import HttpStatus from 'http-status-codes';
 import { FAKE_RECORD, FAKE_RECORD_2, melindaClientUnableParseResponse } from './test_helpers/fake-data';
 

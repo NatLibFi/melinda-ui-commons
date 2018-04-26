@@ -31,7 +31,6 @@ import sinonChai from 'sinon-chai';
 import { sessionController } from './session-controller';
 import { authProvider } from './melinda-auth-provider';
 import request from 'supertest';
-import sinonAsPromised from 'sinon-as-promised'; // eslint-disable-line
 import { __RewireAPI__ as RewireAPI } from './session-controller';
 
 chai.use(sinonChai);
