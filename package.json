@@ -32,7 +32,8 @@
     "test:frontend": "BABEL_ENV=test mocha --compilers js:babel-core/register --require ignore-styles --require ./frontend/test_helpers/test_bootstrap.js \"frontend/**/*@(.spec.js|.spec.jsx)\"",
     "test:frontend:watch": "npm run test:frontend -- --watch",
     "test:server": "BABEL_ENV=test mocha --compilers js:babel-core/register --require ./server/test_helpers/test_bootstrap.js \"./server/**/*@(.spec.js|.spec.jsx)\"",
-    "test:server:watch": "npm run test:server -- --watch"
+    "test:server:watch": "npm run test:server -- --watch",
+    "publish-to-npm": "npm publish --access=public"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
