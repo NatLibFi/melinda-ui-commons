@@ -37,12 +37,10 @@ import MarcRecord from 'marc-record-js';
 import { loadRecord, updateAndReloadRecord, createAndReloadRecord, RecordIOError } from './melinda-io-service';
 
 const MelindaClient = require('@natlibfi/melinda-api-client');
-const alephUrl = readEnvironmentVariable('ALEPH_URL');
-const apiVersion = readEnvironmentVariable('MELINDA_API_VERSION', null);
-const apiPath = apiVersion !== null ? `/${apiVersion}` : '';
+const apiUrl = readEnvironmentVariable('MELINDA_API', null);
 
 const defaultConfig = {
-  endpoint: `${alephUrl}/API${apiPath}`,
+  endpoint: apiUrl,
   user: '',
   password: ''
 };
@@ -73,18 +71,18 @@ marcIOController.get('/:id', cors(corsOptions), (req, res) => {
       res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
     } else {
       logger.log('error', `Error loading record ${req.params.id}`, error);
-      res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);  
+      res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   });
 });
 
 marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParams('record'), (req, res) => {
-  
+
   const {username, password} = req.session;
   const recordId = req.params.id;
   const record = transformToMarcRecord(req.body.record);
 
-  const clientConfig = { 
+  const clientConfig = {
     ...defaultConfig,
     user: username,
     password: password
@@ -102,17 +100,17 @@ marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParam
       res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
     } else {
       logger.log('error', `Record update failed for ${recordId}`, error);
-      res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);  
+      res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   });
 });
 
 marcIOController.post('/', cors(corsOptions), requireSession, requireBodyParams('record'), (req, res) => {
-  
+
   const {username, password} = req.session;
   const record = transformToMarcRecord(req.body.record);
 
-  const clientConfig = { 
+  const clientConfig = {
     ...defaultConfig,
     user: username,
     password: password
@@ -130,7 +128,7 @@ marcIOController.post('/', cors(corsOptions), requireSession, requireBodyParams(
       res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
     } else {
       logger.log('error', 'Record creation failed', error);
-      res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);  
+      res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   });
 });
