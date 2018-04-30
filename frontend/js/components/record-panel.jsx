@@ -26,6 +26,7 @@
 *
 */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { MarcRecordPanel } from './marc-record-panel';
 import '../../styles/components/record-panel.scss';
 import {MarcEditor} from './marc-editor-panel';
@@ -34,14 +35,14 @@ import classNames from 'classnames';
 export class RecordPanel extends React.Component {
 
   static propTypes = {
-    record: React.PropTypes.object,
-    error: React.PropTypes.object,
-    showHeader: React.PropTypes.bool,
-    title: React.PropTypes.string,
-    editable: React.PropTypes.bool,
-    children: React.PropTypes.oneOfType([ React.PropTypes.object, React.PropTypes.array ]),
-    onRecordUpdate: React.PropTypes.func,
-    onFieldClick: React.PropTypes.func
+    record: PropTypes.object,
+    error: PropTypes.object,
+    showHeader: PropTypes.bool,
+    title: PropTypes.string,
+    editable: PropTypes.bool,
+    children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
+    onRecordUpdate: PropTypes.func,
+    onFieldClick: PropTypes.func
   }
 
   constructor(props) {

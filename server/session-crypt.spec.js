@@ -38,7 +38,7 @@ describe('Session crypt', () => {
       const generatedSessionToken = createSessionToken(USERNAME, PASSWORD);
       
       expect(generatedSessionToken).to.be.a('string');
-      expect(generatedSessionToken.split(':')).to.have.length.of(4);
+      expect(generatedSessionToken.split(':')).to.have.lengthOf(4);
 
     });
   });

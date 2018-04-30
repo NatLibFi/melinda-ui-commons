@@ -26,6 +26,7 @@
 *
 */
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import '../../styles/components/marc-record-panel';
 import _ from 'lodash';
@@ -33,8 +34,8 @@ import _ from 'lodash';
 export class MarcRecordPanel extends React.Component {
 
   static propTypes = {
-    record: React.PropTypes.object.isRequired,
-    onFieldClick: React.PropTypes.func,
+    record: PropTypes.object.isRequired,
+    onFieldClick: PropTypes.func,
   }
 
   handleFieldClick(field) {

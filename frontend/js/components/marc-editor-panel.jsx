@@ -26,6 +26,7 @@
 *
 */
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../../styles/components/marc-record-editor';
 import _ from 'lodash';
 import uuid from 'node-uuid';
@@ -33,8 +34,8 @@ import { Repeat, Map, List } from 'immutable';
 import MarcRecord from 'marc-record-js';
 
 // Until this has been merged, we are using custom version of draftjs: https://github.com/facebook/draft-js/pull/667
-import {getDefaultKeyBinding, KeyBindingUtil, Modifier, convertToRaw, EditorBlock, genKey, 
-  DefaultDraftBlockRenderMap, Editor, EditorState, ContentState, ContentBlock, CharacterMetadata} from '../vendor/draft-js';
+import {getDefaultKeyBinding, KeyBindingUtil, Modifier, convertToRaw, EditorBlock, genKey,
+  DefaultDraftBlockRenderMap, Editor, EditorState, ContentState, ContentBlock, CharacterMetadata} from 'draft-js';
 
 
 function fieldAsString(field) {
@@ -49,11 +50,11 @@ function fieldAsString(field) {
 export class MarcEditor extends React.Component {
 
   static propTypes = {
-    record: React.PropTypes.object,
-    onFieldClick: React.PropTypes.func,
-    onRecordUpdate: React.PropTypes.func.isRequired
+    record: PropTypes.object,
+    onFieldClick: PropTypes.func,
+    onRecordUpdate: PropTypes.func.isRequired
   }
- 
+
   constructor(props) {
     super(props);
 
@@ -61,10 +62,11 @@ export class MarcEditor extends React.Component {
 
       const contentState = this.transformRecordToContentState(props.record);
       const editorState = EditorState.createWithContent(contentState);
+      this._currentRecStr = props.record.toString();
       this.state = {editorState};
 
     } else {
-  
+
       const defaultContentState = ContentState.createFromText('');
       this.state = {editorState: EditorState.createWithContent(defaultContentState)};
 
@@ -78,12 +80,12 @@ export class MarcEditor extends React.Component {
         .getBlockForKey(startKey);
 
       let nextContentState = editorState.getCurrentContent();
-              
+
       if (this.state.editorState.getCurrentContent() !== editorState.getCurrentContent()) {
-          
+
         nextContentState = nextContentState.updateIn(['blockMap'], blockMap => {
 
-          
+
           let chars = this.applyStylesToFieldBlock(selectedBlock.getCharacterList(), selectedBlock.getText());
           let updatedBlock = selectedBlock
             .set('characterList', chars)
@@ -100,7 +102,6 @@ export class MarcEditor extends React.Component {
     };
 
     this.debouncedRecordUpdate = _.debounce(editorState => {
-
       const raw = convertToRaw(editorState.getCurrentContent());
       const recStr = raw.blocks.map(b => b.text).join('\n');
 
@@ -110,7 +111,14 @@ export class MarcEditor extends React.Component {
 
       this._currentRecStr = recStr;
 
-      const fieldsIncludingLeader = raw.blocks.map(this.convertBlockToField);
+      const fieldsIncludingLeader = raw.blocks.map((block) => {
+        if (block.data.field && block.data.field.hasBeenEdited !== true) return block.data.field;
+
+        const field = this.convertBlockToField(block);
+        field.uuid = uuid.v4();
+
+        return field;
+      });
       const leader = fieldsIncludingLeader.find(field => field.tag === 'LDR');
       const fields = _.without(fieldsIncludingLeader, leader);
 
@@ -119,7 +127,6 @@ export class MarcEditor extends React.Component {
         fields: fields
       });
 
-      updatedRecord.fields.forEach(field => field.uuid = uuid.v4());
       this._recordFromCurrentEditorContent = updatedRecord;
       this.props.onRecordUpdate(this._recordFromCurrentEditorContent);
 
@@ -145,11 +152,11 @@ export class MarcEditor extends React.Component {
 
       if (data.substr(0,1) !== '‡') {
         //controlfield
-        
+
         return _.assign({}, block.data.field, { tag: tag, value: data });
 
       } else {
-        
+
         const subfields = data.substr(1).split('‡').map(function(codeAndValue) {
           const code = codeAndValue.substr(0,1);
           const value = codeAndValue.substr(1);
@@ -157,9 +164,9 @@ export class MarcEditor extends React.Component {
         });
 
         return _.assign({}, block.data.field, {
-          tag, 
-          ind1, 
-          ind2, 
+          tag,
+          ind1,
+          ind2,
           subfields
         });
 
@@ -190,7 +197,7 @@ export class MarcEditor extends React.Component {
         chars = chars.set(index, CharacterMetadata.applyStyle(chars.get(index), 'sub'));
       } else {
         chars = chars.set(index, CharacterMetadata.EMPTY);
-      }      
+      }
     });
     return chars;
   }
@@ -200,7 +207,7 @@ export class MarcEditor extends React.Component {
     if (record === this._recordFromCurrentEditorContent) {
       return;
     }
-    
+
     if (record) {
 
       const contentState = this.transformRecordToContentState(record);
@@ -211,7 +218,7 @@ export class MarcEditor extends React.Component {
   }
 
   transformRecordToContentState(record) {
- 
+
     const LDR = {
       tag: 'LDR',
       value: record.leader
@@ -251,7 +258,7 @@ export class MarcEditor extends React.Component {
     if (command === 'add-subfield-marker') {
 
       const {editorState} = this.state;
-   
+
       var contentState = Modifier.insertText(editorState.getCurrentContent(), editorState.getSelection(), '‡', editorState.getCurrentInlineStyle(), null);
       var newEditorState = EditorState.push(editorState, contentState, 'insert-characters');
       this.onChange(EditorState.forceSelection(newEditorState, contentState.getSelectionAfter()));
@@ -285,15 +292,15 @@ export class MarcEditor extends React.Component {
     };
 
     return (<div className="marc-record-editor">
-      <Editor 
-        editorState={editorState} 
-        onChange={this.onChange} 
+      <Editor
+        editorState={editorState}
+        onChange={this.onChange}
         handleKeyCommand={(e) => this.handleKeyCommand(e)}
-        blockRendererFn={fieldBlockRenderer} 
+        blockRendererFn={fieldBlockRenderer}
         blockRenderMap={extendedBlockRenderMap}
         customStyleMap={colorStyleMap}
         keyBindingFn={myKeyBindingFn}
-        /> 
+        />
       </div>
     );
   }
@@ -317,7 +324,7 @@ function fieldBlockRenderer(contentBlock) {
 const {hasCommandModifier} = KeyBindingUtil;
 
 function myKeyBindingFn(e) {
-  
+
   if (e.keyCode === 118) {
     return 'add-subfield-marker';
   }

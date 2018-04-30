@@ -25,33 +25,40 @@
 * for the JavaScript code in this file.
 *
 */
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
-export class Preloader extends React.Component {
+export const ItemTypes = {
+  SUBRECORD: 'SUBRECORD',
+  TARGET_SUBRECORD: 'TARGET',
+  SOURCE_SUBRECORD: 'SOURCE',
+  MERGED_SUBRECORD: 'MERGED',
+  SUBRECORD_ROW: 'SUBRECORD_ROW'
+};
 
-  static propTypes = {
-    size: PropTypes.string,
-  }
-  
+export const DuplicateDatabaseStates = {
+  FETCH_NEXT_DUPLICATE_ONGOING: 'FETCH_NEXT_DUPLICATE_ONGOING',
+  SKIP_PAIR_ONGOING: 'SKIP_PAIR_ONGOING',
+  MARK_AS_NON_DUPLICATE_ONGOING: 'MARK_AS_NON_DUPLICATE_ONGOING',
+  MARK_AS_MERGED_ONGOING: 'MARK_AS_MERGED_ONGOING',
+  READY: 'READY'
+};
 
-  render() {
-    const preloaderClasses = classNames('preloader-wrapper', 'active', this.props.size);
+export const SubrecordActionTypes = {
+  BLOCK: 'BLOCK',
+  MERGE: 'MERGE',
+  COPY: 'COPY',
+  UNSET: 'UNSET'
+};
 
-    return (
-      <div className={preloaderClasses}>
-        <div className="spinner-layer spinner-blue-only">
-          <div className="circle-clipper left">
-            <div className="circle" />
-          </div><div className="gap-patch">
-            <div className="circle" />
-          </div><div className="circle-clipper right">
-            <div className="circle" />
-          </div>
-        </div>
-      </div>
+export const CommitMergeStates = {
+  COMMIT_MERGE_NOT_STARTED: 'COMMIT_MERGE_NOT_STARTED',
+  COMMIT_MERGE_ONGOING: 'COMMIT_MERGE_ONGOING',
+  COMMIT_MERGE_ERROR: 'COMMIT_MERGE_ERROR',
+  COMMIT_MERGE_COMPLETE: 'COMMIT_MERGE_COMPLETE'
+};
 
-    );
-  }
-}
+export const RecordSaveStatus = {
+  'UNSAVED': 'UNSAVED',
+  'SAVED': 'SAVED',
+  'SAVE_ONGOING': 'SAVE_ONGOING',
+  'SAVE_FAILED': 'SAVE_FAILED'
+};
