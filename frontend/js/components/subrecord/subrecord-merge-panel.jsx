@@ -55,8 +55,14 @@ export class SubrecordMergePanel extends React.Component {
     onToggleSourceSubrecordFieldSelection: PropTypes.func.isRequired,
     onSaveSubrecord: PropTypes.func.isRequired,
     saveButtonVisible: PropTypes.bool.isRequired,
-    actionsEnabled: PropTypes.bool.isRequired
-  }
+    actionsEnabled: PropTypes.bool.isRequired,
+    swappingEnabled: PropTypes.bool,
+    onSwapSubrecordRow: PropTypes.func
+  };
+
+  static defaultProps = {
+    swappingEnabled: false
+  };
 
   constructor(props) {
     super(props);
@@ -74,7 +80,7 @@ export class SubrecordMergePanel extends React.Component {
     const totalRows = subrecords.length;
     const items = subrecords.map((subrecord, i) => {
      
-      const {rowId, sourceRecord, targetRecord, mergedRecord, selectedAction, isExpanded, mergeError, saveStatus, saveRecordError, isCompacted, isMergeActionAvailable, isCopyActionAvailable} = subrecord;
+      const {rowId, sourceRecord, targetRecord, mergedRecord, selectedAction, isExpanded, mergeError, saveStatus, saveRecordError, isCompacted, isMergeActionAvailable, isCopyActionAvailable, isSwapped} = subrecord;
 
       return (<DragDropSubrecordMergePanelRow
         key={rowId}
@@ -84,11 +90,13 @@ export class SubrecordMergePanel extends React.Component {
         totalRows={totalRows}
         isExpanded={isExpanded}
         actionsEnabled={this.props.actionsEnabled}
+        swappingEnabled={this.props.swappingEnabled}
         selectedAction={selectedAction}
         sourceRecord={sourceRecord}
         targetRecord={targetRecord}
         mergedRecord={mergedRecord}
         onChangeAction={this.props.onChangeSubrecordAction}
+        onSwapSubrecordRow={this.props.onSwapSubrecordRow}
         onChangeRow={this.onChangeRow}
         onChangeSourceRow={this.props.onChangeSourceSubrecordRow}
         onChangeTargetRow={this.props.onChangeTargetSubrecordRow}
@@ -104,6 +112,7 @@ export class SubrecordMergePanel extends React.Component {
         saveRecordError={saveRecordError}
         mergeError={mergeError}
         isCompacted={isCompacted}
+        isSwapped={isSwapped}
         isMergeActionAvailable={isMergeActionAvailable}
         isCopyActionAvailable={isCopyActionAvailable}
       />);

@@ -111,7 +111,7 @@
     position: relative;
   }
 
-  .subrecord-action-button-container {
+  .subrecord-row-swap-button-container, .subrecord-action-button-container {
       
     position: absolute; 
     top: 50%;
@@ -143,8 +143,12 @@
       margin: 0px 10px 0 0;
     }
 
-    .subrecord-action-button {
+    .subrecord-row-swap-button, .subrecord-action-button {
       margin: 0px 10px 0 0;
     }
+
+  }
+  .subrecord-row-swap-button.active {
+    transform: rotate(0.5turn); 
   }
 }

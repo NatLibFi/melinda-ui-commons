@@ -38,6 +38,7 @@ export class SubrecordComponent extends React.Component {
     subrecords: PropTypes.array.isRequired,
     saveButtonVisible: PropTypes.bool.isRequired,
     actionsEnabled: PropTypes.bool.isRequired,
+    swappingEnabled: PropTypes.bool,
     onInsertSubrecordRow: PropTypes.func.isRequired,
     onRemoveSubrecordRow: PropTypes.func.isRequired,
     onChangeSubrecordAction: PropTypes.func.isRequired,
@@ -48,7 +49,13 @@ export class SubrecordComponent extends React.Component {
     onCompressSubrecordRow: PropTypes.func.isRequired,
     onToggleSourceSubrecordFieldSelection: PropTypes.func.isRequired,
     onEditMergedSubrecord: PropTypes.func.isRequired,
-    onSaveSubrecord: PropTypes.func.isRequired
+    onSaveSubrecord: PropTypes.func.isRequired,
+    onSwapEverySubrecordRow: PropTypes.func,
+    onSwapSubrecordRow: PropTypes.func
+  };
+
+  static defaultProps = {
+    swappingEnabled: false
   };
 
   render() {
@@ -57,15 +64,20 @@ export class SubrecordComponent extends React.Component {
         <SubrecordHeader
           setCompactSubrecordView={this.props.setCompactSubrecordView} 
           compactSubrecordView={this.props.compactSubrecordView}
+          onSwapEverySubrecordRow={this.props.onSwapEverySubrecordRow}
+          actionsEnabled={this.props.actionsEnabled}
+          swappingEnabled={this.props.swappingEnabled}
         />
         <DraggableSubrecordMergePanelContainer 
           subrecords={this.props.subrecords}
           saveButtonVisible={this.props.saveButtonVisible}
           actionsEnabled={this.props.actionsEnabled}
+          swappingEnabled={this.props.swappingEnabled}
           onInsertSubrecordRow={this.props.onInsertSubrecordRow}
           onRemoveSubrecordRow={this.props.onRemoveSubrecordRow}
           onChangeSubrecordAction={this.props.onChangeSubrecordAction}
           onChangeSubrecordRow={this.props.onChangeSubrecordRow}
+          onSwapSubrecordRow={this.props.onSwapSubrecordRow}
           onChangeSourceSubrecordRow={this.props.onChangeSourceSubrecordRow}
           onChangeTargetSubrecordRow={this.props.onChangeTargetSubrecordRow}
           onExpandSubrecordRow={this.props.onExpandSubrecordRow}

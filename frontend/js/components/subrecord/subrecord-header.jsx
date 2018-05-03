@@ -28,26 +28,43 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import classNames from 'classnames';
 export class SubrecordHeader extends React.Component {
 
   static propTypes = {
     setCompactSubrecordView: PropTypes.func.isRequired,
-    compactSubrecordView: PropTypes.bool.isRequired
-  }
+    compactSubrecordView: PropTypes.bool.isRequired,
+    actionsEnabled: PropTypes.bool.isRequired,
+    swappingEnabled: PropTypes.bool,
+    onSwapEverySubrecordRow: PropTypes.func,
+  };
   
+  static defaultProps = {
+    swappingEnabled: false
+  };
+
   toggleCompactView(event) {
     const isEnabled = event.target.checked;
 
     this.props.setCompactSubrecordView(isEnabled);    
   }
 
+  swapEverySubrecordRow() {
+    this.props.onSwapEverySubrecordRow();
+  }
+
   render() {
+    const { actionsEnabled, swappingEnabled } = this.props;
+
+    const iconClasses = classNames('btn-floating', 'btn-small', 'waves-light', 'blue', 'lighten-2',  {
+      'disabled': !actionsEnabled,
+      'waves-effect': actionsEnabled
+    });
 
     return (
       
       <div className="row subrecord-header">
-        <div className="col s4">
+        <div className="col s3">
 
           <div className="row">
 
@@ -56,9 +73,17 @@ export class SubrecordHeader extends React.Component {
           </div>
         </div>
 
-        <div className="col s4" />
+        {swappingEnabled ? (
+          <div className="col s2 subrecord-all-swap-button-container">
+            <div>
+              <a className={iconClasses} onClick={() => this.swapEverySubrecordRow()}>
+                <i className="large material-icons">swap_horiz</i>
+              </a>
+            </div>
+          </div>
+        ): <div className="col s2" /> }
 
-        <div className="col s4">
+        <div className="col s4 offset-s3">
           <p>
             <input 
               type="checkbox" 
@@ -70,6 +95,8 @@ export class SubrecordHeader extends React.Component {
               ref={(c) => this._compactViewCheckBox = c}
             />
             
+           
+
             <label htmlFor="compact-subrecords-checkbox">Pienennä käsitellyt osakohteet</label>
           </p>
         </div>
