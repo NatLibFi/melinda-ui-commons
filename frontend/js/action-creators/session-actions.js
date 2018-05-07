@@ -92,11 +92,15 @@ export function removeSession() {
 export const startSession = (function() {
   const sessionBasePath = __DEV__ ? 'http://localhost:3001/session': '/session';
 
-  return function(username, password) {
+  return function(username, password, dataProtectionConsent) {
 
     return function(dispatch) {
 
       dispatch(createSessionStart());
+
+      if (!dataProtectionConsent) {
+        return dispatch(createSessionError('Tietosuojaselosteen hyväksyminen vaaditaan'));
+      }
 
       const fetchOptions = {
         method: 'POST',
