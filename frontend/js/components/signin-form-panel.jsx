@@ -56,11 +56,14 @@ export class SigninFormPanel extends React.Component {
     this.setState({password: event.target.value});
   }
 
+  updateDataProtectionConsent(event) {
+    this.setState({dataProtectionConsent: event.target.checked});
+  }
   executeSignin(event) {
     event.preventDefault();
-    
-    const {username, password} = this.state;
-    this.props.startSession(username, password);
+
+    const {username, password, dataProtectionConsent} = this.state;
+    this.props.startSession(username, password, dataProtectionConsent);
 
   }
 
@@ -81,19 +84,26 @@ export class SigninFormPanel extends React.Component {
     const usernameLabel = 'Käyttäjätunnus';
     const passwordLabel = 'Salasana';
     const signinButtonLabel = 'Kirjaudu';
+    const dataProtectionConsentLabel = (() => {
+      return (
+        <label htmlFor="data-protection-consent">
+          Hyväksyn <a href={process.env.DATA_PROTECTION_CONSENT_URL} target="_blank">tietosuojaselosteen</a>
+        </label>
+      );
+    })();
 
     const {username, password} = this.state;
 
     return (
 
       <div className="card signin-panel valign">
-      
+
         <div className="card-panel teal lighten-2">
           <h4>{title}</h4>
         </div>
 
         <div className="card-content">
-         
+
           <form>
             <div className="col s2 offset-s1 input-field">
               <input id="username" type="text" className="validate" value={username} onChange={this.updateUsername.bind(this)}/>
@@ -103,6 +113,11 @@ export class SigninFormPanel extends React.Component {
             <div className="col s2 offset-s1 input-field">
               <input id="password" type="password" className="validate" value={password} onChange={this.updatePassword.bind(this)}/>
               <label htmlFor="password">{passwordLabel}</label>
+            </div>
+
+            <div className="col s2 offset-s1 input-field">
+              <input id="data-protection-consent" type="checkbox" onChange={this.updateDataProtectionConsent.bind(this)} />
+              {dataProtectionConsentLabel}
             </div>
 
             <div className="spacer" />
@@ -115,11 +130,11 @@ export class SigninFormPanel extends React.Component {
               </button>
             </div>
           </form>
-        
+
         </div>
 
         {this.props.sessionState === 'SIGNIN_ONGOING' ? this.renderPreloader():''}
-          
+
       </div>
 
     );
