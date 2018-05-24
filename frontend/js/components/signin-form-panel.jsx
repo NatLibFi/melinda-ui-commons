@@ -87,7 +87,9 @@ export class SigninFormPanel extends React.Component {
     const dataProtectionConsentLabel = (() => {
       return (
         <label htmlFor="data-protection-consent">
-          Hyväksyn <a href={process.env.DATA_PROTECTION_CONSENT_URL} target="_blank">tietosuojaselosteen</a>
+          Hyväksyn <a href={process.env.DATA_PROTECTION_CONSENT_URL} target="_blank">tietosuojaselosteen</a> ja evästeiden käytön.
+          <br /><br />
+          Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana
         </label>
       );
     })();
