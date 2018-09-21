@@ -25,6 +25,7 @@
 * for the JavaScript code in this file.
 *
 */
+import moment from 'moment';
 import winston from 'winston';
 import expressWinstonLogger from 'express-winston';
 
@@ -33,7 +34,7 @@ const LOGLEVEL = process.env.NODE_ENV == 'debug' ? 'debug' : 'info';
 export const logger = new (winston.Logger)({
   transports: [
     new (winston.transports.Console)({
-      'timestamp':true, 
+      'timestamp': () => moment().format(),
       'level': LOGLEVEL
     })
   ]
@@ -42,7 +43,7 @@ export const logger = new (winston.Logger)({
 export const expressWinston = expressWinstonLogger.logger({
   transports: [
     new winston.transports.Console({
-      'timestamp':true, 
+      'timestamp': () => moment().format(),
       'level': LOGLEVEL
     })
   ],
