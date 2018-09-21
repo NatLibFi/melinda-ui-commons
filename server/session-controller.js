@@ -56,13 +56,15 @@ sessionController.post('/start', cors(corsOptions), requireBodyParams('username'
       logger.log('info', `Credentials not valid for user ${username}`);
       res.status(401).send('Authentication failed');
     }
-    
+
   }).catch(error => {
 
-    logger.log('error', 'Error validating credentials', error);
+    logger.log('error', 'Error validating credentials', Object.assign(error, {
+      message: error.message.replace(/staff_user=.+$/, '')
+    }));
 
     res.status(500).send('Internal server error');
-    
+
   });
 });
 
@@ -70,7 +72,7 @@ sessionController.post('/validate', cors(corsOptions), requireBodyParams('sessio
   const {sessionToken} = req.body;
   try {
     const {username, password} = readSessionToken(sessionToken);
- 
+
     authProvider.validateCredentials(username, password).then(authResponse => {
       if (authResponse.credentialsValid) {
         logger.log('info', `Succesful session validation for ${username}`);
@@ -79,13 +81,13 @@ sessionController.post('/validate', cors(corsOptions), requireBodyParams('sessio
         logger.log('info', `Credentials not valid for user ${username}`);
         res.status(401).send('Authentication failed');
       }
-      
+
     }).catch(error => {
 
       logger.log('error', 'Error validating credentials', error);
 
       res.status(500).send('Internal server error');
-      
+
     });
 
   } catch (error) {
@@ -96,10 +98,10 @@ sessionController.post('/validate', cors(corsOptions), requireBodyParams('sessio
 });
 
 export function readSessionMiddleware(req, res, next) {
-  
+
   try {
     const {username, password} = readSessionToken(req.cookies.sessionToken);
-  
+
     req.session = _.assign({}, req.session, { username, password });
 
   } catch(e) {
@@ -119,7 +121,7 @@ export function requireSession(req, res, next) {
   if (username && password) {
     return next();
   } else {
-    res.sendStatus(HttpStatus.UNAUTHORIZED);    
+    res.sendStatus(HttpStatus.UNAUTHORIZED);
   }
 
 }
