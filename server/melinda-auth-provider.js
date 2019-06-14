@@ -36,7 +36,7 @@ const parseXMLStringToJSON = promisify(xml2js.parseString);
 const alephUrl = readEnvironmentVariable('ALEPH_URL');
 const alephUserLibrary = readEnvironmentVariable('ALEPH_USER_LIBRARY');
 const superUserLowTags = readEnvironmentVariable('SUPERUSER_LOWTAGS', '').split(',').map(s => s.toUpperCase());
-
+const lowTagMapping = JSON.parse(readEnvironmentVariable('LOW_TAG_MAPPING', '{}'));
 
 export const authProvider = {
   validateCredentials: function(username, password) {
@@ -73,9 +73,15 @@ export const authProvider = {
 function parseUserInfo(json) {
   const userLibrary = _.get(json, 'user-auth.z66[0].z66-user-library[0]');
   const name = _.get(json, 'user-auth.z66[0].z66-name[0]');
-  const department = _.get(json, 'user-auth.z66[0].z66-department[0]');
+  const department = getDepartment();
   const email = _.get(json, 'user-auth.z66[0].z66-email[0]');
+
   return {userLibrary, name, department, email};
+
+  function getDepartment() {
+    const department =  _.get(json, 'user-auth.z66[0].z66-department[0]');
+    return department in lowTagMapping ? lowTagMapping[department] : department;
+  }
 }
 
 function createAllowedLowTagList(userinfo) {
