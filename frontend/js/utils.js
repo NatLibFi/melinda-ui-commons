@@ -4,7 +4,7 @@
 *
 * Common modules for Melinda UI applications
 *
-* Copyright (C) 2016-2017 University Of Helsinki (The National Library Of Finland)
+* Copyright (C) 2015-2019 University Of Helsinki (The National Library Of Finland)
 *
 * This file is part of melinda-ui-commons
 *
