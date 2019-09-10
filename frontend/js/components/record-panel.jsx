@@ -35,34 +35,35 @@ import classNames from 'classnames';
 export class RecordPanel extends React.Component {
 
   static propTypes = {
-    record: PropTypes.object,
-    error: PropTypes.object,
-    showHeader: PropTypes.bool,
-    title: PropTypes.string,
-    editable: PropTypes.bool,
     children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
+    editable: PropTypes.bool,
+    error: PropTypes.object,
+    mergeButtonEnabled: PropTypes.bool,
+    mergeFunc: PropTypes.func.isRequired,
+    onFieldClick: PropTypes.func,
     onRecordUpdate: PropTypes.func,
-    onFieldClick: PropTypes.func
+    record: PropTypes.object,
+    recordInputField: PropTypes.element,
+    showHeader: PropTypes.bool,
+    showInput: PropTypes.bool,
+    title: PropTypes.string
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      currentTab: 'PREVIEW'
+      editMode: false
     };
   }
 
   componentDidMount() {
-    if (this.props.showHeader && this.props.editable) {
-      window.$(this._tabs).tabs();
-    }
   }
 
-  handleTabChange(event, nextTab) {
+  handleEditModeChange(event) {
     event.preventDefault();
-    if (this.tabsEnabled()) {
-      this.setState({currentTab: nextTab});
+    if (this.editButtonEnabled()) {
+      this.setState({editMode: !this.state.editMode});
     }
   }
 
@@ -72,42 +73,45 @@ export class RecordPanel extends React.Component {
     }
   }
 
-  tabsEnabled() {
+  editButtonEnabled() {
     return this.props.record !== undefined;
   }
 
   renderRecord() {
     return (
       <div>
-
         {this.props.showHeader ? this.renderHeader() : null }
-        {this.state.currentTab == 'EDIT' ? this.renderEditor(): this.renderPreview()  }
-
+        {this.props.showInput ? this.props.recordInputField : null}
+        {this.state.editMode ? this.renderEditor(): this.renderPreview()  }
       </div>
     );
   }
 
   renderHeader() {
-    const tabClasses = classNames('tab col s2', {
-      'tab-disabled': !this.tabsEnabled()
+    const editButtonClasses = classNames({ 
+      'disabled': !this.editButtonEnabled(),
+      'active': this.state.editMode
     });
 
-    const previewTab = () => (<li className={tabClasses}><a href="#" onClick={(e) => this.handleTabChange(e, 'PREVIEW')}>Esikatselu</a></li>);
-    const editTab = () => (<li className={tabClasses}><a href="#" onClick={(e) => this.handleTabChange(e, 'EDIT')}>Muokkaus</a></li>);
+    const mergeButtonClasses = classNames('button', {
+      'disabled': !this.props.mergeButtonEnabled,
+    });
+
+    const mergeButton = () => (<li className="button"><a className={mergeButtonClasses} href="#" onClick={this.props.mergeFunc} ><i className="material-icons">call_merge</i></a></li>);
+    const editButton = () => (<li className="button"><a className={editButtonClasses} href="#" onClick={(e) => this.handleEditModeChange(e)}><i className="material-icons">edit</i></a></li>);
 
     return (
       <div className="row row-no-bottom-margin">
-        <div className="col s7">
-          <ul className="tabs" ref={(c) => this._tabs = c}>
-            <li className="tab col s2 disabled title">{this.props.title || ''}</li>
-            { this.props.editable ? previewTab() : null }
-            { this.props.editable ? editTab() : null }
+        <div className="col s12">
+          <ul className="title-row-list" ref={(c) => this._tabs = c}>
+            <li className="disabled title">{this.props.title || ''}</li>
+            { this.props.editable ? mergeButton() : null }
+            { this.props.editable ? editButton() : null }
           </ul>
         </div>
       </div>
     );
   }
-
   renderPreview() {
 
     if (this.props.record !== undefined) {
