@@ -1,6 +1,6 @@
 {
   "name": "@natlibfi/melinda-ui-commons",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Common modules for Melinda UI applications",
   "keywords": [
     "MARC",
@@ -22,6 +22,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "private": false
+  },
   "license": "AGPL-3.0+",
   "scripts": {
     "prepare": "npm run build",
@@ -38,7 +41,7 @@
     "publish-to-npm": "npm publish --access=public"
   },
   "dependencies": {
-    "@natlibfi/melinda-api-client": "^1.1.6",
+    "@natlibfi/melinda-api-client": "^2.0.0",
     "body-parser": "^1.18.2",
     "classnames": "^2.2.5",
     "cookie-parser": "^1.4.3",
