@@ -39,7 +39,7 @@ export class RecordPanel extends React.Component {
     editable: PropTypes.bool,
     error: PropTypes.object,
     mergeButtonEnabled: PropTypes.bool,
-    mergeFunc: PropTypes.func.isRequired,
+    mergeFunc: PropTypes.func,
     onFieldClick: PropTypes.func,
     onRecordUpdate: PropTypes.func,
     record: PropTypes.object,
