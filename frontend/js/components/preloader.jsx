@@ -36,13 +36,9 @@ export class Preloader extends React.Component {
 
 
   render() {
-    const preloaderClasses = classNames('preloader-wrapper', 'active');
-
     return (
-      <div className={preloaderClasses}>
-        <div className="progress">
-          <div className="indeterminate"></div>
-        </div>
+      <div className="progress">
+        <div className="indeterminate"></div>
       </div>
     );
   }
