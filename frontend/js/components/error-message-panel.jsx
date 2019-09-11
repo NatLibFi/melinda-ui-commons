@@ -39,8 +39,7 @@ export class ErrorMessagePanel extends React.Component {
     message: PropTypes.string,
     messageList: PropTypes.array,
     warning: PropTypes.bool,
-    onDismiss: PropTypes.func,
-    showHeader: PropTypes.bool
+    onDismiss: PropTypes.func
   }
 
   renderTitle() {
@@ -53,7 +52,6 @@ export class ErrorMessagePanel extends React.Component {
         </div>
       </div>
     );
-    return <div className="heading">{this.props.title}</div>;
   }
 
   renderMessage() {
