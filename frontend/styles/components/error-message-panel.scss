@@ -16,6 +16,15 @@
       text-transform: uppercase;
       font-size: 1.5rem;
     }
+
+    .button {
+      margin-right: 10px;
+      .disabled {
+        color: grey !important;
+        pointer-events: none;
+        cursor: default;
+      }
+    }
   }
 }
 
