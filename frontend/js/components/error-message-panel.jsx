@@ -39,7 +39,8 @@ export class ErrorMessagePanel extends React.Component {
     message: PropTypes.string,
     messageList: PropTypes.array,
     warning: PropTypes.bool,
-    onDismiss: PropTypes.func
+    onDismiss: PropTypes.func,
+    size: PropTypes.string
   }
 
   renderTitle() {
@@ -64,7 +65,7 @@ export class ErrorMessagePanel extends React.Component {
 
   render() {
     return (
-      <div className={classNames({'red': !this.props.warning, 'yellow': this.props.warning}, 'lighten-2', 'error-message-panel')}>
+      <div className={classNames({'red': !this.props.warning, 'yellow': this.props.warning, 'panel': this.props.size === 'panel'},'lighten-2', 'error-message-panel')}>
         { this.props.title ? this.renderTitle() : null }
         { this.props.message ? this.renderMessage() : null }
         { this.props.messageList ? this.renderMessageList() : null }
