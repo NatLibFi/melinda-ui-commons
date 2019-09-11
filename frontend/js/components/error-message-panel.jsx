@@ -62,7 +62,7 @@ export class ErrorMessagePanel extends React.Component {
       <div className={classNames({'panel': this.props.typePanel})}>
         { this.props.headerTitle }
         { this.props.recordInputField }
-        <div className={classNames({'red': !this.props.warning, 'yellow': this.props.warning},'lighten-2', 'error-message-panel')}>
+        <div className={classNames({'red': !this.props.warning, 'yellow': this.props.warning},'lighten-2', 'z-depth-3', 'error-message-panel')}>
           { this.props.title ? this.renderTitle() : null }
           { this.props.message ? this.renderMessage() : null }
           { this.props.messageList ? this.renderMessageList() : null }
