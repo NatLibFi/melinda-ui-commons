@@ -38,6 +38,7 @@ export class RecordPanel extends React.Component {
     children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
     editable: PropTypes.bool,
     error: PropTypes.object,
+    mergeable: PropTypes.bool,
     mergeButtonEnabled: PropTypes.bool,
     mergeFunc: PropTypes.func,
     onFieldClick: PropTypes.func,
@@ -105,7 +106,7 @@ export class RecordPanel extends React.Component {
         <div className="col s12">
           <ul className="title-row-list" ref={(c) => this._tabs = c}>
             <li className="disabled title">{this.props.title || ''}</li>
-            { this.props.editable ? mergeButton() : null }
+            { this.props.mergeable ? mergeButton() : null }
             { this.props.editable ? editButton() : null }
           </ul>
         </div>
