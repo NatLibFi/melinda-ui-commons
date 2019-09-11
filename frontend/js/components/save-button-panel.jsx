@@ -57,6 +57,7 @@ export class SaveButtonPanel extends React.Component {
       return (<span className="save-status save-status-error valign">{error.message}</span>);
     }
     if (status === 'UPDATE_SUCCESS') {
+      Materialize.toast('Tietue on tallennettu', 5000);
       return (<span className="save-status save-status-success valign">Tietue on tallennettu</span>); 
     }
     return null;
@@ -74,10 +75,8 @@ export class SaveButtonPanel extends React.Component {
 
     return (
       <div className="save-button-panel valign-wrapper">
+         {showPreloader ? <Preloader size="small" /> : this.renderMessages()}     
         <a href="#" className={buttonClasses} onClick={(e) => this.handleClick(e)}>TALLENNA</a>
-        
-        {showPreloader ? <Preloader size="small" /> : this.renderMessages()}     
-        
       </div>
     );
   }
