@@ -75,9 +75,8 @@ export class SaveButtonPanel extends React.Component {
 
     return (
       <div className="save-button-panel valign-wrapper">
-         {showPreloader ? <Preloader size="small" /> : this.renderMessages()}     
         <a href="#" className={buttonClasses} onClick={(e) => this.handleClick(e)}>
-          <i className="material-icons left">save</i>
+          <i className="material-icons right">save</i>
           TALLENNA
           </a>
       </div>
