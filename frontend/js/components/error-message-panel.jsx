@@ -39,10 +39,20 @@ export class ErrorMessagePanel extends React.Component {
     message: PropTypes.string,
     messageList: PropTypes.array,
     warning: PropTypes.bool,
-    onDismiss: PropTypes.func
+    onDismiss: PropTypes.func,
+    showHeader: PropTypes.bool
   }
 
   renderTitle() {
+    return (
+      <div className="row row-no-bottom-margin">
+        <div className="col s12">
+          <ul className="title-row-list">
+            <li className="title">{this.props.title || ''}</li>
+          </ul>
+        </div>
+      </div>
+    );
     return <div className="heading">{this.props.title}</div>;
   }
 
