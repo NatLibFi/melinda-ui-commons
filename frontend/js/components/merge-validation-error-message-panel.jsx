@@ -37,7 +37,7 @@ export class MergeValidationErrorMessagePanel extends React.Component {
     error: PropTypes.instanceOf(Error),
     warning: PropTypes.bool,
     onDismiss: PropTypes.func,
-    headerTitle: PropTypes.element
+    headerTitle: PropTypes.element,
     typePanel: PropTypes.bool
   }
 
