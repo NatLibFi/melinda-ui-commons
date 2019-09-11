@@ -40,7 +40,7 @@ export class ErrorMessagePanel extends React.Component {
     messageList: PropTypes.array,
     warning: PropTypes.bool,
     onDismiss: PropTypes.func,
-    panel: PropTypes.bool
+    recordInputField: PropTypes.element
   }
 
   renderTitle() {
@@ -63,13 +63,20 @@ export class ErrorMessagePanel extends React.Component {
     return <pre>{this.props.messageList.join('\n')}</pre>;
   }
 
+  renderInputField() {
+    return this.props.recordInputField;
+  }
+
   render() {
     return (
-      <div className={classNames({'panel': this.props.panel}, {'red': !this.props.warning, 'yellow': this.props.warning},'lighten-2', 'error-message-panel')}>
-        { this.props.title ? this.renderTitle() : null }
-        { this.props.message ? this.renderMessage() : null }
-        { this.props.messageList ? this.renderMessageList() : null }
-        { this.props.warning ? <button className="waves-effect waves-light btn" onClick={this.props.onDismiss} name="dismiss">Hylkää</button> : null }
+      <div>
+        { this.props.recordInputField ? renderInputField() : null}
+        <div className={classNames({'red': !this.props.warning, 'yellow': this.props.warning},'lighten-2', 'error-message-panel')}>
+          { this.props.title ? this.renderTitle() : null }
+          { this.props.message ? this.renderMessage() : null }
+          { this.props.messageList ? this.renderMessageList() : null }
+          { this.props.warning ? <button className="waves-effect waves-light btn" onClick={this.props.onDismiss} name="dismiss">Hylkää</button> : null }
+        </div>
       </div>
     );
   }
