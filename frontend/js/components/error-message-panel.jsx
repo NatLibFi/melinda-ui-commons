@@ -65,7 +65,7 @@ export class ErrorMessagePanel extends React.Component {
 
   render() {
     return (
-      <div className={classNames({'panel': this.props.panel = false}, {'red': !this.props.warning, 'yellow': this.props.warning},'lighten-2', 'error-message-panel')}>
+      <div className={classNames({'panel': this.props.panel}, {'red': !this.props.warning, 'yellow': this.props.warning},'lighten-2', 'error-message-panel')}>
         { this.props.title ? this.renderTitle() : null }
         { this.props.message ? this.renderMessage() : null }
         { this.props.messageList ? this.renderMessageList() : null }
