@@ -98,8 +98,8 @@ export class RecordPanel extends React.Component {
       'disabled': !this.props.mergeButtonEnabled
     });
 
-    const mergeButton = () => (<li className="button"><a className={mergeButtonClasses} href="#" onClick={this.props.mergeFunc} ><i className="material-icons">call_merge</i></a></li>);
-    const editButton = () => (<li className="button"><a className={editButtonClasses} href="#" onClick={(e) => this.handleEditModeChange(e)}><i className="material-icons">edit</i></a></li>);
+    const mergeButton = () => (<li className="button tooltip" title="Yhdistä"><a className={mergeButtonClasses} href="#" onClick={this.props.mergeFunc} ><i className="material-icons">call_merge</i></a></li>);
+    const editButton = () => (<li className="button tooltip" title="Muokkaa"><a className={editButtonClasses} href="#" onClick={(e) => this.handleEditModeChange(e)}><i className="material-icons">edit</i></a></li>);
 
     return (
       <div className="row row-no-bottom-margin">
@@ -116,7 +116,6 @@ export class RecordPanel extends React.Component {
   renderPreview() {
 
     if (this.props.record !== undefined) {
-
       return (
         <div>
           <div className="card-content">
@@ -124,8 +123,7 @@ export class RecordPanel extends React.Component {
           </div>
           {this.props.children}
         </div>
-      );      
-      
+      );
     } else {
       return (<div>{this.props.children}</div>);
     }
