@@ -41,20 +41,7 @@ export class ErrorMessagePanel extends React.Component {
     warning: PropTypes.bool,
     onDismiss: PropTypes.func,
     recordInputField: PropTypes.element,
-    showHeader: PropTypes.bool,
-    headerTitle: PropTypes.string
-  }
-
-  renderHeaderTitle() {
-    return (
-      <div className="row row-no-bottom-margin">
-        <div className="col s12">
-          <ul className="title-row-list">
-            <li className="title">{this.props.headerTitle || ''}</li>
-          </ul>
-        </div>
-      </div>
-    );
+    headerTitle: PropTypes.element
   }
 
   renderTitle() {
@@ -72,8 +59,8 @@ export class ErrorMessagePanel extends React.Component {
   render() {
     return (
       <div>
+        { this.props.headerTitle }
         { this.props.recordInputField }
-        { this.props.showHeader ? renderHeaderTitle() : null}
         <div className={classNames({'red': !this.props.warning, 'yellow': this.props.warning},'lighten-2', 'error-message-panel')}>
           { this.props.title ? this.renderTitle() : null }
           { this.props.message ? this.renderMessage() : null }
