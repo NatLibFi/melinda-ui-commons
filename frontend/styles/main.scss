@@ -8,3 +8,10 @@ html {
 .navbar-fixed {
   z-index: 1000;    
 }
+
+#toast-container {
+  top: auto !important;
+  right: auto !important;
+  bottom: 10%;
+  left:7%;  
+}
