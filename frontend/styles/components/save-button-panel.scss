@@ -2,6 +2,8 @@
   min-height: 36px;
   
   a {
+    width: 100%;
+    text-align: right;
     font-size: 1.2em;
     margin-right: 2em;
     &.disabled {
