@@ -40,7 +40,7 @@ export class ErrorMessagePanel extends React.Component {
     messageList: PropTypes.array,
     warning: PropTypes.bool,
     onDismiss: PropTypes.func,
-    panel: this.propTypes.bool
+    panel: PropTypes.bool
   }
 
   renderTitle() {
