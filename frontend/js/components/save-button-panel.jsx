@@ -57,7 +57,6 @@ export class SaveButtonPanel extends React.Component {
       return (<span className="save-status save-status-error valign">{error.message}</span>);
     }
     if (status === 'UPDATE_SUCCESS') {
-      Materialize.toast('Tietue on tallennettu', 5000);
       return (<span className="save-status save-status-success valign">Tietue on tallennettu</span>); 
     }
     return null;
