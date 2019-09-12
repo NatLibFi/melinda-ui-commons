@@ -18,11 +18,14 @@
     }
 
     .button {
-      margin-right: 10px;
+      margin-right: 7px;
       .disabled {
         color: grey !important;
         pointer-events: none;
         cursor: default;
+      }
+      i {
+        padding: 3px;
       }
     }
   }
