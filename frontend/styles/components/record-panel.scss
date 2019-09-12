@@ -33,12 +33,14 @@ div.marc-record-container {
         pointer-events: none;
         cursor: default;
       }
-      .active {
-        background: #02725f15;
+      .active > i{
+        padding: 3px;
+        color: #66A0B3;
+        background: #02725f28;
       }
 
-      &:hover {
-        background: #00000015;
+      &:hover > i {
+        background: #00000010;
       }
     }
   }
