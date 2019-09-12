@@ -27,20 +27,22 @@ div.marc-record-container {
     }
 
     .button {
-      margin-right: 10px;
+      margin-right: 7px;
       .disabled {
         color: grey !important;
         pointer-events: none;
         cursor: default;
       }
-      .active > i{
-        padding: 3px;
-        color: #66A0B3;
+      .active > i {
+        color: #66a0b3;
         background: #02725f28;
       }
 
-      &:hover > i {
-        background: #00000010;
+      i {
+        padding: 3px;
+        &:hover {
+          background: #00000010;
+        }
       }
     }
   }
