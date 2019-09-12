@@ -95,7 +95,8 @@ export class RecordPanel extends React.Component {
     });
 
     const mergeButtonClasses = classNames({
-      'disabled': !this.props.mergeButtonEnabled
+      'disabled': !this.props.mergeButtonEnabled,
+      'disabled': !this.state.editMode
     });
 
     const mergeButton = () => (<li className="button tooltip" title="Yhdistä"><a className={mergeButtonClasses} href="#" onClick={this.props.mergeFunc} ><i className="material-icons">call_merge</i></a></li>);
