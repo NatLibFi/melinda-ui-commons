@@ -34,9 +34,11 @@ div.marc-record-container {
         cursor: default;
       }
       .active {
-        color: rgb(137, 194, 24) !important;
-        border: rgb(137, 194, 24);
-        border-bottom: 2px;
+        background: #02725f15;
+      }
+
+      &:hover {
+        background: #00000015;
       }
     }
   }
