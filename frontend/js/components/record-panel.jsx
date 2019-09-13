@@ -44,9 +44,8 @@ export class RecordPanel extends React.Component {
     onFieldClick: PropTypes.func,
     onRecordUpdate: PropTypes.func,
     record: PropTypes.object,
-    recordInputField: PropTypes.element,
+    recordHeader: PropTypes.element,
     showHeader: PropTypes.bool,
-    showInput: PropTypes.bool,
     title: PropTypes.string
   }
 
@@ -81,38 +80,12 @@ export class RecordPanel extends React.Component {
   renderRecord() {
     return (
       <div>
-        {this.props.showHeader ? this.renderHeader() : null }
-        {this.props.showInput ? this.props.recordInputField : null}
+        {this.props.showHeader ? this.props.recordHeader : null}
         {this.state.editMode ? this.renderEditor(): this.renderPreview()  }
       </div>
     );
   }
 
-  renderHeader() {
-    let editButtonClasses = classNames({ 
-      'disabled': !this.editButtonEnabled(),
-      'active': this.state.editMode
-    });
-
-    const mergeButtonClasses = classNames({
-      'disabled': !this.props.mergeButtonEnabled || this.state.editMode || this.props.record === undefined
-    });
-
-    const mergeButton = () => (<li className="button tooltip" title="Yhdistä"><a className={mergeButtonClasses} href="#" onClick={this.props.mergeFunc} ><i className="material-icons">call_merge</i></a></li>);
-    const editButton = () => (<li className="button tooltip" title="Muokkaa"><a className={editButtonClasses} href="#" onClick={(e) => this.handleEditModeChange(e)}><i className="material-icons">edit</i></a></li>);
-
-    return (
-      <div className="row row-no-bottom-margin">
-        <div className="col s12">
-          <ul className="title-row-list" ref={(c) => this._tabs = c}>
-            <li className="disabled title">{this.props.title || ''}</li>
-            { this.props.mergeable ? mergeButton() : null }
-            { this.props.editable ? editButton() : null }
-          </ul>
-        </div>
-      </div>
-    );
-  }
   renderPreview() {
 
     if (this.props.record !== undefined) {

@@ -37,7 +37,7 @@ export class MergeValidationErrorMessagePanel extends React.Component {
     error: PropTypes.instanceOf(Error),
     warning: PropTypes.bool,
     onDismiss: PropTypes.func,
-    headerTitle: PropTypes.element,
+    recordHeader: PropTypes.element,
     typePanel: PropTypes.bool
   }
 
@@ -46,10 +46,10 @@ export class MergeValidationErrorMessagePanel extends React.Component {
   }
 
   render() {
-    const { onDismiss, warning, headerTitle, typePanel } = this.props;
+    const { onDismiss, warning, recordHeader, typePanel } = this.props;
     const title = this.props.error.message;
     const messageList = this.props.error.failureMessages;
 
-    return <ErrorMessagePanel typePanel={typePanel} headerTitle={headerTitle} title={title} messageList={messageList} onDismiss={onDismiss} warning={warning} />;
+    return <ErrorMessagePanel typePanel={typePanel} recordHeader={recordHeader} title={title} messageList={messageList} onDismiss={onDismiss} warning={warning} />;
   }
 }

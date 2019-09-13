@@ -40,8 +40,7 @@ export class ErrorMessagePanel extends React.Component {
     messageList: PropTypes.array,
     warning: PropTypes.bool,
     onDismiss: PropTypes.func,
-    recordInputField: PropTypes.element,
-    headerTitle: PropTypes.element,
+    recordHeader: PropTypes.element,
     typePanel: PropTypes.bool
   }
 
@@ -60,8 +59,7 @@ export class ErrorMessagePanel extends React.Component {
   render() {
     return (
       <div className={classNames({'panel': this.props.typePanel})}>
-        { this.props.headerTitle }
-        { this.props.recordInputField }
+        { this.props.recordHeader ? this.props.recordHeader : null }
         <div className={classNames({'red': !this.props.warning, 'yellow': this.props.warning},'lighten-2', 'error-message-panel')}>
           { this.props.title ? this.renderTitle() : null }
           { this.props.message ? this.renderMessage() : null }
