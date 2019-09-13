@@ -36,11 +36,8 @@ export class RecordPanel extends React.Component {
 
   static propTypes = {
     children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
-    editable: PropTypes.bool,
+    editMode: PropTypes.bool,
     error: PropTypes.object,
-    mergeable: PropTypes.bool,
-    mergeButtonEnabled: PropTypes.bool,
-    mergeFunc: PropTypes.func,
     onFieldClick: PropTypes.func,
     onRecordUpdate: PropTypes.func,
     record: PropTypes.object,
@@ -51,20 +48,6 @@ export class RecordPanel extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      editMode: false
-    };
-  }
-
-  componentDidMount() {
-  }
-
-  handleEditModeChange(event) {
-    event.preventDefault();
-    if (this.editButtonEnabled()) {
-      this.setState({editMode: !this.state.editMode});
-    }
   }
 
   handleRecordUpdate(nextRecord) {
@@ -73,21 +56,16 @@ export class RecordPanel extends React.Component {
     }
   }
 
-  editButtonEnabled() {
-    return this.props.record !== undefined;
-  }
-
   renderRecord() {
     return (
       <div>
         {this.props.showHeader ? this.props.recordHeader : null}
-        {this.state.editMode ? this.renderEditor(): this.renderPreview()  }
+        {this.props.editMode ? this.renderEditor(): this.renderPreview()  }
       </div>
     );
   }
 
   renderPreview() {
-
     if (this.props.record !== undefined) {
       return (
         <div>
@@ -100,7 +78,6 @@ export class RecordPanel extends React.Component {
     } else {
       return (<div>{this.props.children}</div>);
     }
-
   }
 
   renderEditor() {
