@@ -1,35 +1,5 @@
 .panel {
   min-height: 650px;
-
-  .row-no-bottom-margin {
-    margin-bottom: 0px;
-    margin-top: 10px;
-  }
-
-  .title-row-list {
-    display: flex;
-    align-items: center;
-
-    .title {
-      width: 100%;
-      text-align: left;
-      text-transform: uppercase;
-      font-size: 1.5rem;
-    }
-
-    .button {
-      margin-right: 7px;
-      .disabled {
-        color: grey !important;
-        pointer-events: none;
-        cursor: default;
-      }
-      i {
-        padding: 3px;
-        font-size: 2rem;
-      }
-    }
-  }
 }
 
 .error-message-panel {
@@ -37,9 +7,7 @@
   padding: 10px 20px;
   color: #3f0303;
 
-
-
- .heading {
+  .heading {
     font-size: 1.2em;
     font-weight: 600;
   }
@@ -47,5 +15,4 @@
   pre {
     white-space: pre-wrap;
   }
-
 }

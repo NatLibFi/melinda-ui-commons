@@ -9,43 +9,6 @@ div.marc-record-container {
       min-height: $minHeight;
     }
   }
-
-  .row-no-bottom-margin {
-    margin-bottom: 0px;
-    margin-top: 10px;
-  }
-
-  .title-row-list {
-    display: flex;
-    align-items: center;
-
-    .title {
-      width: 100%;
-      text-align: left;
-      text-transform: uppercase;
-      font-size: 1.5rem;
-    }
-
-    .button {
-      margin-right: 7px;
-      .disabled {
-        color: grey !important;
-        pointer-events: none;
-        cursor: default;
-      }
-      .active > i {
-        background: #02725f28;
-      }
-
-      i {
-        font-size: 2rem;
-        padding: 3px;
-        &:hover {
-          background: #00000010;
-        }
-      }
-    }
-  }
 }
 
 .load-error .heading {
