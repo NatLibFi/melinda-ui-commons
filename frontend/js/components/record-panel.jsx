@@ -30,7 +30,6 @@ import PropTypes from 'prop-types';
 import { MarcRecordPanel } from './marc-record-panel';
 import '../../styles/components/record-panel.scss';
 import {MarcEditor} from './marc-editor-panel';
-import classNames from 'classnames';
 
 export class RecordPanel extends React.Component {
 
@@ -38,16 +37,15 @@ export class RecordPanel extends React.Component {
     children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
     editMode: PropTypes.bool,
     error: PropTypes.object,
+    mergeable: PropTypes.bool,
+    mergeButtonEnabled: PropTypes.bool,
+    mergeFunc: PropTypes.func,
     onFieldClick: PropTypes.func,
     onRecordUpdate: PropTypes.func,
     record: PropTypes.object,
     recordHeader: PropTypes.element,
     showHeader: PropTypes.bool,
     title: PropTypes.string
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   handleRecordUpdate(nextRecord) {
