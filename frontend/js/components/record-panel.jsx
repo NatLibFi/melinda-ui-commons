@@ -35,11 +35,8 @@ export class RecordPanel extends React.Component {
 
   static propTypes = {
     children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
-    editMode: PropTypes.bool,
+    editable: PropTypes.bool,
     error: PropTypes.object,
-    mergeable: PropTypes.bool,
-    mergeButtonEnabled: PropTypes.bool,
-    mergeFunc: PropTypes.func,
     onFieldClick: PropTypes.func,
     onRecordUpdate: PropTypes.func,
     record: PropTypes.object,
@@ -58,7 +55,7 @@ export class RecordPanel extends React.Component {
     return (
       <div>
         {this.props.showHeader ? this.props.recordHeader : null}
-        {this.props.editMode ? this.renderEditor(): this.renderPreview()  }
+        {this.props.editable ? this.renderEditor(): this.renderPreview()  }
       </div>
     );
   }
