@@ -66,7 +66,7 @@ export class SaveButtonPanel extends React.Component {
 
     const {enabled, status} = this.props;
 
-    const showPreloader = status === 'UPDATE_ONGOING';
+    const showMessage = status === 'UPDATE_ONGOING';
 
     const buttonClasses = classNames('valign', {
       'disabled': !enabled
@@ -74,10 +74,11 @@ export class SaveButtonPanel extends React.Component {
 
     return (
       <div className="save-button-panel valign-wrapper">
-        <a href="#" className={buttonClasses} onClick={(e) => this.handleClick(e)}>TALLENNA</a>
-        
-        {showPreloader ? <Preloader size="small" /> : this.renderMessages()}     
-        
+        {showMessage ? null : this.renderMessages()} 
+        <a href="#" className={buttonClasses} onClick={(e) => this.handleClick(e)}>
+          TALLENNA
+          <i className="material-icons">save</i>
+          </a>
       </div>
     );
   }

@@ -39,7 +39,9 @@ export class ErrorMessagePanel extends React.Component {
     message: PropTypes.string,
     messageList: PropTypes.array,
     warning: PropTypes.bool,
-    onDismiss: PropTypes.func
+    onDismiss: PropTypes.func,
+    recordHeader: PropTypes.element,
+    typePanel: PropTypes.bool
   }
 
   renderTitle() {
@@ -56,11 +58,14 @@ export class ErrorMessagePanel extends React.Component {
 
   render() {
     return (
-      <div className={classNames({'red': !this.props.warning, 'yellow': this.props.warning}, 'lighten-2', 'error-message-panel')}>
-        { this.props.title ? this.renderTitle() : null }
-        { this.props.message ? this.renderMessage() : null }
-        { this.props.messageList ? this.renderMessageList() : null }
-        { this.props.warning ? <button className="waves-effect waves-light btn" onClick={this.props.onDismiss} name="dismiss">Hylkää</button> : null }
+      <div className={classNames({'panel': this.props.typePanel})}>
+        { this.props.recordHeader ? this.props.recordHeader : null }
+        <div className={classNames({'red': !this.props.warning, 'yellow': this.props.warning},'lighten-2', 'error-message-panel')}>
+          { this.props.title ? this.renderTitle() : null }
+          { this.props.message ? this.renderMessage() : null }
+          { this.props.messageList ? this.renderMessageList() : null }
+          { this.props.warning ? <button className="waves-effect waves-light btn" onClick={this.props.onDismiss} name="dismiss">Hylkää</button> : null }
+        </div>
       </div>
     );
   }

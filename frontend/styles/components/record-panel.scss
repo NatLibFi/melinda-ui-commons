@@ -9,18 +9,6 @@ div.marc-record-container {
       min-height: $minHeight;
     }
   }
-
-  .tabs {
-    .tab.title {
-      text-align: left;
-    }
-    .tab.tab-disabled > a {
-      color: #ccc;
-    }
-  }
-  .row-no-bottom-margin {
-    margin-bottom: 0px;
-  }
 }
 
 .load-error .heading {

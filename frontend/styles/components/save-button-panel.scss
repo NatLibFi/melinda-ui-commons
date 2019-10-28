@@ -2,6 +2,9 @@
   min-height: 36px;
   
   a {
+    display: flex !important;
+    flex-direction: row-reverse;
+    text-align: right;
     font-size: 1.2em;
     margin-right: 2em;
     &.disabled {
@@ -10,9 +13,12 @@
     }
   }
 
+  span {
+    width: 100% !important;
+  }
+
   .save-status {
     font-size: 1.2em;
-    display: inline-block;
   }
 
   .preloader-container {

@@ -300,8 +300,8 @@ export class MarcEditor extends React.Component {
         blockRenderMap={extendedBlockRenderMap}
         customStyleMap={colorStyleMap}
         keyBindingFn={myKeyBindingFn}
-        />
-      </div>
+      />
+    </div>
     );
   }
 }

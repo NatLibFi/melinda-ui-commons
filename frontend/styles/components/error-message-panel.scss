@@ -1,10 +1,13 @@
+.panel {
+  min-height: 650px;
+}
 
 .error-message-panel {
   white-space: normal;
   padding: 10px 20px;
-  color: #6b3636;
-  
- .heading {
+  color: #3f0303;
+
+  .heading {
     font-size: 1.2em;
     font-weight: 600;
   }
@@ -12,5 +15,4 @@
   pre {
     white-space: pre-wrap;
   }
-
 }
