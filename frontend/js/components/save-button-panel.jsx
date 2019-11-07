@@ -59,7 +59,7 @@ export class SaveButtonPanel extends React.Component {
     if (status === 'UPDATE_SUCCESS') {
       return (<span className="save-status save-status-success valign">Tietue on tallennettu</span>); 
     }
-    return null;
+    return <span></span>;
   }
 
   render() {
