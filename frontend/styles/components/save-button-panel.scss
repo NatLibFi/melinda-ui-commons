@@ -7,7 +7,7 @@
     text-align: right;
     font-size: 1.2em;
     margin-right: 2em;
-    color: #039be5; // light-blue darken-1
+    color: #039be5 !important; // light-blue darken-1
     &.disabled {
       color: #CCC !important;
       cursor: default;
