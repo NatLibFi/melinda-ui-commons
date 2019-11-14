@@ -1,10 +1,7 @@
-@import 'marc-record-panel-colors';
-
 .marc-record-panel {
   font-family: 'monospace'; 
   white-space: pre-wrap; 
   overflow-x: auto;
-  @include marc-colors();
 
   .fieldList {
     .code {
