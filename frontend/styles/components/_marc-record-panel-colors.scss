@@ -1,5 +1,4 @@
 @mixin marc-colors() {
-
   &.marc-record-source {
     .fieldList {
       .is-selected {
@@ -14,9 +13,9 @@
     .fieldList {
       .marc-field-datafield {
         &:hover {
-          outline: 1px dashed #CCC;
+          outline: 1px dashed #ccc;
           cursor: pointer;
-        } 
+        }
       }
     }
   }
@@ -28,14 +27,13 @@
       }
 
       .is-selected {
-        
         &.from-other {
           background-color: #b2dfdb;
 
           &:hover {
-            outline: 1px dashed #CCC;
+            outline: 1px dashed #ccc;
             cursor: pointer;
-          } 
+          }
         }
       }
     }

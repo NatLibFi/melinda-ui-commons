@@ -59,7 +59,7 @@ export class SaveButtonPanel extends React.Component {
     if (status === 'UPDATE_SUCCESS') {
       return (<span className="save-status save-status-success valign">Tietue on tallennettu</span>); 
     }
-    return null;
+    return <span></span>;
   }
 
   render() {
@@ -74,7 +74,7 @@ export class SaveButtonPanel extends React.Component {
 
     return (
       <div className="save-button-panel valign-wrapper">
-        {showMessage ? null : this.renderMessages()} 
+        {showMessage ? <span></span> : this.renderMessages()} 
         <a href="#" className={buttonClasses} onClick={(e) => this.handleClick(e)}>
           TALLENNA
           <i className="material-icons">save</i>

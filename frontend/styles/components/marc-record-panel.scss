@@ -4,6 +4,20 @@
   overflow-x: auto;
 
   .fieldList {
+    .from-postmerge {
+      background-color: #e3f2fd;
+    }
+
+    .is-selected {
+      &.from-other {
+        background-color: #b2dfdb;
+
+        &:hover {
+          outline: 1px dashed #ccc;
+          cursor: pointer;
+        }
+      }
+    }
     .code {
       color: #e57373;
       margin-right: 2px;
