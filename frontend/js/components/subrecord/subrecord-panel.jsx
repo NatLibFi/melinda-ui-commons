@@ -43,6 +43,7 @@ export class SubRecordPanel extends React.Component {
     title: PropTypes.string,
     isDragging: PropTypes.bool,
     showHeader: PropTypes.bool,
+    recordHeader: PropTypes.any,
     editable: PropTypes.bool,
     isExpanded: PropTypes.bool,
     isCompacted: PropTypes.bool,
@@ -54,17 +55,8 @@ export class SubRecordPanel extends React.Component {
     onSaveRecord: PropTypes.func,
   }
 
-  handleEditModeChange(event) {
-    event.preventDefault();
-    this.setState({editMode: !this.state.editMode});
-  }
-
-  handleRecordSave() {
-    const recordId = _.chain(this.props.record.fields).filter(field => field.tag === '001').map('value').head().value();
-    this.props.onSaveRecord(recordId, this.props.record);
-  }
-
   renderSaveButton() {
+
     const statuses = {
       'UNSAVED': 'UPDATE_NOT_STARTED',
       'SAVED': 'UPDATE_SUCCESS',
@@ -88,22 +80,9 @@ export class SubRecordPanel extends React.Component {
     );
   }
 
-  mergeHeader(record = null) {
-    const editButtonClasses = classNames({
-      disabled: !record,
-      active: this.state.editMode
-    });
-
-    return (
-      <div className="row title-row-card">
-        <div className="title-wrapper col 11s">
-          <ul ref={(c) => this._tabs = c}>
-            <li className="title">Yhdistetty</li>
-            <li className="button tooltip" title="Muokkaa"><a className={editButtonClasses} href="#" onClick={(e) => this.handleEditModeChange(e)}><i className="material-icons">edit</i></a></li>
-          </ul>
-        </div>
-      </div>
-    );
+  handleRecordSave() {
+    const recordId = _.chain(this.props.record.fields).filter(field => field.tag === '001').map('value').head().value();
+    this.props.onSaveRecord(recordId, this.props.record);
   }
 
   render() {
@@ -137,8 +116,9 @@ export class SubRecordPanel extends React.Component {
       return (
         <div className={classes}>
           <RecordPanel
-            showHeader={true}
-            recordHeader={this.mergeHeader(record)}
+            showHeader
+            recordHeader
+            editable
             record={record}
             onFieldClick={this.props.onFieldClick}
             onRecordUpdate={(record) => this.props.onRecordUpdate(record)}>
@@ -148,15 +128,17 @@ export class SubRecordPanel extends React.Component {
           </RecordPanel>
         </div>
       );
-    }
+    } else {
 
-    return (
-      <div className={classes}>
-        <div className="card-content">
-          <MarcRecordPanel record={res} onFieldClick={this.props.onFieldClick} />
+      return (
+        <div className={classes}>
+          <div className="card-content">
+            <MarcRecordPanel record={res} onFieldClick={this.props.onFieldClick} />
+          </div>
         </div>
-      </div>
-    );
+      );
+
+    }
   }
 }
 

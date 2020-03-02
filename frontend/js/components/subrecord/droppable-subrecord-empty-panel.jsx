@@ -53,10 +53,9 @@ export class DroppableEmptySubRecordPanel extends React.Component {
 
 const emptySlotTarget = {
   drop(props, monitor, component) {
-
     const { rowId } = props;
     const item = monitor.getItem();
-    
+
     const fromRowId = item.rowId;
     const dragType = item.dragType;
     const toRowId = rowId;
@@ -75,7 +74,6 @@ const emptySlotTarget = {
 
     return (props.dragType == item.dragType);
   }
-
 };
 
 function collect(connect, monitor) {
@@ -83,7 +81,6 @@ function collect(connect, monitor) {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver(),
     canDrop: monitor.canDrop()
- 
   };
 }
 

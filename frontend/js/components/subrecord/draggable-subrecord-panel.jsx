@@ -33,7 +33,6 @@ import { ItemTypes } from '../../constants';
 import { SubRecordPanel } from './subrecord-panel';
 
 class SubRecordPanelDragSource extends React.Component {
-
   static propTypes = {
     type: PropTypes.string.isRequired,
     record: PropTypes.object.isRequired,
@@ -44,11 +43,9 @@ class SubRecordPanelDragSource extends React.Component {
   }
 
   render() {
-
     const { connectDragSource } = this.props;
 
     return connectDragSource(<div className="fill-height"><SubRecordPanel {...this.props} /></div>);
-      
   }
 }
 

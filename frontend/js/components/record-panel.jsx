@@ -27,14 +27,14 @@
 */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MarcRecordPanel } from './marc-record-panel';
+import {MarcRecordPanel} from './marc-record-panel';
 import '../../styles/components/record-panel.scss';
 import {MarcEditor} from './marc-editor-panel';
 
 export class RecordPanel extends React.Component {
 
   static propTypes = {
-    children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
+    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     editable: PropTypes.bool,
     error: PropTypes.object,
     onFieldClick: PropTypes.func,
@@ -47,7 +47,7 @@ export class RecordPanel extends React.Component {
 
   handleRecordUpdate(nextRecord) {
     if (this.props.onRecordUpdate) {
-      this.props.onRecordUpdate(nextRecord);  
+      this.props.onRecordUpdate(nextRecord);
     }
   }
 
@@ -55,7 +55,7 @@ export class RecordPanel extends React.Component {
     return (
       <div>
         {this.props.showHeader ? this.props.recordHeader : null}
-        {this.props.editable ? this.renderEditor(): this.renderPreview()  }
+        {this.props.editable ? this.renderEditor() : this.renderPreview()}
       </div>
     );
   }
@@ -78,8 +78,8 @@ export class RecordPanel extends React.Component {
   renderEditor() {
     return (
       <div className="card-content">
-        <MarcEditor 
-          record={this.props.record} 
+        <MarcEditor
+          record={this.props.record}
           onRecordUpdate={(record) => this.handleRecordUpdate(record)}
         />
       </div>
