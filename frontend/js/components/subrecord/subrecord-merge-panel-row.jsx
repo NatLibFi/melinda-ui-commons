@@ -124,24 +124,12 @@ export class SubrecordMergePanelRow extends React.Component {
     this.props.onSwapSubrecordRow(this.props.rowId);
   }
 
-  subRecordHeader(title) {
-    return (
-      <div className="row title-row-card">
-        <div className="input-field col 11s">
-          <ul>
-            <li className="title">{title}</li>
-          </ul>
-        </div>
-      </div>
-    );
-  }
-
   renderSubrecordPanel(record, type, dragType, rowId, isExpanded, dragEnabled) {
     const {isCompacted, onChangeSourceRow, onChangeTargetRow} = this.props;
 
     if (record) {
 
-      const recordHeader = type === ItemTypes.SOURCE_SUBRECORD ? subRecordHeader('Poistuva tietue') : subRecordHeader('Säilyvä tietue');
+      const recordHeader = type === ItemTypes.SOURCE_SUBRECORD ? (subRecordHeader('Poistuva tietue')) : (subRecordHeader('Säilyvä tietue'));
 
       const fieldClickHandler = type === ItemTypes.SOURCE_SUBRECORD ? this.handleSourceFieldClick.bind(this) : undefined;
       return (
@@ -167,6 +155,18 @@ export class SubrecordMergePanelRow extends React.Component {
       onChangeSourceRow={onChangeSourceRow}
       onChangeTargetRow={onChangeTargetRow}
     />;
+  }
+
+  subRecordHeader(title) {
+    return (
+      <div className="row title-row-card">
+        <div className="input-field col 11s">
+          <ul>
+            <li className="title">{title}</li>
+          </ul>
+        </div>
+      </div>
+    );
   }
 
   mergeHeader(record = null) {
