@@ -39,8 +39,7 @@ class SubRecordPanelDragSource extends React.Component {
     rowId: PropTypes.string.isRequired,
     connectDragSource: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
-    dragEnabled: PropTypes.bool.isRequired,
-    recordHeader: PropTypes.element
+    dragEnabled: PropTypes.bool.isRequired
   }
 
   render() {
