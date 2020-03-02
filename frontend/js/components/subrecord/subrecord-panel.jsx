@@ -134,8 +134,7 @@ export class SubRecordPanel extends React.Component {
         <div className={classes}>
           <RecordPanel
             showHeader={true}
-            editable={this.props.editable}
-            title={this.props.title}
+            recordHeader={this.mergeHeader(record)}
             record={record}
             onFieldClick={this.props.onFieldClick}
             onRecordUpdate={(record) => this.props.onRecordUpdate(record)}>
