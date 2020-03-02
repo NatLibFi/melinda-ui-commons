@@ -131,7 +131,7 @@ export class SubrecordMergePanelRow extends React.Component {
 
       const recordHeader = (
         <div className="row title-row-card">
-          <div className="input-field col 11s">
+          <div className="title-wrapper col 11s">
             <ul>
               <li className="title">{type === ItemTypes.SOURCE_SUBRECORD ? 'Poistuva tietue' : 'Säilyvä tietue'}</li>
             </ul>
@@ -164,8 +164,6 @@ export class SubrecordMergePanelRow extends React.Component {
       onChangeTargetRow={onChangeTargetRow}
     />;
   }
-
-
 
   mergeHeader(record = null) {
     const editButtonClasses = classNames({
@@ -220,9 +218,9 @@ export class SubrecordMergePanelRow extends React.Component {
           />
         </div>
       );
-    } else {
-      return (<SubrecordActionButton onChangeAction={this.props.onChangeAction} rowId={rowId} {...opts} />);
     }
+
+    return (<SubrecordActionButton onChangeAction={this.props.onChangeAction} rowId={rowId} {...opts} />);
   }
 
   renderRemoveRowButton(rowId) {
