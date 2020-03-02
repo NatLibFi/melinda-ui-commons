@@ -28,9 +28,9 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DragSource } from 'react-dnd';
-import { ItemTypes } from '../../constants';
-import { SubRecordPanel } from './subrecord-panel';
+import {DragSource} from 'react-dnd';
+import {ItemTypes} from '../../constants';
+import {SubRecordPanel} from './subrecord-panel';
 
 class SubRecordPanelDragSource extends React.Component {
   static propTypes = {
@@ -44,7 +44,7 @@ class SubRecordPanelDragSource extends React.Component {
   }
 
   render() {
-    const { connectDragSource } = this.props;
+    const {connectDragSource} = this.props;
 
     return connectDragSource(<div className="fill-height"><SubRecordPanel {...this.props} /></div>);
   }
@@ -52,8 +52,8 @@ class SubRecordPanelDragSource extends React.Component {
 
 const subrecordSource = {
   beginDrag(props) {
-    const { type, dragType, rowId } = props;
-    return { type, dragType, rowId };
+    const {type, dragType, rowId} = props;
+    return {type, dragType, rowId};
   },
   canDrag(props) {
     if (props && props.isExpanded) {

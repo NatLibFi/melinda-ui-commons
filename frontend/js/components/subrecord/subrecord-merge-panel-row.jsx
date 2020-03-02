@@ -145,11 +145,28 @@ export class SubrecordMergePanelRow extends React.Component {
 
       const fieldClickHandler = type === ItemTypes.SOURCE_SUBRECORD ? this.handleSourceFieldClick.bind(this) : undefined;
       return (
-        <DraggableSubRecordPanel isCompacted={isCompacted} isExpanded={isExpanded} dragEnabled={dragEnabled} record={record} type={type} dragType={dragType} rowId={rowId} onFieldClick={fieldClickHandler} showHeader recordHeader={recordHeader} />
+        <DraggableSubRecordPanel
+          isCompacted={isCompacted}
+          isExpanded={isExpanded}
+          dragEnabled={dragEnabled}
+          record={record}
+          type={type}
+          dragType={dragType}
+          rowId={rowId}
+          onFieldClick={fieldClickHandler}
+          recordHeader={recordHeader}
+          showHeader
+        />
       );
     }
 
-    return <DropTargetEmptySubRecordPanel type={type} dragType={dragType} rowId={rowId} onChangeSourceRow={onChangeSourceRow} onChangeTargetRow={onChangeTargetRow} />;
+    return <DropTargetEmptySubRecordPanel
+      type={type}
+      dragType={dragType}
+      rowId={rowId}
+      onChangeSourceRow={onChangeSourceRow}
+      onChangeTargetRow={onChangeTargetRow}
+    />;
   }
 
   mergeHeader(record = null) {
