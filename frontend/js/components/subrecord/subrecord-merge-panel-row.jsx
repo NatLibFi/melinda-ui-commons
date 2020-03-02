@@ -124,20 +124,32 @@ export class SubrecordMergePanelRow extends React.Component {
     this.props.onSwapSubrecordRow(this.props.rowId);
   }
 
+  subRecordHeader(title) {
+    return (
+      <div className="row title-row-card">
+        <div className="input-field col 11s">
+          <ul>
+            <li className="title">{title}</li>
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
   renderSubrecordPanel(record, type, dragType, rowId, isExpanded, dragEnabled) {
     const {isCompacted, onChangeSourceRow, onChangeTargetRow} = this.props;
 
     if (record) {
 
-      const title = type === ItemTypes.SOURCE_SUBRECORD ? 'Poistuva tietue' : 'Säilyvä tietue';
+      const recordHeader = type === ItemTypes.SOURCE_SUBRECORD ? subRecordHeader('Poistuva tietue') : subRecordHeader('Säilyvä tietue');
 
       const fieldClickHandler = type === ItemTypes.SOURCE_SUBRECORD ? this.handleSourceFieldClick.bind(this) : undefined;
       return (
-        <DraggableSubRecordPanel isCompacted={isCompacted} isExpanded={isExpanded} dragEnabled={dragEnabled} record={record} type={type} dragType={dragType} rowId={rowId} onFieldClick={fieldClickHandler} showHeader title={title} />
+        <DraggableSubRecordPanel isCompacted={isCompacted} isExpanded={isExpanded} dragEnabled={dragEnabled} record={record} type={type} dragType={dragType} rowId={rowId} onFieldClick={fieldClickHandler} showHeader recordHeader={recordHeader} />
       );
-    } else {
-      return <DropTargetEmptySubRecordPanel type={type} dragType={dragType} rowId={rowId} onChangeSourceRow={onChangeSourceRow} onChangeTargetRow={onChangeTargetRow} />;
     }
+
+    return <DropTargetEmptySubRecordPanel type={type} dragType={dragType} rowId={rowId} onChangeSourceRow={onChangeSourceRow} onChangeTargetRow={onChangeTargetRow} />;
   }
 
   mergeHeader(record = null) {
