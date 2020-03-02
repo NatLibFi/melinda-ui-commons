@@ -43,7 +43,7 @@ export class SubRecordPanel extends React.Component {
     title: PropTypes.string,
     isDragging: PropTypes.bool,
     showHeader: PropTypes.bool,
-    recordHeader: PropTypes.any,
+    recordHeader: PropTypes.element,
     editable: PropTypes.bool,
     isExpanded: PropTypes.bool,
     isCompacted: PropTypes.bool,
@@ -116,9 +116,9 @@ export class SubRecordPanel extends React.Component {
       return (
         <div className={classes}>
           <RecordPanel
-            showHeader
-            recordHeader
-            editable
+            showHeader={this.props.showHeader}
+            recordHeader={this.props.recordHeader}
+            editable={this.props.editable}
             record={record}
             onFieldClick={this.props.onFieldClick}
             onRecordUpdate={(record) => this.props.onRecordUpdate(record)}>
