@@ -129,9 +129,17 @@ export class SubrecordMergePanelRow extends React.Component {
 
     if (record) {
 
-      const recordHeader = type === ItemTypes.SOURCE_SUBRECORD ? (subRecordHeader('Poistuva tietue')) : (subRecordHeader('Säilyvä tietue'));
+      const recordHeader = (
+        <div className="row title-row-card">
+          <div className="input-field col 11s">
+            <ul>
+              <li className="title">{type === ItemTypes.SOURCE_SUBRECORD ? 'Poistuva tietue' : 'Säilyvä tietue'}</li>
+            </ul>
+          </div>
+        </div>
+      );
 
-      const fieldClickHandler = type === ItemTypes.SOURCE_SUBRECORD ? this.handleSourceFieldClick.bind(this) : undefined;
+      const fieldClickHandler = (type === ItemTypes.SOURCE_SUBRECORD) ? this.handleSourceFieldClick.bind(this) : undefined;
       return (
         <DraggableSubRecordPanel
           isCompacted={isCompacted}
@@ -157,17 +165,7 @@ export class SubrecordMergePanelRow extends React.Component {
     />;
   }
 
-  subRecordHeader(title) {
-    return (
-      <div className="row title-row-card">
-        <div className="input-field col 11s">
-          <ul>
-            <li className="title">{title}</li>
-          </ul>
-        </div>
-      </div>
-    );
-  }
+
 
   mergeHeader(record = null) {
     const editButtonClasses = classNames({
