@@ -196,7 +196,6 @@ export class SubrecordMergePanelRow extends React.Component {
       );
     }
     if (mergedSubrecord) {
-
       return (
         <div className="fill-height">
           {isCompacted ? null : <SubrecordActionButton onChangeAction={this.props.onChangeAction} rowId={rowId} {...opts} />}
@@ -235,9 +234,9 @@ export class SubrecordMergePanelRow extends React.Component {
 
     if (isEmptyRow) {
       return null;
-    } else {
-      return isExpanded ? this.renderCompressRowButton(rowId) : this.renderExpandRowButton(rowId);
     }
+
+    return isExpanded ? this.renderCompressRowButton(rowId) : this.renderExpandRowButton(rowId);
   }
 
   renderExpandRowButton(rowId) {
