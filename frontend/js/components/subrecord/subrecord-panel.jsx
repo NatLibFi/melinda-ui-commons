@@ -54,8 +54,17 @@ export class SubRecordPanel extends React.Component {
     onSaveRecord: PropTypes.func,
   }
 
-  renderSaveButton() {
+  handleEditModeChange(event) {
+    event.preventDefault();
+    this.setState({editMode: !this.state.editMode});
+  }
 
+  handleRecordSave() {
+    const recordId = _.chain(this.props.record.fields).filter(field => field.tag === '001').map('value').head().value();
+    this.props.onSaveRecord(recordId, this.props.record);
+  }
+
+  renderSaveButton() {
     const statuses = {
       'UNSAVED': 'UPDATE_NOT_STARTED',
       'SAVED': 'UPDATE_SUCCESS',
@@ -77,11 +86,6 @@ export class SubRecordPanel extends React.Component {
         />
       </div>
     );
-  }
-
-  handleRecordSave() {
-    const recordId = _.chain(this.props.record.fields).filter(field => field.tag === '001').map('value').head().value();
-    this.props.onSaveRecord(recordId, this.props.record);
   }
 
   mergeHeader(record = null) {
