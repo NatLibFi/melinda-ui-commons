@@ -62,13 +62,13 @@ export class SubrecordComponent extends React.Component {
     return (
       <div>
         <SubrecordHeader
-          setCompactSubrecordView={this.props.setCompactSubrecordView} 
+          setCompactSubrecordView={this.props.setCompactSubrecordView}
           compactSubrecordView={this.props.compactSubrecordView}
           onSwapEverySubrecordRow={this.props.onSwapEverySubrecordRow}
           actionsEnabled={this.props.actionsEnabled}
           swappingEnabled={this.props.swappingEnabled}
         />
-        <DraggableSubrecordMergePanelContainer 
+        <DraggableSubrecordMergePanelContainer
           subrecords={this.props.subrecords}
           saveButtonVisible={this.props.saveButtonVisible}
           actionsEnabled={this.props.actionsEnabled}

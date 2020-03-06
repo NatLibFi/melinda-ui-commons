@@ -68,7 +68,7 @@ export class MarcRecordPanel extends React.Component {
   }
 
   renderDataField(field) {
-    const subfieldNodes = field.subfields.map(function(subfield, subfieldIndex) {
+    const subfieldNodes = field.subfields.map(function (subfield, subfieldIndex) {
 
       const classes = classNames('marc-subfield', {
         'is-selected': subfield.wasUsed,
@@ -78,7 +78,7 @@ export class MarcRecordPanel extends React.Component {
         'from-postmerge': subfield.fromPostmerge,
         'has-been-edited': field.hasBeenEdited
       });
-      
+
       const key = `${field.uuid}-${subfieldIndex}`;
 
       return (
@@ -125,12 +125,12 @@ export class MarcRecordPanel extends React.Component {
     }
 
     const fieldNodes = fields.map((field) => {
-      
-      if (isControlField(field)) { 
+
+      if (isControlField(field)) {
         return this.renderControlField(field);
       } else {
         return this.renderDataField(field);
-      } 
+      }
     });
 
     return (

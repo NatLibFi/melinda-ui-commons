@@ -38,7 +38,7 @@ export class SubrecordHeader extends React.Component {
     swappingEnabled: PropTypes.bool,
     onSwapEverySubrecordRow: PropTypes.func,
   };
-  
+
   static defaultProps = {
     swappingEnabled: false
   };
@@ -46,7 +46,7 @@ export class SubrecordHeader extends React.Component {
   toggleCompactView(event) {
     const isEnabled = event.target.checked;
 
-    this.props.setCompactSubrecordView(isEnabled);    
+    this.props.setCompactSubrecordView(isEnabled);
   }
 
   swapEverySubrecordRow() {
@@ -54,22 +54,22 @@ export class SubrecordHeader extends React.Component {
   }
 
   render() {
-    const { actionsEnabled, swappingEnabled } = this.props;
+    const {actionsEnabled, swappingEnabled} = this.props;
 
-    const iconClasses = classNames('btn-floating', 'btn-small', 'waves-light', 'blue', 'lighten-2',  {
+    const iconClasses = classNames('btn-floating', 'btn-small', 'waves-light', 'blue', 'lighten-2', {
       'disabled': !actionsEnabled,
       'waves-effect': actionsEnabled
     });
 
     return (
-      
+
       <div className="row subrecord-header">
         <div className="col s3">
 
           <div className="row">
 
             <div className="col s4"><h5>Osakohteet</h5></div>
-           
+
           </div>
         </div>
 
@@ -81,21 +81,21 @@ export class SubrecordHeader extends React.Component {
               </a>
             </div>
           </div>
-        ): <div className="col s2" /> }
+        ) : <div className="col s2" />}
 
         <div className="col s4 offset-s3">
           <p>
-            <input 
-              type="checkbox" 
-              id="compact-subrecords-checkbox" 
+            <input
+              type="checkbox"
+              id="compact-subrecords-checkbox"
               value="compact-subrecords-view"
               className="filled-in"
-              checked={this.props.compactSubrecordView} 
+              checked={this.props.compactSubrecordView}
               onChange={(e) => this.toggleCompactView(e)}
               ref={(c) => this._compactViewCheckBox = c}
             />
-            
-           
+
+
 
             <label htmlFor="compact-subrecords-checkbox">Pienennä käsitellyt osakohteet</label>
           </p>

@@ -38,8 +38,8 @@ export class SubrecordMergePanelNewRow extends React.Component {
   }
 
   render() {
-    const { enabled } = this.props;
-    
+    const {enabled} = this.props;
+
     const classes = classNames('add-new-row', {
       'disabled': !enabled
     });

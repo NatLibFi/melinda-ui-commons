@@ -31,9 +31,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import _ from 'lodash';
 import '../../../styles/components/subrecord-panel';
-import { MarcRecordPanel } from 'commons/components/marc-record-panel';
-import { RecordPanel } from 'commons/components/record-panel';
-import { SaveButtonPanel } from '../save-button-panel';
+import {MarcRecordPanel} from 'commons/components/marc-record-panel';
+import {RecordPanel} from 'commons/components/record-panel';
+import {SaveButtonPanel} from '../save-button-panel';
 
 export class SubRecordPanel extends React.Component {
 
@@ -43,6 +43,7 @@ export class SubRecordPanel extends React.Component {
     title: PropTypes.string,
     isDragging: PropTypes.bool,
     showHeader: PropTypes.bool,
+    recordHeader: PropTypes.element,
     editable: PropTypes.bool,
     isExpanded: PropTypes.bool,
     isCompacted: PropTypes.bool,
@@ -69,7 +70,7 @@ export class SubRecordPanel extends React.Component {
 
     return (
       <div className="card-action">
-        <SaveButtonPanel 
+        <SaveButtonPanel
           enabled={enabled}
           error={this.props.saveRecordError}
           status={status}
@@ -78,20 +79,20 @@ export class SubRecordPanel extends React.Component {
       </div>
     );
   }
-  
+
   handleRecordSave() {
     const recordId = _.chain(this.props.record.fields).filter(field => field.tag === '001').map('value').head().value();
     this.props.onSaveRecord(recordId, this.props.record);
   }
 
   render() {
-    const { record, isDragging, isExpanded, isCompacted } = this.props;
+    const {record, isDragging, isExpanded, isCompacted} = this.props;
 
     const visibleFields = isCompacted ? ['245'] : ['245', '336', '773'];
 
     const selectedFields = record.fields
       .filter(f => _.includes(visibleFields, f.tag))
-      .map(toOnlySubfields('773', ['g','q']))
+      .map(toOnlySubfields('773', ['g', 'q']))
       .filter(f => f.subfields.length !== 0);
 
     const classes = classNames({
@@ -114,15 +115,15 @@ export class SubRecordPanel extends React.Component {
     if (isExpanded) {
       return (
         <div className={classes}>
-          <RecordPanel 
+          <RecordPanel
             showHeader={this.props.showHeader}
+            recordHeader={this.props.recordHeader}
             editable={this.props.editable}
-            title={this.props.title}
-            record={record} 
+            record={record}
             onFieldClick={this.props.onFieldClick}
             onRecordUpdate={(record) => this.props.onRecordUpdate(record)}>
 
-            { this.props.saveButtonVisible ? this.renderSaveButton() : null }
+            {this.props.saveButtonVisible ? this.renderSaveButton() : null}
 
           </RecordPanel>
         </div>
@@ -142,8 +143,8 @@ export class SubRecordPanel extends React.Component {
 }
 
 function toOnlySubfields(tag, subfieldCodes) {
-  return function(field) {
-    if (field.tag === tag) { 
+  return function (field) {
+    if (field.tag === tag) {
       const subfields = field.subfields.filter(s => _.includes(subfieldCodes, s.code));
       return _.assign({}, field, {subfields});
     }

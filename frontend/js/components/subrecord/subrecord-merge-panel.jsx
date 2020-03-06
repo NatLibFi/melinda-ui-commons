@@ -30,12 +30,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import _ from 'lodash';
-import { DragDropContext } from 'react-dnd';
+import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { ItemTypes } from '../../constants';
-import { SubrecordActionButtonContainer } from './subrecord-action-button';
-import { DragDropSubrecordMergePanelRow } from './subrecord-merge-panel-row';
-import { SubrecordMergePanelNewRow } from './subrecord-merge-panel-new-row';
+import {ItemTypes} from '../../constants';
+import {SubrecordActionButtonContainer} from './subrecord-action-button';
+import {DragDropSubrecordMergePanelRow} from './subrecord-merge-panel-row';
+import {SubrecordMergePanelNewRow} from './subrecord-merge-panel-new-row';
 
 import '../../../styles/components/subrecord-merge-panel.scss';
 
@@ -74,12 +74,12 @@ export class SubrecordMergePanel extends React.Component {
   }
 
   renderSubrecordList() {
-   
-    const { subrecords } = this.props;
+
+    const {subrecords} = this.props;
 
     const totalRows = subrecords.length;
     const items = subrecords.map((subrecord, i) => {
-     
+
       const {rowId, sourceRecord, targetRecord, mergedRecord, selectedAction, isExpanded, mergeError, saveStatus, saveRecordError, isCompacted, isMergeActionAvailable, isCopyActionAvailable, isSwapped} = subrecord;
 
       return (<DragDropSubrecordMergePanelRow
@@ -120,7 +120,7 @@ export class SubrecordMergePanel extends React.Component {
 
     return items.reduce((acc, item, i) => {
 
-      return _.concat(acc, item, this.renderAddNewRowElement(i+1));
+      return _.concat(acc, item, this.renderAddNewRowElement(i + 1));
 
     }, [this.renderAddNewRowElement(0)]);
 
@@ -139,7 +139,7 @@ export class SubrecordMergePanel extends React.Component {
   }
 
   onAddRow(rowIndex) {
-    return function() {
+    return function () {
       if (this.props.actionsEnabled) {
         this.props.onInsertSubrecordRow(rowIndex);
       }
@@ -182,7 +182,7 @@ export class SubrecordMergePanel extends React.Component {
     const otherSubrecordCount = this.props.subrecords.filter((row) => row.sourceRecord).length;
     const preferredSubrecordCount = this.props.subrecords.filter((row) => row.targetRecord).length;
     return (
-      
+
       <table className="bordered subrecord-merge-panel">
         <thead>
           <tr>

@@ -41,10 +41,10 @@ export class SubrecordActionButton extends React.Component {
     isMergeActionAvailable: PropTypes.bool,
     isCopyActionAvailable: PropTypes.bool,
     actionsEnabled: PropTypes.bool
-  } 
+  }
 
   componentDidUpdate() {
-    window.$ && window.$(this._button).closeFAB();  
+    window.$ && window.$(this._button).closeFAB();
   }
 
   selectAction(type) {
@@ -68,7 +68,7 @@ export class SubrecordActionButton extends React.Component {
     if (actionType === SubrecordActionTypes.BLOCK) return 'red';
     if (actionType === SubrecordActionTypes.MERGE) return 'green';
     if (actionType === SubrecordActionTypes.COPY) return 'blue';
-    return 'yellow'; 
+    return 'yellow';
   }
 
   renderButton(color, icon, onClickFn) {
@@ -123,7 +123,7 @@ export class SubrecordActionButton extends React.Component {
       .filter(actionType => this.isActionAvailable(actionType))
       .map(actionType => actionType === selectedAction ? UNSET : actionType)
       .map(actionType => <li key={actionType}>{this.renderActionButton(actionType)}</li>);
-   
+
     const color = this.getColor(selectedAction);
     const selectedIconClasses = classNames('btn-floating', 'btn-small', 'waves-light', 'subrecord-action-button', color, {
       'disabled': !actionsEnabled,
