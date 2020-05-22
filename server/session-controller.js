@@ -27,13 +27,13 @@
 */
 import express from 'express';
 import cors from 'cors';
-import { authProvider } from './melinda-auth-provider';
-import { createSessionToken, readSessionToken } from './session-crypt';
+import {authProvider} from './melinda-auth-provider';
+import {createSessionToken, readSessionToken} from './session-crypt';
 import bodyParser from 'body-parser';
-import { logger } from './logger';
+import {logger} from './logger';
 import _ from 'lodash';
-import { corsOptions, requireBodyParams } from './utils';
-import HttpStatus from 'http-status-codes';
+import {corsOptions, requireBodyParams} from './utils';
+import HttpStatus from 'http-status';
 
 export const sessionController = express();
 
@@ -102,9 +102,9 @@ export function readSessionMiddleware(req, res, next) {
   try {
     const {username, password} = readSessionToken(req.cookies.sessionToken);
 
-    req.session = _.assign({}, req.session, { username, password });
+    req.session = _.assign({}, req.session, {username, password});
 
-  } catch(e) {
+  } catch (e) {
     // invalid token
     logger.log('debug', 'Invalid session from token', req.cookies.sessionToken, e.message);
     req.session = {};

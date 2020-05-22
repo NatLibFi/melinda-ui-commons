@@ -26,11 +26,11 @@
 *
 */
 'use strict';
-import { logger } from './logger';
+import {logger} from './logger';
 import _ from 'lodash';
-import { authProvider } from './melinda-auth-provider';
-import { readSessionToken, createSessionToken } from './session-crypt';
-import HttpStatus from 'http-status-codes';
+import {authProvider} from './melinda-auth-provider';
+import {readSessionToken, createSessionToken} from './session-crypt';
+import HttpStatus from 'http-status';
 import fs from 'fs';
 import path from 'path';
 
@@ -54,14 +54,14 @@ export function readEnvironmentVariable(name, defaultValue, opts) {
 const whitelist = JSON.parse(readEnvironmentVariable('CORS_WHITELIST', '["http://localhost:3000"]'));
 
 export const corsOptions = {
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     if (origin === undefined) {
       callback(null, true);
     } else {
       var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
       if (!originIsWhitelisted) {
         logger.log('info', `Request from origin ${origin} is not whitelisted.`);
-      } 
+      }
       callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted);
     }
   },
@@ -72,7 +72,7 @@ export function requireBodyParams(...requiredParams) {
   return function _requireBodyParams(req, res, next) {
     const values = requiredParams.map(key => req.body[key]);
     if (_.every(values)) {
-      return next();  
+      return next();
     }
     const missingBodyParameters = _.difference(requiredParams, Object.keys(req.body));
     const error = `The request is missing the following body parameters: ${missingBodyParameters}`;
@@ -83,10 +83,10 @@ export function requireBodyParams(...requiredParams) {
 }
 
 export function userinfoMiddleware(req, res, next) {
-  const { sessionToken } = req.cookies;
+  const {sessionToken} = req.cookies;
   try {
     const {username, password} = readSessionToken(sessionToken);
-    
+
     authProvider.validateCredentials(username, password).then(creds => {
       req.userinfo = creds.userinfo;
       next();
@@ -94,7 +94,7 @@ export function userinfoMiddleware(req, res, next) {
       logger.log('info', 'Error loading userinfo', error);
       res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     });
-  } catch(error) {
+  } catch (error) {
     res.sendStatus(HttpStatus.UNAUTHORIZED);
   }
 }
@@ -104,7 +104,7 @@ export const getMelindaLoadUserByLowtag = createLoadUserIndexFn(MELINDA_LOAD_USE
 export function createLoadUserIndexFn(relativeFilePath) {
   let usersByLowtag;
 
-  return function(lowtag) {
+  return function (lowtag) {
     if (usersByLowtag === undefined) {
       const userList = readLoadUsersFile(relativeFilePath);
       usersByLowtag = userList.reduce((acc, val) => _.set(acc, val.lowtag, val), {});
@@ -115,7 +115,7 @@ export function createLoadUserIndexFn(relativeFilePath) {
       return undefined;
     }
 
-    return _.assign({}, user, {sessionToken: createSessionToken(user.username, user.password )});
+    return _.assign({}, user, {sessionToken: createSessionToken(user.username, user.password)});
   };
 }
 
@@ -133,12 +133,12 @@ function readLoadUsersFile(relativeFilePath) {
       .map(line => {
         const [lowtag, username, password] = line.split('\t');
         return {
-          lowtag: lowtag.trim().toUpperCase(), 
-          username: username.trim(), 
+          lowtag: lowtag.trim().toUpperCase(),
+          username: username.trim(),
           password: password.trim()
         };
       });
-  } catch(error) {
+  } catch (error) {
     logger.log('error', 'Melinda load users file is not available. LOAD-USERS are not usable.', {filePath}, error);
   }
   return [];
@@ -163,10 +163,10 @@ export function isCoreError(error) {
 export function createTimer() {
   const start = process.hrtime();
 
-  return { elapsed };
+  return {elapsed};
 
   function elapsed() {
     const elapsedTime = process.hrtime(start);
-    return Math.round((elapsedTime[0]*1000) + (elapsedTime[1]/1000000));  
+    return Math.round((elapsedTime[0] * 1000) + (elapsedTime[1] / 1000000));
   }
 }

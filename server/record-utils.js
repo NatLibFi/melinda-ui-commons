@@ -28,8 +28,8 @@
 import _ from 'lodash';
 
 export function recordIsUnused(record) {
-  // record is considered unused if it does not have any of the following fields: 
-  return record.fields.filter(field => ['850','852','866','LOW'].some(tag => tag === field.tag)).length === 0;
+  // record is considered unused if it does not have any of the following fields:
+  return record.get(/^(850|852|866|LOW)$/).length === 0;
 }
 
 export function markRecordAsDeleted(record) {
@@ -44,7 +44,7 @@ export function isDataField(field) {
 export function isComponentRecord(record) {
 
   const bibliographicLevel = _.get(record, 'leader[7]', undefined);
-  
+
   return ['a','b','d']
     .some(level => bibliographicLevel === level);
 }

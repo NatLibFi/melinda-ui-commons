@@ -27,17 +27,21 @@
 */
 import express from 'express';
 import cors from 'cors';
-import { readEnvironmentVariable, corsOptions, requireBodyParams } from './utils';
-import { logger } from './logger';
+import {corsOptions, requireBodyParams} from './utils';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import HttpStatus from 'http-status-codes';
-import { readSessionMiddleware, requireSession } from './session-controller';
-import MarcRecord from 'marc-record-js';
-import { loadRecord, updateAndReloadRecord, createAndReloadRecord, RecordIOError } from './melinda-io-service';
+import HttpStatus from 'http-status';
+import {readSessionMiddleware, requireSession} from './session-controller';
+import {MarcRecord} from '@natlibfi/marc-record';
+import {loadRecord, updateAndReloadRecord, createAndReloadRecord, RecordIOError} from './melinda-io-service';
+import {Utils} from '@natlibfi/melinda-commons';
+MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
+
+const {createLogger, readEnvironmentVariable} = Utils;
+const logger = createLogger();
 
 const MelindaClient = require('@natlibfi/melinda-api-client');
-const apiUrl = readEnvironmentVariable('MELINDA_API', null);
+const apiUrl = readEnvironmentVariable('MELINDA_API', {defaultValue: null});
 
 const defaultConfig = {
   endpoint: apiUrl,

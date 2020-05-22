@@ -25,18 +25,19 @@
 * for the JavaScript code in this file.
 *
 */
-import MarcRecord from 'marc-record-js';
-import { expect } from 'chai';
-import { transliterate } from './transliterate';
+import {MarcRecord} from '@natlibfi/marc-record';
+import {expect} from 'chai';
+import {transliterate} from './transliterate';
 import _ from 'lodash';
+MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 export const FAKE_RECORD = MarcRecord.fromString(
-`LDR    abcdefghijk
+  `LDR    abcdefghijk
 001    28474
 100    ‡aTest Author`);
 
 export const FAKE_RECORD_CYRILLIC_AUTHOR = MarcRecord.fromString(
-`LDR    abcdefghijk
+  `LDR    abcdefghijk
 001    28474
 100    ‡aЧайковский`);
 
@@ -51,7 +52,7 @@ describe('transliterate', () => {
     beforeEach(() => {
       return transliterate(copy(FAKE_RECORD_CYRILLIC_AUTHOR), {})
         .then(res => result = res)
-        .catch(err => { throw err; })
+        .catch(err => {throw err;})
         .then(() => {
           field100 = _.head(result.record.fields.filter(field => field.tag === '100'));
           fields880 = result.record.fields.filter(field => field.tag === '880');
@@ -106,8 +107,8 @@ describe('transliterate', () => {
 
       const heading = _.head(testDefWithoutWarnings.split(':\n'));
       const input = _.tail(testDefWithoutWarnings.split(':\n')).join(':\n');
-      
-      return { heading, input, warnings };
+
+      return {heading, input, warnings};
     })
     .map(testDef => {
       return _.assign({}, testDef, {
@@ -121,7 +122,7 @@ describe('transliterate', () => {
 
     const testName = `${test[0].heading}`;
     const expectedResult = test[1];
-    
+
 
     const testFn = () => {
       return transliterate(test[0].record).then(result => {
@@ -129,7 +130,7 @@ describe('transliterate', () => {
         expect(result.warnings).to.eql(expectedResult.warnings);
       });
     };
-    
+
     if (testName.startsWith('!')) {
       it.only(testName, testFn); //eslint-disable-line
     } else {
@@ -137,7 +138,7 @@ describe('transliterate', () => {
     }
 
   });
-  
+
 });
 
 function copy(record) {
@@ -147,14 +148,14 @@ function copy(record) {
 function subfield(code) {
   return {
     of: (fieldOrFields) => {
-      if (fieldOrFields == undefined) { 
-        return undefined; 
+      if (fieldOrFields == undefined) {
+        return undefined;
       }
-      
+
       if (fieldOrFields.constructor === Array) {
         return fieldOrFields.map(field => getFirstSubfieldValue(field, code));
       }
-      
+
       return getFirstSubfieldValue(fieldOrFields, code);
     }
   };

@@ -26,36 +26,36 @@
 *
 */
 import {expect} from 'chai';
-import { RecordIOError, loadRecord, updateAndReloadRecord } from './melinda-io-service';
-import { __RewireAPI__ as RewireAPI } from './melinda-io-service';
+import {RecordIOError, loadRecord, updateAndReloadRecord} from './melinda-io-service';
+import {__RewireAPI__ as RewireAPI} from './melinda-io-service';
 import sinon from 'sinon';
-import HttpStatus from 'http-status-codes';
-import { FAKE_RECORD, FAKE_RECORD_2, melindaClientUnableParseResponse } from './test_helpers/fake-data';
+import HttpStatus from 'http-status';
+import {FAKE_RECORD, FAKE_RECORD_2, melindaClientUnableParseResponse} from './test_helpers/fake-data';
 
 describe('melinda io service', () => {
 
   before(() => {
-    Promise.prototype.done = function() {};
+    Promise.prototype.done = function () {};
   });
   after(() => {
-    delete(Promise.prototype.done);
+    delete (Promise.prototype.done);
   });
 
   let loggerStub;
   let fakeOpts = {};
   const fakeId = '123';
-  
+
   let resultSpy;
   let errorSpy;
   let clientStub;
-  
+
   beforeEach(() => {
     clientStub = {
       loadChildRecords: sinon.stub(),
       updateRecord: sinon.stub()
     };
-  
-    loggerStub = { log: sinon.stub() };
+
+    loggerStub = {log: sinon.stub()};
 
     RewireAPI.__Rewire__('logger', loggerStub);
   });
@@ -66,7 +66,7 @@ describe('melinda io service', () => {
   describe('loadRecord', () => {
 
     describe('when result is empty', () => {
-    
+
       beforeEach(() => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
@@ -157,7 +157,7 @@ describe('melinda io service', () => {
   describe('updateAndReloadRecord', () => {
 
     describe('when given recordId and recordId in actual record differ', () => {
-    
+
       beforeEach(() => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
@@ -191,7 +191,7 @@ describe('melinda io service', () => {
     });
 
     describe('when record is updated succesfully', () => {
-    
+
       beforeEach(() => {
         const FAKE_RECORD_ID = '28474';
 
@@ -209,7 +209,7 @@ describe('melinda io service', () => {
           .catch(errorSpy);
       });
 
- 
+
       it('resolves with the record', () => {
         const [result] = resultSpy.getCall(0).args;
         expect(result.record).to.be.equal(FAKE_RECORD);
@@ -227,7 +227,7 @@ describe('melinda io service', () => {
     });
 
     describe('when record update fails', () => {
-    
+
       beforeEach(() => {
         const FAKE_RECORD_ID = '28474';
 

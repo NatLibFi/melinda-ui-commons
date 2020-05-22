@@ -29,9 +29,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../../styles/components/marc-record-editor';
 import _ from 'lodash';
-import uuid from 'node-uuid';
+import {v4 as uuid} from 'uuid';
 import { Repeat, Map, List } from 'immutable';
-import MarcRecord from 'marc-record-js';
+import {MarcRecord} from '@natlibfi/marc-record';
 
 // Until this has been merged, we are using custom version of draftjs: https://github.com/facebook/draft-js/pull/667
 import {getDefaultKeyBinding, KeyBindingUtil, Modifier, convertToRaw, EditorBlock, genKey,
@@ -115,7 +115,7 @@ export class MarcEditor extends React.Component {
         if (block.data.field && block.data.field.hasBeenEdited !== true) return block.data.field;
 
         const field = this.convertBlockToField(block);
-        field.uuid = uuid.v4();
+        field.uuid = uuid();
 
         return field;
       });

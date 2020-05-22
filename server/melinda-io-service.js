@@ -25,9 +25,9 @@
 * for the JavaScript code in this file.
 *
 */
-import { logger } from './logger';
+import {logger} from './logger';
 import _ from 'lodash';
-import HttpStatus from 'http-status-codes';
+import HttpStatus from 'http-status';
 
 const DEFAULT_LOAD_OPTIONS = {
   include_parent: 1
@@ -37,7 +37,7 @@ export function loadRecord(client, recordId, opts) {
 
   return new Promise((resolve, reject) => {
 
-    const loadOptions = _.assign({}, DEFAULT_LOAD_OPTIONS, opts);     
+    const loadOptions = _.assign({}, DEFAULT_LOAD_OPTIONS, opts);
 
     client.loadChildRecords(recordId, loadOptions).then((records) => {
       const record = _.head(records);
@@ -47,7 +47,7 @@ export function loadRecord(client, recordId, opts) {
         return reject(new RecordIOError(`Record ${recordId} appears to be empty record.`, HttpStatus.NOT_FOUND));
       }
 
-      resolve({ record, subrecords });
+      resolve({record, subrecords});
 
     }).catch(error => {
       reject(error);
@@ -57,18 +57,18 @@ export function loadRecord(client, recordId, opts) {
 
 function updateRecord(client, record) {
   return new Promise((resolve, reject) => {
-    return client.updateRecord(record).then(function(updateResponse) {
+    return client.updateRecord(record).then(function (updateResponse) {
       resolve(updateResponse);
     }).catch(error => {
       reject(error);
     }).done();
   });
-  
+
 }
 
 function createRecord(client, record) {
   return new Promise((resolve, reject) => {
-    return client.createRecord(record).then(function(createResponse) {
+    return client.createRecord(record).then(function (createResponse) {
       resolve(createResponse);
     }).catch(error => {
       reject(error);
@@ -81,18 +81,18 @@ function createRecord(client, record) {
 export function updateAndReloadRecord(client, recordId, record) {
 
   const recordIdFromBody = _.get(_.head(record.get('001')), 'value');
-  
+
   if (parseInt(recordIdFromBody) !== parseInt(recordId)) {
     const errorMessage = `recordId from url must match field 001 in supplied record: ${recordId} !== ${recordIdFromBody}`;
     return Promise.reject(new RecordIOError(errorMessage, HttpStatus.BAD_REQUEST));
   }
 
-  return updateRecord(client, record).then(function(updateResponse) {
+  return updateRecord(client, record).then(function (updateResponse) {
     logger.log('info', `Record updated ok for ${recordId}`, updateResponse.messages);
 
     const recordIdFromUpdate = updateResponse.recordId;
 
-    return loadRecord(client, recordIdFromUpdate, { include_parent: 1}).then(record => {
+    return loadRecord(client, recordIdFromUpdate, {include_parent: 1}).then(record => {
       return record;
     }).catch(error => {
       logger.log('info', `Error loading record ${recordId}`, error);
@@ -113,14 +113,14 @@ export function updateAndReloadRecord(client, recordId, record) {
 
 export function createAndReloadRecord(client, record) {
 
-  return createRecord(client, record).then(function(updateResponse) {
+  return createRecord(client, record).then(function (updateResponse) {
     const recordId = updateResponse.recordId;
 
     logger.log('info', `Record created, id: ${recordId}`, updateResponse.messages);
 
-    return loadRecord(client, recordId, { include_parent: 1}).then(result => {
-      return _.assign({}, result, { recordId });
-      
+    return loadRecord(client, recordId, {include_parent: 1}).then(result => {
+      return _.assign({}, result, {recordId});
+
     }).catch(error => {
       logger.log('info', `Error loading record ${recordId}`, error);
       throw error;
@@ -142,7 +142,7 @@ export function createAndReloadRecord(client, record) {
 
 
 function looksLikeMelindaClientParseError(error) {
-  return _.get(error, 'errors[0].code') === -1 && _.get(error, 'errors[0].message','').startsWith('melinda-api-client unable to parse: ');
+  return _.get(error, 'errors[0].code') === -1 && _.get(error, 'errors[0].message', '').startsWith('melinda-api-client unable to parse: ');
 }
 
 export function RecordIOError(message, statusCode) {

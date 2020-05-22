@@ -25,8 +25,9 @@
 * for the JavaScript code in this file.
 *
 */
-import MarcRecord from 'marc-record-js';
-import { removeLocalReference } from './record-transformations/remove-local-reference';
+import {MarcRecord} from '@natlibfi/marc-record';
+import {removeLocalReference} from './record-transformations/remove-local-reference';
+MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 export function transformRecord(action, recordParam, opts) {
 
@@ -36,7 +37,7 @@ export function transformRecord(action, recordParam, opts) {
 
   const record = new MarcRecord(recordParam);
 
-  switch(action) {
+  switch (action) {
     case 'REMOVE-LOCAL-REFERENCE': return removeLocalReference(record, opts);
   }
 

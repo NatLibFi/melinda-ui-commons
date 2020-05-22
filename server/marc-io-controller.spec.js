@@ -29,9 +29,9 @@ import sinon from 'sinon';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import request from 'supertest';
-import HttpStatus from 'http-status-codes';
-import { __RewireAPI__ as RewireAPI } from './marc-io-controller';
-import { marcIOController } from './marc-io-controller';
+import HttpStatus from 'http-status';
+import {__RewireAPI__ as RewireAPI} from './marc-io-controller';
+import {marcIOController} from './marc-io-controller';
 //import { createSessionToken } from './session-crypt';
 
 chai.use(sinonChai);
@@ -39,9 +39,9 @@ chai.use(sinonChai);
 //const sessionToken = createSessionToken('test-user', 'test-pass');
 
 describe('MARC IO controller', () => {
-  let loadChildRecordsStub;  
+  let loadChildRecordsStub;
   let loggerStub;
-  
+
   beforeEach(() => {
 
     loadChildRecordsStub = sinon.stub();
@@ -51,22 +51,22 @@ describe('MARC IO controller', () => {
     });
     RewireAPI.__Rewire__('MelindaClient', MelindaClientStub);
 
-    Promise.prototype.done = function() {};
+    Promise.prototype.done = function () {};
 
-    loggerStub = { log: sinon.stub() };
+    loggerStub = {log: sinon.stub()};
     RewireAPI.__Rewire__('logger', loggerStub);
 
   });
   afterEach(() => {
-    delete(Promise.prototype.done);
+    delete (Promise.prototype.done);
     RewireAPI.__ResetDependency__('MelindaClient');
     RewireAPI.__ResetDependency__('logger');
   });
-  
+
 
   it('responds in json', (done) => {
 
-    loadChildRecordsStub.resolves([{fields: [{tag:'001',value:'123'}]}]);
+    loadChildRecordsStub.resolves([{fields: [{tag: '001', value: '123'}]}]);
 
     request(marcIOController)
       .get('/123')
