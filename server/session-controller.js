@@ -30,10 +30,13 @@ import cors from 'cors';
 import {authProvider} from './melinda-auth-provider';
 import {createSessionToken, readSessionToken} from './session-crypt';
 import bodyParser from 'body-parser';
-import {logger} from './logger';
 import _ from 'lodash';
 import {corsOptions, requireBodyParams} from './utils';
+import {Utils} from '@natlibfi/melinda-commons';
 import HttpStatus from 'http-status';
+
+const {createLogger} = Utils;
+const logger = createLogger();
 
 export const sessionController = express();
 
@@ -54,17 +57,15 @@ sessionController.post('/start', cors(corsOptions), requireBodyParams('username'
       logger.log('info', `Succesful signin from ${username}`);
     } else {
       logger.log('info', `Credentials not valid for user ${username}`);
-      res.status(401).send('Authentication failed');
+      res.status(HttpStatus.UNAUTHORIZED).send('Authentication failed');
     }
 
   }).catch(error => {
-
     logger.log('error', 'Error validating credentials', Object.assign(error, {
       message: error.message.replace(/staff_user=.+$/, '')
     }));
 
-    res.status(500).send('Internal server error');
-
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Internal server error');
   });
 });
 
@@ -79,20 +80,20 @@ sessionController.post('/validate', cors(corsOptions), requireBodyParams('sessio
         res.send(authResponse);
       } else {
         logger.log('info', `Credentials not valid for user ${username}`);
-        res.status(401).send('Authentication failed');
+        res.status(HttpStatus.UNAUTHORIZED).send('Authentication failed');
       }
 
     }).catch(error => {
 
       logger.log('error', 'Error validating credentials', error);
 
-      res.status(500).send('Internal server error');
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Internal server error');
 
     });
 
   } catch (error) {
     logger.log('error', 'Error validating credentials', error);
-    res.status(401).send('Authentication failed');
+    res.status(HttpStatus.UNAUTHORIZED).send('Authentication failed');
   }
 
 });
@@ -114,7 +115,6 @@ export function readSessionMiddleware(req, res, next) {
 }
 
 export function requireSession(req, res, next) {
-
   const username = _.get(req, 'session.username');
   const password = _.get(req, 'session.password');
 
@@ -123,5 +123,4 @@ export function requireSession(req, res, next) {
   } else {
     res.sendStatus(HttpStatus.UNAUTHORIZED);
   }
-
 }

@@ -28,26 +28,25 @@
 import sinon from 'sinon';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
-import { sessionController } from './session-controller';
-import { authProvider } from './melinda-auth-provider';
+import {sessionController} from './session-controller';
+import {authProvider} from './melinda-auth-provider';
 import request from 'supertest';
-import { __RewireAPI__ as RewireAPI } from './session-controller';
+import {__RewireAPI__ as RewireAPI} from './session-controller';
 
 chai.use(sinonChai);
 const expect = chai.expect;
 
 describe('Session controller', () => {
   let loggerStub;
-  
+
   beforeEach(() => {
-    loggerStub = { log: sinon.stub() };
+    loggerStub = {log: sinon.stub()};
 
     RewireAPI.__Rewire__('logger', loggerStub);
   });
   afterEach(() => {
     RewireAPI.__ResetDependency__('logger');
   });
-
 
   describe('start', () => {
 
@@ -79,7 +78,7 @@ describe('Session controller', () => {
       request(sessionController)
         .post('/start')
         .expect(400, done);
-        
+
     });
 
     it('returns 401 if credentials are not ok', (done) => {
@@ -92,7 +91,7 @@ describe('Session controller', () => {
         .post('/start')
         .send({'username': 'test', 'password': 'test'})
         .expect(401, done);
-        
+
     });
 
     it('returns encrypted session token if credentials are ok', (done) => {
@@ -111,13 +110,13 @@ describe('Session controller', () => {
         .end((err, res) => {
           if (err) return done(err);
 
-          const { sessionToken } = res.body;
-          
-          expect(sessionToken.substr(0,4)).to.equal(expectedSessionTokenFragment);
-          
+          const {sessionToken} = res.body;
+
+          expect(sessionToken.substr(0, 4)).to.equal(expectedSessionTokenFragment);
+
           done();
         });
-     
+
     });
   });
 
