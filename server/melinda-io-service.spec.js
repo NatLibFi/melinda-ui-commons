@@ -189,17 +189,15 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords:[]});
+        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords: []});
         clientStub.postPrio.resolves({
-          messages: [],
-          recordId: FAKE_RECORD_ID
+          messages: []
         });
 
         return updateAndReloadRecord(clientStub, FAKE_RECORD_ID, FAKE_RECORD, fakeOpts)
           .then(resultSpy)
           .catch(errorSpy);
       });
-
 
       it('resolves with the record', () => {
         const [result] = resultSpy.getCall(0).args;
@@ -225,7 +223,7 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.getRecord.resolves([FAKE_RECORD]);
+        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords: []});
         clientStub.postPrio.rejects(melindaClientUnableParseResponse);
 
         return updateAndReloadRecord(clientStub, FAKE_RECORD_ID, FAKE_RECORD, fakeOpts)

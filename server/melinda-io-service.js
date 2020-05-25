@@ -50,8 +50,7 @@ function updateRecord(client, record) {
   return new Promise((resolve, reject) => {
     const recordId = getRecordId(record);
     client.postPrio({params: {noop: 0}, body: JSON.stringify(record.toObject())}, recordId).then(updateResponse => {
-      const {data} = updateResponse;
-      resolve(data);
+      resolve(updateResponse);
     }).catch(error => {
       reject(error);
     }).done();
@@ -75,11 +74,10 @@ export function updateAndReloadRecord(client, recordId, record) {
   }
 
   return updateRecord(client, record).then(updateResponse => {
+    logger.log('debug', JSON.stringify(updateResponse));
     logger.log('info', `Record updated ok for ${recordId}`, updateResponse.messages);
 
-    const recordIdFromUpdate = updateResponse.recordId;
-
-    return loadRecord(client, recordIdFromUpdate).then((record) => {
+    return loadRecord(client, recordId).then((record) => {
       return record;
     }).catch(error => {
       logger.log('info', `Error loading record ${recordId} `, error);
