@@ -34,22 +34,21 @@ import HttpStatus from 'http-status';
 import {readSessionMiddleware, requireSession} from './session-controller';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {loadRecord, updateAndReloadRecord, createAndReloadRecord, RecordIOError} from './melinda-io-service';
-import {Utils} from '@natlibfi/melinda-commons';
+import {Utils, createApiClient} from '@natlibfi/melinda-commons';
 MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 const {createLogger, readEnvironmentVariable} = Utils;
 const logger = createLogger();
 
-const MelindaClient = require('@natlibfi/melinda-api-client');
 const apiUrl = readEnvironmentVariable('MELINDA_API', {defaultValue: null});
 
 const defaultConfig = {
-  endpoint: apiUrl,
-  user: '',
-  password: ''
+  restApiUrl: apiUrl,
+  restApiUsername: '',
+  restApiPassword: ''
 };
 
-logger.log('info', `marc-io-controller endpoint: ${defaultConfig.endpoint}`);
+logger.log('info', `marc-io-controller endpoint: ${defaultConfig.restApiUrl}`);
 
 export const marcIOController = express();
 
@@ -63,10 +62,10 @@ marcIOController.options('/:id', cors(corsOptions));
 
 marcIOController.get('/:id', cors(corsOptions), (req, res) => {
 
-  const client = new MelindaClient(defaultConfig);
+  const client = createApiClient(defaultConfig);
 
   logger.log('info', `Loading record ${req.params.id}`);
-  loadRecord(client, req.params.id, {handle_deleted: 1, include_parent: 1}).then(record => {
+  loadRecord(client, req.params.id).then(record => {
     logger.log('info', `Record ${req.params.id} loaded succesfully`);
     res.send(record);
   }).catch(error => {
@@ -74,7 +73,7 @@ marcIOController.get('/:id', cors(corsOptions), (req, res) => {
       logger.log('info', `RecordIOError loading record ${req.params.id}`, error.message);
       res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
     } else {
-      logger.log('error', `Error loading record ${req.params.id}`, error);
+      logger.log('error', `Error loading record ${req.params.id} `, error);
       res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   });
@@ -88,11 +87,11 @@ marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParam
 
   const clientConfig = {
     ...defaultConfig,
-    user: username,
-    password: password
+    restApiUsername: username,
+    restApiPassword: password
   };
 
-  const client = new MelindaClient(clientConfig);
+  const client = createApiClient(clientConfig);
 
   logger.log('info', `Updating record ${req.params.id}`);
   updateAndReloadRecord(client, recordId, record).then(result => {
@@ -116,11 +115,11 @@ marcIOController.post('/', cors(corsOptions), requireSession, requireBodyParams(
 
   const clientConfig = {
     ...defaultConfig,
-    user: username,
-    password: password
+    restApiUsername: username,
+    restApiPassword: password
   };
 
-  const client = new MelindaClient(clientConfig);
+  const client = createApiClient(clientConfig);
 
   logger.log('info', 'Creating a new record');
   createAndReloadRecord(client, record).then(result => {

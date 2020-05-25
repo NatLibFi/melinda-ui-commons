@@ -26,7 +26,7 @@
 *
 */
 import crypto from 'crypto';
-import { readEnvironmentVariable } from './utils';
+import {readEnvironmentVariable} from './utils';
 
 const algorithm = 'aes-256-gcm';
 
@@ -34,7 +34,7 @@ const algorithm = 'aes-256-gcm';
 const key = readEnvironmentVariable('SECRET_ENCRYPTION_KEY', crypto.randomBytes(32).toString('base64'), {hideDefaultValue: true});
 
 function readKey() {
-  return new Buffer(key, 'base64');
+  return Buffer.from(key, 'base64');
 }
 
 export function createSessionToken(username, password) {
@@ -66,18 +66,18 @@ function parseToken(token) {
   const [username, iv, tag, encrypted] = token.split(':');
   return {
     username,
-    encrypted, 
-    iv: new Buffer(iv, 'hex'), 
-    tag: new Buffer(tag, 'hex')
+    encrypted,
+    iv: Buffer.from(iv, 'hex'),
+    tag: Buffer.from(tag, 'hex')
   };
 }
 
 
 function encrypt(text, aad, iv, key) {
   const cipher = crypto.createCipheriv(algorithm, key, iv);
-  cipher.setAAD(new Buffer(aad, 'utf8'));
+  cipher.setAAD(Buffer.from(aad, 'utf8'));
   const encrypted = cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
-  
+
   return {
     encrypted: encrypted,
     tag: cipher.getAuthTag(),
@@ -88,7 +88,7 @@ function encrypt(text, aad, iv, key) {
 
 function decrypt(encrypted, aad, iv, tag, key) {
   const decipher = crypto.createDecipheriv(algorithm, key, iv);
-  decipher.setAAD(new Buffer(aad, 'utf8'));
+  decipher.setAAD(Buffer.from(aad, 'utf8'));
   decipher.setAuthTag(tag);
   return decipher.update(encrypted, 'hex', 'utf8') + decipher.final('utf8');
 }

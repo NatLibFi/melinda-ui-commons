@@ -51,27 +51,25 @@ describe('melinda io service', () => {
 
   beforeEach(() => {
     clientStub = {
-      loadChildRecords: sinon.stub(),
-      updateRecord: sinon.stub()
+      getRecord: sinon.stub(),
+      postPrio: sinon.stub()
     };
 
     loggerStub = {log: sinon.stub()};
 
-    RewireAPI.__Rewire__('logger', loggerStub);
+    // RewireAPI.__Rewire__('logger', loggerStub);
   });
   afterEach(() => {
-    RewireAPI.__ResetDependency__('logger');
+    // RewireAPI.__ResetDependency__('logger');
   });
 
   describe('loadRecord', () => {
-
     describe('when result is empty', () => {
-
       beforeEach(() => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves();
+        clientStub.getRecord.resolves({});
 
         return loadRecord(clientStub, fakeId, fakeOpts)
           .then(resultSpy)
@@ -85,13 +83,13 @@ describe('melinda io service', () => {
 
       it('rejects with NOT_FOUND', () => {
         const [error] = errorSpy.getCall(0).args;
+        console.log(error);
         expect(error.status).to.be.equal(HttpStatus.NOT_FOUND);
       });
 
       it('does not call result handler', () => {
         expect(resultSpy.callCount).to.be.equal(0);
       });
-
     });
 
 
@@ -100,7 +98,7 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves([FAKE_RECORD]);
+        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords: []});
 
         return loadRecord(clientStub, fakeId, fakeOpts)
           .then(resultSpy)
@@ -128,7 +126,7 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves([FAKE_RECORD, FAKE_RECORD_2]);
+        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords: [FAKE_RECORD_2]});
 
         return loadRecord(clientStub, fakeId, fakeOpts)
           .then(resultSpy)
@@ -148,21 +146,16 @@ describe('melinda io service', () => {
       it('does not call error handler', () => {
         expect(errorSpy.callCount).to.be.equal(0);
       });
-
     });
-
   });
 
-
   describe('updateAndReloadRecord', () => {
-
     describe('when given recordId and recordId in actual record differ', () => {
-
       beforeEach(() => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves();
+        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords: []});
 
         return updateAndReloadRecord(clientStub, fakeId, FAKE_RECORD, fakeOpts)
           .then(resultSpy)
@@ -187,19 +180,17 @@ describe('melinda io service', () => {
       it('does not call result handler', () => {
         expect(resultSpy.callCount).to.be.equal(0);
       });
-
     });
 
     describe('when record is updated succesfully', () => {
-
       beforeEach(() => {
         const FAKE_RECORD_ID = '28474';
 
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves([FAKE_RECORD]);
-        clientStub.updateRecord.resolves({
+        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords:[]});
+        clientStub.postPrio.resolves({
           messages: [],
           recordId: FAKE_RECORD_ID
         });
@@ -234,8 +225,8 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves([FAKE_RECORD]);
-        clientStub.updateRecord.rejects(melindaClientUnableParseResponse);
+        clientStub.getRecord.resolves([FAKE_RECORD]);
+        clientStub.postPrio.rejects(melindaClientUnableParseResponse);
 
         return updateAndReloadRecord(clientStub, FAKE_RECORD_ID, FAKE_RECORD, fakeOpts)
           .then(resultSpy)
