@@ -40,7 +40,7 @@ MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues
 const {createLogger, readEnvironmentVariable} = Utils;
 const logger = createLogger();
 
-const apiUrl = readEnvironmentVariable('MELINDA_API', {defaultValue: null});
+const apiUrl = readEnvironmentVariable('REST_API_URL', {defaultValue: null});
 
 const defaultConfig = {
   restApiUrl: apiUrl,
