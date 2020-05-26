@@ -91,6 +91,7 @@ sessionController.post('/validate', cors(corsOptions), requireBodyParams('sessio
 
 export function readSessionMiddleware(req, res, next) {
   try {
+    logger.log('debug', `Cookies: ${req.cookies}` );
     const {username, password} = readSessionToken(req.cookies.sessionToken);
     req.session = _.assign({}, req.session, {username, password});
   } catch (error) {
