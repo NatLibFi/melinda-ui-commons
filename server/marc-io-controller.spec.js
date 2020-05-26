@@ -40,6 +40,7 @@ chai.use(sinonChai);
 
 describe('MARC IO controller', () => {
   let getRecordStub;
+  let loggerStub;
 
   beforeEach(() => {
     getRecordStub = sinon.stub();
@@ -48,7 +49,7 @@ describe('MARC IO controller', () => {
     });
     RewireAPI.__Rewire__('createApiClient', apiClientStub);
 
-    const loggerStub = { log: sinon.stub() };
+    loggerStub = { log: sinon.stub() };
     RewireAPI.__Rewire__('logger', loggerStub);
 
     Promise.prototype.done = function () {};

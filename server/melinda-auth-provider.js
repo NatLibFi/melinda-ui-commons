@@ -39,7 +39,7 @@ const superUserLowTags = readEnvironmentVariable('SUPERUSER_LOWTAGS', '').split(
 const lowTagMapping = JSON.parse(readEnvironmentVariable('LOW_TAG_MAPPING', '{}'));
 
 export const authProvider = {
-  validateCredentials: function (username, password) {
+  validateCredentials: (username, password) => {
     const requestUrl = `${alephUrl}/X?op=user-auth&library=${alephUserLibrary}&staff_user=${username}&staff_pass=${password}`;
 
     return new Promise((resolve, reject) => {

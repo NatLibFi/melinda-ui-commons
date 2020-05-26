@@ -39,10 +39,12 @@ export function loadRecord(client, recordId, params = defaultParams) {
   return new Promise((resolve, reject) => {
     client.getRecord(recordId, params).then(({record, subrecords}) => {
       if (record === undefined || record.fields.length === 0) {
-        reject(new RecordIOError(`Record ${recordId} appears to be empty record.`, HttpStatus.NOT_FOUND));
+        return reject(new RecordIOError(`Record ${recordId} appears to be empty record.`, HttpStatus.NOT_FOUND));
       }
-      resolve({record, subrecords});
-    });
+      return resolve({record, subrecords});
+    }).catch(error => {
+      return reject(error);
+    }).done();;
   });
 }
 
@@ -50,18 +52,18 @@ function updateRecord(client, record) {
   return new Promise((resolve, reject) => {
     const recordId = getRecordId(record);
     client.postPrio({params: {noop: 0}, body: JSON.stringify(record.toObject())}, recordId).then(updateResponse => {
-      resolve(updateResponse);
+      return resolve(updateResponse);
     }).catch(error => {
-      reject(error);
+      return reject(error);
     }).done();
   });
 }
 
 function createRecord(client, record) {
   return new Promise((resolve, reject) => client.postPrio({params: {noop: 0}, body: JSON.stringify(record.toObject())}).then(createResponse => {
-    resolve(createResponse);
+    return resolve(createResponse);
   }).catch(error => {
-    reject(error);
+    return reject(error);
   }).done());
 }
 
@@ -110,7 +112,6 @@ export function createAndReloadRecord(client, record) {
   }).catch(error => {
     logger.log('info', 'Record creation failed', error);
     if (looksLikeMelindaClientParseError(error)) {
-
       const reason = _.get(error, 'errors[0].message').substr('melinda-api-client unable to parse: '.length);
 
       throw new RecordIOError(reason, HttpStatus.BAD_REQUEST);

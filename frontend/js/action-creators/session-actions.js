@@ -26,29 +26,29 @@
 *
 */
 import * as Cookies from 'js-cookie';
-import { exceptCoreErrors, errorIfStatusNot } from '../utils';
-import { FetchNotOkError } from '../errors';
+import {exceptCoreErrors, errorIfStatusNot} from '../utils';
+import {FetchNotOkError} from '../errors';
 import HttpStatus from 'http-status';
 import {CREATE_SESSION_START, CREATE_SESSION_ERROR, CREATE_SESSION_SUCCESS, VALIDATE_SESSION_START} from '../constants/action-type-constants';
-import { resetState } from './ui-actions';
+import {resetState} from './ui-actions';
 
 
 export function createSessionStart() {
-  return { 'type': CREATE_SESSION_START };
+  return {'type': CREATE_SESSION_START};
 }
 
 export function createSessionError(error) {
-  return { 'type': CREATE_SESSION_ERROR, error};
+  return {'type': CREATE_SESSION_ERROR, error};
 }
 
 export function createSessionSuccess(userinfo) {
-  return { 'type': CREATE_SESSION_SUCCESS, userinfo };
+  return {'type': CREATE_SESSION_SUCCESS, userinfo};
 }
 
 export function validateSession(sessionToken) {
-  const sessionBasePath = __DEV__ ? 'http://localhost:3001/session': '/session';
+  const sessionBasePath = __DEV__ ? 'http://localhost:3001/session' : '/session';
 
-  return function(dispatch) {
+  return function (dispatch) {
 
     if (sessionToken === undefined) {
       return;
@@ -58,7 +58,7 @@ export function validateSession(sessionToken) {
 
     const fetchOptions = {
       method: 'POST',
-      body: JSON.stringify({ sessionToken }),
+      body: JSON.stringify({sessionToken}),
       headers: new Headers({
         'Content-Type': 'application/json'
       })
@@ -79,22 +79,22 @@ export function validateSession(sessionToken) {
 
 
 export function validateSessionStart() {
-  return { 'type': VALIDATE_SESSION_START };
+  return {'type': VALIDATE_SESSION_START};
 }
 
 export function removeSession() {
-  return function(dispatch) {
+  return function (dispatch) {
     Cookies.remove('sessionToken');
     dispatch(resetState());
   };
 }
 
-export const startSession = (function() {
-  const sessionBasePath = __DEV__ ? 'http://localhost:3001/session': '/session';
+export const startSession = (function () {
+  const sessionBasePath = __DEV__ ? 'http://localhost:3001/session' : '/session';
 
-  return function(username, password, dataProtectionConsent) {
+  return function (username, password, dataProtectionConsent) {
 
-    return function(dispatch) {
+    return function (dispatch) {
 
       dispatch(createSessionStart());
 
@@ -104,7 +104,7 @@ export const startSession = (function() {
 
       const fetchOptions = {
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({username, password}),
         headers: new Headers({
           'Content-Type': 'application/json'
         }),
