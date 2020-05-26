@@ -54,7 +54,7 @@ marcIOController.set('etag', false);
 marcIOController.options('/', cors(corsOptions));
 marcIOController.options('/:id', cors(corsOptions));
 
-marcIOController.get('/:id', cors(corsOptions), (req, res) => {
+marcIOController.get('/:id', cors(corsOptions), requireSession, (req, res) => {
   logger.log('debug', `request ${JSON.stringify(req.session)}`);
   logger.log('debug', `cookie ${JSON.stringify(req.cookie)}`);
   const {username, password} = req.session;
@@ -82,7 +82,7 @@ marcIOController.get('/:id', cors(corsOptions), (req, res) => {
   });
 });
 
-marcIOController.put('/:id', cors(corsOptions), requireBodyParams('record'), (req, res) => {
+marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParams('record'), (req, res) => {
 
   const {username, password} = req.session;
   const recordId = req.params.id;
@@ -111,7 +111,7 @@ marcIOController.put('/:id', cors(corsOptions), requireBodyParams('record'), (re
   });
 });
 
-marcIOController.post('/', cors(corsOptions), requireBodyParams('record'), (req, res) => {
+marcIOController.post('/', cors(corsOptions), requireSession, requireBodyParams('record'), (req, res) => {
 
   const {username, password} = req.session;
   const record = transformToMarcRecord(req.body.record);
