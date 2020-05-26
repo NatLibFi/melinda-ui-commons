@@ -70,10 +70,7 @@ describe('session reducer', () => {
       expect(state.getIn(['session', 'state'])).to.eql('SIGNIN_OK');
     });
     it('sets the userinfo', () => {
-      expect(state.getIn(['session', 'userinfo'])).to.eql({
-        username: 'user',
-        email: 'test-user@test-email'
-      });
+      expect(state.getIn(['session', 'userinfo'])).to.eql(userinfo);
     });
   });
 
