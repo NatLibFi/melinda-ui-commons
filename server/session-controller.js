@@ -27,6 +27,7 @@
 */
 import express from 'express';
 import cors from 'cors';
+import * as Cookies from 'js-cookie';
 import {authProvider} from './melinda-auth-provider';
 import {createSessionToken, readSessionToken} from './session-crypt';
 import bodyParser from 'body-parser';
@@ -91,8 +92,9 @@ sessionController.post('/validate', cors(corsOptions), requireBodyParams('sessio
 
 export function readSessionMiddleware(req, res, next) {
   try {
-    logger.log('debug', `Cookies: ${req.cookies}` );
-    const {username, password} = readSessionToken(req.cookies.sessionToken);
+    const sessionToken = req.cookies.sessionToken || Cookies.get('sessionToken');
+    logger.log('debug', `Session Token: ${sessionToken}`);
+    const {username, password} = readSessionToken(sessionToken);
     req.session = _.assign({}, req.session, {username, password});
   } catch (error) {
     // invalid token
