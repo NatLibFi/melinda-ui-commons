@@ -56,6 +56,7 @@ marcIOController.options('/:id', cors(corsOptions));
 
 marcIOController.get('/:id', cors(corsOptions), (req, res) => {
   logger.log('debug', `request ${JSON.stringify(req.session)}`);
+  logger.log('debug', `cookie ${JSON.stringify(req.cookie)}`);
   const {username, password} = req.session;
 
   const clientConfig = {
