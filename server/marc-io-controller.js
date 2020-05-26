@@ -55,13 +55,13 @@ marcIOController.options('/', cors(corsOptions));
 marcIOController.options('/:id', cors(corsOptions));
 
 marcIOController.get('/:id', cors(corsOptions), (req, res) => {
-  logger.log('debug', `request ${req.session}`);
+  logger.log('debug', `request ${JSON.stringify(req.session)}`);
   const {username, password} = req.session;
 
   const clientConfig = {
     restApiUrl: apiUrl,
-    restApiUsername: username,
-    restApiPassword: password
+    restApiUsername: username || '',
+    restApiPassword: password || ''
   };
 
   const client = createApiClient(clientConfig);
@@ -89,8 +89,8 @@ marcIOController.put('/:id', cors(corsOptions), requireBodyParams('record'), (re
 
   const clientConfig = {
     restApiUrl: apiUrl,
-    restApiUsername: username,
-    restApiPassword: password
+    restApiUsername: username || '',
+    restApiPassword: password || ''
   };
 
   const client = createApiClient(clientConfig);
@@ -117,8 +117,8 @@ marcIOController.post('/', cors(corsOptions), requireBodyParams('record'), (req,
 
   const clientConfig = {
     restApiUrl: apiUrl,
-    restApiUsername: username,
-    restApiPassword: password
+    restApiUsername: username || '',
+    restApiPassword: password || ''
   };
 
   const client = createApiClient(clientConfig);
