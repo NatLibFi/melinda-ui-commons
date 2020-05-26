@@ -83,7 +83,6 @@ describe('melinda io service', () => {
 
       it('rejects with NOT_FOUND', () => {
         const [error] = errorSpy.getCall(0).args;
-        console.log(error);
         expect(error.status).to.be.equal(HttpStatus.NOT_FOUND);
       });
 

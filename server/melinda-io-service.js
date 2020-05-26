@@ -44,7 +44,7 @@ export function loadRecord(client, recordId, params = defaultParams) {
       return resolve({record, subrecords});
     }).catch(error => {
       return reject(error);
-    }).done();;
+    }).done();
   });
 }
 
