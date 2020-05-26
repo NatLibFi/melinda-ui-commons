@@ -42,19 +42,20 @@ const logger = createLogger();
 
 const apiUrl = readEnvironmentVariable('REST_API_URL', {defaultValue: null});
 
-logger.log('info', `marc-io-controller endpoint: ${defaultConfig.restApiUrl}`);
+logger.log('info', `marc-io-controller endpoint: ${apiUrl}`);
 
 export const marcIOController = express();
 
 marcIOController.use(cookieParser());
 marcIOController.use(bodyParser.json({limit: '5mb'}));
 marcIOController.use(readSessionMiddleware);
+marcIOController.use(requireSession);
 marcIOController.set('etag', false);
 
 marcIOController.options('/', cors(corsOptions));
 marcIOController.options('/:id', cors(corsOptions));
 
-marcIOController.get('/:id', cors(corsOptions), requireSession, (req, res) => {
+marcIOController.get('/:id', cors(corsOptions), (req, res) => {
   logger.log('debug', `request ${req.session}`);
   const {username, password} = req.session;
 
@@ -81,7 +82,7 @@ marcIOController.get('/:id', cors(corsOptions), requireSession, (req, res) => {
   });
 });
 
-marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParams('record'), (req, res) => {
+marcIOController.put('/:id', cors(corsOptions), requireBodyParams('record'), (req, res) => {
 
   const {username, password} = req.session;
   const recordId = req.params.id;
@@ -110,7 +111,7 @@ marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParam
   });
 });
 
-marcIOController.post('/', cors(corsOptions), requireSession, requireBodyParams('record'), (req, res) => {
+marcIOController.post('/', cors(corsOptions), requireBodyParams('record'), (req, res) => {
 
   const {username, password} = req.session;
   const record = transformToMarcRecord(req.body.record);
