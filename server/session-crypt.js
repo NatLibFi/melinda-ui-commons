@@ -30,7 +30,7 @@ import {readEnvironmentVariable} from './utils';
 import {Utils} from '@natlibfi/melinda-commons';
 
 const {createLogger} = Utils;
-const logger = createLogger;
+const logger = createLogger();
 const algorithm = 'aes-256-gcm';
 
 // Using random key means that every time the app restarts all sessions will invalidate
