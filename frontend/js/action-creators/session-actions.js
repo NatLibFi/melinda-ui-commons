@@ -48,8 +48,7 @@ export function createSessionSuccess(userinfo) {
 export function validateSession(sessionToken) {
   const sessionBasePath = __DEV__ ? 'http://localhost:3001/session' : '/session';
 
-  return function (dispatch) {
-
+  return (dispatch) => {
     if (sessionToken === undefined) {
       return;
     }
@@ -68,9 +67,7 @@ export function validateSession(sessionToken) {
       .then(errorIfStatusNot(HttpStatus.OK))
       .then(response => response.json())
       .then(json => {
-
         dispatch(createSessionSuccess(json.userinfo));
-
       }).catch(() => {
         Cookies.remove('sessionToken');
       });
@@ -116,7 +113,7 @@ export const startSession = (function () {
         .then(json => {
 
           const sessionToken = json.sessionToken;
-          Cookies.set('sessionToken', sessionToken);
+          Cookies.set('sessionToken', sessionToken, { expires: 7 });
           dispatch(createSessionSuccess(json.userinfo));
 
         }).catch(exceptCoreErrors((error) => {
