@@ -42,12 +42,6 @@ const logger = createLogger();
 
 const apiUrl = readEnvironmentVariable('REST_API_URL', {defaultValue: null});
 
-const defaultConfig = {
-  restApiUrl: apiUrl,
-  restApiUsername: '',
-  restApiPassword: ''
-};
-
 logger.log('info', `marc-io-controller endpoint: ${defaultConfig.restApiUrl}`);
 
 export const marcIOController = express();
@@ -60,9 +54,17 @@ marcIOController.set('etag', false);
 marcIOController.options('/', cors(corsOptions));
 marcIOController.options('/:id', cors(corsOptions));
 
-marcIOController.get('/:id', cors(corsOptions), (req, res) => {
+marcIOController.get('/:id', cors(corsOptions), requireSession, (req, res) => {
+  logger.log('debug', `request ${req.session}`);
+  const {username, password} = req.session;
 
-  const client = createApiClient(defaultConfig);
+  const clientConfig = {
+    restApiUrl: apiUrl,
+    restApiUsername: username,
+    restApiPassword: password
+  };
+
+  const client = createApiClient(clientConfig);
 
   logger.log('info', `Loading record ${req.params.id}`);
   loadRecord(client, req.params.id).then(record => {
@@ -86,7 +88,7 @@ marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParam
   const record = transformToMarcRecord(req.body.record);
 
   const clientConfig = {
-    ...defaultConfig,
+    restApiUrl: apiUrl,
     restApiUsername: username,
     restApiPassword: password
   };
@@ -114,7 +116,7 @@ marcIOController.post('/', cors(corsOptions), requireSession, requireBodyParams(
   const record = transformToMarcRecord(req.body.record);
 
   const clientConfig = {
-    ...defaultConfig,
+    restApiUrl: apiUrl,
     restApiUsername: username,
     restApiPassword: password
   };
