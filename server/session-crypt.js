@@ -34,11 +34,10 @@ const algorithm = 'aes-256-gcm';
 const key = readEnvironmentVariable('SECRET_ENCRYPTION_KEY', crypto.randomBytes(32).toString('base64'), {hideDefaultValue: true});
 
 function readKey() {
-  return Buffer.from(key, 'base64');
+  return new Buffer(key, 'base64');
 }
 
 export function createSessionToken(username, password) {
-
   const iv = crypto.randomBytes(12);
   const key = readKey();
 
@@ -67,15 +66,14 @@ function parseToken(token) {
   return {
     username,
     encrypted,
-    iv: Buffer.from(iv, 'hex'),
-    tag: Buffer.from(tag, 'hex')
+    iv: new Buffer(iv, 'hex'),
+    tag: new Buffer(tag, 'hex')
   };
 }
 
-
 function encrypt(text, aad, iv, key) {
   const cipher = crypto.createCipheriv(algorithm, key, iv);
-  cipher.setAAD(Buffer.from(aad, 'utf8'));
+  cipher.setAAD(new Buffer(aad, 'utf8'));
   const encrypted = cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
 
   return {
@@ -85,10 +83,9 @@ function encrypt(text, aad, iv, key) {
   };
 }
 
-
 function decrypt(encrypted, aad, iv, tag, key) {
   const decipher = crypto.createDecipheriv(algorithm, key, iv);
-  decipher.setAAD(Buffer.from(aad, 'utf8'));
+  decipher.setAAD(new Buffer(aad, 'utf8'));
   decipher.setAuthTag(tag);
   return decipher.update(encrypted, 'hex', 'utf8') + decipher.final('utf8');
 }
