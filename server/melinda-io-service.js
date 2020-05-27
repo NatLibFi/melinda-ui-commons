@@ -76,7 +76,6 @@ export function updateAndReloadRecord(client, recordId, record) {
   }
 
   return updateRecord(client, record).then(updateResponse => {
-    logger.log('debug', JSON.stringify(updateResponse));
     logger.log('info', `Record updated ok for ${recordId}`, updateResponse.messages);
 
     return loadRecord(client, recordId).then((record) => {

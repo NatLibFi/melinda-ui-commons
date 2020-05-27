@@ -37,12 +37,12 @@ const algorithm = 'aes-256-gcm';
 const key = readEnvironmentVariable('SECRET_ENCRYPTION_KEY', crypto.randomBytes(32).toString('base64'), {hideDefaultValue: true});
 
 function readKey() {
-  logger.log('debug', 'Reading key');
+  logger.log('silly', 'Session-crypt/Reading key');
   return new Buffer(key, 'base64');
 }
 
 export function createSessionToken(username, password) {
-  logger.log('debug', 'Creating session token');
+  logger.log('silly', 'Session-crypt/Creating session token');
 
   const iv = crypto.randomBytes(12);
   const key = readKey();
@@ -52,7 +52,7 @@ export function createSessionToken(username, password) {
 }
 
 export function readSessionToken(sessionToken) {
-  logger.log('debug', 'Reading session token');
+  logger.log('silly', 'Session-crypt/Reading session token');
   const key = readKey();
   const {username, iv, tag, encrypted} = parseToken(sessionToken);
 
@@ -63,13 +63,13 @@ export function readSessionToken(sessionToken) {
 }
 
 function createToken(username, encryptionResult) {
-  logger.log('debug', 'Creating token');
+  logger.log('silly', 'Session-crypt/Creating token');
   const {encrypted, iv, tag} = encryptionResult;
   return [username, iv.toString('hex'), tag.toString('hex'), encrypted].join(':');
 }
 
 function parseToken(token) {
-  logger.log('debug', 'Parsing token');
+  logger.log('silly', 'Session-crypt/Parsing token');
   const [username, iv, tag, encrypted] = token.split(':');
   return {
     username,
@@ -80,7 +80,7 @@ function parseToken(token) {
 }
 
 function encrypt(text, aad, iv, key) {
-  logger.log('debug', 'Encrypting');
+  logger.log('silly', 'Session-crypt/Encrypting');
   const cipher = crypto.createCipheriv(algorithm, key, iv);
   cipher.setAAD(new Buffer(aad, 'utf8'));
   const encrypted = cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
@@ -93,7 +93,7 @@ function encrypt(text, aad, iv, key) {
 }
 
 function decrypt(encrypted, aad, iv, tag, key) {
-  logger.log('debug', 'decrypting');
+  logger.log('silly', 'Session-crypt/Decrypting');
   const decipher = crypto.createDecipheriv(algorithm, key, iv);
   decipher.setAAD(new Buffer(aad, 'utf8'));
   decipher.setAuthTag(tag);
