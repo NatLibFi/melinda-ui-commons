@@ -43,11 +43,11 @@ export function loadRecord(client, recordId, params = defaultParams) {
         if (result.record === undefined) {
           return reject(new RecordIOError(`Record ${recordId} appears to be empty record.`, HttpStatus.NOT_FOUND));
         }
-        logger.log('debug', JSON.stringify(result));
+        logger.log('silly', `Result: ${JSON.stringify(result)}`);
         return resolve({record: JSON.parse(result.record), subrecords: []});
       }
-      logger.log('debug', `record: ${JSON.stringify(result.record)}`);
-      logger.log('debug', `subrecords: ${JSON.stringify(result.subrecords)}`);
+      logger.log('silly', `Record: ${JSON.stringify(result.record)}`);
+      logger.log('silly', `Subrecords: ${JSON.stringify(result.subrecords)}`);
       return resolve({record: JSON.parse(result.record), subrecords: result.subrecords.map(record => JSON.parse(record))});
     }).catch(error => {
       reject(error);
