@@ -66,7 +66,7 @@ marcIOController.get('/:id', cors(corsOptions), requireSession, (req, res) => {
   const client = createApiClient(clientConfig);
 
   logger.log('info', `Loading record ${req.params.id}`);
-  loadRecord(client, req.params.id).then(record => {
+  loadRecord(client, req.params.id, {subrecords: 1}).then(record => {
     logger.log('info', `Record ${req.params.id} loaded succesfully`);
     return res.send(record);
   }).catch(error => {
