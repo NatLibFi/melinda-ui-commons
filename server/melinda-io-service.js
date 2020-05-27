@@ -37,14 +37,11 @@ const defaultParams = {
 
 export function loadRecord(client, recordId, params = defaultParams) {
   return new Promise((resolve, reject) => {
-    client.getRecord(recordId, params).then(({record, subrecords}) => {
-      if (record === undefined || record.fields.length === 0) {
-        return reject(new RecordIOError(`Record ${recordId} appears to be empty record.`, HttpStatus.NOT_FOUND));
-      }
-      return resolve({record, subrecords});
-    }).catch(error => {
-      return reject(error);
-    }).done();
+    const {record, subrecords} = client.getRecord(recordId, params);
+    if (record === undefined || record.fields.length === 0) {
+      return reject(new RecordIOError(`Record ${recordId} appears to be empty record.`, HttpStatus.NOT_FOUND));
+    }
+    return resolve({record, subrecords});
   });
 }
 
