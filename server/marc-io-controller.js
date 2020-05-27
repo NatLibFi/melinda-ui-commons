@@ -68,7 +68,7 @@ marcIOController.get('/:id', cors(corsOptions), requireSession, (req, res) => {
   logger.log('info', `Loading record ${req.params.id}`);
   loadRecord(client, req.params.id).then(record => {
     logger.log('info', `Record ${req.params.id} loaded succesfully`);
-    res.send(record);
+    return res.send(record);
   }).catch(error => {
     if (error instanceof RecordIOError) {
       logger.log('info', `RecordIOError loading record ${req.params.id}`, error.message);
