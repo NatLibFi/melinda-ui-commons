@@ -37,6 +37,7 @@ const defaultParams = {
 
 export function loadRecord(client, recordId, params = defaultParams) {
   return new Promise((resolve, reject) => {
+    logger.log('debug', client.getRecord);
     const result = client.getRecord(recordId, params);
     logger.log('debug', JSON.stringify(result));
     result.then(({record, subrecords}) => {
