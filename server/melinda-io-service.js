@@ -44,9 +44,9 @@ export function loadRecord(client, recordId, params = defaultParams) {
         if (result === undefined || result.fields.length === 0) {
           return reject(new RecordIOError(`Record ${recordId} appears to be empty record.`, HttpStatus.NOT_FOUND));
         }
-        return resolve({record: result, subrecords: []});
+        return resolve({record: JSON.parse(result), subrecords: []});
       }
-      return resolve(result);
+      return resolve(JSON.parse(result));
     });
   });
 }
@@ -54,7 +54,7 @@ export function loadRecord(client, recordId, params = defaultParams) {
 function updateRecord(client, record) {
   return new Promise((resolve, reject) => {
     const recordId = getRecordId(record);
-    client.postPrio({params: {noop: 0}, body: JSON.stringify(record.toObject())}, recordId).then(updateResponse => {
+    Promise.resolve(client.postPrio({params: {noop: 0}, body: JSON.stringify(record.toObject())}, recordId)).then(updateResponse => {
       return resolve(updateResponse);
     }).catch(error => {
       return reject(error);
@@ -63,7 +63,7 @@ function updateRecord(client, record) {
 }
 
 function createRecord(client, record) {
-  return new Promise((resolve, reject) => client.postPrio({params: {noop: 0}, body: JSON.stringify(record.toObject())}).then(createResponse => {
+  return new Promise((resolve, reject) => Promise.resolve(client.postPrio({params: {noop: 0}, body: JSON.stringify(record.toObject())})).then(createResponse => {
     return resolve(createResponse);
   }).catch(error => {
     return reject(error);
