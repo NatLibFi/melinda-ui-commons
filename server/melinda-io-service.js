@@ -40,13 +40,13 @@ export function loadRecord(client, recordId, params = defaultParams) {
     Promise.resolve(client.getRecord(recordId, params)).then((result) => {
       logger.log('debug', 'LoadRecord/In then');
       logger.log('debug', JSON.stringify(result));
-      
-      //logger.log('debug', JSON.stringify(record));
-      //logger.log('debug', JSON.stringify(subrecords));
-      if (record === undefined || record.fields.length === 0) {
-        return reject(new RecordIOError(`Record ${recordId} appears to be empty record.`, HttpStatus.NOT_FOUND));
+      if (params.subrecords = 0) {
+        if (result === undefined || result.fields.length === 0) {
+          return reject(new RecordIOError(`Record ${recordId} appears to be empty record.`, HttpStatus.NOT_FOUND));
+        }
+        return resolve({record: result, subrecords: []});
       }
-      return resolve({record, subrecords});
+      return resolve(result);
     });
   });
 }
