@@ -83,7 +83,8 @@ export function requireBodyParams(...requiredParams) {
 }
 
 export function userinfoMiddleware(req, res, next) {
-  const {sessionToken} = req.cookies;
+  const {sessionToken} = req.cookies.sessionToken;
+  logger.log('debug',`Cookies: ${req.cookies}`)
   try {
     const {username, password} = readSessionToken(sessionToken);
 
