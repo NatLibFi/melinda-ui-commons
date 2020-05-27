@@ -58,7 +58,7 @@ export function loadRecord(client, recordId, params = defaultParams) {
 function updateRecord(client, record) {
   return new Promise((resolve, reject) => {
     const recordId = getRecordId(record);
-    Promise.resolve(client.postPrio({params: {noop: 0}, body: JSON.stringify(record.toObject())}, recordId)).then(updateResponse => {
+    Promise.resolve(client.postPrio({params: {noop: 0}, contentType: 'application/json', body: JSON.stringify(record)}, recordId)).then(updateResponse => {
       return resolve(updateResponse);
     }).catch(error => {
       return reject(error);
@@ -67,7 +67,7 @@ function updateRecord(client, record) {
 }
 
 function createRecord(client, record) {
-  return new Promise((resolve, reject) => Promise.resolve(client.postPrio({params: {noop: 0}, body: JSON.stringify(record.toObject())})).then(createResponse => {
+  return new Promise((resolve, reject) => Promise.resolve(client.postPrio({params: {noop: 0}, contentType: 'application/json', body: JSON.stringify(record)})).then(createResponse => {
     return resolve(createResponse);
   }).catch(error => {
     return reject(error);
