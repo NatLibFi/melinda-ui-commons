@@ -32,22 +32,26 @@ import {Utils} from '@natlibfi/melinda-commons';
 const {createLogger} = Utils;
 const logger = createLogger();
 const defaultParams = {
-  subrecords: 0
+  subrecords: 1
 };
 
 export function loadRecord(client, recordId, params = defaultParams) {
   return new Promise((resolve, reject) => {
     Promise.resolve(client.getRecord(recordId, params)).then((result) => {
-      logger.log('silly', 'LoadRecord/In then');
-      logger.log('silly', JSON.stringify(result));
-      if (params.subrecords = 0) {
-        if (result === undefined || result.fields.length === 0) {
+      logger.log('verbose', 'LoadRecord/Handling results ');
+      if (params.subrecords === 0) {
+        if (result.record === undefined) {
           return reject(new RecordIOError(`Record ${recordId} appears to be empty record.`, HttpStatus.NOT_FOUND));
         }
-        return resolve({record: JSON.parse(result), subrecords: []});
+        logger.log('debug', JSON.stringify(result));
+        return resolve({record: JSON.parse(result.record), subrecords: []});
       }
+      logger.log('debug', `record: ${JSON.stringify(result.record)}`);
+      logger.log('debug', `subrecords: ${JSON.stringify(result.subrecords)}`);
       return resolve({record: JSON.parse(result.record), subrecords: result.subrecords.map(record => JSON.parse(record))});
-    });
+    }).catch(error => {
+      reject(error);
+    }).done();
   });
 }
 

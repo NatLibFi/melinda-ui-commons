@@ -30,6 +30,7 @@ import {RecordIOError, loadRecord, updateAndReloadRecord} from './melinda-io-ser
 import {__RewireAPI__ as RewireAPI} from './melinda-io-service';
 import sinon from 'sinon';
 import HttpStatus from 'http-status';
+import {MarcRecord} from '@natlibfi/marc-record';
 import {FAKE_RECORD, FAKE_RECORD_2, melindaClientUnableParseResponse} from './test_helpers/fake-data';
 
 describe('melinda io service', () => {
@@ -42,7 +43,8 @@ describe('melinda io service', () => {
   });
 
   let loggerStub;
-  let fakeOpts = {};
+  let fakeOpts = {subrecords: 0};
+  let fakeOpts2 = {subrecords: 1};
   const fakeId = '123';
 
   let resultSpy;
@@ -69,7 +71,7 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.getRecord.resolves({});
+        clientStub.getRecord.resolves({record: undefined});
 
         return loadRecord(clientStub, fakeId, fakeOpts)
           .then(resultSpy)
@@ -97,7 +99,7 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords: []});
+        clientStub.getRecord.resolves({record: JSON.stringify(FAKE_RECORD), subrecords: []});
 
         return loadRecord(clientStub, fakeId, fakeOpts)
           .then(resultSpy)
@@ -106,7 +108,8 @@ describe('melinda io service', () => {
 
       it('resolves with the record', () => {
         const [result] = resultSpy.getCall(0).args;
-        expect(result.record).to.be.equal(FAKE_RECORD);
+        const resultRecord = new MarcRecord(result.record);
+        expect(MarcRecord.isEqual(resultRecord, FAKE_RECORD), true);
       });
 
       it('resolves with an empty array for subrecords', () => {
@@ -125,21 +128,23 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords: [FAKE_RECORD_2]});
+        clientStub.getRecord.resolves({record: JSON.stringify(FAKE_RECORD), subrecords: [JSON.stringify(FAKE_RECORD_2)]});
 
-        return loadRecord(clientStub, fakeId, fakeOpts)
+        return loadRecord(clientStub, fakeId, fakeOpts2)
           .then(resultSpy)
           .catch(errorSpy);
       });
 
       it('resolves with the record', () => {
         const [result] = resultSpy.getCall(0).args;
-        expect(result.record).to.be.equal(FAKE_RECORD);
+        const resultRecord = new MarcRecord(result.record);
+        expect(MarcRecord.isEqual(resultRecord, FAKE_RECORD), true);
       });
 
       it('resolves with an array of subrecords', () => {
         const [result] = resultSpy.getCall(0).args;
-        expect(result.subrecords).to.be.eql([FAKE_RECORD_2]);
+        const resultRecord2 = new MarcRecord(result.subrecords[0]);
+        expect([resultRecord2]).to.be.eql([FAKE_RECORD_2]);
       });
 
       it('does not call error handler', () => {
@@ -188,7 +193,7 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords: []});
+        clientStub.getRecord.resolves({record: JSON.stringify(FAKE_RECORD), subrecords: []});
         clientStub.postPrio.resolves({
           messages: []
         });
@@ -200,7 +205,8 @@ describe('melinda io service', () => {
 
       it('resolves with the record', () => {
         const [result] = resultSpy.getCall(0).args;
-        expect(result.record).to.be.equal(FAKE_RECORD);
+        const resultRecord = new MarcRecord(result.record);
+        expect(MarcRecord.isEqual(resultRecord, FAKE_RECORD), true);
       });
 
       it('resolves with an empty array for subrecords', () => {
@@ -211,11 +217,9 @@ describe('melinda io service', () => {
       it('does not call error handler', () => {
         expect(errorSpy.callCount).to.be.equal(0);
       });
-
     });
 
     describe('when record update fails', () => {
-
       beforeEach(() => {
         const FAKE_RECORD_ID = '28474';
 
@@ -248,10 +252,7 @@ describe('melinda io service', () => {
         const [error] = errorSpy.getCall(0).args;
         expect(error.message).to.be.equal('Fake update failure reason');
       });
-
     });
-
   });
-
 });
 

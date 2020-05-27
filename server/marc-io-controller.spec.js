@@ -32,25 +32,17 @@ import request from 'supertest';
 import HttpStatus from 'http-status';
 import {__RewireAPI__ as RewireAPI} from './marc-io-controller';
 import {marcIOController} from './marc-io-controller';
-//import { createSessionToken } from './session-crypt';
 
 chai.use(sinonChai);
 
-//const sessionToken = createSessionToken('test-user', 'test-pass');
-
 describe('MARC IO controller', () => {
-  let getRecordStub;
-  let loggerStub;
+  let loadRecordStub;
 
   beforeEach(() => {
-    getRecordStub = sinon.stub();
-    const createApiClientStub = sinon.stub().returns({
-      getRecord: getRecordStub
-    });
-    RewireAPI.__Rewire__('createApiClient', createApiClientStub);
-
-    loggerStub = { log: sinon.stub() };
-    //RewireAPI.__Rewire__('logger', loggerStub);
+    loadRecordStub = sinon.stub();
+    RewireAPI.__Rewire__('loadRecord', loadRecordStub);
+    const loggerStub = { log: sinon.stub() };
+    RewireAPI.__Rewire__('logger', loggerStub);
 
     Promise.prototype.done = function () {};
   });
@@ -58,12 +50,11 @@ describe('MARC IO controller', () => {
   afterEach(() => {
     delete (Promise.prototype.done);
     RewireAPI.__ResetDependency__('createApiClient');
-
-    //RewireAPI.__ResetDependency__('logger');
+    RewireAPI.__ResetDependency__('logger');
   });
 
   it('responds in json', done => {
-    getRecordStub.resolves({record: {fields: [{tag: '001', value: '123'}]}, subrecords: [{fields: [{tag: '001', value: '124'}]}, {fields: [{tag: '001', value: '125'}]}]});
+    loadRecordStub.returns(Promise.resolve({record: {fields: [{tag: '001', value: '123'}]}, subrecords: [{fields: [{tag: '001', value: '124'}]}, {fields: [{tag: '001', value: '125'}]}]}));
 
     request(marcIOController)
       .get('/123')

@@ -54,11 +54,11 @@ marcIOController.set('etag', false);
 marcIOController.options('/', cors(corsOptions));
 marcIOController.options('/:id', cors(corsOptions));
 
-marcIOController.get('/:id', cors(corsOptions), requireSession, (req, res) => {
+marcIOController.get('/:id', cors(corsOptions), (req, res) => {
   const {username, password} = req.session;
 
   const clientConfig = {
-    restApiUrl: apiUrl,
+    restApiUrl: apiUrl || '',
     restApiUsername: username || '',
     restApiPassword: password || ''
   };
@@ -66,7 +66,7 @@ marcIOController.get('/:id', cors(corsOptions), requireSession, (req, res) => {
   const client = createApiClient(clientConfig);
 
   logger.log('info', `Loading record ${req.params.id}`);
-  loadRecord(client, req.params.id, {subrecords: 1}).then(record => {
+  loadRecord(client, req.params.id).then(record => {
     logger.log('info', `Record ${req.params.id} loaded succesfully`);
     return res.send(record);
   }).catch(error => {
