@@ -59,8 +59,8 @@ marcIOController.get('/:id', cors(corsOptions), requireSession, (req, res) => {
 
   const clientConfig = {
     restApiUrl: apiUrl,
-    restApiUsername: username || '',
-    restApiPassword: password || ''
+    restApiUsername: username || '',
+    restApiPassword: password || ''
   };
 
   const client = createApiClient(clientConfig);
@@ -72,11 +72,11 @@ marcIOController.get('/:id', cors(corsOptions), requireSession, (req, res) => {
   }).catch(error => {
     if (error instanceof RecordIOError) {
       logger.log('info', `RecordIOError loading record ${req.params.id}`, error.message);
-      res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
-    } else {
-      logger.log('error', `Error loading record ${req.params.id} `, error);
-      res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+      return res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
     }
+
+    logger.log('error', `Error loading record ${req.params.id} `, error);
+    return res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
   });
 });
 
@@ -88,8 +88,8 @@ marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParam
 
   const clientConfig = {
     restApiUrl: apiUrl,
-    restApiUsername: username || '',
-    restApiPassword: password || ''
+    restApiUsername: username || '',
+    restApiPassword: password || ''
   };
 
   const client = createApiClient(clientConfig);
@@ -116,8 +116,8 @@ marcIOController.post('/', cors(corsOptions), requireSession, requireBodyParams(
 
   const clientConfig = {
     restApiUrl: apiUrl,
-    restApiUsername: username || '',
-    restApiPassword: password || ''
+    restApiUsername: username || '',
+    restApiPassword: password || ''
   };
 
   const client = createApiClient(clientConfig);
