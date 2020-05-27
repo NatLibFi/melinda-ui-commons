@@ -46,7 +46,7 @@ export function loadRecord(client, recordId, params = defaultParams) {
         }
         return resolve({record: JSON.parse(result), subrecords: []});
       }
-      return resolve(JSON.parse(result));
+      return resolve({record: JSON.parse(result.record), subrecords: result.subrecords.map(record => JSON.parse(record))});
     });
   });
 }
