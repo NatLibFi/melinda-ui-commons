@@ -20,11 +20,11 @@
   }
   .fill-height {
     min-height: 0;
-    .marc-record-subrecord {
-      min-height: 0;
-      .card-content {
-        padding: 0;
-      }
+  }
+  .marc-record-subrecord {
+    min-height: 0;
+    .card-content {
+      padding: 0;
     }
   }
 }
