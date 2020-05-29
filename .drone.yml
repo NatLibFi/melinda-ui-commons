@@ -3,7 +3,7 @@ kind: pipeline
 name: default
 steps:
 - name: build
-  image: node:10
+  image: node:12
   commands:
   - npm install
   - npm test
@@ -11,9 +11,12 @@ steps:
 - name: npm
   image: plugins/npm
   settings:
+    registry: 'https://registry.npmjs.org/'
     token:
       from_secret: npm_token
   when:
     event: tag
-trigger:
-  event: [push, tag] 
+---
+kind: secret
+name: npm_token
+data: 2OpPyM5AvvWBBJDkFSNb8DFclq8lgtt4nQhdTXlAI7wSGForJgMDZbr7VtTCDVoUFx7wRHYIPj3hAcs5TifDFg==
