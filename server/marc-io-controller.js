@@ -40,9 +40,11 @@ MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues
 const {createLogger, readEnvironmentVariable} = Utils;
 const logger = createLogger();
 
-const apiUrl = readEnvironmentVariable('REST_API_URL', {defaultValue: null});
+const restApiUrl = readEnvironmentVariable('REST_API_URL', {defaultValue: null});
+const restApiUsername = readEnvironmentVariable('REST_API_USERNAME', {defaultValue: null});
+const restApiPassword = readEnvironmentVariable('REST_API_PASSWORD', {defaultValue: null});
 
-logger.log('info', `marc-io-controller endpoint: ${apiUrl}`);
+logger.log('info', `marc-io-controller endpoint: ${restApiUrl}`);
 
 export const marcIOController = express();
 
@@ -55,12 +57,13 @@ marcIOController.options('/', cors(corsOptions));
 marcIOController.options('/:id', cors(corsOptions));
 
 marcIOController.get('/:id', cors(corsOptions), (req, res) => {
-  const {username, password} = req.session;
+  const {username} = req.session;
 
   const clientConfig = {
-    restApiUrl: apiUrl || '',
-    restApiUsername: username || '',
-    restApiPassword: password || ''
+    restApiUrl,
+    restApiUsername,
+    restApiPassword,
+    cataloger: username
   };
 
   const client = createApiClient(clientConfig);
@@ -82,14 +85,15 @@ marcIOController.get('/:id', cors(corsOptions), (req, res) => {
 
 marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParams('record'), (req, res) => {
 
-  const {username, password} = req.session;
+  const {username} = req.session;
   const recordId = req.params.id;
   const record = transformToMarcRecord(req.body.record);
 
   const clientConfig = {
-    restApiUrl: apiUrl,
-    restApiUsername: username || '',
-    restApiPassword: password || ''
+    restApiUrl,
+    restApiUsername,
+    restApiPassword,
+    cataloger: username
   };
 
   const client = createApiClient(clientConfig);
@@ -111,13 +115,14 @@ marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParam
 
 marcIOController.post('/', cors(corsOptions), requireSession, requireBodyParams('record'), (req, res) => {
 
-  const {username, password} = req.session;
+  const {username} = req.session;
   const record = transformToMarcRecord(req.body.record);
 
   const clientConfig = {
-    restApiUrl: apiUrl,
-    restApiUsername: username || '',
-    restApiPassword: password || ''
+    restApiUrl,
+    restApiUsername,
+    restApiPassword,
+    cataloger: username
   };
 
   const client = createApiClient(clientConfig);
