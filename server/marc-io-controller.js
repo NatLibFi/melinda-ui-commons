@@ -33,8 +33,8 @@ import cookieParser from 'cookie-parser';
 import HttpStatus from 'http-status';
 import {readSessionMiddleware, requireSession} from './session-controller';
 import {MarcRecord} from '@natlibfi/marc-record';
-import {loadRecord, updateAndReloadRecord, createAndReloadRecord, RecordIOError} from './melinda-io-service';
-import {Utils, createApiClient} from '@natlibfi/melinda-commons';
+import {loadRecord, updateAndReloadRecord, createAndReloadRecord} from './melinda-io-service';
+import {Error as RecordIOError, Utils, createApiClient} from '@natlibfi/melinda-commons';
 MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 const {createLogger, readEnvironmentVariable} = Utils;
@@ -74,8 +74,8 @@ marcIOController.get('/:id', cors(corsOptions), (req, res) => {
     return res.send(record);
   }).catch(error => {
     if (error instanceof RecordIOError) {
-      logger.log('info', `RecordIOError loading record ${req.params.id}`, error.message);
-      return res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
+      logger.log('info', `RecordIOError loading record ${req.params.id}`, error.payload);
+      return res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.payload);
     }
 
     logger.log('error', `Error loading record ${req.params.id} `, error);
@@ -104,8 +104,8 @@ marcIOController.put('/:id', cors(corsOptions), requireSession, requireBodyParam
     res.send(result);
   }).catch(error => {
     if (error instanceof RecordIOError) {
-      logger.log('info', `Record update failed for ${recordId}`, error.message);
-      res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
+      logger.log('info', `Record update failed for ${recordId}`, error.payload);
+      res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.payload);
     } else {
       logger.log('error', `Record update failed for ${recordId}`, error);
       res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -133,8 +133,8 @@ marcIOController.post('/', cors(corsOptions), requireSession, requireBodyParams(
     res.send(result);
   }).catch(error => {
     if (error instanceof RecordIOError) {
-      logger.log('info', 'Record creation failed', error.message);
-      res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
+      logger.log('info', 'Record creation failed', error.payload);
+      res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.payload);
     } else {
       logger.log('error', 'Record creation failed', error);
       res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
