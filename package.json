@@ -34,7 +34,7 @@
     "build:frontend:transpile": "babel frontend --ignore node_modules,spec.js --out-dir dist/frontend --source-maps",
     "build:frontend:copyfiles": "cp -r frontend/styles frontend/images frontend/fonts dist/frontend/",
     "build": "npm run build:server && npm run build:frontend",
-		"lint": "eslint server",
+    "lint": "eslint server",
     "test": "npm run test:frontend && npm run test:server",
     "test:frontend": "BABEL_ENV=test mocha --compilers js:babel-register --require ignore-styles --require ./frontend/test_helpers/test_bootstrap.js \"frontend/**/*@(.spec.js|.spec.jsx)\"",
     "test:frontend:watch": "npm run test:frontend -- --watch",

@@ -26,12 +26,13 @@
 *
 */
 import {expect} from 'chai';
-import {RecordIOError, loadRecord, updateAndReloadRecord} from './melinda-io-service';
+import {loadRecord, updateAndReloadRecord} from './melinda-io-service';
 import {__RewireAPI__ as RewireAPI} from './melinda-io-service';
 import sinon from 'sinon';
 import HttpStatus from 'http-status';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {FAKE_RECORD, FAKE_RECORD_2, melindaClientUnableParseResponse} from './test_helpers/fake-data';
+import {Error as RecordIOError} from '@natlibfi/melinda-commons';
 
 describe('melinda io service', () => {
 
@@ -71,7 +72,7 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.getRecord.resolves({record: undefined});
+        clientStub.getRecord.rejects(new RecordIOError(HttpStatus.NOT_FOUND, 'Record not found'));
 
         return loadRecord(clientStub, fakeId, fakeOpts)
           .then(resultSpy)
@@ -99,7 +100,7 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.getRecord.resolves({record: JSON.stringify(FAKE_RECORD), subrecords: []});
+        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords: []});
 
         return loadRecord(clientStub, fakeId, fakeOpts)
           .then(resultSpy)
@@ -128,7 +129,7 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.getRecord.resolves({record: JSON.stringify(FAKE_RECORD), subrecords: [JSON.stringify(FAKE_RECORD_2)]});
+        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords: [FAKE_RECORD_2]});
 
         return loadRecord(clientStub, fakeId, fakeOpts2)
           .then(resultSpy)
@@ -178,7 +179,7 @@ describe('melinda io service', () => {
 
       it('rejects with explanation', () => {
         const [error] = errorSpy.getCall(0).args;
-        expect(error.message).to.be.equal(`recordId from url must match field 001 in supplied record: ${fakeId} !== 28474`);
+        expect(error.payload).to.be.equal(`recordId from url must match field 001 in supplied record: ${fakeId} !== 28474`);
       });
 
       it('does not call result handler', () => {
@@ -193,7 +194,7 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.getRecord.resolves({record: JSON.stringify(FAKE_RECORD), subrecords: []});
+        clientStub.getRecord.resolves({record: FAKE_RECORD, subrecords: []});
         clientStub.postPrio.resolves({
           messages: []
         });
@@ -250,7 +251,7 @@ describe('melinda io service', () => {
 
       it('rejects with explanation', () => {
         const [error] = errorSpy.getCall(0).args;
-        expect(error.message).to.be.equal('Fake update failure reason');
+        expect(error.payload).to.be.equal('Fake update failure reason');
       });
     });
   });

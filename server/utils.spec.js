@@ -28,6 +28,7 @@
 import {expect} from 'chai';
 import {readEnvironmentVariable, createLoadUserIndexFn} from './utils';
 import {__RewireAPI__ as UtilsRewireAPI} from './utils';
+import {__RewireAPI__ as RewireAPI2} from './session-crypt';
 import sinon from 'sinon';
 
 describe('utils', () => {
@@ -35,10 +36,12 @@ describe('utils', () => {
   beforeEach(() => {
     logStub = sinon.stub();
     UtilsRewireAPI.__Rewire__('logger', {log: logStub});
+    RewireAPI2.__Rewire__('logger', {log: logStub});
   });
 
   afterEach(() => {
     UtilsRewireAPI.__ResetDependency__('logger');
+    RewireAPI2.__ResetDependency__('logger');
   });
 
 

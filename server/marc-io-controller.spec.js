@@ -31,6 +31,7 @@ import sinonChai from 'sinon-chai';
 import request from 'supertest';
 import HttpStatus from 'http-status';
 import {__RewireAPI__ as RewireAPI} from './marc-io-controller';
+import {__RewireAPI__ as RewireAPI2} from './session-crypt';
 import {marcIOController} from './marc-io-controller';
 
 chai.use(sinonChai);
@@ -43,6 +44,7 @@ describe('MARC IO controller', () => {
     RewireAPI.__Rewire__('loadRecord', loadRecordStub);
     const loggerStub = { log: sinon.stub() };
     RewireAPI.__Rewire__('logger', loggerStub);
+    RewireAPI2.__Rewire__('logger', loggerStub);
 
     Promise.prototype.done = function () {};
   });
@@ -51,6 +53,7 @@ describe('MARC IO controller', () => {
     delete (Promise.prototype.done);
     RewireAPI.__ResetDependency__('createApiClient');
     RewireAPI.__ResetDependency__('logger');
+    RewireAPI2.__ResetDependency__('logger');
   });
 
   it('responds in json', done => {

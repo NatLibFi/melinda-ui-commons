@@ -27,7 +27,7 @@
 */
 import _ from 'lodash';
 import HttpStatus from 'http-status';
-import {Utils} from '@natlibfi/melinda-commons';
+import {Error as RecordIOError, Utils} from '@natlibfi/melinda-commons';
 
 const {createLogger} = Utils;
 const logger = createLogger();
@@ -37,19 +37,13 @@ const defaultParams = {
 
 export function loadRecord(client, recordId, params = defaultParams) {
   return new Promise((resolve, reject) => {
-    Promise.resolve(client.getRecord(recordId, params)).then((result) => {
+    Promise.resolve(client.getRecord(recordId, params)).then(({record, subrecords}) => {
       logger.log('verbose', 'LoadRecord/Handling results ');
-      if (params.subrecords === 0) {
-        if (result.record === undefined) {
-          return reject(new RecordIOError(`Record ${recordId} appears to be empty record.`, HttpStatus.NOT_FOUND));
-        }
-        logger.log('silly', `Result: ${JSON.stringify(result)}`);
-        return resolve({record: JSON.parse(result.record), subrecords: []});
-      }
-      logger.log('silly', `Record: ${JSON.stringify(result.record)}`);
-      logger.log('silly', `Subrecords: ${JSON.stringify(result.subrecords)}`);
-      return resolve({record: JSON.parse(result.record), subrecords: result.subrecords.map(record => JSON.parse(record))});
+      logger.log('silly', `Record: ${JSON.stringify({record})}`);
+      logger.log('silly', `Subrecords: ${JSON.stringify(subrecords)}`);
+      resolve({record, subrecords});
     }).catch(error => {
+      logger.log('error', error);
       reject(error);
     });
   });
@@ -79,7 +73,7 @@ export function updateAndReloadRecord(client, recordId, record) {
 
   if (parseInt(recordIdFromBody) !== parseInt(recordId)) {
     const errorMessage = `recordId from url must match field 001 in supplied record: ${recordId} !== ${recordIdFromBody}`;
-    return Promise.reject(new RecordIOError(errorMessage, HttpStatus.BAD_REQUEST));
+    return Promise.reject(new RecordIOError(HttpStatus.BAD_REQUEST, errorMessage));
   }
 
   return updateRecord(client, record).then(updateResponse => {
@@ -95,7 +89,7 @@ export function updateAndReloadRecord(client, recordId, record) {
     logger.log('info', `Record update failed for ${recordId} `, error);
     if (looksLikeMelindaClientParseError(error)) {
       const reason = _.get(error, 'errors[0].message').substr('melinda-api-client unable to parse: '.length);
-      throw new RecordIOError(reason, HttpStatus.BAD_REQUEST);
+      throw new RecordIOError(HttpStatus.BAD_REQUEST, reason);
     }
     throw error;
   });
@@ -120,7 +114,7 @@ export function createAndReloadRecord(client, record) {
     if (looksLikeMelindaClientParseError(error)) {
       const reason = _.get(error, 'errors[0].message').substr('melinda-api-client unable to parse: '.length);
 
-      throw new RecordIOError(reason, HttpStatus.BAD_REQUEST);
+      throw new RecordIOError(HttpStatus.BAD_REQUEST, reason);
     }
     throw error;
   });
@@ -134,19 +128,3 @@ function getRecordId(record) {
   const [f001] = record.get(/^001$/);
   return f001.value;
 }
-
-export function RecordIOError(message, statusCode) {
-  var temp = Error.apply(this, [message]);
-  temp.name = this.name = 'RecordIOError';
-  this.stack = temp.stack;
-  this.message = temp.message;
-  this.status = statusCode;
-}
-
-RecordIOError.prototype = Object.create(Error.prototype, {
-  constructor: {
-    value: RecordIOError,
-    writable: true,
-    configurable: true
-  }
-});

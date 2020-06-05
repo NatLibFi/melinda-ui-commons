@@ -32,6 +32,7 @@ import {sessionController} from './session-controller';
 import {authProvider} from './melinda-auth-provider';
 import request from 'supertest';
 import {__RewireAPI__ as RewireAPI} from './session-controller';
+import {__RewireAPI__ as RewireAPI2} from './session-crypt';
 
 chai.use(sinonChai);
 const expect = chai.expect;
@@ -41,15 +42,15 @@ describe('Session controller', () => {
 
   beforeEach(() => {
     loggerStub = {log: sinon.stub()};
-
     RewireAPI.__Rewire__('logger', loggerStub);
+    RewireAPI2.__Rewire__('logger', loggerStub);
   });
   afterEach(() => {
     RewireAPI.__ResetDependency__('logger');
+    RewireAPI2.__ResetDependency__('logger');
   });
 
   describe('start', () => {
-
     let validateCredentialsStub;
 
     beforeEach(() => {
