@@ -29,30 +29,33 @@ import _ from 'lodash';
 import HttpStatus from 'http-status';
 import {Error as RecordIOError, Utils} from '@natlibfi/melinda-commons';
 
-const {createLogger} = Utils;
+const {createLogger, createSubrecordPicker, readEnvironmentVariable} = Utils;
+const sruUrl = readEnvironmentVariable('SRU_URL');
 const logger = createLogger();
-const defaultParams = {
-  subrecords: 1
-};
+const subrecordPicker = createSubrecordPicker(sruUrl);
 
-export function loadRecord(client, recordId, params = defaultParams) {
+export function loadRecord(client, recordId) {
   return new Promise((resolve, reject) => {
-    Promise.resolve(client.getRecord(recordId, params)).then(({record, subrecords}) => {
-      logger.log('verbose', 'LoadRecord/Handling results ');
-      logger.log('silly', `Record: ${JSON.stringify({record})}`);
-      logger.log('silly', `Subrecords: ${JSON.stringify(subrecords)}`);
-      resolve({record, subrecords});
-    }).catch(error => {
-      logger.log('error', error);
-      reject(error);
-    });
+    Promise.resolve(client.read(recordId)).then(({record}) =>
+      Promise.resolve(subrecordPicker.readSubrecords(recordId)).then((subrecords) => {
+        logger.log('verbose', 'LoadRecord/Handling results ');
+        logger.log('silly', `Record: ${JSON.stringify({record})}`);
+        logger.log('silly', `Subrecords: ${JSON.stringify(subrecords)}`);
+        resolve({record, subrecords});
+      }).catch(error => {
+        logger.log('error', error);
+        reject(error);
+      })).catch(error => {
+        logger.log('error', error);
+        reject(error);
+      });
   });
 }
 
 function updateRecord(client, record) {
   return new Promise((resolve, reject) => {
     const recordId = getRecordId(record);
-    Promise.resolve(client.postPrio({params: {noop: 0}, contentType: 'application/json', body: JSON.stringify(record)}, recordId)).then(updateResponse => {
+    Promise.resolve(client.update(record, recordId, {noop: 0})).then(updateResponse => {
       return resolve(updateResponse);
     }).catch(error => {
       return reject(error);
@@ -61,7 +64,7 @@ function updateRecord(client, record) {
 }
 
 function createRecord(client, record) {
-  return new Promise((resolve, reject) => Promise.resolve(client.postPrio({params: {noop: 0}, contentType: 'application/json', body: JSON.stringify(record)})).then(createResponse => {
+  return new Promise((resolve, reject) => Promise.resolve(client.create(record, {noop: 0})).then(createResponse => {
     return resolve(createResponse);
   }).catch(error => {
     return reject(error);
