@@ -60,6 +60,7 @@ describe('melinda io service', () => {
       update: sinon.stub()
     };
 
+
     subrecordPickerStub = {
       readSubrecords: sinon.stub()
     };

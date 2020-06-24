@@ -36,19 +36,15 @@ const subrecordPicker = createSubrecordPicker(sruUrl);
 
 export function loadRecord(client, recordId) {
   return new Promise((resolve, reject) => {
-    Promise.resolve(client.read(recordId)).then(({record}) =>
-      Promise.resolve(subrecordPicker.readSubrecords(recordId)).then((subrecords) => {
-        logger.log('verbose', 'LoadRecord/Handling results ');
-        logger.log('silly', `Record: ${JSON.stringify({record})}`);
-        logger.log('silly', `Subrecords: ${JSON.stringify(subrecords)}`);
-        resolve({record, subrecords});
-      }).catch(error => {
-        logger.log('error', error);
-        reject(error);
-      })).catch(error => {
-        logger.log('error', error);
-        reject(error);
-      });
+    Promise.all([client.read(recordId), subrecordPicker.readSubrecords(recordId)]).then(([{record}, subrecords]) => {
+      logger.log('verbose', 'LoadRecord/Handling results ');
+      logger.log('silly', `Record: ${JSON.stringify({record})}`);
+      logger.log('silly', `Subrecords: ${JSON.stringify(subrecords)}`);
+      resolve({record, subrecords});
+    }).catch(error => {
+      logger.log('error', error);
+      reject(error);
+    });
   });
 }
 
