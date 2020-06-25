@@ -57,7 +57,7 @@
     "express": "^4.16.2",
     "express-winston": "^2.4.0",
     "fs-extra": "^4.0.2",
-    "http-status": "^1.4.1",
+    "http-status": "^1.4.2",
     "immutable": "^3.8.2",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
