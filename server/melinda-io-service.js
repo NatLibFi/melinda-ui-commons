@@ -31,18 +31,34 @@ import {Error as RecordIOError, createSubrecordPicker} from '@natlibfi/melinda-c
 import {createLogger, readEnvironmentVariable} from '@natlibfi/melinda-backend-commons';
 
 const sruUrl = readEnvironmentVariable('SRU_URL');
-const logger = createLogger();
 const subrecordPicker = createSubrecordPicker(sruUrl, true);
+const logger = createLogger();
 
 export function loadRecord(client, recordId) {
+  const record = Promise.resolve(readRecord(client, recordId));
+  const subrecords = Promise.resolve(readSubrecords(recordId));
+  return {record, subrecords};
+}
+
+function readSubrecords(recordId) {
   return new Promise((resolve, reject) => {
-    Promise.all([client.read(recordId), subrecordPicker.readSubrecords(recordId)]).then(([{record}, subrecords]) => {
-      logger.log('verbose', 'LoadRecord/Handling results ');
-      logger.log('silly', `Record: ${JSON.stringify({record})}`);
-      logger.log('silly', `Subrecords: ${JSON.stringify(subrecords)}`);
-      resolve({record, subrecords});
+    subrecordPicker.readSubrecords(recordId).then(subrecords => {
+      logger.log('debug', `Subrecords: ${JSON.stringify(subrecords)}`);
+      resolve(subrecords);
     }).catch(error => {
-      logger.log('error', JSON.stringify(error));
+      logger.log('debug', 'Subrecord loading error');
+      reject(error);
+    });
+  });
+}
+
+function readRecord(client, recordId) {
+  return new Promise((resolve, reject) => {
+    client.read(recordId).then(({record}) => {
+      logger.log('debug', `Record: ${JSON.stringify({record})}`);
+      resolve(record);
+    }).catch(error => {
+      logger.log('debug', 'Record loading error');
       reject(error);
     });
   });
@@ -54,6 +70,7 @@ function updateRecord(client, record) {
     Promise.resolve(client.update(record, recordId, {noop: 0})).then(updateResponse => {
       return resolve(updateResponse);
     }).catch(error => {
+      logger.log('debug', 'Record update error');
       return reject(error);
     }).done();
   });
@@ -63,6 +80,7 @@ function createRecord(client, record) {
   return new Promise((resolve, reject) => Promise.resolve(client.create(record, {noop: 0})).then(createResponse => {
     return resolve(createResponse);
   }).catch(error => {
+    logger.log('debug', 'Record create error');
     return reject(error);
   }).done());
 }
