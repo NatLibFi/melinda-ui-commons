@@ -34,10 +34,11 @@ import HttpStatus from 'http-status';
 import {readSessionMiddleware, requireSession} from './session-controller';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {loadRecord, updateAndReloadRecord, createAndReloadRecord} from './melinda-io-service';
-import {Error as RecordIOError, Utils, createApiClient} from '@natlibfi/melinda-commons';
+import {Error as RecordIOError} from '@natlibfi/melinda-commons';
+import {createApiClient} from '@natlibfi/melinda-rest-api-client-js';
+import {createLogger, readEnvironmentVariable} from '@natlibfi/melinda-backend-commons';
 MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
-const {createLogger, readEnvironmentVariable} = Utils;
 const logger = createLogger();
 
 const restApiUrl = readEnvironmentVariable('REST_API_URL', {defaultValue: null});

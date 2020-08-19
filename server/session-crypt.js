@@ -27,9 +27,8 @@
 */
 import crypto from 'crypto';
 import {readEnvironmentVariable} from './utils';
-import {Utils} from '@natlibfi/melinda-commons';
+import {createLogger} from '@natlibfi/melinda-backend-commons';
 
-const {createLogger} = Utils;
 const logger = createLogger();
 const algorithm = 'aes-256-gcm';
 

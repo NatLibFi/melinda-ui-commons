@@ -32,10 +32,9 @@ import {createSessionToken, readSessionToken} from './session-crypt';
 import bodyParser from 'body-parser';
 import _ from 'lodash';
 import {corsOptions, requireBodyParams} from './utils';
-import {Utils} from '@natlibfi/melinda-commons';
+import {createLogger} from '@natlibfi/melinda-backend-commons';
 import HttpStatus from 'http-status';
 
-const {createLogger} = Utils;
 const logger = createLogger();
 
 export const sessionController = express();

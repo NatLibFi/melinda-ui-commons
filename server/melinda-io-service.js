@@ -27,9 +27,9 @@
 */
 import _ from 'lodash';
 import HttpStatus from 'http-status';
-import {Error as RecordIOError, Utils} from '@natlibfi/melinda-commons';
+import {Error as RecordIOError, createSubrecordPicker} from '@natlibfi/melinda-commons';
+import {createLogger, readEnvironmentVariable} from '@natlibfi/melinda-backend-commons';
 
-const {createLogger, createSubrecordPicker, readEnvironmentVariable} = Utils;
 const sruUrl = readEnvironmentVariable('SRU_URL');
 const logger = createLogger();
 const subrecordPicker = createSubrecordPicker(sruUrl);
