@@ -42,7 +42,7 @@ export function loadRecord(client, recordId) {
       logger.log('silly', `Subrecords: ${JSON.stringify(subrecords)}`);
       resolve({record, subrecords});
     }).catch(error => {
-      logger.log('error', error);
+      logger.log('error', JSON.stringify(error));
       reject(error);
     });
   });
