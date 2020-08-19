@@ -32,7 +32,7 @@ import {createLogger, readEnvironmentVariable} from '@natlibfi/melinda-backend-c
 
 const sruUrl = readEnvironmentVariable('SRU_URL');
 const logger = createLogger();
-const subrecordPicker = createSubrecordPicker(sruUrl);
+const subrecordPicker = createSubrecordPicker(sruUrl, true);
 
 export function loadRecord(client, recordId) {
   return new Promise((resolve, reject) => {

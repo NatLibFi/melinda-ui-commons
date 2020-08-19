@@ -37,8 +37,8 @@ import {loadRecord, updateAndReloadRecord, createAndReloadRecord} from './melind
 import {Error as RecordIOError} from '@natlibfi/melinda-commons';
 import {createApiClient} from '@natlibfi/melinda-rest-api-client-js';
 import {createLogger, readEnvironmentVariable} from '@natlibfi/melinda-backend-commons';
-MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
+MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 const logger = createLogger();
 
 const restApiUrl = readEnvironmentVariable('REST_API_URL', {defaultValue: null});
