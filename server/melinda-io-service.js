@@ -30,9 +30,10 @@ import HttpStatus from 'http-status';
 import {Error as RecordIOError, createSubrecordPicker} from '@natlibfi/melinda-commons';
 import {createLogger, readEnvironmentVariable} from '@natlibfi/melinda-backend-commons';
 
-const sruUrl = readEnvironmentVariable('SRU_URL');
-const subrecordPicker = createSubrecordPicker(sruUrl, true);
 const logger = createLogger();
+const sruUrl = readEnvironmentVariable('SRU_URL');
+logger.log('debug', sruUrl);
+const subrecordPicker = createSubrecordPicker(sruUrl, true);
 
 export function loadRecord(client, recordId) {
   return new Promise((resolve) => {
