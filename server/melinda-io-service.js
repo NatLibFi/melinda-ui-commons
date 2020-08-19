@@ -35,14 +35,16 @@ const subrecordPicker = createSubrecordPicker(sruUrl, true);
 const logger = createLogger();
 
 export function loadRecord(client, recordId) {
-  const record = Promise.resolve(readRecord(client, recordId));
-  const subrecords = Promise.resolve(readSubrecords(recordId));
-  return {record, subrecords};
+  return new Promise((resolve) => {
+    const record = Promise.resolve(readRecord(client, recordId));
+    const subrecords = Promise.resolve(readSubrecords(recordId));
+    resolve({record, subrecords});
+  });
 }
 
 function readSubrecords(recordId) {
   return new Promise((resolve, reject) => {
-    subrecordPicker.readSubrecords(recordId).then(subrecords => {
+    subrecordPicker.readAllSubrecords(recordId).then(subrecords => {
       logger.log('debug', `Subrecords: ${JSON.stringify(subrecords)}`);
       resolve(subrecords);
     }).catch(error => {
