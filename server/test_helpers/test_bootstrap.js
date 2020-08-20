@@ -28,6 +28,7 @@
 process.env.REST_API_URL='test-rest-url';
 process.env.REST_API_USERNAME='test-rest-username';
 process.env.REST_API_PASSWORD='test-rest-password';
+process.env.SRU_URL='test-sru-url';
 process.env.ALEPH_URL='test-url';
 process.env.ALEPH_USER_LIBRARY='test-lib';
 process.env.DUPLICATE_DB_URL='test-duplicate-db-url';
