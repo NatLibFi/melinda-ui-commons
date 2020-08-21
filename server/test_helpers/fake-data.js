@@ -26,6 +26,8 @@
 *
 */
 import {MarcRecord} from '@natlibfi/marc-record';
+
+// Lisätty
 MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 export const FAKE_RECORD = MarcRecord.fromString([
@@ -109,7 +111,7 @@ export const FAKE_RECORD_ONLY_LOW_TEST = MarcRecord.fromString([
 export const FAKE_CYRILLIC_RECORD = MarcRecord.fromString(`LDR    01731cam a22002417i 4500
 001    002686913
 005    20050825143756.0
-008    050712s2005    ru      r     000 u rus  
+008    050712s2005    ru      r     000 u rus
 020    ‡a5-94617-054-6 (в обл.)
 040    ‡aRuMoRKP‡brus‡ercr‡dRuMoRGB
 041 0  ‡arus

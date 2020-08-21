@@ -33,6 +33,9 @@ import {v4 as uuid} from 'uuid';
 import { Repeat, Map, List } from 'immutable';
 import {MarcRecord} from '@natlibfi/marc-record';
 
+// Lisätty
+MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
+
 // Until this has been merged, we are using custom version of draftjs: https://github.com/facebook/draft-js/pull/667
 import {getDefaultKeyBinding, KeyBindingUtil, Modifier, convertToRaw, EditorBlock, genKey,
   DefaultDraftBlockRenderMap, Editor, EditorState, ContentState, ContentBlock, CharacterMetadata} from 'draft-js';

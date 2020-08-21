@@ -30,6 +30,8 @@ import {expect} from 'chai';
 import {removeLocalReference} from './remove-local-reference';
 import {FAKE_RECORD_FCC_SID, FAKE_RECORD, FAKE_DELETED_RECORD, FAKE_RECORD_SID_LOW, FAKE_RECORD_FOR_CLEANUP} from '../test_helpers/fake-data';
 import {exceptCoreErrors} from '../utils';
+
+// Lisätty
 MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 describe('removeLocalReference', () => {

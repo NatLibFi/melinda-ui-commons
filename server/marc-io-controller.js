@@ -38,6 +38,7 @@ import {Error as RecordIOError} from '@natlibfi/melinda-commons';
 import {createApiClient} from '@natlibfi/melinda-rest-api-client-js';
 import {createLogger, readEnvironmentVariable} from '@natlibfi/melinda-backend-commons';
 
+// Lisätty
 MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 const logger = createLogger();
 

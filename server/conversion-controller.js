@@ -34,6 +34,8 @@ import cookieParser from 'cookie-parser';
 import HttpStatus from 'http-status';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {convertRecord} from './conversion-service';
+
+// Lisätty
 MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 export const conversionController = express();

@@ -28,6 +28,8 @@
 import {expect} from 'chai';
 import {isComponentRecord} from './record-utils';
 import {MarcRecord} from '@natlibfi/marc-record';
+
+// Lisätty
 MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 const fakeComponentRecord = MarcRecord.fromString(`LDR    00000faahijk

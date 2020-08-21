@@ -34,6 +34,9 @@ import {MarcRecord} from '@natlibfi/marc-record';
 import {FAKE_RECORD, FAKE_RECORD_2, melindaClientUnableParseResponse} from './test_helpers/fake-data';
 import {Error as RecordIOError} from '@natlibfi/melinda-commons';
 
+// Lisätty
+MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
+
 describe('melinda io service', () => {
 
   before(() => {

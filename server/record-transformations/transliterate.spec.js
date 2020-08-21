@@ -29,6 +29,8 @@ import {MarcRecord} from '@natlibfi/marc-record';
 import {expect} from 'chai';
 import {transliterate} from './transliterate';
 import _ from 'lodash';
+
+// Lisätty
 MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 export const FAKE_RECORD = MarcRecord.fromString(

@@ -32,6 +32,8 @@ import {v4 as uuid} from 'uuid';
 import {isDataField} from '../record-utils';
 import {MarcRecord} from '@natlibfi/marc-record';
 import XRegExp from 'xregexp';
+
+// Lisätty
 MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 const defaultOptions = {
@@ -298,7 +300,7 @@ function createTransliteratedFieldsFrom880(options, fieldList) {
       if (!containsField(fieldList, iso9Transliterated)) {
         fields.push(iso9Transliterated);
 
-        // We added new "main" field (non-880) with iso9 transliteration. We cleanup the corresponding, 
+        // We added new "main" field (non-880) with iso9 transliteration. We cleanup the corresponding,
         // already transliterated field (if any), from the record
         const iso9link = getLinkSubfield(iso9Transliterated);
 
