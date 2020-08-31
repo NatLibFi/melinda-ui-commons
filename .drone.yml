@@ -1,3 +1,4 @@
+---
 
 kind: pipeline
 name: default
@@ -13,7 +14,12 @@ steps:
   settings:
     token:
       from_secret: npm_token
-  when:
-    event: tag
-trigger:
-  event: [push, tag] 
+---
+kind: secret
+name: npm_token
+data: DwlfIHYNR5KlwmWjGT4xnJG12C34lqLseOok1TFv1Fp5uJnp/+DmtZcl3tTxvYwGL06hGlT+dLZ7XGHE8GqODO59WbMG2OwZnbunI/c33xLQhy+MUyw12wn7HHJHvEaAPviB+9yqZKv9mi7WxKbI5DqNO7w=
+---
+kind: signature
+hmac: 613a3cb1514e8a62efb636450ae59b9a5e35e96a20c9241e6afddf1ab74d7ab7
+
+...
