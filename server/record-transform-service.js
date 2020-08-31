@@ -27,7 +27,6 @@
 */
 import {MarcRecord} from '@natlibfi/marc-record';
 import {removeLocalReference} from './record-transformations/remove-local-reference';
-MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 export function transformRecord(action, recordParam, opts) {
 

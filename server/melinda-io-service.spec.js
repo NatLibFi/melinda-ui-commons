@@ -65,17 +65,17 @@ describe('melinda io service', () => {
 
 
     subrecordPickerStub = {
-      readSubrecords: sinon.stub()
+      readAllSubrecords: sinon.stub()
     };
 
     loggerStub = {log: sinon.stub()};
 
     RewireAPI.__Rewire__('subrecordPicker', subrecordPickerStub);
-    RewireAPI.__Rewire__('logger', loggerStub);
+    //RewireAPI.__Rewire__('logger', loggerStub);
   });
   afterEach(() => {
     RewireAPI.__ResetDependency__('subrecordPicker');
-    RewireAPI.__ResetDependency__('logger');
+    //RewireAPI.__ResetDependency__('logger');
   });
 
   describe('loadRecord', () => {
@@ -113,7 +113,7 @@ describe('melinda io service', () => {
         errorSpy = sinon.spy();
 
         clientStub.read.resolves({record: FAKE_RECORD});
-        subrecordPickerStub.readSubrecords.resolves([]);
+        subrecordPickerStub.readAllSubrecords.resolves([]);
 
         return loadRecord(clientStub, fakeId, fakeOpts)
           .then(resultSpy)
@@ -143,7 +143,7 @@ describe('melinda io service', () => {
         errorSpy = sinon.spy();
 
         clientStub.read.resolves({record: FAKE_RECORD});
-        subrecordPickerStub.readSubrecords.resolves([FAKE_RECORD_2]);
+        subrecordPickerStub.readAllSubrecords.resolves([FAKE_RECORD_2]);
 
         return loadRecord(clientStub, fakeId, fakeOpts2)
           .then(resultSpy)
@@ -175,7 +175,7 @@ describe('melinda io service', () => {
         errorSpy = sinon.spy();
 
         clientStub.read.resolves({record: FAKE_RECORD});
-        subrecordPickerStub.readSubrecords.resolves([]);
+        subrecordPickerStub.readAllSubrecords.resolves([]);
 
         return updateAndReloadRecord(clientStub, fakeId, FAKE_RECORD, fakeOpts)
           .then(resultSpy)
@@ -210,7 +210,7 @@ describe('melinda io service', () => {
         errorSpy = sinon.spy();
 
         clientStub.read.resolves({record: FAKE_RECORD});
-        subrecordPickerStub.readSubrecords.resolves([]);
+        subrecordPickerStub.readAllSubrecords.resolves([]);
         clientStub.update.resolves({
           messages: []
         });
@@ -244,7 +244,7 @@ describe('melinda io service', () => {
         errorSpy = sinon.spy();
 
         clientStub.read.resolves({record: FAKE_RECORD});
-        subrecordPickerStub.readSubrecords.resolves([]);
+        subrecordPickerStub.readAllSubrecords.resolves([]);
         clientStub.update.rejects(melindaClientUnableParseResponse);
 
         return updateAndReloadRecord(clientStub, FAKE_RECORD_ID, FAKE_RECORD, fakeOpts)
