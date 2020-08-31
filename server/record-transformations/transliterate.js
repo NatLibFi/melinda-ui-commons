@@ -49,7 +49,7 @@ export function transliterate(record, options) {
   return new Promise((resolve) => {
     const fields = record.fields;
     record.fields = transformFields(options, fields);
-    const warnings = checkForWarnings(originalRecord, record);
+    const warnings = checkForWarnings(record, record);
     record.fields = removeFailedTransliterations(record.fields);
     resolve({record, warnings});
   });
