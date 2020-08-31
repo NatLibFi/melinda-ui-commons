@@ -31,7 +31,7 @@ import {Error as RecordIOError, createSubrecordPicker} from '@natlibfi/melinda-c
 import {createLogger, readEnvironmentVariable} from '@natlibfi/melinda-backend-commons';
 
 const logger = createLogger();
-const sruUrl = readEnvironmentVariable('SRU_URL');
+const sruUrl = readEnvironmentVariable('SRU_URL', {defaultValue: null});
 logger.log('debug', sruUrl);
 const subrecordPicker = createSubrecordPicker(sruUrl, true);
 
