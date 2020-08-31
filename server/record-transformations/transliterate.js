@@ -31,6 +31,7 @@ import * as iso9 from 'iso9_1995';
 import {v4 as uuid} from 'uuid';
 import {isDataField} from '../record-utils';
 import XRegExp from 'xregexp';
+import {MarcRecord} from '@natlibfi/marc-record';
 
 const defaultOptions = {
   doSFS4900RusTransliteration: true
@@ -48,8 +49,9 @@ export function transliterate(record, options) {
 
   return new Promise((resolve) => {
     const fields = record.fields;
+    const originalRecord = MarcRecord.clone(record)
     record.fields = transformFields(options, fields);
-    const warnings = checkForWarnings(record, record);
+    const warnings = checkForWarnings(originalRecord, record);
     record.fields = removeFailedTransliterations(record.fields);
     resolve({record, warnings});
   });
