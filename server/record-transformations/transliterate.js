@@ -49,7 +49,7 @@ export function transliterate(record, options) {
 
   return new Promise((resolve) => {
     const fields = record.fields;
-    const originalRecord = MarcRecord.clone(record)
+    const originalRecord = MarcRecord.clone(record);
     record.fields = transformFields(options, fields);
     const warnings = checkForWarnings(originalRecord, record);
     record.fields = removeFailedTransliterations(record.fields);
