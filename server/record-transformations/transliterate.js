@@ -30,11 +30,7 @@ import * as sfs4900 from 'sfs4900';
 import * as iso9 from 'iso9_1995';
 import {v4 as uuid} from 'uuid';
 import {isDataField} from '../record-utils';
-import {MarcRecord} from '@natlibfi/marc-record';
 import XRegExp from 'xregexp';
-
-// Lisätty
-MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 const defaultOptions = {
   doSFS4900RusTransliteration: true
@@ -51,19 +47,11 @@ export function transliterate(record, options) {
   });
 
   return new Promise((resolve) => {
-
-    const originalRecord = new MarcRecord(record);
-
     const fields = record.fields;
-
     record.fields = transformFields(options, fields);
-
     const warnings = checkForWarnings(originalRecord, record);
-
     record.fields = removeFailedTransliterations(record.fields);
-
     resolve({record, warnings});
-
   });
 }
 
