@@ -28,7 +28,7 @@
 import {MarcRecord} from '@natlibfi/marc-record';
 
 // Lisätty
-MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
+MarcRecord.setValidationOptions({subfieldValues: false});
 
 export const FAKE_RECORD = MarcRecord.fromString([
   'LDR    abcdefghijk',
