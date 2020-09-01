@@ -144,7 +144,7 @@ describe('transliterate', () => {
 });
 
 function copy(record) {
-  return new MarcRecord(record);
+  return MarcRecord.clone(record);
 }
 
 function subfield(code) {

@@ -122,7 +122,7 @@ describe('melinda io service', () => {
 
       it('resolves with the record', () => {
         const [result] = resultSpy.getCall(0).args;
-        const resultRecord = new MarcRecord(result.record);
+        const resultRecord = new MarcRecord(result.record, {subfieldValues: false});
         expect(MarcRecord.isEqual(resultRecord, FAKE_RECORD), true);
       });
 
@@ -152,13 +152,13 @@ describe('melinda io service', () => {
 
       it('resolves with the record', () => {
         const [result] = resultSpy.getCall(0).args;
-        const resultRecord = new MarcRecord(result.record);
+        const resultRecord = new MarcRecord(result.record, {subfieldValues: false});
         expect(MarcRecord.isEqual(resultRecord, FAKE_RECORD), true);
       });
 
       it('resolves with an array of subrecords', () => {
         const [result] = resultSpy.getCall(0).args;
-        const resultRecord2 = new MarcRecord(result.subrecords[0]);
+        const resultRecord2 = new MarcRecord(result.subrecords[0], {subfieldValues: false});
         expect([resultRecord2]).to.be.eql([FAKE_RECORD_2]);
       });
 
@@ -222,7 +222,7 @@ describe('melinda io service', () => {
 
       it('resolves with the record', () => {
         const [result] = resultSpy.getCall(0).args;
-        const resultRecord = new MarcRecord(result.record);
+        const resultRecord = new MarcRecord(result.record, {subfieldValues: false});
         expect(MarcRecord.isEqual(resultRecord, FAKE_RECORD), true);
       });
 

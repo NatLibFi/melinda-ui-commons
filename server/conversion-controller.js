@@ -49,7 +49,7 @@ conversionController.options('/:conversionId', cors(corsOptions));
 conversionController.post('/:conversionId', cors(corsOptions), requireBodyParams('record'), (req, res) => {
 
   const conversionId = req.params.conversionId;
-  const record = new MarcRecord(req.body.record);
+  const record = new MarcRecord(req.body.record, {subfieldValues: false});
 
   logger.log('info', `Converting record with conversion ${conversionId}`);
 

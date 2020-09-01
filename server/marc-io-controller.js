@@ -145,5 +145,5 @@ marcIOController.post('/', cors(corsOptions), requireSession, requireBodyParams(
 });
 
 function transformToMarcRecord(json) {
-  return new MarcRecord(json);
+  return new MarcRecord(json, {subfieldValues: false});
 }

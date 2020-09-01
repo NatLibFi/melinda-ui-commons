@@ -34,7 +34,7 @@ export function transformRecord(action, recordParam, opts) {
     throw new Error('Invalid record');
   }
 
-  const record = new MarcRecord(recordParam);
+  const record = new MarcRecord(recordParam, {subfieldValues: false});
 
   switch (action) {
     case 'REMOVE-LOCAL-REFERENCE': return removeLocalReference(record, opts);

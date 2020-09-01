@@ -128,7 +128,7 @@ export class MarcEditor extends React.Component {
       const updatedRecord = new MarcRecord({
         leader: leader.value,
         fields: fields
-      });
+      }, {subfieldValues: false});
 
       this._recordFromCurrentEditorContent = updatedRecord;
       this.props.onRecordUpdate(this._recordFromCurrentEditorContent);

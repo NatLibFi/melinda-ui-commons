@@ -52,7 +52,7 @@ export function transliterate(record, options) {
 
   return new Promise((resolve) => {
 
-    const originalRecord = new MarcRecord(record);
+    const originalRecord = new MarcRecord(record, {subfieldValues: false});
 
     const fields = record.fields;
 
