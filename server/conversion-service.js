@@ -117,6 +117,7 @@ export function convertRecord(record, conversionId) {
           log('debug', 'Converting result to marc-record-js');
 
           const convertedRecord = ISO2709.from(result);
+          log('debug', JSON.stringify(convertedRecord));
 
           log('debug', 'Done.');
           return {

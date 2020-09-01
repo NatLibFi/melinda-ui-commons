@@ -14,12 +14,14 @@ steps:
   settings:
     token:
       from_secret: npm_token
+  when:
+    event: tag
 ---
 kind: secret
 name: npm_token
 data: uy5dTSu31AtgD/HHKEL7fKKUNrBTfJ3QYj5mYWSnyqQy+zeCF/rTwxBoV+8PiLcdzu4ZhNDiFidmLGAGA1V4fw==
 ---
 kind: signature
-hmac: f99eeb08600fe132f37d74584ec57ec9f3fbe25e4f4c1b98d0b83b4a4c0cafbb
+hmac: 353f94c9ac076293bde46c7d1c9fd77e8d32c09e6aea51705daf3d994afcfbcf
 
 ...
