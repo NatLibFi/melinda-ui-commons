@@ -46,9 +46,18 @@ export class RecordPanel extends React.Component {
     title: PropTypes.string
   };
 
+  constructor() {
+    super();
+    this.state = {
+      editMode: false
+    };
+  }
+
   handleEditModeChange(event) {
     event.preventDefault();
-    this.props.editable = !this.props.editable;
+    this.setState({
+      editMode: !this.state.editMode
+    });
   }
 
   handleRecordUpdate(nextRecord) {
@@ -60,7 +69,7 @@ export class RecordPanel extends React.Component {
   renderHeader() {
     const editButtonClasses = classNames({
       disabled: !this.props.record,
-      active: this.props.editable
+      active: this.state.editMode
     });
 
     return (
@@ -68,7 +77,7 @@ export class RecordPanel extends React.Component {
         <div className="col s12">
           <ul className="tabs" ref={(c) => this._tabs = c}>
             <li className="tab col s2 disabled title">{this.props.title || ''}</li>
-            <li className="button tooltip" title="Muokkaa"><a className={editButtonClasses} href="#" onClick={(e) => this.handleEditModeChange(e)}><i className="material-icons">edit</i></a></li>
+            {this.props.editable ? <li className="button tooltip" title="Muokkaa"><a className={editButtonClasses} href="#" onClick={(e) => this.handleEditModeChange(e)}><i className="material-icons">edit</i></a></li> : null}
           </ul>
         </div>
       </div>
@@ -81,7 +90,7 @@ export class RecordPanel extends React.Component {
     return (
       <div>
         {this.props.showHeader ? header : null}
-        {this.props.editable ? this.renderEditor() : this.renderPreview()}
+        {this.state.editMode ? this.renderEditor() : this.renderPreview()}
       </div>
     );
   }
