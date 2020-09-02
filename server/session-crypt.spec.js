@@ -26,7 +26,7 @@
 *
 */
 import chai from 'chai';
-import sinon from 'sinon'
+import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {createSessionToken, readSessionToken} from './session-crypt';
 import {__RewireAPI__ as RewireAPI} from './session-crypt';

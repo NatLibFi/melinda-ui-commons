@@ -71,11 +71,11 @@ describe('melinda io service', () => {
     loggerStub = {log: sinon.stub()};
 
     RewireAPI.__Rewire__('subrecordPicker', subrecordPickerStub);
-    //RewireAPI.__Rewire__('logger', loggerStub);
+    RewireAPI.__Rewire__('logger', loggerStub);
   });
   afterEach(() => {
     RewireAPI.__ResetDependency__('subrecordPicker');
-    //RewireAPI.__ResetDependency__('logger');
+    RewireAPI.__ResetDependency__('logger');
   });
 
   describe('loadRecord', () => {

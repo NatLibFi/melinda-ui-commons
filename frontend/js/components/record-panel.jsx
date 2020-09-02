@@ -45,6 +45,27 @@ export class RecordPanel extends React.Component {
     title: PropTypes.string
   }
 
+  renderHeader() {
+    const tabClasses = classNames('tab col s2', {
+      'tab-disabled': !this.tabsEnabled()
+    });
+
+    const previewTab = () => (<li className={tabClasses}><a href="#" onClick={(e) => this.handleTabChange(e, 'PREVIEW')}>Esikatselu</a></li>);
+    const editTab = () => (<li className={tabClasses}><a href="#" onClick={(e) => this.handleTabChange(e, 'EDIT')}>Muokkaus</a></li>);
+
+    return (
+      <div className="row row-no-bottom-margin">
+        <div className="col s7">
+          <ul className="tabs" ref={(c) => this._tabs = c}>
+            <li className="tab col s2 disabled title">{this.props.title || ''}</li>
+            { this.props.editable ? previewTab() : null }
+            { this.props.editable ? editTab() : null }
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
   handleRecordUpdate(nextRecord) {
     if (this.props.onRecordUpdate) {
       this.props.onRecordUpdate(nextRecord);
@@ -52,9 +73,11 @@ export class RecordPanel extends React.Component {
   }
 
   renderRecord() {
+    const header = this.props.recordHeader ? this.props.recordHeader : this.renderHeader();
+
     return (
       <div>
-        {this.props.showHeader ? this.props.recordHeader : null}
+        {this.props.showHeader ? header : null}
         {this.props.editable ? this.renderEditor() : this.renderPreview()}
       </div>
     );
