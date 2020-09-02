@@ -46,6 +46,12 @@ export class RecordPanel extends React.Component {
     title: PropTypes.string
   };
 
+  componentDidMount() {
+    if (this.props.showHeader && this.props.editable) {
+      window.$(this._tabs).tabs();
+    }
+  }
+
   handleRecordUpdate(nextRecord) {
     if (this.props.onRecordUpdate) {
       this.props.onRecordUpdate(nextRecord);
