@@ -44,6 +44,19 @@ export class RecordPanel extends React.Component {
     recordHeader: PropTypes.element,
     showHeader: PropTypes.bool,
     title: PropTypes.string
+  };
+
+  handleRecordUpdate(nextRecord) {
+    if (this.props.onRecordUpdate) {
+      this.props.onRecordUpdate(nextRecord);
+    }
+  }
+
+  handleTabChange(event, nextTab) {
+    event.preventDefault();
+    if (this.tabsEnabled()) {
+      this.setState({currentTab: nextTab});
+    }
   }
 
   renderHeader() {
@@ -59,18 +72,12 @@ export class RecordPanel extends React.Component {
         <div className="col s7">
           <ul className="tabs" ref={(c) => this._tabs = c}>
             <li className="tab col s2 disabled title">{this.props.title || ''}</li>
-            { this.props.editable ? previewTab() : null }
-            { this.props.editable ? editTab() : null }
+            {this.props.editable ? previewTab() : null}
+            {this.props.editable ? editTab() : null}
           </ul>
         </div>
       </div>
     );
-  }
-
-  handleRecordUpdate(nextRecord) {
-    if (this.props.onRecordUpdate) {
-      this.props.onRecordUpdate(nextRecord);
-    }
   }
 
   renderRecord() {
