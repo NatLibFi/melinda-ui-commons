@@ -69,7 +69,7 @@ export class RecordPanel extends React.Component {
 
     return (
       <div className="row row-no-bottom-margin">
-        <div className="col s7">
+        <div className="col s12">
           <ul className="tabs" ref={(c) => this._tabs = c}>
             <li className="tab col s2 disabled title">{this.props.title || ''}</li>
             {this.props.editable ? previewTab() : null}
