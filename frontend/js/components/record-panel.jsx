@@ -46,10 +46,9 @@ export class RecordPanel extends React.Component {
     title: PropTypes.string
   };
 
-  componentDidMount() {
-    if (this.props.showHeader && this.props.editable) {
-      window.$(this._tabs).tabs();
-    }
+  handleEditModeChange(event) {
+    event.preventDefault();
+    this.props.editable = !this.props.editable
   }
 
   handleRecordUpdate(nextRecord) {
@@ -58,28 +57,18 @@ export class RecordPanel extends React.Component {
     }
   }
 
-  handleTabChange(event, nextTab) {
-    event.preventDefault();
-    if (this.props.record !== undefined) {
-      this.setState({currentTab: nextTab});
-    }
-  }
-
   renderHeader() {
-    const tabClasses = classNames('tab col s2', {
-      'tab-disabled': this.props.record === undefined
+    const editButtonClasses = classNames({
+      disabled: !this.props.record,
+      active: this.state.editable
     });
-
-    const previewTab = () => (<li className={tabClasses}><a href="#" onClick={(e) => this.handleTabChange(e, 'PREVIEW')}>Esikatselu</a></li>);
-    const editTab = () => (<li className={tabClasses}><a href="#" onClick={(e) => this.handleTabChange(e, 'EDIT')}>Muokkaus</a></li>);
 
     return (
       <div className="row row-no-bottom-margin">
         <div className="col s12">
           <ul className="tabs" ref={(c) => this._tabs = c}>
             <li className="tab col s2 disabled title">{this.props.title || ''}</li>
-            {this.props.editable ? previewTab() : null}
-            {this.props.editable ? editTab() : null}
+            <li className="button tooltip" title="Muokkaa"><a className={editButtonClasses} href="#" onClick={(e) => this.handleEditModeChange(e)}><i className="material-icons">edit</i></a></li>
           </ul>
         </div>
       </div>
