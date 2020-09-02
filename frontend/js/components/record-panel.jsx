@@ -95,7 +95,7 @@ export class RecordPanel extends React.Component {
     if (this.props.record !== undefined) {
       return (
         <div>
-          <div className="card-content">
+          <div>
             <MarcRecordPanel record={this.props.record} onFieldClick={this.props.onFieldClick} />
           </div>
           {this.props.children}
@@ -108,7 +108,7 @@ export class RecordPanel extends React.Component {
 
   renderEditor() {
     return (
-      <div className="card-content">
+      <div>
         <MarcEditor
           record={this.props.record}
           onRecordUpdate={(record) => this.handleRecordUpdate(record)}
