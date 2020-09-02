@@ -54,7 +54,7 @@ export class RecordPanel extends React.Component {
 
   handleTabChange(event, nextTab) {
     event.preventDefault();
-    if (this.tabsEnabled()) {
+    if (this.props.record !== undefined) {
       this.setState({currentTab: nextTab});
     }
   }
