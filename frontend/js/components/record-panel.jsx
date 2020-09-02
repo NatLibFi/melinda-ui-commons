@@ -73,10 +73,10 @@ export class RecordPanel extends React.Component {
     });
 
     return (
-      <div className="row row-no-bottom-margin">
-        <div className="col s12">
-          <ul className="tabs" ref={(c) => this._tabs = c}>
-            <li className="tab col s2 disabled title">{this.props.title || ''}</li>
+      <div className="row title-row-card">
+        <div className="title-wrapper col 11s">
+          <ul ref={(c) => this._tabs = c}>
+            <li className="title">{this.props.title || ''}</li>
             {this.props.editable ? <li className="button tooltip" title="Muokkaa"><a className={editButtonClasses} href="#" onClick={(e) => this.handleEditModeChange(e)}><i className="material-icons">edit</i></a></li> : null}
           </ul>
         </div>
