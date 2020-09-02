@@ -48,7 +48,7 @@ export class RecordPanel extends React.Component {
 
   handleEditModeChange(event) {
     event.preventDefault();
-    this.props.editable = !this.props.editable
+    this.props.editable = !this.props.editable;
   }
 
   handleRecordUpdate(nextRecord) {
