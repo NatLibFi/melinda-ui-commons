@@ -48,7 +48,7 @@ export class RecordPanel extends React.Component {
 
   renderHeader() {
     const tabClasses = classNames('tab col s2', {
-      'tab-disabled': !this.tabsEnabled()
+      'tab-disabled': this.props.record === undefined
     });
 
     const previewTab = () => (<li className={tabClasses}><a href="#" onClick={(e) => this.handleTabChange(e, 'PREVIEW')}>Esikatselu</a></li>);
