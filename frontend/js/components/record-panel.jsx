@@ -30,6 +30,7 @@ import PropTypes from 'prop-types';
 import {MarcRecordPanel} from './marc-record-panel';
 import '../../styles/components/record-panel.scss';
 import {MarcEditor} from './marc-editor-panel';
+import classNames from 'classnames';
 
 export class RecordPanel extends React.Component {
 
