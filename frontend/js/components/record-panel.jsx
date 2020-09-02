@@ -60,7 +60,7 @@ export class RecordPanel extends React.Component {
   renderHeader() {
     const editButtonClasses = classNames({
       disabled: !this.props.record,
-      active: this.state.editable
+      active: this.props.editable
     });
 
     return (
