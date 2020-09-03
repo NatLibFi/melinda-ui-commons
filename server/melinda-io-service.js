@@ -108,7 +108,7 @@ export function updateAndReloadRecord(client, recordId, record) {
     return loadRecord(client, recordId).then((record) => {
       return record;
     }).catch(error => {
-      logger.log('info', `Error loading record ${recordId} `, error);
+      logger.log('error', `@updateAndReloadRecord -> Error loading record ${recordId}\n${JSON.stringify(error)}`);
       throw error;
     });
   }).catch(error => {
@@ -131,7 +131,7 @@ export function createAndReloadRecord(client, record) {
       return _.assign({}, result, {recordId});
 
     }).catch(error => {
-      logger.log('info', `Error loading record ${recordId} `, error);
+      logger.log('error', `@createAndReloadRecord -> Error loading record ${recordId}\n${JSON.stringify(error)}`);
       throw error;
     });
 

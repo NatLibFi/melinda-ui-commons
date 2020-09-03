@@ -80,7 +80,7 @@ marcIOController.get('/:id', cors(corsOptions), (req, res) => {
       return res.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).send(error.payload);
     }
 
-    logger.log('error', `Error loading record ${req.params.id} `, error);
+    logger.log('error', `Error loading record ${req.params.id}\n${JSON.stringify(error)}`);
     return res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
   });
 });
