@@ -52,7 +52,8 @@ export function loadRecord(client, recordId) {
 function readSubrecords(recordId) {
   return new Promise((resolve, reject) => {
     subrecordPicker.readAllSubrecords(recordId).then(subrecords => {
-      logger.log('debug', `Subrecords: ${JSON.stringify(subrecords)}`);
+      logger.log('http', 'Subrecord reading success');
+      logger.log('silly', `Subrecords: ${JSON.stringify(subrecords)}`);
       resolve(subrecords);
     }).catch(error => {
       logger.log('debug', 'Subrecord loading error');
@@ -64,7 +65,8 @@ function readSubrecords(recordId) {
 function readRecord(client, recordId) {
   return new Promise((resolve, reject) => {
     client.read(recordId).then(({record}) => {
-      logger.log('debug', `Record: ${JSON.stringify({record})}`);
+      logger.log('http', 'Record reading success');
+      logger.log('silly', `Record: ${JSON.stringify({record})}`);
       resolve(record);
     }).catch(error => {
       logger.log('debug', 'Record loading error');
@@ -77,6 +79,7 @@ function updateRecord(client, record) {
   return new Promise((resolve, reject) => {
     const recordId = getRecordId(record);
     Promise.resolve(client.update(record, recordId, {noop: 0})).then(updateResponse => {
+      logger.log('http', 'Record update success');
       return resolve(updateResponse);
     }).catch(error => {
       logger.log('debug', 'Record update error');
@@ -87,6 +90,7 @@ function updateRecord(client, record) {
 
 function createRecord(client, record) {
   return new Promise((resolve, reject) => Promise.resolve(client.create(record, {noop: 0})).then(createResponse => {
+    logger.log('http', 'Record creation success');
     return resolve(createResponse);
   }).catch(error => {
     logger.log('debug', 'Record create error');
