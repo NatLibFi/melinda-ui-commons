@@ -45,9 +45,9 @@
   "dependencies": {
     "@natlibfi/marc-record": "^6.1.1",
     "@natlibfi/marc-record-serializers": "^7.1.6",
-    "@natlibfi/melinda-backend-commons": "^1.0.6",
+    "@natlibfi/melinda-backend-commons": "^2.0.0",
     "@natlibfi/melinda-commons": "^11.0.1",
-    "@natlibfi/melinda-rest-api-client-js": "^1.0.0-alpha.2",
+    "@natlibfi/melinda-rest-api-client-js": "^1.0.0-alpha.4",
     "body-parser": "^1.18.2",
     "classnames": "^2.2.5",
     "cookie-parser": "^1.4.5",

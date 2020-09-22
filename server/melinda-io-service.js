@@ -51,10 +51,10 @@ export function loadRecord(client, recordId) {
 
 function readSubrecords(recordId) {
   return new Promise((resolve, reject) => {
-    subrecordPicker.readAllSubrecords(recordId).then(subrecords => {
+    subrecordPicker.readAllSubrecords(recordId).then(({records}) => {
       logger.log('http', 'Subrecord reading success');
-      logger.log('silly', `Subrecords: ${JSON.stringify(subrecords)}`);
-      resolve(subrecords);
+      logger.log('silly', `Subrecords: ${JSON.stringify(records)}`);
+      resolve(records);
     }).catch(error => {
       logger.log('debug', 'Subrecord loading error');
       reject(error);
