@@ -38,7 +38,6 @@ steps:
     image: node:12
     commands:
       - npm run build
-      - NPM_CONFIG_IGNORE_SCRIPTS=true npm ci --production
 
   - name: Static-security-scan
     image: quay.io/natlibfi/njsscan
