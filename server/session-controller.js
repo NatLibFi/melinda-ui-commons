@@ -71,6 +71,8 @@ sessionController.post('/validate', cors(corsOptions), requireBodyParams('sessio
     const {sessionToken} = req.body;
     const {username, password} = readSessionToken(sessionToken);
 
+    console.log(username); // eslint-disable-line no-console
+
     authProvider.validateCredentials(username, password).then(authResponse => {
       if (authResponse.credentialsValid) {
         logger.log('info', `Succesful session validation for ${username}`);
