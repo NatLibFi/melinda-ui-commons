@@ -81,8 +81,8 @@ export class SigninFormPanel extends React.Component {
 
   render() {
     const title = this.props.title;
-    const usernameLabel = 'Käyttäjätunnus';
-    const passwordLabel = 'Salasana';
+    const usernameLabel = 'Käyttäjätunnus'; //ignore:node_username
+    const passwordLabel = 'Salasana'; //ignore:node_password
     const signinButtonLabel = 'Kirjaudu';
     const dataProtectionConsentLabel = (() => {
       return (
