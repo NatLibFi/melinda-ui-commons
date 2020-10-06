@@ -1,10 +1,6 @@
 {
   "name": "@natlibfi/melinda-ui-commons",
-<<<<<<< HEAD
   "version": "4.0.3-alpha.16",
-=======
-  "version": "4.0.2",
->>>>>>> origin/dev
   "description": "Common modules for Melinda UI applications",
   "keywords": [
     "MARC",

@@ -9,7 +9,6 @@ trigger:
     - tag
 
 steps:
-<<<<<<< HEAD
   - name: Generate-tags
     image: quay.io/natlibfi/drone-gen-tags
 
@@ -92,23 +91,3 @@ kind: signature
 hmac: 92fed9a83023951b3a7452cbe0fbb46a8c1e96ff0bb580efceffa1b268f22919
 
 ...
-=======
-- name: build
-  image: node:12
-  commands:
-  - npm install
-  - npm test
-  - npm run build
-- name: npm
-  image: plugins/npm
-  settings:
-    registry: 'https://registry.npmjs.org/'
-    token:
-      from_secret: npm_token
-  when:
-    event: tag
----
-kind: secret
-name: npm_token
-data: 2OpPyM5AvvWBBJDkFSNb8DFclq8lgtt4nQhdTXlAI7wSGForJgMDZbr7VtTCDVoUFx7wRHYIPj3hAcs5TifDFg==
->>>>>>> origin/dev
