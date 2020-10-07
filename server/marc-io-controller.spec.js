@@ -29,49 +29,39 @@ import sinon from 'sinon';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import request from 'supertest';
-import HttpStatus from 'http-status-codes';
-import { __RewireAPI__ as RewireAPI } from './marc-io-controller';
-import { marcIOController } from './marc-io-controller';
-//import { createSessionToken } from './session-crypt';
+import HttpStatus from 'http-status';
+import {__RewireAPI__ as RewireAPI} from './marc-io-controller';
+import {__RewireAPI__ as RewireAPI2} from './session-crypt';
+import {marcIOController} from './marc-io-controller';
 
 chai.use(sinonChai);
 
-//const sessionToken = createSessionToken('test-user', 'test-pass');
-
 describe('MARC IO controller', () => {
-  let loadChildRecordsStub;  
-  let loggerStub;
-  
+  let loadRecordStub;
+
   beforeEach(() => {
-
-    loadChildRecordsStub = sinon.stub();
-
-    const MelindaClientStub = sinon.stub().returns({
-      loadChildRecords: loadChildRecordsStub
-    });
-    RewireAPI.__Rewire__('MelindaClient', MelindaClientStub);
-
-    Promise.prototype.done = function() {};
-
-    loggerStub = { log: sinon.stub() };
+    loadRecordStub = sinon.stub();
+    RewireAPI.__Rewire__('loadRecord', loadRecordStub);
+    const loggerStub = { log: sinon.stub() };
     RewireAPI.__Rewire__('logger', loggerStub);
+    RewireAPI2.__Rewire__('logger', loggerStub);
 
+    Promise.prototype.done = function () {};
   });
+
   afterEach(() => {
-    delete(Promise.prototype.done);
-    RewireAPI.__ResetDependency__('MelindaClient');
+    delete (Promise.prototype.done);
+    RewireAPI.__ResetDependency__('createApiClient');
     RewireAPI.__ResetDependency__('logger');
+    RewireAPI2.__ResetDependency__('logger');
   });
-  
 
-  it('responds in json', (done) => {
-
-    loadChildRecordsStub.resolves([{fields: [{tag:'001',value:'123'}]}]);
+  it('responds in json', done => {
+    loadRecordStub.returns(Promise.resolve({record: {fields: [{tag: '001', value: '123'}]}, subrecords: [{fields: [{tag: '001', value: '124'}]}, {fields: [{tag: '001', value: '125'}]}]}));
 
     request(marcIOController)
       .get('/123')
       .expect('Content-Type', /json/)
       .expect(HttpStatus.OK, done);
   });
-
 });

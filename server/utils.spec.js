@@ -27,21 +27,24 @@
 */
 import {expect} from 'chai';
 import {readEnvironmentVariable, createLoadUserIndexFn} from './utils';
-import { __RewireAPI__ as UtilsRewireAPI } from './utils';
+import {__RewireAPI__ as UtilsRewireAPI} from './utils';
+import {__RewireAPI__ as RewireAPI2} from './session-crypt';
 import sinon from 'sinon';
 
 describe('utils', () => {
   let logStub;
   beforeEach(() => {
     logStub = sinon.stub();
-    UtilsRewireAPI.__Rewire__('logger', { log: logStub });
+    UtilsRewireAPI.__Rewire__('logger', {log: logStub});
+    RewireAPI2.__Rewire__('logger', {log: logStub});
   });
-  
+
   afterEach(() => {
     UtilsRewireAPI.__ResetDependency__('logger');
+    RewireAPI2.__ResetDependency__('logger');
   });
-  
-  
+
+
   describe('readEnvironmentVariable', () => {
 
     it('should read the environment value if it is set', () => {
@@ -50,7 +53,7 @@ describe('utils', () => {
       const defaultValue = 'DEFAULT_VALUE';
       const configValue = readEnvironmentVariable('TEST_VAR_SET', defaultValue);
       expect(configValue).to.eql('test_value');
-      
+
     });
 
     it('should use default value if present', () => {
@@ -58,12 +61,12 @@ describe('utils', () => {
       const defaultValue = 'DEFAULT_VALUE';
       const configValue = readEnvironmentVariable('TEST_VAR', defaultValue);
       expect(configValue).to.eql(defaultValue);
-      
+
     });
 
     it('should throw if environment variable is missing and no default value is given', () => {
       const testKey = 'TEST_VAR_THROW';
-      expect(readEnvironmentVariable.bind(null, testKey)).to.throw(Error);      
+      expect(readEnvironmentVariable.bind(null, testKey)).to.throw(Error);
     });
 
   });
@@ -72,12 +75,12 @@ describe('utils', () => {
     let readFileStub;
     beforeEach(() => {
       readFileStub = sinon.stub();
-      UtilsRewireAPI.__Rewire__('fs', { readFileSync: readFileStub });
+      UtilsRewireAPI.__Rewire__('fs', {readFileSync: readFileStub});
     });
     afterEach(() => {
       UtilsRewireAPI.__ResetDependency__('fs');
     });
-  
+
     it('returns undefined if MELINDA_LOAD_USER_FILE=null and logs the error', () => {
       const getMelindaLoadUserByLowtag = createLoadUserIndexFn(null);
       const result = getMelindaLoadUserByLowtag('LOW');
@@ -89,7 +92,7 @@ describe('utils', () => {
       readFileStub.throws(new Error('Fake file not found error'));
       const getMelindaLoadUserByLowtag = createLoadUserIndexFn('fake-path');
       const result = getMelindaLoadUserByLowtag('LOW');
-      expect(logStub.getCall(0).args.slice(0,2)).to.eql(['error', 'Melinda load users file is not available. LOAD-USERS are not usable.']);
+      expect(logStub.getCall(0).args.slice(0, 2)).to.eql(['error', 'Melinda load users file is not available. LOAD-USERS are not usable.']);
       expect(result).to.be.an('undefined');
     });
 

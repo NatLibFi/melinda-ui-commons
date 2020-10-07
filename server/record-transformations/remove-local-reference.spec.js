@@ -25,11 +25,14 @@
 * for the JavaScript code in this file.
 *
 */
-import MarcRecord from 'marc-record-js';
+import {MarcRecord} from '@natlibfi/marc-record';
 import {expect} from 'chai';
-import { removeLocalReference } from './remove-local-reference';
-import { FAKE_RECORD_FCC_SID, FAKE_RECORD, FAKE_DELETED_RECORD, FAKE_RECORD_SID_LOW, FAKE_RECORD_FOR_CLEANUP } from '../test_helpers/fake-data';
-import { exceptCoreErrors } from '../utils';
+import {removeLocalReference} from './remove-local-reference';
+import {FAKE_RECORD_FCC_SID, FAKE_RECORD, FAKE_DELETED_RECORD, FAKE_RECORD_SID_LOW, FAKE_RECORD_FOR_CLEANUP} from '../test_helpers/fake-data';
+import {exceptCoreErrors} from '../utils';
+
+// Lisätty
+MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 describe('removeLocalReference', () => {
 
@@ -63,7 +66,7 @@ describe('removeLocalReference', () => {
   });
 
   describe('when localId is not provided', () => {
-  
+
     beforeEach(() => {
       return removeLocalReference(record(FAKE_RECORD_SID_LOW), {libraryTag: LIBRARY_TAG})
         .then(res => result = res)
@@ -71,7 +74,7 @@ describe('removeLocalReference', () => {
     });
 
     it('removes the LOW field', () => {
-      expect(result.record.getFields('LOW', 'a', LIBRARY_TAG).map(fieldAsString)).not.to.include('LOW $aTEST');
+      expect(result.record.getFields('LOW', [{code: 'a', value: LIBRARY_TAG}]).map(fieldAsString)).not.to.include('LOW $aTEST');
     });
 
     it('returned report should contain the information of the LOW removal', () => {
@@ -109,7 +112,7 @@ describe('removeLocalReference', () => {
   });
 
   describe('when record has local SID with expected local id', () => {
-  
+
     beforeEach(() => {
       return removeLocalReference(record(FAKE_RECORD_SID_LOW), {libraryTag: LIBRARY_TAG, expectedLocalId: EXPECTED_LOCAL_ID})
         .then(res => result = res)
@@ -117,7 +120,7 @@ describe('removeLocalReference', () => {
     });
 
     it('should remove the SID field', () => {
-      expect(result.record.getFields('SID', 'b', LIBRARY_TAG).map(fieldAsString)).not.to.include('SID $btest$c111');
+      expect(result.record.getFields('SID', [{code: 'b', value: LIBRARY_TAG}]).map(fieldAsString)).not.to.include('SID $btest$c111');
     });
 
     it('returned report should contain the information of the SID removal', () => {
@@ -126,7 +129,7 @@ describe('removeLocalReference', () => {
   });
 
   describe('when record has local SID with expected local id, but SID deletion is bypassed', () => {
-  
+
     beforeEach(() => {
       return removeLocalReference(record(FAKE_RECORD_SID_LOW), {libraryTag: LIBRARY_TAG, expectedLocalId: EXPECTED_LOCAL_ID, bypassSIDdeletion: true})
         .then(res => result = res)
@@ -134,7 +137,7 @@ describe('removeLocalReference', () => {
     });
 
     it('should not remove the SID field', () => {
-      expect(result.record.getFields('SID', 'b', LIBRARY_TAG).map(fieldAsString)).to.include('SID $btest$c111');
+      expect(result.record.getFields('SID', [{code: 'b', value: LIBRARY_TAG}]).map(fieldAsString)).to.include('SID $btest$c111');
     });
 
     it('returned report should contain the information of the SID removal', () => {
@@ -142,17 +145,17 @@ describe('removeLocalReference', () => {
     });
   });
 
-  
-  
+
+
   describe('when record has local SID, expectedLocalId is undefined and skipLocalSidCheck is true', () => {
-  
+
     beforeEach(() => {
       return removeLocalReference(record(FAKE_RECORD_SID_LOW), {libraryTag: LIBRARY_TAG, expectedLocalId: undefined, skipLocalSidCheck: true})
         .then(res => result = res);
     });
 
     it('should remove the SID field', () => {
-      expect(result.record.getFields('SID', 'b', LIBRARY_TAG).map(fieldAsString)).not.to.include('SID $btest$c111');
+      expect(result.record.getFields('SID', [{code: 'b', value: LIBRARY_TAG}]).map(fieldAsString)).not.to.include('SID $btest$c111');
     });
 
     it('returned report should contain the information of the SID removal', () => {
@@ -162,7 +165,7 @@ describe('removeLocalReference', () => {
 
 
   describe('when record has a LOW field with local library tag', () => {
-  
+
     beforeEach(() => {
       return removeLocalReference(record(FAKE_RECORD_SID_LOW), {libraryTag: LIBRARY_TAG, expectedLocalId: EXPECTED_LOCAL_ID})
         .then(res => result = res)
@@ -170,7 +173,7 @@ describe('removeLocalReference', () => {
     });
 
     it('should remove the LOW field', () => {
-      expect(result.record.getFields('LOW', 'a', LIBRARY_TAG).map(fieldAsString)).not.to.include('LOW $aTEST');
+      expect(result.record.getFields('LOW', [{code: 'a', value: LIBRARY_TAG}]).map(fieldAsString)).not.to.include('LOW $aTEST');
     });
 
     it('returned report should contain the information of the LOW removal', () => {
@@ -191,7 +194,7 @@ describe('removeLocalReference', () => {
   });
 
   describe('cleanup record after operation', () => {
-    beforeEach(() => {    
+    beforeEach(() => {
       return removeLocalReference(record(FAKE_RECORD_FOR_CLEANUP), {libraryTag: LIBRARY_TAG, expectedLocalId: EXPECTED_LOCAL_ID})
         .then(res => result = res)
         .catch(exceptCoreErrors(err => error = err));
@@ -205,45 +208,45 @@ describe('removeLocalReference', () => {
       expect(result.record.getFields('302').map(fieldAsString)).to.eql(['302 $aSub-A$5TEST-2']);
     });
 
-    it('removes all $5 with given library tag from fields that have multiple $5', () => { 
+    it('removes all $5 with given library tag from fields that have multiple $5', () => {
       expect(result.record.getFields('301').map(fieldAsString)).to.eql(['301 $aSub-A$5TEST-2']);
     });
 
-    it('removes $9 from all felds that contain ($9 LOW <KEEP>, $9 LOW <DROP>)', () => { 
+    it('removes $9 from all felds that contain ($9 LOW <KEEP>, $9 LOW <DROP>)', () => {
       expect(result.record.getFields('100').map(fieldAsString)).to.eql(['100 $aTest Author$9TEST-2 <KEEP>']);
       expect(result.record.getFields('245').map(fieldAsString)).to.eql(['245 $aSome content']);
     });
-    
-    it('reports the field removals', () => { 
+
+    it('reports the field removals', () => {
       expect(result.report).to.include('Poistettu kenttä 300');
     });
-    
+
     it('reports the subfield $5 removals', () => {
       expect(result.report).to.include('Poistettu osakenttä $5 (TEST) kentästä 301');
     });
-    
-    it('reports the subfield $9 <KEEP> removals', () => { 
+
+    it('reports the subfield $9 <KEEP> removals', () => {
       expect(result.report).to.include('Poistettu osakenttä $9 (TEST <KEEP>) kentästä 100');
     });
-    
-    it('reports the subfield $9 <DROP> removals', () => { 
+
+    it('reports the subfield $9 <DROP> removals', () => {
       expect(result.report).to.include('Poistettu osakenttä $9 (TEST <DROP>) kentästä 245');
     });
-    
+
   });
-  
+
 });
 
 function record(record) {
-  return new MarcRecord(record);
+  return new MarcRecord(record, {subfieldValues: false});
 }
 
 function fieldAsString(field) {
-  const {  tag, subfields, value } = field;
+  const {tag, subfields, value} = field;
   if (subfields) {
     const subfieldStr = subfields.map(sub => `$${sub.code}${sub.value}`).join('');
-    return `${tag} ${subfieldStr}`;  
+    return `${tag} ${subfieldStr}`;
   } else {
     return `${tag} ${value}`;
-  }  
+  }
 }

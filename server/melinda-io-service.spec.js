@@ -26,52 +26,65 @@
 *
 */
 import {expect} from 'chai';
-import { RecordIOError, loadRecord, updateAndReloadRecord } from './melinda-io-service';
-import { __RewireAPI__ as RewireAPI } from './melinda-io-service';
+import {loadRecord, updateAndReloadRecord} from './melinda-io-service';
+import {__RewireAPI__ as RewireAPI} from './melinda-io-service';
 import sinon from 'sinon';
-import HttpStatus from 'http-status-codes';
-import { FAKE_RECORD, FAKE_RECORD_2, melindaClientUnableParseResponse } from './test_helpers/fake-data';
+import HttpStatus from 'http-status';
+import {MarcRecord} from '@natlibfi/marc-record';
+import {FAKE_RECORD, FAKE_RECORD_2, melindaClientUnableParseResponse} from './test_helpers/fake-data';
+import {Error as RecordIOError} from '@natlibfi/melinda-commons';
+
+// Lisätty
+MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 describe('melinda io service', () => {
 
   before(() => {
-    Promise.prototype.done = function() {};
+    Promise.prototype.done = function () {};
   });
   after(() => {
-    delete(Promise.prototype.done);
+    delete (Promise.prototype.done);
   });
 
   let loggerStub;
-  let fakeOpts = {};
+  let fakeOpts = {subrecords: 0};
+  let fakeOpts2 = {subrecords: 1};
   const fakeId = '123';
-  
+
   let resultSpy;
   let errorSpy;
   let clientStub;
-  
+  let subrecordPickerStub;
+
   beforeEach(() => {
     clientStub = {
-      loadChildRecords: sinon.stub(),
-      updateRecord: sinon.stub()
+      read: sinon.stub(),
+      create: sinon.stub(),
+      update: sinon.stub()
     };
-  
-    loggerStub = { log: sinon.stub() };
 
+
+    subrecordPickerStub = {
+      readAllSubrecords: sinon.stub()
+    };
+
+    loggerStub = {log: sinon.stub()};
+
+    RewireAPI.__Rewire__('subrecordPicker', subrecordPickerStub);
     RewireAPI.__Rewire__('logger', loggerStub);
   });
   afterEach(() => {
+    RewireAPI.__ResetDependency__('subrecordPicker');
     RewireAPI.__ResetDependency__('logger');
   });
 
   describe('loadRecord', () => {
-
     describe('when result is empty', () => {
-    
       beforeEach(() => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves();
+        clientStub.read.rejects(new RecordIOError(HttpStatus.NOT_FOUND, 'Record not found'));
 
         return loadRecord(clientStub, fakeId, fakeOpts)
           .then(resultSpy)
@@ -91,7 +104,6 @@ describe('melinda io service', () => {
       it('does not call result handler', () => {
         expect(resultSpy.callCount).to.be.equal(0);
       });
-
     });
 
 
@@ -100,7 +112,8 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves([FAKE_RECORD]);
+        clientStub.read.resolves({record: FAKE_RECORD});
+        subrecordPickerStub.readAllSubrecords.resolves({records: []});
 
         return loadRecord(clientStub, fakeId, fakeOpts)
           .then(resultSpy)
@@ -109,7 +122,8 @@ describe('melinda io service', () => {
 
       it('resolves with the record', () => {
         const [result] = resultSpy.getCall(0).args;
-        expect(result.record).to.be.equal(FAKE_RECORD);
+        const resultRecord = new MarcRecord(result.record, {subfieldValues: false});
+        expect(MarcRecord.isEqual(resultRecord, FAKE_RECORD), true);
       });
 
       it('resolves with an empty array for subrecords', () => {
@@ -128,41 +142,40 @@ describe('melinda io service', () => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves([FAKE_RECORD, FAKE_RECORD_2]);
+        clientStub.read.resolves({record: FAKE_RECORD});
+        subrecordPickerStub.readAllSubrecords.resolves({records: [FAKE_RECORD_2]});
 
-        return loadRecord(clientStub, fakeId, fakeOpts)
+        return loadRecord(clientStub, fakeId, fakeOpts2)
           .then(resultSpy)
           .catch(errorSpy);
       });
 
       it('resolves with the record', () => {
         const [result] = resultSpy.getCall(0).args;
-        expect(result.record).to.be.equal(FAKE_RECORD);
+        const resultRecord = new MarcRecord(result.record);
+        expect(MarcRecord.isEqual(resultRecord, FAKE_RECORD), true);
       });
 
       it('resolves with an array of subrecords', () => {
         const [result] = resultSpy.getCall(0).args;
-        expect(result.subrecords).to.be.eql([FAKE_RECORD_2]);
+        const resultRecord2 = new MarcRecord(result.subrecords[0]);
+        expect([resultRecord2]).to.be.eql([FAKE_RECORD_2]);
       });
 
       it('does not call error handler', () => {
         expect(errorSpy.callCount).to.be.equal(0);
       });
-
     });
-
   });
 
-
   describe('updateAndReloadRecord', () => {
-
     describe('when given recordId and recordId in actual record differ', () => {
-    
       beforeEach(() => {
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves();
+        clientStub.read.resolves({record: FAKE_RECORD});
+        subrecordPickerStub.readAllSubrecords.resolves({records: []});
 
         return updateAndReloadRecord(clientStub, fakeId, FAKE_RECORD, fakeOpts)
           .then(resultSpy)
@@ -181,27 +194,25 @@ describe('melinda io service', () => {
 
       it('rejects with explanation', () => {
         const [error] = errorSpy.getCall(0).args;
-        expect(error.message).to.be.equal(`recordId from url must match field 001 in supplied record: ${fakeId} !== 28474`);
+        expect(error.payload).to.be.equal(`recordId from url must match field 001 in supplied record: ${fakeId} !== 28474`);
       });
 
       it('does not call result handler', () => {
         expect(resultSpy.callCount).to.be.equal(0);
       });
-
     });
 
     describe('when record is updated succesfully', () => {
-    
       beforeEach(() => {
         const FAKE_RECORD_ID = '28474';
 
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves([FAKE_RECORD]);
-        clientStub.updateRecord.resolves({
-          messages: [],
-          recordId: FAKE_RECORD_ID
+        clientStub.read.resolves({record: FAKE_RECORD});
+        subrecordPickerStub.readAllSubrecords.resolves({records: []});
+        clientStub.update.resolves({
+          messages: []
         });
 
         return updateAndReloadRecord(clientStub, FAKE_RECORD_ID, FAKE_RECORD, fakeOpts)
@@ -209,10 +220,10 @@ describe('melinda io service', () => {
           .catch(errorSpy);
       });
 
- 
       it('resolves with the record', () => {
         const [result] = resultSpy.getCall(0).args;
-        expect(result.record).to.be.equal(FAKE_RECORD);
+        const resultRecord = new MarcRecord(result.record, {subfieldValues: false});
+        expect(MarcRecord.isEqual(resultRecord, FAKE_RECORD), true);
       });
 
       it('resolves with an empty array for subrecords', () => {
@@ -223,19 +234,18 @@ describe('melinda io service', () => {
       it('does not call error handler', () => {
         expect(errorSpy.callCount).to.be.equal(0);
       });
-
     });
 
     describe('when record update fails', () => {
-    
       beforeEach(() => {
         const FAKE_RECORD_ID = '28474';
 
         resultSpy = sinon.spy();
         errorSpy = sinon.spy();
 
-        clientStub.loadChildRecords.resolves([FAKE_RECORD]);
-        clientStub.updateRecord.rejects(melindaClientUnableParseResponse);
+        clientStub.read.resolves({record: FAKE_RECORD});
+        subrecordPickerStub.readAllSubrecords.resolves({records: []});
+        clientStub.update.rejects(melindaClientUnableParseResponse);
 
         return updateAndReloadRecord(clientStub, FAKE_RECORD_ID, FAKE_RECORD, fakeOpts)
           .then(resultSpy)
@@ -258,12 +268,9 @@ describe('melinda io service', () => {
 
       it('rejects with explanation', () => {
         const [error] = errorSpy.getCall(0).args;
-        expect(error.message).to.be.equal('Fake update failure reason');
+        expect(error.payload).to.be.equal('Fake update failure reason');
       });
-
     });
-
   });
-
 });
 

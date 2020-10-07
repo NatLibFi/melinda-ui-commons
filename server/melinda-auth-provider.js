@@ -26,7 +26,7 @@
 *
 */
 import fetch from 'isomorphic-fetch';
-import { readEnvironmentVariable } from './utils';
+import {readEnvironmentVariable} from './utils';
 import xml2js from 'xml2js';
 import _ from 'lodash';
 import promisify from 'es6-promisify';
@@ -39,12 +39,10 @@ const superUserLowTags = readEnvironmentVariable('SUPERUSER_LOWTAGS', '').split(
 const lowTagMapping = JSON.parse(readEnvironmentVariable('LOW_TAG_MAPPING', '{}'));
 
 export const authProvider = {
-  validateCredentials: function(username, password) {
-
+  validateCredentials: (username, password) => {
     const requestUrl = `${alephUrl}/X?op=user-auth&library=${alephUserLibrary}&staff_user=${username}&staff_pass=${password}`;
 
     return new Promise((resolve, reject) => {
-
       fetch(requestUrl)
         .then(response => response.text())
         .then(parseXMLStringToJSON)
@@ -55,17 +53,15 @@ export const authProvider = {
             const userinfo = credentialsValid ? parseUserInfo(json) : undefined;
             resolve({
               credentialsValid,
-              userinfo: { 
-                ...userinfo, 
+              userinfo: {
+                ...userinfo,
                 lowtags: createAllowedLowTagList(userinfo)
               }
             });
           } else {
             resolve({credentialsValid});
           }
-
         }).catch(reject);
-
     });
   }
 };
@@ -79,7 +75,7 @@ function parseUserInfo(json) {
   return {userLibrary, name, department, email};
 
   function getDepartment() {
-    const department =  _.get(json, 'user-auth.z66[0].z66-department[0]');
+    const department = _.get(json, 'user-auth.z66[0].z66-department[0]');
     return department in lowTagMapping ? lowTagMapping[department] : department;
   }
 }

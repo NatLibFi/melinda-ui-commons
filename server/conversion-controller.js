@@ -27,13 +27,16 @@
 */
 import express from 'express';
 import cors from 'cors';
-import { corsOptions, requireBodyParams } from './utils';
-import { logger } from './logger';
+import {corsOptions, requireBodyParams} from './utils';
+import {logger} from './logger';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import HttpStatus from 'http-status-codes';
-import MarcRecord from 'marc-record-js';
-import { convertRecord } from './conversion-service';
+import HttpStatus from 'http-status';
+import {MarcRecord} from '@natlibfi/marc-record';
+import {convertRecord} from './conversion-service';
+
+// Lisätty
+MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 export const conversionController = express();
 
@@ -44,9 +47,9 @@ conversionController.set('etag', false);
 conversionController.options('/:conversionId', cors(corsOptions));
 
 conversionController.post('/:conversionId', cors(corsOptions), requireBodyParams('record'), (req, res) => {
-  
+
   const conversionId = req.params.conversionId;
-  const record = new MarcRecord(req.body.record);
+  const record = new MarcRecord(req.body.record, {subfieldValues: false});
 
   logger.log('info', `Converting record with conversion ${conversionId}`);
 
