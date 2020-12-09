@@ -30,7 +30,8 @@ import _ from 'lodash';
 import HttpStatus from 'http-status-codes';
 
 const DEFAULT_LOAD_OPTIONS = {
-  include_parent: 1
+  include_parent: 1,
+  include_nonmono: 1
 };
 
 export function loadRecord(client, recordId, opts) {
