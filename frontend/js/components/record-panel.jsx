@@ -30,6 +30,7 @@ import PropTypes from 'prop-types';
 import {MarcRecordPanel} from './marc-record-panel';
 import '../../styles/components/record-panel.scss';
 import {MarcEditor} from './marc-editor-panel';
+import classNames from 'classnames';
 
 export class RecordPanel extends React.Component {
 
@@ -43,6 +44,20 @@ export class RecordPanel extends React.Component {
     recordHeader: PropTypes.element,
     showHeader: PropTypes.bool,
     title: PropTypes.string
+  };
+
+  constructor() {
+    super();
+    this.state = {
+      editMode: false
+    };
+  }
+
+  handleEditModeChange(event) {
+    event.preventDefault();
+    this.setState({
+      editMode: !this.state.editMode
+    });
   }
 
   handleRecordUpdate(nextRecord) {
@@ -51,11 +66,31 @@ export class RecordPanel extends React.Component {
     }
   }
 
+  renderHeader() {
+    const editButtonClasses = classNames({
+      disabled: !this.props.record,
+      active: this.state.editMode
+    });
+
+    return (
+      <div className="row title-row-card">
+        <div className="title-wrapper col 11s">
+          <ul ref={(c) => this._tabs = c}>
+            <li className="title">{this.props.title || ''}</li>
+            {this.props.editable ? <li className="button tooltip" title="Muokkaa"><a className={editButtonClasses} href="#" onClick={(e) => this.handleEditModeChange(e)}><i className="material-icons">edit</i></a></li> : null}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
   renderRecord() {
+    const header = this.props.recordHeader ? this.props.recordHeader : this.renderHeader();
+
     return (
       <div>
-        {this.props.showHeader ? this.props.recordHeader : null}
-        {this.props.editable ? this.renderEditor() : this.renderPreview()}
+        {this.props.showHeader ? header : null}
+        {this.state.editMode ? this.renderEditor() : this.renderPreview()}
       </div>
     );
   }
@@ -63,8 +98,8 @@ export class RecordPanel extends React.Component {
   renderPreview() {
     if (this.props.record !== undefined) {
       return (
-        <div>
-          <div className="card-content">
+        <div className="card-content">
+          <div>
             <MarcRecordPanel record={this.props.record} onFieldClick={this.props.onFieldClick} />
           </div>
           {this.props.children}

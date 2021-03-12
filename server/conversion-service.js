@@ -25,13 +25,13 @@
 * for the JavaScript code in this file.
 *
 */
-import { readEnvironmentVariable } from './utils';
-import { logger } from './logger';
-import uuid from 'node-uuid';
-import { ISO2709 } from 'marc-record-serializers';
+import {readEnvironmentVariable} from './utils';
+import {logger} from './logger';
+import {v4 as uuid} from 'uuid';
+import {ISO2709} from '@natlibfi/marc-record-serializers';
 import fs from 'fs-extra';
 import path from 'path';
-import { exec } from 'child_process';
+import {exec} from 'child_process';
 import promisify from 'es6-promisify';
 
 const mkdir = promisify(fs.mkdirs);
@@ -48,7 +48,7 @@ const tmpDir = readEnvironmentVariable('TMP_DIR', '/tmp');
 
 export function convertRecord(record, conversionId) {
 
-  const jobId = uuid.v4();
+  const jobId = uuid();
   const log = createJobLogger(jobId);
 
   const jobDirectory = path.resolve(tmpDir, jobId);
@@ -95,7 +95,7 @@ export function convertRecord(record, conversionId) {
     })
     .then(() => {
 
-      const encoded = ISO2709.toISO2709(record);
+      const encoded = ISO2709.to(record);
 
       log('debug', `Writing input file to ${inputFileName}`);
       return writeFile(inputFileName, encoded);
@@ -116,7 +116,8 @@ export function convertRecord(record, conversionId) {
         return readFile(outputFileName, 'utf8').then(result => {
           log('debug', 'Converting result to marc-record-js');
 
-          const convertedRecord = ISO2709.fromISO2709(result);
+          const convertedRecord = ISO2709.from(result);
+          log('debug', JSON.stringify(convertedRecord));
 
           log('debug', 'Done.');
           return {
@@ -131,22 +132,22 @@ export function convertRecord(record, conversionId) {
 
       log('debug', `Removing ${inputFileName}`);
       return remove(jobDirectory).then(() => {
-        return result;  
+        return result;
       });
-      
+
     });
 
 }
 
 function createJobLogger(jobId) {
 
-  return function(level, message, obj) {
+  return function (level, message, obj) {
 
     if (obj) {
       logger.log(level, `${jobId}]`, message, obj);
     } else {
       logger.log(level, `${jobId}]`, message);
     }
-    
+
   };
 }

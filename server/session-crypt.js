@@ -26,28 +26,32 @@
 *
 */
 import crypto from 'crypto';
-import { readEnvironmentVariable } from './utils';
+import {readEnvironmentVariable} from './utils';
+import {createLogger} from '@natlibfi/melinda-backend-commons';
 
+const logger = createLogger();
 const algorithm = 'aes-256-gcm';
 
 // Using random key means that every time the app restarts all sessions will invalidate
 const key = readEnvironmentVariable('SECRET_ENCRYPTION_KEY', crypto.randomBytes(32).toString('base64'), {hideDefaultValue: true});
 
 function readKey() {
+  logger.log('silly', 'Session-crypt/Reading key');
   return new Buffer(key, 'base64');
 }
 
 export function createSessionToken(username, password) {
+  logger.log('silly', 'Session-crypt/Creating session token');
 
   const iv = crypto.randomBytes(12);
   const key = readKey();
-
   const encryptionResult = encrypt(password, username, iv, key);
 
   return createToken(username, encryptionResult);
 }
 
 export function readSessionToken(sessionToken) {
+  logger.log('silly', 'Session-crypt/Reading session token');
   const key = readKey();
   const {username, iv, tag, encrypted} = parseToken(sessionToken);
 
@@ -58,26 +62,28 @@ export function readSessionToken(sessionToken) {
 }
 
 function createToken(username, encryptionResult) {
+  logger.log('silly', 'Session-crypt/Creating token');
   const {encrypted, iv, tag} = encryptionResult;
   return [username, iv.toString('hex'), tag.toString('hex'), encrypted].join(':');
 }
 
 function parseToken(token) {
+  logger.log('silly', 'Session-crypt/Parsing token');
   const [username, iv, tag, encrypted] = token.split(':');
   return {
     username,
-    encrypted, 
-    iv: new Buffer(iv, 'hex'), 
+    encrypted,
+    iv: new Buffer(iv, 'hex'),
     tag: new Buffer(tag, 'hex')
   };
 }
 
-
 function encrypt(text, aad, iv, key) {
+  logger.log('silly', 'Session-crypt/Encrypting');
   const cipher = crypto.createCipheriv(algorithm, key, iv);
   cipher.setAAD(new Buffer(aad, 'utf8'));
   const encrypted = cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
-  
+
   return {
     encrypted: encrypted,
     tag: cipher.getAuthTag(),
@@ -85,11 +91,10 @@ function encrypt(text, aad, iv, key) {
   };
 }
 
-
 function decrypt(encrypted, aad, iv, tag, key) {
+  logger.log('silly', 'Session-crypt/Decrypting');
   const decipher = crypto.createDecipheriv(algorithm, key, iv);
   decipher.setAAD(new Buffer(aad, 'utf8'));
   decipher.setAuthTag(tag);
   return decipher.update(encrypted, 'hex', 'utf8') + decipher.final('utf8');
 }
-

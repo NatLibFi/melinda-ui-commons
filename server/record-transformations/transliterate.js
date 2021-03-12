@@ -28,10 +28,13 @@
 import _ from 'lodash';
 import * as sfs4900 from 'sfs4900';
 import * as iso9 from 'iso9_1995';
-import uuid from 'node-uuid';
-import { isDataField } from '../record-utils';
-import MarcRecord from 'marc-record-js';
+import {v4 as uuid} from 'uuid';
+import {isDataField} from '../record-utils';
+import {MarcRecord} from '@natlibfi/marc-record';
 import XRegExp from 'xregexp';
+
+// Lisätty
+MarcRecord.setValidationOptions({fields: false, subfields: false, subfieldValues: false});
 
 const defaultOptions = {
   doSFS4900RusTransliteration: true
@@ -43,13 +46,13 @@ export function transliterate(record, options) {
 
   record.fields.forEach(field => {
     if (field.uuid === undefined) {
-      field.uuid = uuid.v4();
+      field.uuid = uuid();
     }
   });
 
   return new Promise((resolve) => {
 
-    const originalRecord = new MarcRecord(record);
+    const originalRecord = new MarcRecord(record, {subfieldValues: false});
 
     const fields = record.fields;
 
@@ -96,7 +99,7 @@ function removeFailedTransliterations(fieldList) {
 
 function hasSubfieldValue(expectedCode, expectedValue) {
   const expectedSubfieldCodeStr = expectedCode.toString();
-  return function(field) {
+  return function (field) {
     return field.subfields && field.subfields.some(subfield => {
       return subfield.code === expectedSubfieldCodeStr && subfield.value === expectedValue;
     });
@@ -174,7 +177,7 @@ function containsLinkSubfield(field) {
 function isLinkedFieldOf(queryField) {
   const [queryTag, queryLinkNumber] = getLink(queryField);
 
-  return function(field) {
+  return function (field) {
 
     const linkInLinkedField = getLink(field);
     const [linkTag, linkNumber] = linkInLinkedField;
@@ -233,7 +236,7 @@ function moveCyrillicFieldsTo880(fieldList) {
       }
 
     } else {
-      fields.push(field);  
+      fields.push(field);
     }
     return fields;
   }, []);
@@ -245,7 +248,7 @@ function moveCyrillicFieldsTo880(fieldList) {
       tag: '880'
     });
     newField.subfields.unshift({code: '6', value: `${tagForLinking}-${linkNumber}`});
-    
+
     return newField;
 
   }
@@ -274,13 +277,13 @@ function isCyrillicCharacter(char) {
 
 
 function createTransliteratedFieldsFrom880(options, fieldList) {
-  
+
   const fieldsForRemoval = [];
 
   const transliteratedFieldList = fieldList.reduce((fields, field) => {
 
     if (shouldCreateTransliteratedFields(field)) {
-      
+
       const link = getLinkSubfield(field).value;
       const [linkedTag, linkNumber] = link.split('-');
 
@@ -297,7 +300,7 @@ function createTransliteratedFieldsFrom880(options, fieldList) {
       if (!containsField(fieldList, iso9Transliterated)) {
         fields.push(iso9Transliterated);
 
-        // We added new "main" field (non-880) with iso9 transliteration. We cleanup the corresponding, 
+        // We added new "main" field (non-880) with iso9 transliteration. We cleanup the corresponding,
         // already transliterated field (if any), from the record
         const iso9link = getLinkSubfield(iso9Transliterated);
 
@@ -308,7 +311,7 @@ function createTransliteratedFieldsFrom880(options, fieldList) {
             iso9Transliterated.uuid = field.uuid;
             fieldsForRemoval.push(field);
           });
-          
+
       }
 
       // Mark the original field contents as being cyrillic
@@ -331,14 +334,14 @@ function createTransliteratedFieldsFrom880(options, fieldList) {
 
     const sfs4900Transliterated = _.assign({}, field, {
       tag: '880',
-      uuid: uuid.v4(),
+      uuid: uuid(),
       subfields: field.subfields
         .filter(sub => !isTransliterationSubfield(sub))
         .map(transliterateSubfield('sfs4900'))
     });
     sfs4900Transliterated.subfields.unshift({code: '6', value: `${linkedTag}-${linkNumber}`});
     sfs4900Transliterated.subfields.push({code: '9', value: 'SFS4900 <TRANS>'});
-    
+
     return sfs4900Transliterated;
   }
 
@@ -346,7 +349,7 @@ function createTransliteratedFieldsFrom880(options, fieldList) {
 
     const iso9Transliterated = {
       tag: linkedTag,
-      uuid: uuid.v4(),
+      uuid: uuid(),
       ind1: field.ind1,
       ind2: field.ind2,
       subfields: field.subfields
@@ -376,11 +379,11 @@ function fieldIsLessOrEqual(fieldA, fieldB) {
   if (typeof fieldA.subfields !== typeof fieldB.subfields) return false;
 
   if (fieldA.subfields) {
-    if (_.differenceWith(fieldA.subfields, fieldB.subfields, _.isEqual).length !== 0) return false;  
+    if (_.differenceWith(fieldA.subfields, fieldB.subfields, _.isEqual).length !== 0) return false;
   } else {
     if (fieldA.value !== fieldB.value) return false;
   }
-  
+
   return true;
 }
 
@@ -401,8 +404,8 @@ function sortNumericFields(fields) {
   numericFields.sort((a, b) => {
     const byTag = parseInt(a.tag) - parseInt(b.tag);
     if (byTag !== 0) return byTag;
-    const [aLinkedTag, ] = getLink(a);
-    const [bLinkedTag, ] = getLink(b);
+    const [aLinkedTag,] = getLink(a);
+    const [bLinkedTag,] = getLink(b);
 
     const byLinkedFieldTag = parseInt(aLinkedTag) - parseInt(bLinkedTag);
     if (byLinkedFieldTag !== 0) return byLinkedFieldTag;
@@ -431,7 +434,7 @@ function getNextAvailableLinkNumber(fields) {
     return currentLinkNumbers.some(used => used === linkNumberPart);
   };
 
-  return _.range(1,100).map(num => _.padStart(num, 2, '0')).find(linkNumberPart => !isTaken(linkNumberPart));
+  return _.range(1, 100).map(num => _.padStart(num, 2, '0')).find(linkNumberPart => !isTaken(linkNumberPart));
 }
 
 function getLink(field) {
@@ -444,9 +447,9 @@ function getLink(field) {
 }
 
 function transliterateSubfield(type) {
-  return function(subfield) {
+  return function (subfield) {
     const converted = type === 'sfs4900' ? sfs4900Convert(subfield.value) : iso9Convert(subfield.value);
-    return _.assign({}, subfield, {value: converted.result });
+    return _.assign({}, subfield, {value: converted.result});
   };
 }
 
@@ -457,5 +460,5 @@ function sfs4900Convert(str) {
 function iso9Convert(str) {
   return {
     result: iso9.convertToLatin(str)
-  }; 
+  };
 }

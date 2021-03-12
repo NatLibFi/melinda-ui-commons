@@ -81,8 +81,8 @@ export class SigninFormPanel extends React.Component {
 
   render() {
     const title = this.props.title;
-    const usernameLabel = 'Käyttäjätunnus';
-    const passwordLabel = 'Salasana';
+    const usernameLabel = 'Käyttäjätunnus'; //ignore:node_username
+    const passwordLabel = 'Salasana'; //ignore:node_password
     const signinButtonLabel = 'Kirjaudu';
     const dataProtectionConsentLabel = (() => {
       return (
@@ -97,15 +97,11 @@ export class SigninFormPanel extends React.Component {
     const {username, password} = this.state;
 
     return (
-
       <div className="card signin-panel valign">
-
         <div className="card-panel teal lighten-2">
           <h4>{title}</h4>
         </div>
-
         <div className="card-content">
-
           <form>
             <div className="col s2 offset-s1 input-field">
               <input id="username" type="text" className="validate" value={username} onChange={this.updateUsername.bind(this)}/>
@@ -132,13 +128,9 @@ export class SigninFormPanel extends React.Component {
               </button>
             </div>
           </form>
-
         </div>
-
         {this.props.sessionState === 'SIGNIN_ONGOING' ? this.renderPreloader():''}
-
       </div>
-
     );
   }
 }

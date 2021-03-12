@@ -25,7 +25,10 @@
 * for the JavaScript code in this file.
 *
 */
-import MarcRecord from 'marc-record-js';
+import {MarcRecord} from '@natlibfi/marc-record';
+
+// Lisätty
+MarcRecord.setValidationOptions({subfieldValues: false});
 
 export const FAKE_RECORD = MarcRecord.fromString([
   'LDR    abcdefghijk',
@@ -108,7 +111,7 @@ export const FAKE_RECORD_ONLY_LOW_TEST = MarcRecord.fromString([
 export const FAKE_CYRILLIC_RECORD = MarcRecord.fromString(`LDR    01731cam a22002417i 4500
 001    002686913
 005    20050825143756.0
-008    050712s2005    ru      r     000 u rus  
+008    050712s2005    ru      r     000 u rus
 020    ‡a5-94617-054-6 (в обл.)
 040    ‡aRuMoRKP‡brus‡ercr‡dRuMoRGB
 041 0  ‡arus
@@ -126,10 +129,10 @@ export const FAKE_CYRILLIC_RECORD = MarcRecord.fromString(`LDR    01731cam a2200
 852    ‡a2005120291‡bFB‡cBOOK‡d90‡e20050801‡f20050905‡gGNP01‡i4‡j1 05-18/200‡o292743‡r90.00‡1ФБ Осн. хран.`);
 
 export const melindaClientUnableParseResponse = {
-  messages:[], 
-  errors:[
-    {code:-1, message: 'melinda-api-client unable to parse: Fake update failure reason'}
-  ], 
-  triggers:[], 
-  warnings:[]
+  messages: [],
+  errors: [
+    {code: -1, message: 'melinda-api-client unable to parse: Fake update failure reason'}
+  ],
+  triggers: [],
+  warnings: []
 };

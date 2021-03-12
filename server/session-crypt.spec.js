@@ -25,18 +25,34 @@
 * for the JavaScript code in this file.
 *
 */
-import { expect } from 'chai';
-import { createSessionToken, readSessionToken } from './session-crypt';
+import chai from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+import {createSessionToken, readSessionToken} from './session-crypt';
+import {__RewireAPI__ as RewireAPI} from './session-crypt';
+
+chai.use(sinonChai);
+const expect = chai.expect;
 
 const USERNAME = 'test_username';
 const PASSWORD = 'password';
 
 describe('Session crypt', () => {
+  let loggerStub;
+
+  beforeEach(() => {
+    loggerStub = {log: sinon.stub()};
+    RewireAPI.__Rewire__('logger', loggerStub);
+  });
+  afterEach(() => {
+    RewireAPI.__ResetDependency__('logger');
+  });
+
   describe('createSessionToken', () => {
     it('generates session token', () => {
 
       const generatedSessionToken = createSessionToken(USERNAME, PASSWORD);
-      
+
       expect(generatedSessionToken).to.be.a('string');
       expect(generatedSessionToken.split(':')).to.have.lengthOf(4);
 
@@ -47,7 +63,7 @@ describe('Session crypt', () => {
     it('reads a generated session token and returns credentials', () => {
 
       const generatedSessionToken = createSessionToken(USERNAME, PASSWORD);
-      
+
       const credentials = readSessionToken(generatedSessionToken);
 
       expect(credentials).to.eql({
@@ -59,7 +75,6 @@ describe('Session crypt', () => {
 
 
     it('fails when the username is tampered with', () => {
-
       const generatedSessionToken = createSessionToken(USERNAME, PASSWORD);
 
       const tamperedSessionToken = generatedSessionToken.split(':')
@@ -71,7 +86,7 @@ describe('Session crypt', () => {
       }).to.throw('Unsupported state or unable to authenticate data');
 
     });
-    
+
   });
 
 });
