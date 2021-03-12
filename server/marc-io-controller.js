@@ -35,7 +35,7 @@ import {readSessionMiddleware, requireSession} from './session-controller';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {loadRecord, updateAndReloadRecord, createAndReloadRecord} from './melinda-io-service';
 import {Error as RecordIOError} from '@natlibfi/melinda-commons';
-import {createApiClient} from '@natlibfi/melinda-rest-api-client-js';
+import {createApiClient} from '@natlibfi/melinda-rest-api-client';
 import {createLogger, readEnvironmentVariable} from '@natlibfi/melinda-backend-commons';
 
 // Lisätty
