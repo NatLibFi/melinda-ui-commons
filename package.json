@@ -18,97 +18,41 @@
     "type": "git",
     "url": "git@github.com:natlibfi/melinda-ui-commons.git"
   },
-  "main": "index.js",
-  "files": [
-    "dist"
-  ],
+  "main": "dist/index.js",
   "publishConfig": {
     "private": false
   },
-  "license": "AGPL-3.0+",
+  "license": "MIT",
   "scripts": {
     "prepare": "npm run build",
-    "check-deps": "npm-check;exit 0",
-    "build:server": "babel server --ignore node_modules,spec.js --out-dir dist/server --source-maps",
-    "build:frontend": "npm run build:frontend:transpile && npm run build:frontend:copyfiles",
-    "build:frontend:transpile": "babel frontend --ignore node_modules,spec.js --out-dir dist/frontend --source-maps",
-    "build:frontend:copyfiles": "cp -r frontend/styles frontend/images frontend/fonts dist/frontend/",
-    "build": "npm run build:server && npm run build:frontend",
-    "lint": "eslint server",
-    "test": "npm run test:frontend && npm run test:server",
-    "test:frontend": "BABEL_ENV=test mocha --compilers js:babel-register --require ignore-styles --require ./frontend/test_helpers/test_bootstrap.js \"frontend/**/*@(.spec.js|.spec.jsx)\"",
-    "test:frontend:watch": "npm run test:frontend -- --watch",
-    "test:server": "BABEL_ENV=test mocha --compilers js:babel-register --require ./server/test_helpers/test_bootstrap.js \"./server/**/*@(.spec.js|.spec.jsx)\"",
-    "test:server:watch": "npm run test:server -- --watch",
-    "publish-to-npm": "npm publish --access=public"
+    "build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
+    "lint": "eslint src/*.js"
   },
   "dependencies": {
-    "@natlibfi/marc-record": "^6.1.1",
-    "@natlibfi/marc-record-serializers": "^7.1.6",
-    "@natlibfi/melinda-backend-commons": "^2.0.0",
-    "@natlibfi/melinda-commons": "^11.0.1",
-    "@natlibfi/melinda-rest-api-client": "^1.0.0",
-    "body-parser": "^1.18.2",
-    "classnames": "^2.2.5",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.4",
-    "draft-js": "^0.10.4",
-    "es6-promise": "^4.1.1",
-    "es6-promisify": "^5.0.0",
-    "express": "^4.16.2",
-    "express-winston": "^2.4.0",
-    "fs-extra": "^4.0.2",
-    "http-status": "^1.4.2",
-    "immutable": "^3.8.2",
-    "isomorphic-fetch": "^2.2.1",
-    "lodash": "^4.17.4",
-    "moment": "^2.26.0",
-    "uuid": "^8.1.0",
-    "winston": "^2.4.0",
-    "xml2js": "^0.4.23"
+    "cross-env": "^7.0.3",
+    "debug": "^4.3.4"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.0.3",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-rewire": "^1.2.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "babel-register": "^6.26.0",
-    "chai": "^4.1.2",
-    "chai-immutable": "^2.1.0",
-    "eslint": "^4.12.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.20.0",
-    "ignore-styles": "^5.0.1",
-    "iso9_1995": "0.0.2",
-    "jquery": "^3.5.1",
-    "js-cookie": "^2.2.1",
-    "jsdom": "^11.5.1",
-    "mocha": "^4.0.1",
-    "npm-check": "^5.9.0",
-    "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-dnd": "^2.5.4",
-    "react-dnd-html5-backend": "^2.5.4",
-    "react-dom": "^16.14.0",
-    "react-hot-loader": "^3.1.3",
-    "react-redux": "^5.0.6",
-    "react-router": "^4.2.0",
-    "redux": "^3.7.2",
-    "redux-immutable": "^4.0.0",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0",
-    "reselect": "^3.0.1",
-    "sfs4900": "0.0.1",
-    "sinon": "^4.1.2",
-    "sinon-chai": "^2.14.0",
-    "sinon-stub-promise": "^4.0.0",
-    "supertest": "^3.0.0",
-    "xregexp": "^3.2.0"
-  }
+    "@babel/cli": "^7.19.3",
+		"@babel/core": "^7.19.3",
+		"@babel/eslint-parser": "^7.19.1",
+		"@babel/node": "^7.19.1",
+		"@babel/preset-env": "^7.16.11",
+    "@natlibfi/eslint-config-melinda-frontend": "^1.0.2",
+    "eslint": "^8.24.0"
+  },
+  "eslintConfig": {
+		"parser": "@babel/eslint-parser",
+		"extends": "@natlibfi/melinda-frontend"
+	},
+	"babel": {
+		"presets": [
+			[
+				"@babel/preset-env",
+				{
+					"targets": "maintained node versions"
+				}
+			]
+		]
+	}
 }
