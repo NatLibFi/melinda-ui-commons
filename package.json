@@ -1,6 +1,6 @@
 {
   "name": "@natlibfi/melinda-ui-commons",
-  "version": "4.0.4",
+  "version": "5.0.0-alpha.1",
   "description": "Common modules for Melinda UI applications",
   "keywords": [
     "MARC",
@@ -36,25 +36,25 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
-		"@babel/core": "^7.19.3",
-		"@babel/eslint-parser": "^7.19.1",
-		"@babel/node": "^7.19.1",
-		"@babel/preset-env": "^7.16.11",
+    "@babel/core": "^7.19.3",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/node": "^7.19.1",
+    "@babel/preset-env": "^7.16.11",
     "@natlibfi/eslint-config-melinda-frontend": "^1.0.2",
     "eslint": "^8.24.0"
   },
   "eslintConfig": {
-		"parser": "@babel/eslint-parser",
-		"extends": "@natlibfi/melinda-frontend"
-	},
-	"babel": {
-		"presets": [
-			[
-				"@babel/preset-env",
-				{
-					"targets": "maintained node versions"
-				}
-			]
-		]
-	}
+    "parser": "@babel/eslint-parser",
+    "extends": "@natlibfi/melinda-frontend"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": "maintained node versions"
+        }
+      ]
+    ]
+  }
 }
