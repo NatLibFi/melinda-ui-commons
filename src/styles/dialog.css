@@ -1,0 +1,95 @@
+/* ---------------------------------------------------------------------------- */
+/* Dialog */
+/* ---------------------------------------------------------------------------- */
+
+/* Dialog elements have rounded corners and no borders */
+dialog {
+  border: none;
+  border-radius: 1em;
+}
+
+/* Overriding the default "display: block" for dialogs */
+dialog[open] {
+  display: flex;
+}
+
+/* Dialog has backdrop that is displayed behind dialog modal */
+/* Backdrop has transparency and darker color */
+dialog::backdrop {
+  background: rgba(50, 50, 50, 0.5);
+}
+
+/* The mouse cursor is set default (arrow) in dialog */
+dialog:hover {
+  cursor: default
+}
+
+/* Modal is the container for the dialog contents: */
+/*   - icon */
+/*   - headline */
+/*   - supprting text */
+/*   - action buttons */
+dialog:modal {
+  display: flex;
+  flex-direction: column;
+  color: var(--color-primary-black);
+}
+
+/* Dialog can have icon: informative picture on top */
+/* Icon is centered */
+.dialog-icon {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px;
+  font-size: 32px !important;
+}
+
+/* Dialog has a headline: the purpose of dialog */
+/* Headline is centered */
+.dialog-headline {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0.5em;
+  font-size: var(--font-size-headline-small);
+}
+
+/* Dialog has supporting text: for example instructions */
+/* Supporting text color is less prominent*/
+.dialog-supporting-text {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  color: var(--color-grey-100);
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  font-size: var(--font-size-content-medium);
+}
+
+/* If hr or p element is used in supporting text, */
+/* sets the horizontal line on it's own row */
+.dialog-supporting-text hr,
+.dialog-supporting-text p:not(.full-width p) {
+  flex: 0 0 100%
+}
+
+/* Dialog has place for actions */
+/* Actions are positioned on the right */
+.dialog-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 0.5em;
+}
+
+/* Dialog actions are buttons */
+.dialog-actions button {
+  margin-left: 3em;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-size: var(--font-size-button-large);
+  font-weight: var(--font-weight-button);
+}

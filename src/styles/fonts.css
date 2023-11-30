@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: 'DM Serif Text Regular (file)';
-  src: url('/fonts/DMSerifText-Regular.ttf') format('truetype');
+  src: url('../fonts/DMSerifText-Regular.ttf') format('truetype');
   font-stretch: normal;
   font-weight: 300 500;
   font-style: normal;
@@ -30,11 +30,11 @@
 /* PUBLIC SANS */
 /*    - Light 300 */
 /*    - Medium 500 */
-/*    - Semibold 600 */
+/*    - SemiBold 600 */
 
 @font-face {
   font-family: 'Public Sans Light (file)';
-  src: url('/fonts/PublicSans-Light.ttf') format('truetype');
+  src: url('../fonts/PublicSans-Light.ttf') format('truetype');
   font-stretch: normal;
   font-weight: 200 400;
   font-style: normal;
@@ -43,7 +43,7 @@
 
 @font-face {
   font-family: 'Public Sans Medium (file)';
-  src: url('/fonts/PublicSans-Medium.ttf') format('truetype');
+  src: url('../fonts/PublicSans-Medium.ttf') format('truetype');
   font-stretch: normal;
   font-weight: 400 600;
   font-style: normal;
@@ -52,7 +52,7 @@
 
 @font-face {
   font-family: 'Public Sans SemiBold (file)';
-  src: url('/fonts/PublicSans-SemiBold.ttf') format('truetype');
+  src: url('../fonts/PublicSans-SemiBold.ttf') format('truetype');
   font-stretch: normal;
   font-weight: 500 700;
   font-style: normal;
@@ -66,7 +66,7 @@
 
 @font-face {
   font-family: 'Roboto Mono Regular (file)';
-  src: url('./fonts/RobotoMono-Regular.ttf') format('truetype');
+  src: url('../fonts/RobotoMono-Regular.ttf') format('truetype');
   font-stretch: normal;
   font-weight: 300 500;
   font-style: normal;
@@ -90,12 +90,12 @@
 
   --font-family-brand: 'DM Serif Text', 'DM Serif Text Regular (file)', serif;
   --font-family-mono: 'Roboto Mono', 'Roboto Mono Regular (file)', monospace;
-  --font-family-button: 'Public Sans', 'Public Sans Semibold (file)', sans-serif;
+  --font-family-button: 'Public Sans', 'Public Sans SemiBold (file)', sans-serif;
   --font-family-content: 'Public Sans', 'Public Sans Light (file)', sans-serif;
-  --font-family-headline: 'Public Sans', 'Public Sans Semibold (file)', sans-serif;
+  --font-family-headline: 'Public Sans', 'Public Sans SemiBold (file)', sans-serif;
   --font-family-input: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
   --font-family-label: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
-  --font-family-link: 'Public Sans', 'Public Sans Semibold (file)', sans-serif;
+  --font-family-link: 'Public Sans', 'Public Sans SemiBold (file)', sans-serif;
   --font-family-list: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
   --font-family-placeholder: 'Public Sans', 'Public Sans Light (file)', sans-serif;
   --font-family-title: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
@@ -201,7 +201,7 @@
 
   --font-line-height-list-large: 1.25rem;
   --font-line-height-list-medium: 1.0rem;
-  --font-line-height-list-small: 1.75rem;
+  --font-line-height-list-small: 0.75rem;
 
   --font-line-height-placeholder-large: 1.5rem;
   --font-line-height-placeholder-medium: 1.375rem;

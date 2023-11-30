@@ -1,0 +1,366 @@
+/* ---------------------------------------------------------------------------- */
+/* BUTTONS
+/* ---------------------------------------------------------------------------- */
+/* Basic buttons                                                                */
+/* - button with text only                                                      */
+/* - button with icon only                                                      */
+/* - button with icon on before or after text                                   */
+/* - button with icons on both side of text                                     */
+
+
+/* ---------------------------------------------------------------------------- */
+/* Default M size button */
+
+button {
+  display: flex;
+  cursor: pointer;
+  font-family: var(--font-family-button);
+  font-size: var(--font-size-button-medium);
+  font-weight: var(--font-weight-button);
+  background-color: var(--color-melinda-lightblue-custom);
+  color: var(--color-primary-white);
+  padding-left: 16px;
+  padding-right: 16px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-color: var(--color-melinda-lightblue-custom);
+  border-radius: 6px;
+  border-style: solid;
+  border-width: 2px;
+}
+
+button.material-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button.icon-on-left .material-icons {
+  padding-right: 16px;
+}
+
+button.icon-on-right .material-icons {
+  padding-left: 16px;
+}
+
+button.icon-on-right.icon-on-left {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+button.icon-only {
+  width: 48px;
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Small S size button                                                          */
+
+button.small {
+  font-size: var(--font-size-small);
+  padding-left: 12px;
+  padding-right: 12px;
+  height: 32px;
+}
+
+button.small .material-icons {
+  font-size: var(--font-size-icon-small);
+}
+
+button.small.icon-on-left .material-icons {
+  padding-right: 12px;
+}
+
+button.small.icon-on-right .material-icons {
+  padding-left: 12px;
+}
+
+button.small.icon-only {
+  width: 32px;
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Alternate colored buttons for special use                                    */
+/* - red for example clearing forms, green accepting etc.                       */
+
+button.alternate-red,
+button.alternate-green,
+button.alternate-blue {
+  background-color: var(--color-primary-white);
+}
+
+button.alternate-red {
+  color: var(--color-red-100);
+  border-color: var(--color-red-100);
+}
+
+button.alternate-green {
+  color: var(--color-green-100);
+  border-color: var(--color-green-100);
+}
+
+button.alternate-blue {
+  color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Minimal buttons for closing modals, clearing form subfield etc.              */
+button.minimal {
+  color: var(--color-blue-100);
+  border-color: transparent;
+  background-color: transparent;
+}
+
+button.alternate-red.minimal {
+  color: var(--color-red-100);
+  border-color: transparent;
+  background-color: transparent;
+}
+
+button.alternate-green.minimal {
+  color: var(--color-green-100);
+  border-color: transparent;
+  background-color: transparent;
+}
+
+button.alternate-blue.minimal {
+  color: var(--color-blue-100);
+  border-color: transparent;
+  background-color: transparent;
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colored button for dark backgrounds                                  */
+
+button.inverse {
+  color: var(--color-blue-100);
+  background-color: var(--color-blue-40);
+  border-color: var(--color-blue-40);
+}
+
+button.alternate-red.inverse,
+button.alternate-green.inverse,
+button.alternate-blue.inverse {
+  background-color: var(--color-primary-white);
+  border-color: transparent;
+}
+
+button.alternate-red.inverse {
+  color: var(--color-red-100);
+}
+
+button.alternate-green.inverse {
+  color: var(--color-green-100);
+}
+
+button.alternate-blue.inverse {
+  color: var(--color-blue-100);
+}
+
+button.minimal.inverse {
+  color: var(--color-primary-white);
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Button hover effects                                                         */
+
+button:hover {
+  color: var(--color-primary-white);
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
+}
+
+button.inverse:hover {
+  border-color: var(--color-primary-white);
+}
+
+
+/* melinda specific alternate red hover style */
+button.alternate-red:hover {
+  color: var(--color-primary-white);
+  background-color: var(--color-red-100);
+  border-color: var(--color-red-100);
+}
+
+/* melinda specific alternate green hover style */
+button.alternate-green:hover {
+  color: var(--color-primary-white);
+  background-color: var(--color-green-100);
+  border-color: var(--color-green-100);
+}
+
+/* melinda specific alternate blue hover style */
+button.alternate-blue:hover {
+  color: var(--color-primary-white);
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Button active effects                                                        */
+
+button:active {
+  color: var(--color-primary-white);
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
+  outline-color: var(--color-blue-100);
+  outline-style: solid;
+  outline-width: 2px;
+  outline-offset: 2px;
+}
+
+button.inverse:active {
+  outline-color: var(--color-primary-white);
+}
+
+/* melinda specific alternate red hover style */
+button.alternate-red:active {
+  outline-color: var(--color-red-100);
+}
+
+/* melinda specific alternate green hover style */
+button.alternate-green:active {
+  outline-color: var(--color-green-100);
+}
+
+/* melinda specific alternate blue hover style */
+button.alternate-blue:active {
+  outline-color: var(--color-blue-100);
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Button in disabled state                                                     */
+/* Choose either "pointer-events:none" or "cursor: not-allowed"                 */
+/* If latter: hover, focus and active state styles should be handled            */
+
+button:disabled {
+  pointer-events: none;
+  color: var(--color-blue-60);
+  background-color: var(--color-blue-20);
+  border-color: var(--color-blue-20);
+}
+
+button.inverse:disabled {
+  background-color: var(--color-blue-80);
+  border-color: var(--color-blue-80);
+}
+
+------------------------------------------------------------------------ */
+/* ---------------------------------------------------------------------------- */
+/* Segmented buttons */
+/* ---------------------------------------------------------------------------- */
+/* Segmented buttons can be single-select or multi-select buttons. */
+/* Use segmented buttons for for example for filtering */
+
+/* Segmented button container is the container for all the buttons that are displayed as one segmented button */
+/* It is recommended not to add more than 5 buttons inside the container */
+.segmented-button-container {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-color: var(--color-primary-white);
+}
+
+/* Segmented button class is used with element <button> */
+/* First and last button are rendered with round button edges */
+.segmented-button:first-child {
+  border-radius: 6px 0px 0px 6px;
+  margin-right: 0px;
+  border-right: none;
+  border-color: var(--color-primary-white);
+}
+
+.segmented-button:nth-child(n):not(:first-child, :last-child) {
+  margin-left: 0px;
+  margin-right: 0px;
+  border-radius: 0px 0px 0px 0px;
+  border-right: none;
+  border-color: var(--color-primary-white);
+}
+
+.segmented-button:last-child {
+  border-radius: 0px 6px 6px 0px;
+  border-color: var(--color-primary-white);
+  margin-left: 0px;
+}
+
+/* Segmented buttons containing just one segment */
+/* are rendered with all round button edges */
+.segmented-button:only-child {
+  border-radius: 6px 6px 6px 6px;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Select buttons */
+/* ---------------------------------------------------------------------------- */
+/* Select buttons have two "states", selected or unselected */
+/* There is a style for a button that is selected and another for when it's not selected */
+
+/* Select button is wrapped with a container div */
+.select-button-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Helper class for html readibility, used for marking a button as select button */
+/* Select button in unselected state has unselected button style*/
+.select-button {
+  color: var(--color-primary-white);
+  background-color: var(--color-grey-80);
+  border-color: var(--color-primary-white);
+}
+
+/* Select button inner container for content */
+/* Contents for select button are icon and text */
+.select-button-content {
+  display: flex;
+  justify-content: center;
+}
+
+/* Select button has icon */
+/* Use with material-icons class, check icon and a <span> element: */
+.select-button-icon {
+  font-size: var(--font-size-icon-small);
+  padding-right: 5px;
+}
+
+/* Select button has text, the label of button */
+.select-button-text {
+  white-space: nowrap;
+}
+
+/* Select button has selected style when it is selected */
+.select-button-selected {
+  color: var(--color-primary-white);
+  background-color: var(--color-functional-green);
+  border-color: var(--color-functional-green);
+}
+
+/* When the select button is unselected, the icon is hidden */
+.select-button-container button:not(.select-button-selected) span.select-button-icon {
+  display: none;
+}
+
+/* When the select button is unselected, the space for icon is saved */
+/* This means that the selected and unselected select button have the same width */
+.select-button-container button:not(.select-button-selected) span.select-button-text {
+  display: flex;
+  flex-grow: 1;
+  padding-left: 9px;
+  padding-right: 9px;
+}

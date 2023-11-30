@@ -1,0 +1,656 @@
+/* ---------------------------------------------------------------------------- */
+/* INPUTS AND LABELS FOR INPUTS                                                 */
+/* ---------------------------------------------------------------------------- */
+
+/* form-field-container is a wrapper for label and input */
+.form-field-container {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  color: var(--color-blue-100);
+  background-color: transparent;
+  box-sizing: border-box;
+  width: fit-content;
+}
+
+.form-field-container.full-width {
+  width: 100%;
+}
+
+.form-field-container.half-width {
+  width: 50%;
+}
+
+.form-field-container.quarter-width {
+  width: 25%;
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Default M size label and input */
+
+.label-wrapper {
+  display: flex;
+  flex-direction: row;
+  color: var(--color-blue-100);
+  font-family: var(--font-family-label);
+  font-size: var(--font-size-label-medium);
+  font-weight: var(--font-weight-label);
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: row;
+  font-family: var(--font-family-input);
+  font-size: var(--font-size-input-medium);
+  font-weight: var(--font-weight-input);
+  background-color: var(--color-primary-white);
+  height: 46px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: var(--color-blue-100);
+  border-width: 1px;
+  padding-left: 16px;
+  margin-left: 2px;
+  margin-right: 2px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.label-wrapper span.form-field-required {
+  color: var(--color-functional-red);
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.input-wrapper input {
+  font-size: var(--font-size-input-medium);
+  color: var(--color-blue-100);
+  border: none;
+  flex-grow: 1;
+  padding-right: 12px;
+}
+
+.form-field-container .input-wrapper span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-blue-100);
+  background-color: transparent;
+  padding-right: 12px;
+}
+
+.form-field-container .input-wrapper>:not(button):last-child {
+  padding-right: 16px;
+}
+
+.form-field-container .input-wrapper span.material-icons {
+  font-size: var(--font-size-icon-medium);
+}
+
+.form-field-container .input-wrapper button {
+  justify-content: center;
+  align-items: center;
+  height: 46px;
+  border-radius: 4px;
+}
+
+.form-field-container .input-wrapper button.icon-only {
+  color: var(--color-blue-100);
+  background-color: transparent;
+  border-color: transparent;
+}
+
+/* Placeholder text in input fields */
+.input-wrapper input::placeholder {
+  color: var(--color-blue-80);
+  font-family: var(--font-family-placeholder);
+}
+
+/* Input text field can grow */
+.inputs-wrapper input[type] {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+/* Override user agent stylesheet autofill color and style */
+.input-wrapper input:-webkit-autofill,
+.input-wrapper input:-webkit-autofill:hover,
+.input-wrapper input:-webkit-autofill:focus,
+.input-wrapper input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--color-primary-white) inset !important;
+  margin-right: 16px;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Small S size label and input */
+
+.form-field-container.small {
+  gap: 8px;
+}
+
+.form-field-container.small .label-wrapper {
+  font-size: var(--font-size-label-small);
+}
+
+.form-field-container.small .label-wrapper span.form-field-required {
+  font-size: 16px;
+}
+
+.form-field-container.small .input-wrapper {
+  height: 32px;
+  border-radius: 3px;
+  padding-left: 12px;
+}
+
+.form-field-container.small .input-wrapper span.material-icons {
+  font-size: var(--font-size-icon-small);
+}
+
+.form-field-container.small .input-wrapper>:not(button):last-child {
+  padding-right: 12px;
+}
+
+.form-field-container.small input {
+  font-size: var(--font-size-input-small);
+  padding-right: 8px;
+}
+
+.form-field-container.small .input-wrapper button {
+  font-size: var(--font-size-small);
+  height: 32px;
+  width: 32px;
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Input wrapper has hover style */
+.form-field-container .input-wrapper:hover {
+  border-width: 1px;
+  border-color: var(--color-blue-100);
+  border-style: solid;
+  outline-width: 1px;
+  outline-color: var(--color-blue-100);
+  outline-style: solid;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Input wrapper has focus style */
+/* when form field is focused */
+.form-field-container:focus-within .input-wrapper {
+  border-width: 1px;
+  border-color: var(--color-functional-blue);
+  border-style: solid;
+  outline-width: 2px;
+  outline-color: var(--color-functional-blue);
+  outline-style: solid;
+}
+
+.input-wrapper input:focus-visible {
+  outline: none;
+}
+
+.input-wrapper button:focus {
+  outline: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Input wrappers button has active style when clicked */
+
+.input-wrapper button.icon-only:hover span.material-icons {
+  cursor: pointer;
+  color: var(--color-red-100);
+}
+
+.input-wrapper button.icon-only:active {
+  outline: none;
+  background-color: var(--color-red-100);
+}
+
+.input-wrapper button.icon-only:active span.material-icons {
+  color: var(--color-primary-white);
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Input field disabled state */
+/* form-field-container wrapper div should have attribute disabled="true" */
+/* also the input element itself should be disabled */
+
+.form-field-container:focus-within[disabled=true] .input-wrapper {
+  outline: none;
+  border-color: var(--color-blue-60);
+}
+
+.form-field-container[disabled=true] .input-wrapper {
+  pointer-events: none;
+  border-color: var(--color-blue-60);
+  background-color: var(--color-grey-20);
+}
+
+.form-field-container[disabled=true] .input-wrapper input[type] {
+  pointer-events: none;
+  background-color: var(--color-grey-20);
+}
+
+.form-field-container[disabled=true] .input-wrapper span {
+  color: var(--color-blue-80);
+}
+
+.form-field-container[disabled=true] .input-wrapper input::placeholder {
+  color: var(--color-blue-60);
+}
+
+.form-field-container[disabled=true] .input-wrapper button {
+  color: var(--color-grey-20);
+  background-color: var(--color-blue-60);
+  border-color: var(--color-blue-60);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Input field success and error state */
+/* success and error states should show correct icon at the end of input field
+/* Error state can also have additional hint under input field */
+
+
+.form-field-container.success .input-wrapper {
+  border-width: 1px;
+  border-color: var(--color-functional-green);
+  border-style: solid;
+  outline-width: 2px;
+  outline-color: var(--color-functional-green);
+  outline-style: solid;
+}
+
+.form-field-container.success .input-wrapper>span.material-icons:last-child {
+  color: var(--color-functional-green);
+}
+
+.form-field-container.error .input-wrapper {
+  border-width: 1px;
+  border-color: var(--color-functional-red);
+  border-style: solid;
+  outline-width: 2px;
+  outline-color: var(--color-functional-red);
+  outline-style: solid;
+}
+
+.form-field-container.error .input-wrapper>span.material-icons:last-child {
+  color: var(--color-functional-red);
+}
+
+.form-field-container.error .hint-wrapper {
+  color: var(--color-functional-red);
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colors for labels and inputs */
+
+.form-field-container.inverse .label-wrapper {
+  color: var(--color-primary-white);
+}
+
+.form-field-container.inverse:focus-within .input-wrapper {
+  border-color: var(--color-blue-60);
+  outline-color: var(--color-blue-60);
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Input checkbox and input radio specific styles */
+
+.form-field-container.checkbox,
+.form-field-container.radio {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+}
+
+.form-field-container.checkbox .input-wrapper,
+.form-field-container.checkbox .label-wrapper,
+.form-field-container.checkbox .input-wrapper input .form-field-container.checkbox .input-wrapper span,
+.form-field-container.checkbox .label-wrapper label,
+.form-field-container.radio .input-wrapper,
+.form-field-container.radio .label-wrapper,
+.form-field-container.radio .input-wrapper input .form-field-container.checkbox .input-wrapper span,
+.form-field-container.radio .label-wrapper label {
+  display: flex;
+}
+
+.form-field-container.checkbox .input-wrapper,
+.form-field-container.checkbox .input-wrapper input .form-field-container.checkbox .input-wrapper span,
+.form-field-container.radio .input-wrapper,
+.form-field-container.radio .input-wrapper input .form-field-container.checkbox .input-wrapper span {
+  cursor: pointer;
+}
+
+.form-field-container.checkbox .label-wrapper label,
+.form-field-container.radio .label-wrapper label {
+  align-items: center;
+  justify-content: center;
+}
+
+.form-field-container.checkbox .input-wrapper,
+.form-field-container.radio .input-wrapper {
+  border: none;
+  padding-left: 0px;
+  padding-right: 16px;
+  overflow: visible;
+  background-color: transparent;
+}
+
+/* Hiding the default checkbox and radio */
+.form-field-container.checkbox .input-wrapper input,
+.form-field-container.radio .input-wrapper input {
+  display: none;
+}
+
+/* Common for custom checkbox and common radio */
+.form-field-container.checkbox .input-wrapper span,
+.form-field-container.radio .input-wrapper span {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--color-blue-100);
+  background-color: var(--color-primary-white);
+  color: var(--color-primary-white);
+  position: relative;
+  height: 24px;
+  width: 24px;
+  padding: 0px;
+  margin: 0px;
+}
+
+
+/* Custom checkbox */
+.form-field-container.checkbox .input-wrapper span {
+  border-radius: 3px;
+}
+
+.form-field-container.checkbox .input-wrapper>input[type="checkbox"]:checked+span:before {
+  content: 'check';
+  position: absolute;
+  background-color: var(--color-functional-blue);
+  height: 24px;
+  width: 24px;
+}
+
+/* Custom radio */
+.form-field-container.radio .input-wrapper span {
+  border-radius: 50%;
+}
+
+.form-field-container.radio .input-wrapper>input[type="radio"]:checked+span:before {
+  content: '';
+  position: absolute;
+  background-color: var(--color-functional-blue);
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+}
+
+.form-field-container.checkbox:focus-within .input-wrapper,
+.form-field-container.radio:focus-within .input-wrapper {
+  outline: none;
+  border: none;
+}
+
+.form-field-container.checkbox:focus-within .input-wrapper span,
+.form-field-container.radio:focus-within .input-wrapper span {
+  outline-style: solid;
+  outline-color: var(--color-functional-blue);
+  border-color: var(--color-functional-blue);
+  border-style: solid;
+  border-width: 1px;
+  outline-width: 2px;
+}
+
+.form-field-container.checkbox .outer-link a,
+.form-field-container.radio .outer-link a {
+  text-decoration: underline dotted var(--color-functional-blue) 0.1rem;
+}
+
+.form-field-container.checkbox .outer-link a:hover,
+.form-field-container.radio .outer-link a:hover {
+  color: var(--color-primary-blue);
+  text-decoration: underline solid var(--color-primary-blue) 0.1rem;
+}
+
+.form-field-container.checkbox:focus-within label a,
+.form-field-container.radio:focus-within label a {
+  outline: none;
+  border: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Small input checkbox and small input radio specific styles */
+
+.form-field-container.checkbox.small .input-wrapper,
+.form-field-container.radio.small .input-wrapper {
+  padding-right: 12px;
+}
+
+.form-field-container.checkbox.small .input-wrapper span,
+.form-field-container.radio.small .input-wrapper span {
+  height: 20px;
+  width: 20px;
+}
+
+.form-field-container.checkbox.small .input-wrapper>input[type="checkbox"]:checked+span:before {
+  height: 20px;
+  width: 20px;
+}
+
+.form-field-container.radio.small .input-wrapper>input[type="radio"]:checked+span:before {
+  height: 14px;
+  width: 14px;
+}
+
+.form-field-container.checkbox.small .input-wrapper span.material-icons {
+  font-size: var(--font-size-icon-small);
+}
+
+.form-field-container.small .input-wrapper>:not(button):last-child {
+  padding-right: 0px;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Input checkbox and input radio hover state */
+
+.form-field-container.checkbox:hover .input-wrapper>input[type="checkbox"]+span,
+.form-field-container.radio:hover .input-wrapper>input[type="radio"]+span {
+  outline-color: var(--color-blue-100);
+  outline-style: solid;
+  outline-width: 1px;
+}
+
+.form-field-container.checkbox:hover .input-wrapper>input[type="checkbox"]:checked+span:before,
+.form-field-container.radio:hover .input-wrapper>input[type="radio"]:checked+span:before {
+  background-color: var(--color-blue-100);
+  outline-color: var(--color-blue-100);
+  outline-style: solid;
+  outline-width: 1px;
+}
+
+.form-field-container.checkbox .input-wrapper:hover,
+.form-field-container.radio .input-wrapper:hover {
+  border: none;
+  outline: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Input checkbox and input radio disabled state */
+/* form-field-container wrapper div should have attribute disabled="true" */
+/* also the input element itself should be disabled */
+
+.form-field-container.checkbox:focus-within[disabled=true] .input-wrapper,
+.form-field-container.radio:focus-within[disabled=true] .input-wrapper {
+  outline: none;
+}
+
+.form-field-container.checkbox[disabled=true] .input-wrapper,
+.form-field-container.radio[disabled=true] .input-wrapper {
+  pointer-events: none;
+  background-color: transparent;
+}
+
+.form-field-container.checkbox[disabled=true] .input-wrapper input[type],
+.form-field-container.radio[disabled=true] .input-wrapper input[type] {
+  pointer-events: none;
+  background-color: var(--color-grey-20);
+}
+
+.form-field-container.checkbox[disabled=true] .input-wrapper span,
+.form-field-container.radio[disabled=true] .input-wrapper span {
+  color: var(--color-blue-80);
+  border-color: var(--color-blue-60);
+  background-color: var(--color-blue-20);
+}
+
+.form-field-container.checkbox[disabled=true] .input-wrapper>input[type="checkbox"]+span:before,
+.form-field-container.radio[disabled=true] .input-wrapper>input[type="radio"]+span:before {
+  color: white;
+  background-color: var(--color-blue-60);
+  outline: none;
+  border-color: var(--color-blue-60);
+}
+
+.form-field-container.checkbox[disabled=true] label,
+.form-field-container.radio[disabled=true] label {
+  color: var(--color-grey-80);
+  font-weight: 300;
+}
+
+.form-field-container.checkbox[disabled=true]:hover .input-wrapper>input[type="checkbox"]+span,
+.form-field-container.radio[disabled=true]:hover .input-wrapper>input[type="radio"]+span {
+  background-color: var(--color-blue-20);
+  outline: none;
+  border-color: var(--color-blue-60);
+}
+
+.form-field-container.checkbox[disabled=true]:hover .input-wrapper>input[type="checkbox"]:checked+span:before,
+.form-field-container.radio[disabled=true]:hover .input-wrapper>input[type="radio"]:checked+span:before {
+  color: white;
+  background-color: var(--color-blue-60);
+  outline: none;
+  border-color: var(--color-blue-60);
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colored input checkbox and input radio */
+
+.form-field-container.checkbox.inverse .input-wrapper span,
+.form-field-container.radio.inverse .input-wrapper span {
+  border-color: var(--color-primary-white);
+  border-width: 1px;
+  background-color: transparent;
+  color: var(--color-primary-white);
+}
+
+.form-field-container.checkbox.inverse .input-wrapper>input[type="checkbox"]:checked+span:before,
+.form-field-container.radio.inverse .input-wrapper>input[type="radio"]:checked+span:before {
+  background-color: var(--color-primary-white);
+  color: var(--color-primary-blue);
+}
+
+.form-field-container.checkbox.inverse:hover .input-wrapper>input[type="checkbox"]:checked+span:before,
+.form-field-container.radio.inverse:hover .input-wrapper>input[type="radio"]:checked+span:before {
+  background-color: var(--color-primary-white);
+  color: var(--color-primary-blue);
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colored input checkbox and input radio hover state */
+
+.form-field-container.checkbox.inverse:hover .input-wrapper>input[type="checkbox"]+span,
+.form-field-container.radio.inverse:hover .input-wrapper>input[type="radio"]+span {
+  outline-color: var(--color-primary-white);
+  outline-style: solid;
+  outline-width: 1px;
+}
+
+.form-field-container.checkbox.inverse:hover .input-wrapper>input[type="checkbox"]:checked+span:before,
+.form-field-container.radio.inverse:hover .input-wrapper>input[type="radio"]:checked+span:before {
+  outline-color: var(--color-primary-white);
+  outline-style: solid;
+  outline-width: 1px;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colored input checkbox and input radio disabled state */
+
+.form-field-container.checkbox.inverse[disabled=true] .input-wrapper,
+.form-field-container.radio.inverse[disabled=true] .input-wrapper {
+  pointer-events: none;
+}
+
+.form-field-container.checkbox.inverse[disabled=true] .input-wrapper input[type="checkbox"],
+.form-field-container.radio.inverse[disabled=true] .input-wrapper input[type="radio"] {
+  pointer-events: none;
+}
+
+.form-field-container.checkbox.inverse[disabled=true] .input-wrapper span {
+  border-color: var(--color-blue-60);
+  background-color: var(--color-blue-80);
+}
+
+.form-field-container.radio.inverse[disabled=true] .input-wrapper span {
+  border-color: var(--color-blue-60);
+  background-color: var(--color-blue-80);
+}
+
+.form-field-container.checkbox.inverse[disabled=true] .input-wrapper>input[type="checkbox"]:checked+span:before {
+  background-color: var(--color-blue-80);
+  color: var(--color-blue-60);
+}
+
+.form-field-container.radio.inverse[disabled=true] .input-wrapper>input[type="radio"]:checked+span:before {
+  background-color: var(--color-blue-60);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colored input checkbox and input radio disabled hover state */
+
+.form-field-container.checkbox.inverse[disabled=true]:hover .input-wrapper span {
+  border-color: var(--color-blue-60);
+  background-color: var(--color-blue-80);
+}
+
+.form-field-container.checkbox.inverse[disabled=true]:hover .input-wrapper>input[type="checkbox"]+span {
+  outline: none;
+  background-color: var(--color-blue-80);
+}
+
+.form-field-container.checkbox.inverse[disabled=true]:hover .input-wrapper>input[type="checkbox"]:checked+span:before {
+  outline: none;
+}
+
+.form-field-container.radio.inverse[disabled=true]:hover .input-wrapper span {
+  border-color: var(--color-blue-60);
+  background-color: var(--color-blue-80);
+}
+
+.form-field-container.radio.inverse[disabled=true]:hover .input-wrapper>input[type="radio"]+span {
+  outline: none;
+  background-color: var(--color-blue-80);
+}
+
+.form-field-container.radio.inverse[disabled=true]:hover .input-wrapper>input[type="radio"]:checked+span:before {
+  background-color: var(--color-blue-60);
+  outline: none;
+}

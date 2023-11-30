@@ -1,6 +1,10 @@
-/* eslint-disable no-unused-vars */
-
-async function doRestCall({url = undefined, method = undefined, body = undefined, contentType = undefined, resultAsJson = false}) {
+window.doRestCall = async function ({
+  url = undefined,
+  method = undefined,
+  body = undefined,
+  contentType = undefined,
+  resultAsJson = false
+}) {
 
   const headers = {
     'Accept': 'application/json',
@@ -21,7 +25,4 @@ async function doRestCall({url = undefined, method = undefined, body = undefined
   }
 
   return result;
-}
-
-window.doRestCall = doRestCall;
-
+};

@@ -1,0 +1,54 @@
+
+/* ---------------------------------------------------------------------------- */
+/* Modal dialogs
+/* ---------------------------------------------------------------------------- */
+
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 3;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 16px 8px;
+  min-width: 33%;
+  max-width: 50%;
+  min-height: 25%;
+  border: 2px solid var(--color-grey-80);
+  border-radius: 8px;
+}
+
+.modal-content hr {
+  border: 0px;
+  border-top: 1px solid var(--color-grey-60);
+  margin: 8px 0px;
+}
+
+.modal-content .close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modal-content .close:hover,
+.modal-content .close:focus {
+  color: var(--color-primary-black);
+  text-decoration: none;
+  cursor: pointer;
+}

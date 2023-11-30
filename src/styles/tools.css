@@ -1,0 +1,32 @@
+
+/* ---------------------------------------------------------------------------- */
+/* Tools-related common rules */
+/* ---------------------------------------------------------------------------- */
+
+.tools {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.tools .highlight-border {
+  border: 2px solid var(--color-melinda-green-custom);
+  border-radius: 1em;
+  padding-left: 1.5em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.tools>.dropdown,
+.tools>.dropdown>button {
+  height: 40px;
+  font-size: 32px;
+}
+
