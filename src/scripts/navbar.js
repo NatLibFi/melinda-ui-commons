@@ -13,7 +13,6 @@ window.addEventListener('load', (event) => {
 });
 
 function setNavbar() {
-  console.log('Setting navbar');
   addNavbarEventListeners();
 
   // Add event listeners for navbar related functions

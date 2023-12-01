@@ -2,32 +2,27 @@
   "name": "@natlibfi/melinda-ui-commons",
   "version": "5.0.0-alpha.4",
   "description": "Common modules for Melinda UI applications",
-  "keywords": [
-    "MARC",
-    "Melinda",
-    "transliteration"
-  ],
   "author": {
     "name": "The National Library of Finland"
   },
+  "license": "MIT",
+  "keywords": [
+    "melinda",
+    "natlibfi"
+  ],
   "homepage": "https://github.com/natlibfi/melinda-ui-commons",
-  "bugs": {
-    "url": "https://github.com/natlibfi/melinda-ui-commons/issues"
-  },
   "repository": {
     "type": "git",
     "url": "git@github.com:natlibfi/melinda-ui-commons.git"
   },
-  "main": "dist/index.js",
-  "publishConfig": {
-    "private": false
+  "bugs": {
+    "url": "https://github.com/natlibfi/melinda-ui-commons/issues"
   },
-  "license": "MIT",
   "scripts": {
     "prepare": "npm run build",
     "build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
-    "lint": "eslint src/*.js",
-    "lint:dev": "eslint --fix src/*.js",
+    "lint": "eslint src",
+    "lint:dev": "eslint --fix src",
     "test": "npm run lint"
   },
   "dependencies": {
@@ -35,13 +30,13 @@
     "debug": "^4.3.4"
   },
   "devDependencies": {
-    "@babel/cli": "^7.19.3",
-    "@babel/core": "^7.19.3",
-    "@babel/eslint-parser": "^7.19.1",
-    "@babel/node": "^7.19.1",
-    "@babel/preset-env": "^7.16.11",
-    "@natlibfi/eslint-config-melinda-frontend": "^1.0.2",
-    "eslint": "^8.24.0"
+    "@babel/cli": "^7.23.4",
+    "@babel/core": "^7.23.5",
+    "@babel/eslint-parser": "^7.23.3",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.23.5",
+    "@natlibfi/eslint-config-melinda-frontend": "^2.0.0",
+    "eslint": "^8.54.0"
   },
   "eslintConfig": {
     "parser": "@babel/eslint-parser",

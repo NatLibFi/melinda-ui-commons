@@ -1,17 +1,9 @@
-# Common modules for Melinda UI applications [![Build Status](https://travis-ci.org/NatLibFi/melinda-ui-commons.svg?branch=master)](https://travis-ci.org/NatLibFi/melinda-ui-commons)
+# Common modules for Melinda UI applications 
+[![NPM Version](https://img.shields.io/npm/v/@natlibfi/melinda-ui-commons.svg)](https://npmjs.org/package/@natlibfi/melinda-ui-commons)
 
-Common modules for Melinda UI applications:
-
-[marc-merge-ui](https://github.com/NatLibFi/marc-merge-ui)
-
-[melinda-local-ref-removal-ui](https://github.com/NatLibFi/melinda-local-ref-removal-ui)
-
-[melinda-transliteration-ui](https://github.com/NatLibFi/melinda-transliteration-ui)
-
-[melinda-eresource-tool](https://github.com/NatLibFi/melinda-eresource-tool)
 
 ## License and copyright
 
-Copyright (C) 2015-2019 University Of Helsinki (The National Library Of Finland)
+Copyright (C) 2015-2023 **University Of Helsinki (The National Library Of Finland)**
 
 This project's source code is licensed under the terms of **MIT** or any later version.

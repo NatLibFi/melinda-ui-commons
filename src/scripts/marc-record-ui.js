@@ -11,9 +11,9 @@
 //****************************************************************************//
 
 
-window.showRecord = function(record, dest, decorator = {}, recordDivName = 'muuntaja', logRecord = true) {
+window.showRecord = function (record, dest, decorator = {}, recordDivName = 'muuntaja', logRecord = true) {
   if (logRecord) {
-    console.log('Show Record:', record);
+    console.log('Show Record:', record); /* eslint-disable-line no-console */
   }
 
   // Get div to fill in the fields
@@ -28,7 +28,7 @@ window.showRecord = function(record, dest, decorator = {}, recordDivName = 'muun
     const error = document.createElement('div');
     error.classList.add('error');
     error.textContent = getHumanReadableErrorMessage(record.error);
-    console.error(record.error);
+    console.error(record.error); /* eslint-disable-line no-console */
     recordDiv.appendChild(error);
   }
 

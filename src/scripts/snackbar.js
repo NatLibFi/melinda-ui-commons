@@ -43,13 +43,13 @@
 window.showSnackbar = function (snackbarContent) {
 
   if (arguments.length === 0 || snackbarContent === null) {
-    console.log('Snackbar needs arguments');
+    console.log('Snackbar needs arguments'); /* eslint-disable-line no-console */
     return;
   }
 
   getSnackbarHtml()
     .then(html => createSnackbar(snackbarContent, html))
-    .catch(error => console.log('Error while fetching snackbar html: ', error));
+    .catch(error => console.log('Error while fetching snackbar html: ', error)); /* eslint-disable-line no-console */
 };
 
 
@@ -88,13 +88,13 @@ function createSnackbar(snackbarContent, html) {
     createCustomSnackbar(snackbarContent);
     break;
   default:
-    console.log('Snackbar argument type should be string or object');
+    console.log('Snackbar argument type should be string or object'); /* eslint-disable-line no-console */
     return;
   }
 
   const text = snackbarElement.querySelector(`.snackbar-text`).innerHTML;
   if (text === 'undefined' || text === '') {
-    console.log('Snackbar is missing text and is not displayed!');
+    console.log('Snackbar is missing text and is not displayed!'); /* eslint-disable-line no-console */
     return;
   }
 
