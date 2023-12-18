@@ -1,0 +1,14 @@
+{
+  "description": "Function: addNoteItem, saves one Note item object",
+  "only": false,
+  "skip": false,
+  "functionName": "addNoteItem",
+  "params": {
+    "message": "viesti",
+    "type": "info",
+    "style": "dialog",
+    "preventOperation": "false",
+    "hidable": true,
+    "removeDate": "2023-12-30T12:30:15.002"
+  }
+}
