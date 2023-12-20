@@ -1,1 +1,12 @@
-[]
+{
+  "notes": [
+    {
+      "hidable": true,
+      "message": "Note for users",
+      "preventOperation": false,
+      "removeDate": "2023-12-30T12:30:15.002",
+      "style": "dialog",
+      "type": "info"
+    }
+  ]
+}

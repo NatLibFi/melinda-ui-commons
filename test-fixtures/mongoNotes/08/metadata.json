@@ -1,0 +1,10 @@
+{
+  "description": "Function: removeNoteItemsByType, remove all noteItems by given type",
+  "only": false,
+  "skip": false,
+  "functionName": "removeNoteItemsByType",
+  "params": {
+    "type": "error"
+  },
+  "preFillDb": true
+}

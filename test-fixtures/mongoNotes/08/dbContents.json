@@ -1,0 +1,58 @@
+{
+  "notes": [
+    {
+      "_id": "65805a34d500f6a4ff2eccc4",
+      "message": "Alert message 1",
+      "type": "alert",
+      "style": "dialog",
+      "preventOperation": "false",
+      "hidable": true,
+      "removeDate": "2023-12-30T12:30:15.002"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc5",
+      "message": "Alert message 2",
+      "type": "alert",
+      "style": "dialog",
+      "preventOperation": "false",
+      "hidable": true,
+      "removeDate": "2023-11-30T12:30:15.002"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc6",
+      "message": "Error message 1",
+      "type": "error",
+      "style": "dialog",
+      "preventOperation": "false",
+      "hidable": true,
+      "removeDate": "2023-11-30T12:30:15.002"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc7",
+      "message": "Alert message 3",
+      "type": "alert",
+      "style": "dialog",
+      "preventOperation": "false",
+      "hidable": true,
+      "removeDate": "2023-12-30T12:30:15.002"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc8",
+      "message": "Error message 2",
+      "type": "error",
+      "style": "dialog",
+      "preventOperation": "false",
+      "hidable": true,
+      "removeDate": "2023-11-30T12:30:15.002"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc9",
+      "message": "Info message 1",
+      "type": "info",
+      "style": "dialog",
+      "preventOperation": "false",
+      "hidable": true,
+      "removeDate": "2023-09-30T12:30:15.002"
+    }
+  ]
+}

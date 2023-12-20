@@ -1,0 +1,8 @@
+{
+  "description": "Function: addNoteItem, do not add one noteItem object if parameter is not object",
+  "functionName": "addNoteItemReturnsError",
+  "only": false,
+  "skip": false,
+  "params": "Note message only",
+  "preFillDb": true
+}

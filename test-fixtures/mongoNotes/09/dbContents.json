@@ -1,0 +1,22 @@
+{
+    "notes": [
+      {
+        "_id":"65805a34d500f6a4ff2eccc4",
+        "message": "viesti",
+        "type": "info",
+        "style": "dialog",
+        "preventOperation": "false",
+        "hidable": true,
+        "removeDate": "2023-12-30T12:30:15.002"
+      },
+      {
+        "_id":"65805a34d500f6a4ff2eccc5",
+        "message": "toinen viesti",
+        "type": "alert",
+        "style": "banner",
+        "preventOperation": "false",
+        "hidable": true,
+        "removeDate": "2023-12-30T12:31:15.002"
+      }
+    ]
+  }

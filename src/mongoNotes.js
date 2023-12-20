@@ -12,7 +12,7 @@ import sanitize from 'mongo-sanitize';
   message: "viesti",
   type: "info",
   style: "dialog",
-  preventOperation: "false",
+  preventOperation: false,
   hidable: true,
   removeDate: new Date("2023-12-30T12:30:15.002")
 }
@@ -26,25 +26,123 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   const db = client.db(dbName);
   const collection = 'notes';
 
-  return {addNoteItem, removeNoteItem, getNoteItems};
+  return {addNoteItem, removeNoteItem, removeNoteItemsByType, getNoteItem, getNoteItems};
 
 
   /**
    * Add note item to collection
    * @param {Object} noteItem contains note item data
-   * @returns void
+   * @returns {void}
    */
   async function addNoteItem(noteItem) {
     logger.info(`Adding note item ${JSON.stringify(noteItem)}`);
 
-    const result = await db.collection(collection).insertOne(noteItem);
-
-    if (result.acknowledged) {
-      logger.info('New note has been made');
-      return;
+    if (isNotObject(noteItem)) {
+      logger.debug('NoteItem parameter is not object');
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'NoteItem data is not valid');
     }
 
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Note saving failed');
+    const newNoteItem = {
+      hidable: validate(noteItem.hidable, isBoolean),
+      message: validate(noteItem.message, isValidMessage),
+      preventOperation: validate(noteItem.preventOperation, isBoolean),
+      removeDate: validate(noteItem.removeDate, isValidDate),
+      style: validate(noteItem.style, isValidStyle),
+      type: validate(noteItem.type, isValidType)
+    };
+
+    if (hasUndefinedProperty(newNoteItem)) {
+      logger.debug('NoteItem data did not pass validation');
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'NoteItem data is not valid');
+    }
+
+    const result = await db.collection(collection).insertOne(newNoteItem);
+
+    if (result.acknowledged) {
+      return logger.info(`New ${noteItem.style} note item added with ${noteItem.type} message: ${noteItem.message}`);
+    }
+
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Note adding errored');
+
+
+    /**
+     * Validate property with validator function
+     * @param {*} property
+     * @param {function} validator
+     * @returns {(*|undefined)}
+     */
+    function validate(property, validator) {
+      return validator(property) ? property : undefined;
+    }
+
+    /**
+     * Checks if noteItem is Object
+     * @param {*} noteItem
+     * @returns {Boolean}
+     */
+    function isNotObject(noteItem) {
+      return typeof noteItem !== 'object' || Object.keys(noteItem).length === 0 || Object.getPrototypeOf(noteItem) !== Object.prototype;
+    }
+
+    /**
+     * Validates if property is Boolean
+     * @param {*} property
+     * @returns {Boolean}
+     */
+    function isBoolean(property) {
+      return typeof property === 'boolean';
+    }
+
+    /**
+     * Validates if message is not empty and is String
+     * @param {*} message
+     * @returns {Boolean}
+     */
+    function isValidMessage(message) {
+      return message.length > 0 && (typeof message === 'string' || message instanceof String);
+    }
+
+    /**
+     * Validates if date is in Date format and is in the future
+     * @param {*} date
+     * @returns {Boolean}
+     */
+    function isValidDate(date) {
+      const removeTime = new Date(date);
+      const now = new Date();
+      return removeTime instanceof Date && !isNaN(removeTime.valueOf()) && removeTime.getTime() > now.getTime();
+    }
+
+    /**
+     * Validates if style is found in the styles list
+     * @param {*} style
+     * @returns {Boolean}
+     */
+    function isValidStyle(style) {
+      // Update when you know available styles for note items
+      const styleValues = ['banner', 'dialog'];
+      return styleValues.some((value) => style === value);
+    }
+
+    /**
+    * Validates if type is found in the types list
+    * @param {*} type
+    * @returns {Boolean}
+    */
+    function isValidType(type) {
+      const typeValues = ['alert', 'error', 'info', 'success'];
+      return typeValues.some((value) => type === value);
+    }
+
+    /**
+     * Checks if noteItem has a property that is undefined
+     * @param {Object} noteItem
+     * @returns {Boolean};
+     */
+    function hasUndefinedProperty(noteItem) {
+      return Object.values(noteItem).some(property => property === undefined);
+    }
+
   }
 
 
@@ -68,6 +166,43 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     throw new ApiError(httpStatus.NOT_FOUND, `Note with given noteId was not found`);
   }
 
+  /**
+ * Remove notes by type
+ * @param {String} noteType
+ * @returns Boolean
+ */
+  async function removeNoteItemsByType({type}) {
+    logger.info(`Removing all notes with type ${type}`);
+
+    const cleanType = sanitize(type);
+    const filter = {type: cleanType};
+
+    const result = await db.collection(collection).deleteMany(filter);
+
+    if (result.deletedCount > 0) {
+      return true;
+    }
+
+    throw new ApiError(httpStatus.NOT_FOUND, `Notes with given types were not found`);
+  }
+
+
+  /**
+   * Get single note item with id
+   * @param {String} noteId object id
+   * @returns Boolean
+   */
+  async function getNoteItem({noteId}) {
+    logger.info(`Getting single note item`);
+
+    const cleanId = sanitize(noteId);
+    const query = {_id: new ObjectId(cleanId)};
+    const exclusion = {projection: {_id: 0}};
+
+    const result = await db.collection(collection).findOne(query, exclusion);
+
+    return result;
+  }
 
   /**
    * Get note items
@@ -80,4 +215,5 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
 
     return result;
   }
+
 }

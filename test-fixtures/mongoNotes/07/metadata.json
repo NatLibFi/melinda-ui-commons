@@ -1,0 +1,10 @@
+{
+  "description": "Function: removeNoteItem, remove one Note item object by id",
+  "only": false,
+  "skip": false,
+  "functionName": "removeNoteItem",
+  "params": {
+    "noteId": "65805a34d500f6a4ff2eccc4"
+  },
+  "preFillDb": true
+}

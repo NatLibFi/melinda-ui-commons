@@ -1,14 +1,15 @@
 {
-  "description": "Function: addNoteItem, saves one Note item object",
+  "description": "Function: addNoteItem, add one noteItem object even if there exists a noteItem with same properties",
   "only": false,
   "skip": false,
   "functionName": "addNoteItem",
+  "preFillDb": true,
   "params": {
-    "message": "viesti",
-    "type": "info",
+    "message": "This is my duplicate note",
+    "type": "alert",
     "style": "dialog",
-    "preventOperation": "false",
-    "hidable": true,
-    "removeDate": "2023-12-30T12:30:15.002"
+    "preventOperation": true,
+    "hidable": false,
+    "removeDate": "2050-12-20T21:01:58.146Z"
   }
 }

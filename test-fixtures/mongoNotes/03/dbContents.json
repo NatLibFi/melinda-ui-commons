@@ -2,7 +2,7 @@
   "notes": [
     {
       "hidable": false,
-      "message": "Info note with some info",
+      "message": "This is my some note",
       "preventOperation": true,
       "removeDate": "2024-12-30T12:30:15.002",
       "style": "dialog",

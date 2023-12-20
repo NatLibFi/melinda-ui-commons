@@ -1,5 +1,12 @@
-[
-  {
-    "test": "test"
-  }
-]
+{
+  "notes": [
+    {
+      "hidable": true,
+      "message": "Note for users",
+      "preventOperation": false,
+      "removeDate": "2050-12-20T21:01:58.146Z",
+      "style": "dialog",
+      "type": "info"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "notes": [
+    {
+      "message": "Alert message 1",
+      "type": "alert",
+      "style": "dialog",
+      "preventOperation": "false",
+      "hidable": true,
+      "removeDate": "2023-12-30T12:30:15.002"
+    },
+    {
+      "message": "Alert message 2",
+      "type": "alert",
+      "style": "dialog",
+      "preventOperation": "false",
+      "hidable": true,
+      "removeDate": "2023-11-30T12:30:15.002"
+    },
+    {
+      "message": "Alert message 3",
+      "type": "alert",
+      "style": "dialog",
+      "preventOperation": "false",
+      "hidable": true,
+      "removeDate": "2023-12-30T12:30:15.002"
+    },
+    {
+      "message": "Info message 1",
+      "type": "info",
+      "style": "dialog",
+      "preventOperation": "false",
+      "hidable": true,
+      "removeDate": "2023-09-30T12:30:15.002"
+    }
+  ]
+}

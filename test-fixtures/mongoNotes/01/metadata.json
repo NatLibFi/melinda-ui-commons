@@ -1,9 +1,15 @@
 {
-  "description": "Function: addNoteItem, saves one test note item object",
+  "description": "Function: addNoteItem, add one NoteItem object",
   "only": false,
   "skip": false,
   "functionName": "addNoteItem",
   "params": {
-    "test": "test"
-  }
+    "message": "Note for users",
+    "type": "info",
+    "style": "dialog",
+    "preventOperation": false,
+    "hidable": true,
+    "removeDate": "2050-12-20T21:01:58.146Z"
+  },
+  "preFillDb": false
 }
