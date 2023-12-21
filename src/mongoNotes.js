@@ -197,9 +197,8 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
 
     const cleanId = sanitize(noteId);
     const query = {_id: new ObjectId(cleanId)};
-    const exclusion = {projection: {_id: 0}};
 
-    const result = await db.collection(collection).findOne(query, exclusion);
+    const result = await db.collection(collection).findOne(query);
 
     return result;
   }
@@ -211,9 +210,8 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   async function getNoteItems() {
     logger.info(`Getting all note items`);
 
-    const result = await db.collection(collection).find({}, {projection: {_id: 0}}).toArray();
+    const result = await db.collection(collection).find({}).toArray();
 
     return result;
   }
-
 }
