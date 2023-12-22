@@ -1,4 +1,4 @@
-import {MongoClient, ObjectId} from 'mongodb';
+import {MongoClient} from 'mongodb';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 import httpStatus from 'http-status';
@@ -155,7 +155,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     logger.info(`Removing form Mongo note item with id ${noteId}`);
 
     const cleanId = sanitize(noteId);
-    const filter = {_id: new ObjectId(cleanId)};
+    const filter = {_id: cleanId};
 
     const result = await db.collection(collection).deleteOne(filter);
 
@@ -196,7 +196,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     logger.info(`Getting single note item`);
 
     const cleanId = sanitize(noteId);
-    const query = {_id: new ObjectId(cleanId)};
+    const query = {_id: cleanId};
 
     const result = await db.collection(collection).findOne(query);
 

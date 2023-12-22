@@ -32,7 +32,7 @@ generateTests({
 async function initMongofixtures() {
   mongoFixtures = await mongoFixturesFactory({
     rootPath: [__dirname, '..', 'test-fixtures', 'mongoNotes'],
-    useObjectId: true,
+    useObjectId: false,
     format: {
       removeDate: v => new Date(v)
     }
@@ -111,60 +111,15 @@ async function callback({
   // Test fixtures 09 for getting one note with id
   if (functionName === 'getNoteItem') {
     const result = await mongoNotesOperator.getNoteItem(params);
-    return expect(objectIdsToStrings(result, ['_id'])).to.eql(expectedResult);
+    return expect(result).to.eql(expectedResult);
   }
 
   //----------------------------------------------//
   // Test fixture 10 for getting all notes
   if (functionName === 'getNoteItems') {
     const result = await mongoNotesOperator.getNoteItems();
-    return expect(objectIdsToStrings(result, ['_id'])).to.eql(expectedResult);
+    return expect(result).to.eql(expectedResult);
   }
-
-  /**
-   * Purpose of this function is to change comparable documents objectId:s to string equivelants since
-   * testing does not seem to be able to compare between, eventho mongo does understand them and you cant specify objectId into *.json file.
-   * So if tests fail and point to "_id" or similar this just might help you out.
-   * @param {*} docObj document or array of documents
-   * @param {[string]} fieldsToChange what field keys need to be updated to string
-   * @returns {*} returns original content with specified field:s objectId:s as strings
-   */
-  function objectIdsToStrings(docObj, fieldsToChange) {
-    //fail fast, if no documents just leave
-    if ((!docObj) || (docObj && docObj === Array && docObj.legth === 0)) {// eslint-disable-line
-      return docObj;
-    }
-
-    //update array of documents
-    if (docObj.constructor === Array) {
-      for (const [index, document] of docObj.entries()) {
-        docObj[index] = getUpdatedDocument(document, fieldsToChange);
-      }
-      return docObj;
-    }
-    //update single document
-    return getUpdatedDocument(docObj, fieldsToChange);
-
-    /**
-     * Update given fields, if they exist to their string version
-     * @param {*} document
-     * @param {[string]} fieldsToChange
-     * @returns {*} same content with specified fields changed
-     */
-    function getUpdatedDocument(document, fieldsToChange) {
-      for (const field of fieldsToChange) {
-        updateFieldToString(document, field);
-      }
-      return document;
-
-      function updateFieldToString(document, field) {
-        if (document[field]) {
-          document[field] = document[field].toString();
-        }
-      }
-    }
-  }
-
 
   throw new Error(`Unknown functionName: ${functionName}`);
 }
