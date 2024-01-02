@@ -5,7 +5,7 @@
       "message": "This is my duplicate note",
       "preventOperation": true,
       "removeDate": "2050-12-20T21:01:58.146Z",
-      "style": "dialog",
+      "componentStyle": "dialog",
       "type": "alert"
     },
     {
@@ -13,7 +13,7 @@
       "message": "This is my duplicate note",
       "preventOperation": true,
       "removeDate": "2050-12-20T21:01:58.146Z",
-      "style": "dialog",
+      "componentStyle": "dialog",
       "type": "alert"
     }
   ]

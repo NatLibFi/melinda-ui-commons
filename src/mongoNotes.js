@@ -11,7 +11,12 @@ import sanitize from 'mongo-sanitize';
 {
   message: "viesti",
   type: "info",
-  style: "dialog",
+  componentStyle: "dialog",
+  //context required for spesific use cases ?
+  context: {
+    enviroment: "dev",
+    app: "muuntaja"
+  },
   preventOperation: false,
   hidable: true,
   removeDate: new Date("2023-12-30T12:30:15.002")
@@ -47,7 +52,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
       message: validate(noteItem.message, isValidMessage),
       preventOperation: validate(noteItem.preventOperation, isBoolean),
       removeDate: validate(noteItem.removeDate, isValidDate),
-      style: validate(noteItem.style, isValidStyle),
+      componentStyle: validate(noteItem.componentStyle, isValidStyle),
       type: validate(noteItem.type, isValidType)
     };
 
@@ -59,7 +64,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     const result = await db.collection(collection).insertOne(newNoteItem);
 
     if (result.acknowledged) {
-      return logger.info(`New ${noteItem.style} note item added with ${noteItem.type} message: ${noteItem.message}`);
+      return logger.info(`New ${noteItem.componentStyle} note item added with ${noteItem.type} message: ${noteItem.message}`);
     }
 
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Note adding errored');

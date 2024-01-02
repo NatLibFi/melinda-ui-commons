@@ -5,7 +5,7 @@
       "message": "Info note with some info",
       "preventOperation": true,
       "removeDate": "2024-12-30T12:30:15.002",
-      "style": "dialog",
+      "componentStyle": "dialog",
       "type": "info"
     }
   ]

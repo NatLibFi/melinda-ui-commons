@@ -7,7 +7,7 @@
   "params": {
     "message": "This is my duplicate note",
     "type": "alert",
-    "style": "dialog",
+    "componentStyle": "dialog",
     "preventOperation": true,
     "hidable": false,
     "removeDate": "2050-12-20T21:01:58.146Z"

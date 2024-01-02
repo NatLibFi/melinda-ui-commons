@@ -6,7 +6,7 @@
   "params": {
     "message": "Note for users",
     "type": "info",
-    "style": "dialog",
+    "componentStyle": "dialog",
     "preventOperation": false,
     "hidable": true,
     "removeDate": "2050-12-20T21:01:58.146Z"
