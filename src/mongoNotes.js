@@ -8,14 +8,18 @@ import sanitize from 'mongo-sanitize';
 
 
 /* Note item: https://jira.kansalliskirjasto.fi/browse/MUU-346
+
+//NOTE!
+//context.enviroment for now is not required but MIGHT be used later
+//context.app array could have spesific app names or "all")
+
 {
   message: "viesti",
   type: "info",
   componentStyle: "dialog",
-  //context required for spesific use cases ?
   context: {
     enviroment: "dev",
-    app: "muuntaja"
+    apps: ["muuntaja"]
   },
   preventOperation: false,
   hidable: true,
@@ -31,7 +35,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   const db = client.db(dbName);
   const collection = 'notes';
 
-  return {addNoteItem, removeNoteItem, removeNoteItemsByType, getNoteItem, getNoteItems};
+  return {addNoteItem, removeNoteItem, removeNoteItemsByType, getNoteItem, getNoteItems, getNoteItemsForApp};
 
 
   /**
@@ -204,6 +208,26 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     const query = {_id: cleanId};
 
     const result = await db.collection(collection).findOne(query);
+
+    return result;
+  }
+
+  /**
+   * Get note items with matching context.app
+   * @param {String} app apps name
+   * @returns Array of note objects
+   */
+  async function getNoteItemsForApp({app}) {
+    logger.info(`Getting all note items for app`);
+
+    const cleanAppName = sanitize(app);
+    const query = {
+      'context.app': {
+        $in: [cleanAppName, 'all']
+      }
+    };
+
+    const result = await db.collection(collection).find(query).toArray();
 
     return result;
   }

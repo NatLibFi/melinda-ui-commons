@@ -121,6 +121,13 @@ async function callback({
     return expect(result).to.eql(expectedResult);
   }
 
+  //----------------------------------------------//
+  // Test fixture 11 for getting notes with context.app
+  if (functionName === 'getNoteItemsForApp') {
+    const result = await mongoNotesOperator.getNoteItemsForApp(params);
+    return expect(result).to.eql(expectedResult);
+  }
+
   throw new Error(`Unknown functionName: ${functionName}`);
 }
 

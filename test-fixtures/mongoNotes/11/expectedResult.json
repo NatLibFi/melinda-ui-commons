@@ -1,0 +1,39 @@
+[
+    {
+        "_id":"65805a34d500f6a4ff2eccc4",
+        "message": "viesti",
+        "type": "info",
+        "componentStyle": "dialog",
+        "preventOperation": "false",
+        "hidable": true,
+        "removeDate": "2023-12-30T12:30:15.002",
+        "context": {
+            "app": ["muuntaja"]
+        }
+      },
+      {
+        "_id":"65805a34d500f6a4ff2eccc6",
+        "message": "kolmas viesti",
+        "type": "alert",
+        "componentStyle": "banner",
+        "preventOperation": "false",
+        "hidable": true,
+        "removeDate": "2023-12-30T12:31:15.002",
+        "context": {
+            "app": ["all"]
+        }
+      },
+      {
+        "_id":"65805a34d500f6a4ff2eccc8",
+        "message": "viides viesti",
+        "type": "alert",
+        "componentStyle": "banner",
+        "preventOperation": "false",
+        "hidable": true,
+        "removeDate": "2023-12-30T12:31:15.002",
+        "context": {
+            "app": ["muuntaja", "viewer"]
+        }
+      }
+
+  ]
