@@ -32,7 +32,7 @@ generateTests({
 async function initMongofixtures() {
   mongoFixtures = await mongoFixturesFactory({
     rootPath: [__dirname, '..', 'test-fixtures', 'mongoNotes'],
-    useObjectId: false,
+    useObjectId: true,
     format: {
       removeDate: v => new Date(v)
     }

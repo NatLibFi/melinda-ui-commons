@@ -1,4 +1,4 @@
-import {MongoClient} from 'mongodb';
+import {MongoClient, ObjectId} from 'mongodb';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 import httpStatus from 'http-status';
@@ -26,6 +26,18 @@ import sanitize from 'mongo-sanitize';
   removeDate: new Date("2023-12-30T12:30:15.002")
 }
 */
+const noteItemProjection = {
+  projection: {
+    _id: {$toString: '$_id'},
+    message: 1,
+    type: 1,
+    componentStyle: 1,
+    context: 1,
+    preventOperation: 1,
+    hidable: 1,
+    removeDate: 1
+  }
+};
 
 export default async function (MONGO_URI, dbName = 'melinda-ui') {
   const logger = createLogger();
@@ -164,7 +176,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     logger.info(`Removing form Mongo note item with id ${noteId}`);
 
     const cleanId = sanitize(noteId);
-    const filter = {_id: cleanId};
+    const filter = {_id: new ObjectId(cleanId)};
 
     const result = await db.collection(collection).deleteOne(filter);
 
@@ -205,9 +217,9 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     logger.info(`Getting single note item`);
 
     const cleanId = sanitize(noteId);
-    const query = {_id: cleanId};
+    const query = {_id: new ObjectId(cleanId)};
 
-    const result = await db.collection(collection).findOne(query);
+    const result = await db.collection(collection).findOne(query, noteItemProjection);
 
     return result;
   }
@@ -227,7 +239,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
       }
     };
 
-    const result = await db.collection(collection).find(query).toArray();
+    const result = await db.collection(collection).find(query, noteItemProjection).toArray();
 
     return result;
   }
@@ -239,7 +251,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   async function getNoteItems() {
     logger.info(`Getting all note items`);
 
-    const result = await db.collection(collection).find({}).toArray();
+    const result = await db.collection(collection).find({}, noteItemProjection).toArray();
 
     return result;
   }
