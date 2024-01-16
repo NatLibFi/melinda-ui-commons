@@ -3,8 +3,6 @@
     "only": false,
     "skip": false,
     "functionName": "getNoteItemsForApp",
-    "params": {
-        "app": "muuntaja"
-    },
+    "params": "muuntaja",
     "preFillDb": true
   }

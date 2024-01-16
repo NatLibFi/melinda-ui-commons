@@ -3,8 +3,6 @@
   "only": false,
   "skip": false,
   "functionName": "removeNoteItemsByType",
-  "params": {
-    "type": "error"
-  },
+  "params": "error",
   "preFillDb": true
 }

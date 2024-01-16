@@ -160,7 +160,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
    * @param {String} noteId object id
    * @returns Boolean
    */
-  async function removeNoteItem({noteId}) {
+  async function removeNoteItem(noteId) {
     logger.info(`Removing form Mongo note item with id ${noteId}`);
 
     const cleanId = sanitize(noteId);
@@ -177,10 +177,10 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
 
   /**
  * Remove notes by type
- * @param {String} noteType
+ * @param {String} type
  * @returns Boolean
  */
-  async function removeNoteItemsByType({type}) {
+  async function removeNoteItemsByType(type) {
     logger.info(`Removing all notes with type ${type}`);
 
     const cleanType = sanitize(type);
@@ -201,7 +201,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
    * @param {String} noteId object id
    * @returns Boolean
    */
-  async function getNoteItem({noteId}) {
+  async function getNoteItem(noteId) {
     logger.info(`Getting single note item`);
 
     const cleanId = sanitize(noteId);
@@ -217,7 +217,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
    * @param {String} app apps name
    * @returns Array of note objects
    */
-  async function getNoteItemsForApp({app}) {
+  async function getNoteItemsForApp(app) {
     logger.info(`Getting all note items for app`);
 
     const cleanAppName = sanitize(app);
