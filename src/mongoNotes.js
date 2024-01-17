@@ -1,43 +1,23 @@
+import httpStatus from 'http-status';
 import {MongoClient, ObjectId} from 'mongodb';
+import sanitize from 'mongo-sanitize';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
-import httpStatus from 'http-status';
-import sanitize from 'mongo-sanitize';
-//import isDeepStrictEqual from 'util';
-//import moment from 'moment';
 
+//****************************************************************************//
+//                                                                            //
+// MONGO SERVER NOTIFICATIONS FOR MELINDA UI APPLICATIONS                     //
+//                                                                            //
+//****************************************************************************//
+//
+// Note item: https://jira.kansalliskirjasto.fi/browse/MUU-346
+//
+// NOTE!
+// context.enviroment for now is not required but MIGHT be used later
+// context.app array could have spesific app names or "all")
+//
+//****************************************************************************//
 
-/* Note item: https://jira.kansalliskirjasto.fi/browse/MUU-346
-
-//NOTE!
-//context.enviroment for now is not required but MIGHT be used later
-//context.app array could have spesific app names or "all")
-
-{
-  message: "viesti",
-  type: "info",
-  componentStyle: "dialog",
-  context: {
-    enviroment: "dev",
-    apps: ["muuntaja"]
-  },
-  preventOperation: false,
-  hidable: true,
-  removeDate: new Date("2023-12-30T12:30:15.002")
-}
-*/
-const noteItemProjection = {
-  projection: {
-    _id: {$toString: '$_id'},
-    message: 1,
-    type: 1,
-    componentStyle: 1,
-    context: 1,
-    preventOperation: 1,
-    hidable: 1,
-    removeDate: 1
-  }
-};
 
 export default async function (MONGO_URI, dbName = 'melinda-ui') {
   const logger = createLogger();
@@ -47,19 +27,54 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   const db = client.db(dbName);
   const collection = 'notes';
 
-  return {addNoteItem, removeNoteItem, removeNoteItemsByType, getNoteItem, getNoteItems, getNoteItemsForApp};
+  // Default projection for a note item
+  // The returned note item object:
+  //  - has property '_id' removed
+  //  - has property 'id' added
+  //  - all other properties are returned without modifications
+  const noteItemProjection = {
+    projection: {
+      _id: 0,
+      id: {$toString: '$_id'},
+      message: 1,
+      type: 1,
+      componentStyle: 1,
+      context: 1,
+      preventOperation: 1,
+      hidable: 1,
+      removeDate: 1
+    }
+  };
 
+  return {addNoteItem, getNoteItem, getNoteItems, getNoteItemsForApp, removeNoteItem, removeNoteItemsByType};
+
+
+  //-----------------------------------------------------------------------------
+  // ADD SERVER NOTIFICATIONS
+  //-----------------------------------------------------------------------------
 
   /**
    * Add note item to collection
-   * @param {Object} noteItem contains note item data
+   * @param {Object} noteItem contains note item data:
+   * {
+   *   message: "viesti",
+   *   type: "info",
+   *   componentStyle: "dialog",
+   *     context: {
+   *       enviroment: "dev",
+   *       apps: ["muuntaja"]
+   *     },
+   *   preventOperation: false,
+   *   hidable: true,
+   *   removeDate: new Date("2023-12-30T12:30:15.002")
+   *  }
    * @returns {void}
    */
   async function addNoteItem(noteItem) {
-    logger.info(`Adding note item ${JSON.stringify(noteItem)}`);
+    logger.info(`MongoNotes: Adding one note item ${JSON.stringify(noteItem)}`);
 
     if (isNotObject(noteItem)) {
-      logger.debug('NoteItem parameter is not object');
+      logger.debug('MongoNotes: NoteItem parameter is not object');
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'NoteItem data is not valid');
     }
 
@@ -73,17 +88,19 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     };
 
     if (hasUndefinedProperty(newNoteItem)) {
-      logger.debug('NoteItem data did not pass validation');
+      logger.debug('MongoNotes: NoteItem data did not pass validation');
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'NoteItem data is not valid');
     }
 
+    // '_id' property is automatically generated and added to noteItem on insert to collection.
+    // type of '_id' is ObjectId.
     const result = await db.collection(collection).insertOne(newNoteItem);
 
     if (result.acknowledged) {
       return logger.info(`New ${noteItem.componentStyle} note item added with ${noteItem.type} message: ${noteItem.message}`);
     }
 
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Note adding errored');
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `MongoNotes had error while adding a note ${noteItem}`);
 
 
     /**
@@ -167,54 +184,17 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   }
 
 
-  /**
-   * Remove note
-   * @param {String} noteId object id
-   * @returns Boolean
-   */
-  async function removeNoteItem(noteId) {
-    logger.info(`Removing form Mongo note item with id ${noteId}`);
-
-    const cleanId = sanitize(noteId);
-    const filter = {_id: new ObjectId(cleanId)};
-
-    const result = await db.collection(collection).deleteOne(filter);
-
-    if (result.deletedCount > 0) {
-      return true;
-    }
-
-    throw new ApiError(httpStatus.NOT_FOUND, `Note with given noteId was not found`);
-  }
+  //-----------------------------------------------------------------------------
+  // GET SERVER NOTIFICATIONS
+  //-----------------------------------------------------------------------------
 
   /**
- * Remove notes by type
- * @param {String} type
+ * Get note item with id
+ * @param {String} noteId object's id
  * @returns Boolean
  */
-  async function removeNoteItemsByType(type) {
-    logger.info(`Removing all notes with type ${type}`);
-
-    const cleanType = sanitize(type);
-    const filter = {type: cleanType};
-
-    const result = await db.collection(collection).deleteMany(filter);
-
-    if (result.deletedCount > 0) {
-      return true;
-    }
-
-    throw new ApiError(httpStatus.NOT_FOUND, `Notes with given types were not found`);
-  }
-
-
-  /**
-   * Get single note item with id
-   * @param {String} noteId object id
-   * @returns Boolean
-   */
   async function getNoteItem(noteId) {
-    logger.info(`Getting single note item`);
+    logger.info(`MongoNotes: Getting one note item`);
 
     const cleanId = sanitize(noteId);
     const query = {_id: new ObjectId(cleanId)};
@@ -230,7 +210,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
    * @returns Array of note objects
    */
   async function getNoteItemsForApp(app) {
-    logger.info(`Getting all note items for app`);
+    logger.info(`MongoNotes: Getting all note items for app`);
 
     const cleanAppName = sanitize(app);
     const query = {
@@ -249,10 +229,65 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
    * @returns Array of note objects
    */
   async function getNoteItems() {
-    logger.info(`Getting all note items`);
+    logger.info(`MongoNotes: Getting all note items`);
 
     const result = await db.collection(collection).find({}, noteItemProjection).toArray();
 
     return result;
   }
+
+
+  //-----------------------------------------------------------------------------
+  // REMOVE SERVER NOTIFICATIONS
+  //-----------------------------------------------------------------------------
+
+  /**
+   * Remove note
+   * @param {String} noteId object's id
+   * @returns Boolean
+   */
+  async function removeNoteItem(noteId) {
+    logger.info(`MongoNotes: Removing one note item with id ${noteId}`);
+
+    const cleanId = sanitize(noteId);
+    const filter = {_id: new ObjectId(cleanId)};
+
+    const result = await db.collection(collection).deleteOne(filter);
+
+    if (result.deletedCount > 0) {
+      return true;
+    }
+
+    if (result.deletedCount === 0) {
+      return false;
+    }
+
+    throw new ApiError(httpStatus.NOT_FOUND, `MongoNotes had error while removing note with id ${noteId}`);
+  }
+
+  /**
+ * Remove notes by type
+ * @param {String} type
+ * @returns Boolean
+ */
+  async function removeNoteItemsByType(type) {
+    logger.info(`MongoNotes: Removing all notes with type ${type}`);
+
+    const cleanType = sanitize(type);
+    const filter = {type: cleanType};
+
+    const result = await db.collection(collection).deleteMany(filter);
+
+    if (result.deletedCount > 0) {
+      return true;
+    }
+
+    if (result.deletedCount === 0) {
+      return false;
+    }
+
+    throw new ApiError(httpStatus.NOT_FOUND, `MongoNotes had error while removing notes`);
+  }
+
+
 }

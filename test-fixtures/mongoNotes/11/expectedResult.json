@@ -1,6 +1,6 @@
 [
     {
-        "_id":"65805a34d500f6a4ff2eccc4",
+        "id":"65805a34d500f6a4ff2eccc4",
         "message": "viesti",
         "type": "info",
         "componentStyle": "dialog",
@@ -12,7 +12,7 @@
         }
       },
       {
-        "_id":"65805a34d500f6a4ff2eccc6",
+        "id":"65805a34d500f6a4ff2eccc6",
         "message": "kolmas viesti",
         "type": "alert",
         "componentStyle": "banner",
@@ -24,7 +24,7 @@
         }
       },
       {
-        "_id":"65805a34d500f6a4ff2eccc8",
+        "id":"65805a34d500f6a4ff2eccc8",
         "message": "viides viesti",
         "type": "alert",
         "componentStyle": "banner",
