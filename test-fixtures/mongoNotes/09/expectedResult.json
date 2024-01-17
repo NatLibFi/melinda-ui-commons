@@ -1,9 +1,9 @@
 {
     "id": "65805a34d500f6a4ff2eccc5",
-    "message": "toinen viesti",
-    "type": "alert",
+    "messageText": "toinen viesti",
+    "messageStyle": "alert",
     "componentStyle": "banner",
-    "preventOperation": "false",
-    "hidable": true,
-    "removeDate": "2023-12-30T12:31:15.002"
+    "blocksInteraction": "false",
+    "isDismissible": true,
+    "endDate": "2023-12-30T12:31:15.002"
 }

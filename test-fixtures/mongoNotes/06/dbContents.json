@@ -1,12 +1,12 @@
 {
   "notes": [
     {
-      "hidable": false,
-      "message": "Info note with some info",
-      "preventOperation": true,
-      "removeDate": "2024-12-30T12:30:15.002",
+      "isDismissible": false,
+      "messageText": "Info note with some info",
+      "blocksInteraction": true,
+      "endDate": "2024-12-30T12:30:15.002",
       "componentStyle": "dialog",
-      "type": "info"
+      "messageStyle": "info"
     }
   ]
 }

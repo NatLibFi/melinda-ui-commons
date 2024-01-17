@@ -1,3 +1,5 @@
+/* eslint-disable max-statements */
+
 import httpStatus from 'http-status';
 import {MongoClient, ObjectId} from 'mongodb';
 import sanitize from 'mongo-sanitize';
@@ -9,14 +11,6 @@ import {Error as ApiError} from '@natlibfi/melinda-commons';
 // MONGO SERVER NOTIFICATIONS FOR MELINDA UI APPLICATIONS                     //
 //                                                                            //
 //****************************************************************************//
-//
-// Note item: https://jira.kansalliskirjasto.fi/browse/MUU-346
-//
-// NOTE!
-// context.enviroment for now is not required but MIGHT be used later
-// context.app array could have spesific app names or "all")
-//
-//****************************************************************************//
 
 
 export default async function (MONGO_URI, dbName = 'melinda-ui') {
@@ -27,6 +21,11 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   const db = client.db(dbName);
   const collection = 'notes';
 
+  const validContextApps = ['artikkelit', 'muuntaja', 'viewer'];
+  const validComponentStyles = ['banner', 'dialog'];
+  const validMessageStyles = ['alert', 'error', 'info', 'success'];
+  const timeNow = new Date();
+
   // Default projection for a note item
   // The returned note item object:
   //  - has property '_id' removed
@@ -36,17 +35,18 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     projection: {
       _id: 0,
       id: {$toString: '$_id'},
-      message: 1,
-      type: 1,
+      blocksInteraction: 1,
       componentStyle: 1,
       context: 1,
-      preventOperation: 1,
-      hidable: 1,
-      removeDate: 1
+      endDate: 1,
+      isDismissible: 1,
+      messageStyle: 1,
+      messageText: 1
     }
   };
 
-  return {addNoteItem, getNoteItem, getNoteItems, getNoteItemsForApp, removeNoteItem, removeNoteItemsByType};
+
+  return {addNoteItem, getNoteItem, getNoteItems, getNoteItemsForApp, removeNoteItem, removeNoteItemsByMessageStyle};
 
 
   //-----------------------------------------------------------------------------
@@ -57,16 +57,13 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
    * Add note item to collection
    * @param {Object} noteItem contains note item data:
    * {
-   *   message: "viesti",
-   *   type: "info",
-   *   componentStyle: "dialog",
-   *     context: {
-   *       enviroment: "dev",
-   *       apps: ["muuntaja"]
-   *     },
-   *   preventOperation: false,
-   *   hidable: true,
-   *   removeDate: new Date("2023-12-30T12:30:15.002")
+   *   blocksInteraction: false,
+   *   componentStyle: "banner",
+   *   context: ["artikkelit", "muuntaja"],
+   *   endDate: new Date("2024-12-30T12:30:15.002"),
+   *   isDismissible: true,
+   *   messageStyle: "info",
+   *   messageText: "Test server notification message",
    *  }
    * @returns {void}
    */
@@ -79,12 +76,13 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     }
 
     const newNoteItem = {
-      hidable: validate(noteItem.hidable, isBoolean),
-      message: validate(noteItem.message, isValidMessage),
-      preventOperation: validate(noteItem.preventOperation, isBoolean),
-      removeDate: validate(noteItem.removeDate, isValidDate),
-      componentStyle: validate(noteItem.componentStyle, isValidStyle),
-      type: validate(noteItem.type, isValidType)
+      blocksInteraction: validate(noteItem.blocksInteraction, isBoolean),
+      componentStyle: validate(noteItem.componentStyle, isValidComponentStyle),
+      context: validate(noteItem.context, isValidContext),
+      endDate: validate(noteItem.endDate, isValidEndDate),
+      isDismissible: validate(noteItem.isDismissible, isBoolean),
+      messageStyle: validate(noteItem.messageStyle, isValidMessageStyle),
+      messageText: validate(noteItem.messageText, isValidMessageText)
     };
 
     if (hasUndefinedProperty(newNoteItem)) {
@@ -97,7 +95,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     const result = await db.collection(collection).insertOne(newNoteItem);
 
     if (result.acknowledged) {
-      return logger.info(`New ${noteItem.componentStyle} note item added with ${noteItem.type} message: ${noteItem.message}`);
+      return logger.info(`New ${noteItem.componentStyle} note item added with ${noteItem.messageStyle} message: ${noteItem.messageText}`);
     }
 
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `MongoNotes had error while adding a note ${noteItem}`);
@@ -110,6 +108,9 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
      * @returns {(*|undefined)}
      */
     function validate(property, validator) {
+      if (property === undefined) {
+        return undefined;
+      }
       return validator(property) ? property : undefined;
     }
 
@@ -132,44 +133,49 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     }
 
     /**
-     * Validates if message is not empty and is String
-     * @param {*} message
-     * @returns {Boolean}
-     */
-    function isValidMessage(message) {
-      return message.length > 0 && (typeof message === 'string' || message instanceof String);
+    * Validates if every app in list is valid context
+    * @param {*} appsList
+    * @returns {Boolean}
+    */
+    function isValidContext(appsList) {
+      return appsList.every((app) => validContextApps.includes(app));
     }
 
     /**
-     * Validates if date is in Date format and is in the future
-     * @param {*} date
+     * Validates if message text is not empty and is String
+     * @param {*} messageText
      * @returns {Boolean}
      */
-    function isValidDate(date) {
-      const removeTime = new Date(date);
-      const now = new Date();
-      return removeTime instanceof Date && !isNaN(removeTime.valueOf()) && removeTime.getTime() > now.getTime();
+    function isValidMessageText(messageText) {
+      return messageText.length > 0 && (typeof messageText === 'string' || messageText instanceof String);
+    }
+
+    /**
+     * Validates if end date is in Date format and is in the future
+     * @param {*} endDate
+     * @returns {Boolean}
+     */
+    function isValidEndDate(endDate) {
+      const endTime = new Date(endDate);
+      return endTime instanceof Date && !isNaN(endTime.valueOf()) && endTime.getTime() > timeNow.getTime();
     }
 
     /**
      * Validates if style is found in the styles list
-     * @param {*} style
+     * @param {*} componentStyle
      * @returns {Boolean}
      */
-    function isValidStyle(style) {
-      // Update when you know available styles for note items
-      const styleValues = ['banner', 'dialog'];
-      return styleValues.some((value) => style === value);
+    function isValidComponentStyle(componentStyle) {
+      return validComponentStyles.some((value) => componentStyle === value);
     }
 
     /**
-    * Validates if type is found in the types list
-    * @param {*} type
+    * Validates if message style is found in the message styles list
+    * @param {*} messageStyle
     * @returns {Boolean}
     */
-    function isValidType(type) {
-      const typeValues = ['alert', 'error', 'info', 'success'];
-      return typeValues.some((value) => type === value);
+    function isValidMessageStyle(messageStyle) {
+      return validMessageStyles.some((value) => messageStyle === value);
     }
 
     /**
@@ -213,8 +219,9 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     logger.info(`MongoNotes: Getting all note items for app`);
 
     const cleanAppName = sanitize(app);
+
     const query = {
-      'context.app': {
+      'context': {
         $in: [cleanAppName, 'all']
       }
     };
@@ -231,7 +238,8 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   async function getNoteItems() {
     logger.info(`MongoNotes: Getting all note items`);
 
-    const result = await db.collection(collection).find({}, noteItemProjection).toArray();
+    const query = {};
+    const result = await db.collection(collection).find(query, noteItemProjection).toArray();
 
     return result;
   }
@@ -266,15 +274,15 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   }
 
   /**
- * Remove notes by type
- * @param {String} type
+ * Remove notes by message style
+ * @param {String} messageStyle
  * @returns Boolean
  */
-  async function removeNoteItemsByType(type) {
-    logger.info(`MongoNotes: Removing all notes with type ${type}`);
+  async function removeNoteItemsByMessageStyle(messageStyle) {
+    logger.info(`MongoNotes: Removing all notes with message style ${messageStyle}`);
 
-    const cleanType = sanitize(type);
-    const filter = {type: cleanType};
+    const cleanMessageStyle = sanitize(messageStyle);
+    const filter = {messageStyle: cleanMessageStyle};
 
     const result = await db.collection(collection).deleteMany(filter);
 

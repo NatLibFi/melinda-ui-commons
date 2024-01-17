@@ -1,20 +1,22 @@
 {
   "notes": [
     {
-      "hidable": false,
-      "message": "This is my duplicate note",
-      "preventOperation": true,
-      "removeDate": "2050-12-20T21:01:58.146Z",
+      "blocksInteraction": false,
       "componentStyle": "dialog",
-      "type": "alert"
+      "context": ["muuntaja"],
+      "endDate": "2050-12-20T21:01:58.146Z",
+      "isDismissible": true,
+      "messageStyle": "info",
+      "messageText": "Note for users"
     },
     {
-      "hidable": false,
-      "message": "This is my duplicate note",
-      "preventOperation": true,
-      "removeDate": "2050-12-20T21:01:58.146Z",
+      "blocksInteraction": false,
       "componentStyle": "dialog",
-      "type": "alert"
+      "context": ["muuntaja"],
+      "endDate": "2050-12-20T21:01:58.146Z",
+      "isDismissible": true,
+      "messageStyle": "info",
+      "messageText": "Note for users"
     }
   ]
 }

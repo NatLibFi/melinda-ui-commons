@@ -5,11 +5,12 @@
   "functionName": "addNoteItem",
   "preFillDb": true,
   "params": {
-    "message": "This is my duplicate note",
-    "type": "alert",
+    "blocksInteraction": false,
     "componentStyle": "dialog",
-    "preventOperation": true,
-    "hidable": false,
-    "removeDate": "2050-12-20T21:01:58.146Z"
+    "context": ["muuntaja"],
+    "endDate": "2050-12-20T21:01:58.146Z",
+    "isDismissible": true,
+    "messageStyle": "info",
+    "messageText": "Note for users"
   }
 }

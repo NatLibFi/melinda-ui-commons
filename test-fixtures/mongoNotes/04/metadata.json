@@ -4,7 +4,9 @@
   "only": false,
   "skip": false,
   "params": {
-    "message": "This note should not be added"
+    "componentStyle": "dialog",
+    "messageStyle": "info",
+    "messageText": "Note for users"
   },
   "preFillDb": true
 }

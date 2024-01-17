@@ -1,63 +1,65 @@
 {
-    "notes": [
-      {
-        "_id":"65805a34d500f6a4ff2eccc4",
-        "message": "viesti",
-        "type": "info",
-        "componentStyle": "dialog",
-        "preventOperation": "false",
-        "hidable": true,
-        "removeDate": "2023-12-30T12:30:15.002",
-        "context": {
-            "app": ["muuntaja"]
-        }
-      },
-      {
-        "_id":"65805a34d500f6a4ff2eccc5",
-        "message": "toinen viesti",
-        "type": "alert",
-        "componentStyle": "banner",
-        "preventOperation": "false",
-        "hidable": true,
-        "removeDate": "2023-12-30T12:31:15.002",
-        "context": {
-            "app": ["merge"]
-        }
-      },
-      {
-        "_id":"65805a34d500f6a4ff2eccc6",
-        "message": "kolmas viesti",
-        "type": "alert",
-        "componentStyle": "banner",
-        "preventOperation": "false",
-        "hidable": true,
-        "removeDate": "2023-12-30T12:31:15.002",
-        "context": {
-            "app": ["all"]
-        }
-      },
-      {
-        "_id":"65805a34d500f6a4ff2eccc7",
-        "message": "neljäs viesti",
-        "type": "alert",
-        "componentStyle": "banner",
-        "preventOperation": "false",
-        "hidable": true,
-        "removeDate": "2023-12-30T12:31:15.002",
-        "context": {
-            "app": ["viewer"]
-        }
-      },{
-        "_id":"65805a34d500f6a4ff2eccc8",
-        "message": "viides viesti",
-        "type": "alert",
-        "componentStyle": "banner",
-        "preventOperation": "false",
-        "hidable": true,
-        "removeDate": "2023-12-30T12:31:15.002",
-        "context": {
-            "app": ["muuntaja", "viewer"]
-        }
-      }
-    ]
-  }
+  "notes": [
+    {
+      "_id": "65805a34d500f6a4ff2eccc4",
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "muuntaja"
+      ],
+      "endDate": "2023-12-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "info",
+      "messageText": "viesti"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc5",
+      "blocksInteraction": "false",
+      "componentStyle": "banner",
+      "context": [
+        "merge"
+      ],
+      "endDate": "2023-12-30T12:31:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "toinen viesti"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc6",
+      "blocksInteraction": "false",
+      "componentStyle": "banner",
+      "context": [
+        "all"
+      ],
+      "endDate": "2023-12-30T12:31:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "kolmas viesti"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc7",
+      "blocksInteraction": "false",
+      "componentStyle": "banner",
+      "context": [
+        "viewer"
+      ],
+      "endDate": "2023-12-30T12:31:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "neljäs viesti"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc8",
+      "blocksInteraction": "false",
+      "componentStyle": "banner",
+      "context": [
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2023-12-30T12:31:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "viides viesti"
+    }
+  ]
+}

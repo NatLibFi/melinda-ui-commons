@@ -1,9 +1,9 @@
+/* eslint-disable functional/no-let */
 import {READERS} from '@natlibfi/fixura';
 import generateTests from '@natlibfi/fixugen';
 import mongoFixturesFactory from '@natlibfi/fixura-mongo';
 import {expect} from 'chai';
 import createMongoNotesOperator from './mongoNotes';
-//import {Error as ApiError} from '@natlibfi/melinda-commons';
 
 
 let mongoFixtures; // eslint-disable-line functional/no-let
@@ -34,7 +34,7 @@ async function initMongofixtures() {
     rootPath: [__dirname, '..', 'test-fixtures', 'mongoNotes'],
     useObjectId: true,
     format: {
-      removeDate: v => new Date(v)
+      endDate: v => new Date(v)
     }
   });
 }
@@ -49,29 +49,44 @@ async function callback({
   const mongoUri = await mongoFixtures.getUri();
   const mongoNotesOperator = await createMongoNotesOperator(mongoUri, '');
   const expectedResult = await getFixture('expectedResult.json');
-  // console.log(typeof mongoUri); // eslint-disable-line
 
   if (preFillDb) { // eslint-disable-line functional/no-conditional-statements
     await mongoFixtures.populate(getFixture('dbContents.json'));
   }
 
   const expectError = async (noteFunction, errorMessage, errorStatus) => {
-    try {
-      await noteFunction();
-    } catch (error) {
-      expect(error).to.be.an('Error');
+    let errorWasCatched;
 
-      if (errorMessage) {
-        expect(error.payload).to.equal(errorMessage);
-      }
+    await noteFunction()
+      .then(() => {
+        // the note function in test was executed without errors
+        // this should not happen if we test for errors
+        errorWasCatched = false;
+      })
+      .catch((error) => {
+        // note function in test throwed an error as expected
+        errorWasCatched = true;
 
-      if (errorStatus) {
-        expect(error.status).to.equal(errorStatus);
-      }
+        expect(error).to.be.an('Error');
 
-      const dump = await mongoFixtures.dump();
-      expect(dump).to.eql(expectedResult);
-    }
+        if (errorMessage) {
+          expect(error.payload).to.equal(errorMessage);
+        }
+
+        if (errorStatus) {
+          expect(error.status).to.equal(errorStatus);
+        }
+
+        mongoFixtures.dump()
+          .then((dump) => {
+            expect(dump).to.eql(expectedResult);
+          });
+
+      });
+
+    // we are expecting error in the test
+    // that is why errorWasCatched should be true
+    expect(errorWasCatched).to.eql(true);
 
   };
 
@@ -100,9 +115,9 @@ async function callback({
   }
 
   //----------------------------------------------//
-  // Test fixture 08 for removing multiple items based on type
-  if (functionName === 'removeNoteItemsByType') {
-    await mongoNotesOperator.removeNoteItemsByType(params);
+  // Test fixture 08 for removing multiple items based on message style
+  if (functionName === 'removeNoteItemsByMessageStyle') {
+    await mongoNotesOperator.removeNoteItemsByMessageStyle(params);
     const dump = await mongoFixtures.dump();
     return expect(dump).to.eql(expectedResult);
   }

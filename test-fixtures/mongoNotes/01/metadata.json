@@ -4,12 +4,13 @@
   "skip": false,
   "functionName": "addNoteItem",
   "params": {
-    "message": "Note for users",
-    "type": "info",
+    "blocksInteraction": false,
     "componentStyle": "dialog",
-    "preventOperation": false,
-    "hidable": true,
-    "removeDate": "2050-12-20T21:01:58.146Z"
+    "context": ["muuntaja"],
+    "endDate": "2050-12-20T21:01:58.146Z",
+    "isDismissible": true,
+    "messageStyle": "info",
+    "messageText": "Note for users"
   },
   "preFillDb": false
 }

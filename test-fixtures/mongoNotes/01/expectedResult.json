@@ -1,12 +1,13 @@
 {
   "notes": [
     {
-      "hidable": true,
-      "message": "Note for users",
-      "preventOperation": false,
-      "removeDate": "2050-12-20T21:01:58.146Z",
+      "blocksInteraction": false,
       "componentStyle": "dialog",
-      "type": "info"
+      "context": ["muuntaja"],
+      "endDate": "2050-12-20T21:01:58.146Z",
+      "isDismissible": true,
+      "messageStyle": "info",
+      "messageText": "Note for users"
     }
   ]
 }

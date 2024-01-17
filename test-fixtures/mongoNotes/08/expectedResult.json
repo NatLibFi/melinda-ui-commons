@@ -1,36 +1,36 @@
 {
   "notes": [
     {
-      "message": "Alert message 1",
-      "type": "alert",
+      "messageText": "Alert message 1",
+      "messageStyle": "alert",
       "componentStyle": "dialog",
-      "preventOperation": "false",
-      "hidable": true,
-      "removeDate": "2023-12-30T12:30:15.002"
+      "blocksInteraction": "false",
+      "isDismissible": true,
+      "endDate": "2023-12-30T12:30:15.002"
     },
     {
-      "message": "Alert message 2",
-      "type": "alert",
+      "messageText": "Alert message 2",
+      "messageStyle": "alert",
       "componentStyle": "dialog",
-      "preventOperation": "false",
-      "hidable": true,
-      "removeDate": "2023-11-30T12:30:15.002"
+      "blocksInteraction": "false",
+      "isDismissible": true,
+      "endDate": "2023-11-30T12:30:15.002"
     },
     {
-      "message": "Alert message 3",
-      "type": "alert",
+      "messageText": "Alert message 3",
+      "messageStyle": "alert",
       "componentStyle": "dialog",
-      "preventOperation": "false",
-      "hidable": true,
-      "removeDate": "2023-12-30T12:30:15.002"
+      "blocksInteraction": "false",
+      "isDismissible": true,
+      "endDate": "2023-12-30T12:30:15.002"
     },
     {
-      "message": "Info message 1",
-      "type": "info",
+      "messageText": "Info message 1",
+      "messageStyle": "info",
       "componentStyle": "dialog",
-      "preventOperation": "false",
-      "hidable": true,
-      "removeDate": "2023-09-30T12:30:15.002"
+      "blocksInteraction": "false",
+      "isDismissible": true,
+      "endDate": "2023-09-30T12:30:15.002"
     }
   ]
 }
