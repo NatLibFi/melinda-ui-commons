@@ -1,12 +1,21 @@
+/* eslint-disable max-statements */
 /* eslint-disable functional/no-let */
-import {READERS} from '@natlibfi/fixura';
-import generateTests from '@natlibfi/fixugen';
-import mongoFixturesFactory from '@natlibfi/fixura-mongo';
+
 import {expect} from 'chai';
-import createMongoNotesOperator from './mongoNotes';
+import generateTests from '@natlibfi/fixugen';
+import {READERS} from '@natlibfi/fixura';
+import mongoFixturesFactory from '@natlibfi/fixura-mongo';
+import createMongoNotesOperator from './mongoNotes.js';
 
 
-let mongoFixtures; // eslint-disable-line functional/no-let
+//****************************************************************************//
+//                                                                            //
+// TEST SPECIFICATION FOR MONGO SERVER NOTIFICATIONS (mongoNotes)             //
+//                                                                            //
+//****************************************************************************//
+
+
+let mongoFixtures;
 
 generateTests({
   callback,
@@ -39,7 +48,6 @@ async function initMongofixtures() {
   });
 }
 
-// eslint-disable-next-line max-statements
 async function callback({
   getFixture,
   functionName,
@@ -50,22 +58,25 @@ async function callback({
   const mongoNotesOperator = await createMongoNotesOperator(mongoUri, '');
   const expectedResult = await getFixture('expectedResult.json');
 
-  if (preFillDb) { // eslint-disable-line functional/no-conditional-statements
+  if (preFillDb) {
     await mongoFixtures.populate(getFixture('dbContents.json'));
   }
 
+  //----------------------------------------------------------------------//
+  // Test helper for testing scenarios where error is the expected result
   const expectError = async (noteFunction, errorMessage, errorStatus) => {
-    let errorWasCatched;
+    let errorWasThrown;
 
     await noteFunction()
       .then(() => {
         // the note function in test was executed without errors
         // this should not happen if we test for errors
-        errorWasCatched = false;
+        // test fails
+        errorWasThrown = false;
       })
       .catch((error) => {
-        // note function in test throwed an error as expected
-        errorWasCatched = true;
+        // note function in test resulted in error as expected
+        errorWasThrown = true;
 
         expect(error).to.be.an('Error');
 
@@ -86,13 +97,17 @@ async function callback({
 
     // we are expecting error in the test
     // that is why errorWasCatched should be true
-    expect(errorWasCatched).to.eql(true);
+    expect(errorWasThrown).to.eql(true);
 
   };
 
 
+  //-----------------------------------------------------------------------------
+  // TEST FUNCTIONS FOR ADDING SERVER NOTIFICATIONS
+  //-----------------------------------------------------------------------------
+
   //----------------------------------------------//
-  // Test fixtures 01-06 for adding one note
+  // Test fixtures 01-02 for adding one note
   if (functionName === 'addNoteItem') {
     await mongoNotesOperator.addNoteItem(params);
     const dump = await mongoFixtures.dump();
@@ -106,8 +121,38 @@ async function callback({
   }
 
 
+  //-----------------------------------------------------------------------------
+  // TEST FUNCTIONS FOR GETTING SERVER NOTIFICATIONS
+  //-----------------------------------------------------------------------------
+
   //----------------------------------------------//
-  // Test fixture 07 for removing one note with id
+  // Test fixtures 07 for getting one note with id
+  if (functionName === 'getNoteItem') {
+    const result = await mongoNotesOperator.getNoteItem(params);
+    return expect(result).to.eql(expectedResult);
+  }
+
+  //----------------------------------------------//
+  // Test fixture 08 for getting all notes
+  if (functionName === 'getNoteItems') {
+    const result = await mongoNotesOperator.getNoteItems();
+    return expect(result).to.eql(expectedResult);
+  }
+
+  //----------------------------------------------//
+  // Test fixture 09 for getting notes with context
+  if (functionName === 'getNoteItemsForApp') {
+    const result = await mongoNotesOperator.getNoteItemsForApp(params);
+    return expect(result).to.eql(expectedResult);
+  }
+
+
+  //-----------------------------------------------------------------------------
+  // TEST FUNCTIONS FOR REMOVING SERVER NOTIFICATIONS
+  //-----------------------------------------------------------------------------
+
+  //----------------------------------------------//
+  // Test fixture 10 for removing one note with id
   if (functionName === 'removeNoteItem') {
     await mongoNotesOperator.removeNoteItem(params);
     const dump = await mongoFixtures.dump();
@@ -115,33 +160,13 @@ async function callback({
   }
 
   //----------------------------------------------//
-  // Test fixture 08 for removing multiple items based on message style
+  // Test fixture 11 for removing multiple items based on message style
   if (functionName === 'removeNoteItemsByMessageStyle') {
     await mongoNotesOperator.removeNoteItemsByMessageStyle(params);
     const dump = await mongoFixtures.dump();
     return expect(dump).to.eql(expectedResult);
   }
 
-  //----------------------------------------------//
-  // Test fixtures 09 for getting one note with id
-  if (functionName === 'getNoteItem') {
-    const result = await mongoNotesOperator.getNoteItem(params);
-    return expect(result).to.eql(expectedResult);
-  }
-
-  //----------------------------------------------//
-  // Test fixture 10 for getting all notes
-  if (functionName === 'getNoteItems') {
-    const result = await mongoNotesOperator.getNoteItems();
-    return expect(result).to.eql(expectedResult);
-  }
-
-  //----------------------------------------------//
-  // Test fixture 11 for getting notes with context.app
-  if (functionName === 'getNoteItemsForApp') {
-    const result = await mongoNotesOperator.getNoteItemsForApp(params);
-    return expect(result).to.eql(expectedResult);
-  }
 
   throw new Error(`Unknown functionName: ${functionName}`);
 }

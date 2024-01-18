@@ -1,12 +1,15 @@
 {
   "notes": [
     {
-      "isDismissible": false,
-      "messageText": "Info note with some info",
-      "blocksInteraction": true,
-      "endDate": "2024-12-30T12:30:15.002",
+      "blocksInteraction": false,
       "componentStyle": "dialog",
-      "messageStyle": "info"
+      "context": [
+        "muuntaja"
+      ],
+      "endDate": "2050-12-20T21:01:58.146Z",
+      "isDismissible": true,
+      "messageStyle": "info",
+      "messageText": "Note for users"
     }
   ]
 }

@@ -21,7 +21,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   const db = client.db(dbName);
   const collection = 'notes';
 
-  const validContextApps = ['artikkelit', 'muuntaja', 'viewer'];
+  const validContext = ['all', 'artikkelit', 'muuntaja', 'viewer'];
   const validComponentStyles = ['banner', 'dialog'];
   const validMessageStyles = ['alert', 'error', 'info', 'success'];
   const timeNow = new Date();
@@ -138,7 +138,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     * @returns {Boolean}
     */
     function isValidContext(appsList) {
-      return appsList.every((app) => validContextApps.includes(app));
+      return appsList.every((app) => validContext.includes(app));
     }
 
     /**

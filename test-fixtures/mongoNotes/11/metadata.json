@@ -1,8 +1,8 @@
 {
-    "description": "Function: getNoteItemsForApp, gets note items for specified app",
-    "only": false,
-    "skip": false,
-    "functionName": "getNoteItemsForApp",
-    "params": "muuntaja",
-    "preFillDb": true
-  }
+  "description": "Function: removeNoteItemsByMessageStyle, remove all noteItems by given message type (style)",
+  "only": false,
+  "skip": false,
+  "functionName": "removeNoteItemsByMessageStyle",
+  "params": "error",
+  "preFillDb": true
+}

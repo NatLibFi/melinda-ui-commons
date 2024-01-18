@@ -1,22 +1,65 @@
 {
-    "notes": [
-      {
-        "_id":"65805a34d500f6a4ff2eccc4",
-        "messageText": "viesti",
-        "messageStyle": "info",
-        "componentStyle": "dialog",
-        "blocksInteraction": "false",
-        "isDismissible": true,
-        "endDate": "2023-12-30T12:30:15.002"
-      },
-      {
-        "_id":"65805a34d500f6a4ff2eccc5",
-        "messageText": "toinen viesti",
-        "messageStyle": "alert",
-        "componentStyle": "banner",
-        "blocksInteraction": "false",
-        "isDismissible": true,
-        "endDate": "2023-12-30T12:31:15.002"
-      }
-    ]
-  }
+  "notes": [
+    {
+      "_id": "65805a34d500f6a4ff2eccc4",
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "muuntaja"
+      ],
+      "endDate": "2023-12-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "info",
+      "messageText": "viesti"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc5",
+      "blocksInteraction": "false",
+      "componentStyle": "banner",
+      "context": [
+        "merge"
+      ],
+      "endDate": "2023-12-30T12:31:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "toinen viesti"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc6",
+      "blocksInteraction": "false",
+      "componentStyle": "banner",
+      "context": [
+        "all"
+      ],
+      "endDate": "2023-12-30T12:31:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "kolmas viesti"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc7",
+      "blocksInteraction": "false",
+      "componentStyle": "banner",
+      "context": [
+        "viewer"
+      ],
+      "endDate": "2023-12-30T12:31:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "neljäs viesti"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc8",
+      "blocksInteraction": "false",
+      "componentStyle": "banner",
+      "context": [
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2023-12-30T12:31:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "viides viesti"
+    }
+  ]
+}

@@ -2,57 +2,28 @@
   "notes": [
     {
       "_id": "65805a34d500f6a4ff2eccc4",
-      "messageText": "Alert message 1",
-      "messageStyle": "alert",
-      "componentStyle": "dialog",
-      "blocksInteraction": "false",
-      "isDismissible": true,
-      "endDate": "2023-12-30T12:30:15.002"
+      "blocksInteraction": true,
+      "componentStyle": "banner",
+      "context": [
+        "muuntaja",
+        "artikelit"
+      ],
+      "endDate": "2038-08-08T12:14:34.146Z",
+      "isDismissible": false,
+      "messageStyle": "error",
+      "messageText": "Very serious error notification"
     },
     {
       "_id": "65805a34d500f6a4ff2eccc5",
-      "messageText": "Alert message 2",
-      "messageStyle": "alert",
+      "blocksInteraction": false,
       "componentStyle": "dialog",
-      "blocksInteraction": "false",
+      "context": [
+        "muuntaja"
+      ],
+      "endDate": "2050-12-20T21:01:58.146Z",
       "isDismissible": true,
-      "endDate": "2023-11-30T12:30:15.002"
-    },
-    {
-      "_id": "65805a34d500f6a4ff2eccc6",
-      "messageText": "Error message 1",
-      "messageStyle": "error",
-      "componentStyle": "dialog",
-      "blocksInteraction": "false",
-      "isDismissible": true,
-      "endDate": "2023-11-30T12:30:15.002"
-    },
-    {
-      "_id": "65805a34d500f6a4ff2eccc7",
-      "messageText": "Alert message 3",
-      "messageStyle": "alert",
-      "componentStyle": "dialog",
-      "blocksInteraction": "false",
-      "isDismissible": true,
-      "endDate": "2023-12-30T12:30:15.002"
-    },
-    {
-      "_id": "65805a34d500f6a4ff2eccc8",
-      "messageText": "Error message 2",
-      "messageStyle": "error",
-      "componentStyle": "dialog",
-      "blocksInteraction": "false",
-      "isDismissible": true,
-      "endDate": "2023-11-30T12:30:15.002"
-    },
-    {
-      "_id": "65805a34d500f6a4ff2eccc9",
-      "messageText": "Info message 1",
       "messageStyle": "info",
-      "componentStyle": "dialog",
-      "blocksInteraction": "false",
-      "isDismissible": true,
-      "endDate": "2023-09-30T12:30:15.002"
+      "messageText": "Friendly reminder for all users"
     }
   ]
 }

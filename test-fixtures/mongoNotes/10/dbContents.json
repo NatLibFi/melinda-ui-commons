@@ -1,22 +1,43 @@
 {
   "notes": [
     {
-      "_id":"65805a34d500f6a4ff2eccc4",
-      "messageText": "viesti",
-      "messageStyle": "info",
-      "componentStyle": "dialog",
-      "blocksInteraction": "false",
-      "isDismissible": true,
-      "endDate": "2023-12-30T12:30:15.002"
+      "_id": "65805a34d500f6a4ff2eccc4",
+      "blocksInteraction": true,
+      "componentStyle": "banner",
+      "context": [
+        "artikelit",
+        "muuntaja"
+      ],
+      "endDate": "2038-08-08T12:14:34.146Z",
+      "isDismissible": false,
+      "messageStyle": "error",
+      "messageText": "Very serious error notification"
     },
     {
-      "_id":"65805a34d500f6a4ff2eccc5",
-      "messageText": "toinen viesti",
-      "messageStyle": "alert",
-      "componentStyle": "banner",
-      "blocksInteraction": "false",
+      "_id": "65805a34d500f6a4ff2eccc5",
+      "blocksInteraction": false,
+      "componentStyle": "dialog",
+      "context": [
+        "muuntaja"
+      ],
+      "endDate": "2050-12-20T21:01:58.146Z",
       "isDismissible": true,
-      "endDate": "2023-12-30T12:31:15.002"
+      "messageStyle": "info",
+      "messageText": "Friendly reminder for all users"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc6",
+      "blocksInteraction": false,
+      "componentStyle": "banner",
+      "context": [
+        "artikkelit",
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2050-12-20T21:01:58.146Z",
+      "isDismissible": false,
+      "messageStyle": "alert",
+      "messageText": "Alerting users of service break"
     }
   ]
 }

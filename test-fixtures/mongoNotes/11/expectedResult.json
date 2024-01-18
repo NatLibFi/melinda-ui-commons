@@ -1,39 +1,54 @@
-[
-  {
-    "blocksInteraction": "false",
-    "componentStyle": "dialog",
-    "context": [
-      "muuntaja"
-    ],
-    "endDate": "2023-12-30T12:30:15.002",
-    "id": "65805a34d500f6a4ff2eccc4",
-    "isDismissible": true,
-    "messageStyle": "info",
-    "messageText": "viesti"
-  },
-  {
-    "blocksInteraction": "false",
-    "componentStyle": "banner",
-    "context": [
-      "all"
-    ],
-    "endDate": "2023-12-30T12:31:15.002",
-    "id": "65805a34d500f6a4ff2eccc6",
-    "isDismissible": true,
-    "messageStyle": "alert",
-    "messageText": "kolmas viesti"
-  },
-  {
-    "blocksInteraction": "false",
-    "componentStyle": "banner",
-    "context": [
-      "muuntaja",
-      "viewer"
-    ],
-    "endDate": "2023-12-30T12:31:15.002",
-    "id": "65805a34d500f6a4ff2eccc8",
-    "isDismissible": true,
-    "messageStyle": "alert",
-    "messageText": "viides viesti"
-  }
-]
+{
+  "notes": [
+    {
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "artikkelit",
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2023-12-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "Alert message 1"
+    },
+    {
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2023-11-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "Alert message 2"
+    },
+    {
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "artikkelit",
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2023-12-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "Alert message 3"
+    },
+    {
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "artikkelit",
+        "viewer"
+      ],
+      "endDate": "2023-09-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "info",
+      "messageText": "Info message 1"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 {
-    "description": "Function: getNoteItems, gets all note items",
-    "only": false,
-    "skip": false,
-    "functionName": "getNoteItems",
-    "params": {},
-    "preFillDb": true
-  }
+  "description": "Function: removeNoteItem, remove one Note item object by id",
+  "only": false,
+  "skip": false,
+  "functionName": "removeNoteItem",
+  "params": "65805a34d500f6a4ff2eccc4",
+  "preFillDb": true
+}

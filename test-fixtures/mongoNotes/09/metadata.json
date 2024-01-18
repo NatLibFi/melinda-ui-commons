@@ -1,8 +1,8 @@
 {
-    "description": "Function: getNoteItem, gets one item with id",
+    "description": "Function: getNoteItemsForApp, gets note items for specified app",
     "only": false,
     "skip": false,
-    "functionName": "getNoteItem",
-    "params": "65805a34d500f6a4ff2eccc5",
+    "functionName": "getNoteItemsForApp",
+    "params": "muuntaja",
     "preFillDb": true
   }

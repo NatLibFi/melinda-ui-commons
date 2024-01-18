@@ -1,36 +1,27 @@
-{
-  "notes": [
-    {
-      "messageText": "Alert message 1",
-      "messageStyle": "alert",
-      "componentStyle": "dialog",
-      "blocksInteraction": "false",
-      "isDismissible": true,
-      "endDate": "2023-12-30T12:30:15.002"
-    },
-    {
-      "messageText": "Alert message 2",
-      "messageStyle": "alert",
-      "componentStyle": "dialog",
-      "blocksInteraction": "false",
-      "isDismissible": true,
-      "endDate": "2023-11-30T12:30:15.002"
-    },
-    {
-      "messageText": "Alert message 3",
-      "messageStyle": "alert",
-      "componentStyle": "dialog",
-      "blocksInteraction": "false",
-      "isDismissible": true,
-      "endDate": "2023-12-30T12:30:15.002"
-    },
-    {
-      "messageText": "Info message 1",
-      "messageStyle": "info",
-      "componentStyle": "dialog",
-      "blocksInteraction": "false",
-      "isDismissible": true,
-      "endDate": "2023-09-30T12:30:15.002"
-    }
-  ]
-}
+[
+  {
+    "blocksInteraction": true,
+    "componentStyle": "banner",
+    "context": [
+      "muuntaja",
+      "artikelit"
+    ],
+    "endDate": "2038-08-08T12:14:34.146Z",
+    "id": "65805a34d500f6a4ff2eccc4",
+    "isDismissible": false,
+    "messageStyle": "error",
+    "messageText": "Very serious error notification"
+  },
+  {
+    "blocksInteraction": false,
+    "componentStyle": "dialog",
+    "context": [
+      "muuntaja"
+    ],
+    "endDate": "2050-12-20T21:01:58.146Z",
+    "id": "65805a34d500f6a4ff2eccc5",
+    "isDismissible": true,
+    "messageStyle": "info",
+    "messageText": "Friendly reminder for all users"
+  }
+]
