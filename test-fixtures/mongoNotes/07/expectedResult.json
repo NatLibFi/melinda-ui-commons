@@ -1,12 +1,15 @@
 {
-    "blocksInteraction": false,
-    "componentStyle": "dialog",
-    "context": [
-      "muuntaja"
-    ],
-    "endDate": "2050-12-20T21:01:58.146Z",
-    "id": "65805a34d500f6a4ff2eccc5",
-    "isDismissible": true,
-    "messageStyle": "info",
-    "messageText": "Friendly reminder for all users"
-  }
+  "notes": [
+    {
+      "blocksInteraction": false,
+      "componentStyle": "dialog",
+      "context": [
+        "muuntaja"
+      ],
+      "endDate": "2050-12-20T21:01:58.146Z",
+      "isDismissible": true,
+      "messageStyle": "info",
+      "messageText": "Note for users"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 {
-    "description": "Function: getNoteItem, gets one item with id",
-    "only": false,
-    "skip": false,
-    "functionName": "getNoteItem",
-    "params": "65805a34d500f6a4ff2eccc5",
-    "preFillDb": true
-  }
+  "description": "Function: addNoteItem, do not add one noteItem object if parameter is not object",
+  "functionName": "addNoteItemReturnsError",
+  "only": false,
+  "skip": false,
+  "params": "Note message only",
+  "preFillDb": true
+}

@@ -1,16 +1,12 @@
 {
-  "description": "Function: addNoteItem, do not add one noteItem object if message style is not valid",
+  "description": "Function: addNoteItem, do not add one noteItem object if some properties are missing",
   "functionName": "addNoteItemReturnsError",
   "only": false,
   "skip": false,
   "params": {
-    "messageText": "Note with wrong type",
-    "messageStyle": "doesNotExist",
     "componentStyle": "dialog",
-    "context": ["muuntaja"],
-    "blocksInteraction": true,
-    "isDismissible": false,
-    "endDate": "2024-12-30T12:30:15.002"
+    "messageStyle": "info",
+    "messageText": "Note for users"
   },
   "preFillDb": true
 }

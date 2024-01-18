@@ -2,6 +2,7 @@
 /* eslint-disable functional/no-let */
 
 import {expect} from 'chai';
+import {ObjectId} from 'mongodb';
 import generateTests from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
 import mongoFixturesFactory from '@natlibfi/fixura-mongo';
@@ -115,7 +116,18 @@ async function callback({
   }
 
   //----------------------------------------------//
-  // Test fixtures 03-06 for adding one note that results in error
+  // Test fixtures 01-02 for adding one note and checking returned result
+  // Two checks are done
+  //  - we check that the added note item properties match the result note item (id field omitted)
+  //  - we chek that the result id is valid string version of BSON (by testing convertion to ObjectID)
+  if (functionName === 'addNoteItemReturnsNoteItem') {
+    const result = await mongoNotesOperator.addNoteItem(params);
+    const {id, ...rest} = result;
+    return expect(rest).to.eql(expectedResult) && expect(new ObjectId(id).toString()).to.eql(id);
+  }
+
+  //----------------------------------------------//
+  // Test fixtures 04-07 for adding one note that results in error
   if (functionName === 'addNoteItemReturnsError') {
     return expectError(() => mongoNotesOperator.addNoteItem(params), 'NoteItem data is not valid', 500);
   }
@@ -126,21 +138,21 @@ async function callback({
   //-----------------------------------------------------------------------------
 
   //----------------------------------------------//
-  // Test fixtures 07 for getting one note with id
+  // Test fixtures 08 for getting one note with id
   if (functionName === 'getNoteItem') {
     const result = await mongoNotesOperator.getNoteItem(params);
     return expect(result).to.eql(expectedResult);
   }
 
   //----------------------------------------------//
-  // Test fixture 08 for getting all notes
+  // Test fixture 09 for getting all notes
   if (functionName === 'getNoteItems') {
     const result = await mongoNotesOperator.getNoteItems();
     return expect(result).to.eql(expectedResult);
   }
 
   //----------------------------------------------//
-  // Test fixture 09 for getting notes with context
+  // Test fixture 10 for getting notes with context
   if (functionName === 'getNoteItemsForApp') {
     const result = await mongoNotesOperator.getNoteItemsForApp(params);
     return expect(result).to.eql(expectedResult);
@@ -152,7 +164,7 @@ async function callback({
   //-----------------------------------------------------------------------------
 
   //----------------------------------------------//
-  // Test fixture 10 for removing one note with id
+  // Test fixture 11 for removing one note with id
   if (functionName === 'removeNoteItem') {
     await mongoNotesOperator.removeNoteItem(params);
     const dump = await mongoFixtures.dump();
@@ -160,7 +172,7 @@ async function callback({
   }
 
   //----------------------------------------------//
-  // Test fixture 11 for removing multiple items based on message style
+  // Test fixture 12 for removing multiple items based on message style
   if (functionName === 'removeNoteItemsByMessageStyle') {
     await mongoNotesOperator.removeNoteItemsByMessageStyle(params);
     const dump = await mongoFixtures.dump();

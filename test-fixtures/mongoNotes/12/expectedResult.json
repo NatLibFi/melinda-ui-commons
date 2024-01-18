@@ -1,0 +1,54 @@
+{
+  "notes": [
+    {
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "artikkelit",
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2023-12-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "Alert message 1"
+    },
+    {
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2023-11-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "Alert message 2"
+    },
+    {
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "artikkelit",
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2023-12-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "Alert message 3"
+    },
+    {
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "artikkelit",
+        "viewer"
+      ],
+      "endDate": "2023-09-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "info",
+      "messageText": "Info message 1"
+    }
+  ]
+}

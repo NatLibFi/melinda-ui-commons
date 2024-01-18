@@ -1,18 +1,4 @@
-[
-  {
-    "blocksInteraction": true,
-    "componentStyle": "banner",
-    "context": [
-      "muuntaja",
-      "artikelit"
-    ],
-    "endDate": "2038-08-08T12:14:34.146Z",
-    "id": "65805a34d500f6a4ff2eccc4",
-    "isDismissible": false,
-    "messageStyle": "error",
-    "messageText": "Very serious error notification"
-  },
-  {
+{
     "blocksInteraction": false,
     "componentStyle": "dialog",
     "context": [
@@ -24,4 +10,3 @@
     "messageStyle": "info",
     "messageText": "Friendly reminder for all users"
   }
-]

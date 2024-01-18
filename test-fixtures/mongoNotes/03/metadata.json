@@ -1,8 +1,9 @@
 {
-  "description": "Function: addNoteItem, do not add one noteItem object if there is no message text",
-  "functionName": "addNoteItemReturnsError",
+  "description": "Function: addNoteItem, add one noteItem returns the inserted note item",
   "only": false,
   "skip": false,
+  "functionName": "addNoteItemReturnsNoteItem",
+  "preFillDb": false,
   "params": {
     "blocksInteraction": false,
     "componentStyle": "dialog",
@@ -10,7 +11,6 @@
     "endDate": "2050-12-20T21:01:58.146Z",
     "isDismissible": true,
     "messageStyle": "info",
-    "messageText": ""
-  },
-  "preFillDb": true
+    "messageText": "Note for users"
+  }
 }

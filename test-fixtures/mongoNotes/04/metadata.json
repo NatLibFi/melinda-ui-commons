@@ -1,12 +1,16 @@
 {
-  "description": "Function: addNoteItem, do not add one noteItem object if some properties are missing",
+  "description": "Function: addNoteItem, do not add one noteItem object if there is no message text",
   "functionName": "addNoteItemReturnsError",
   "only": false,
   "skip": false,
   "params": {
+    "blocksInteraction": false,
     "componentStyle": "dialog",
+    "context": ["muuntaja"],
+    "endDate": "2050-12-20T21:01:58.146Z",
+    "isDismissible": true,
     "messageStyle": "info",
-    "messageText": "Note for users"
+    "messageText": ""
   },
   "preFillDb": true
 }

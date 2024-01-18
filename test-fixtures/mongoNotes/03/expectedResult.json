@@ -1,15 +1,11 @@
 {
-  "notes": [
-    {
-      "blocksInteraction": false,
-      "componentStyle": "dialog",
-      "context": [
-        "muuntaja"
-      ],
-      "endDate": "2050-12-20T21:01:58.146Z",
-      "isDismissible": true,
-      "messageStyle": "info",
-      "messageText": "Note for users"
-    }
-  ]
+  "blocksInteraction": false,
+  "componentStyle": "dialog",
+  "context": [
+    "muuntaja"
+  ],
+  "endDate": "2050-12-20T21:01:58.146Z",
+  "isDismissible": true,
+  "messageStyle": "info",
+  "messageText": "Note for users"
 }
