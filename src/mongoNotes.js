@@ -23,7 +23,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   const collection = 'notes';
 
   const validContext = ['all', 'artikkelit', 'muuntaja', 'viewer'];
-  const validComponentStyles = ['banner', 'dialog'];
+  const validComponentStyles = ['banner', 'dialog', 'banner_static'];
   const validMessageStyles = ['alert', 'error', 'info', 'success'];
   const timeNow = new Date();
 
