@@ -6,7 +6,7 @@ import {MongoClient, ObjectId} from 'mongodb';
 import sanitize from 'mongo-sanitize';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
-import * as noteValidator from './scripts/noteValidator';
+import * as noteValidator from './scripts/validateNote';
 
 //****************************************************************************//
 //                                                                            //
