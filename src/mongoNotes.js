@@ -6,6 +6,7 @@ import {MongoClient, ObjectId} from 'mongodb';
 import sanitize from 'mongo-sanitize';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
+import * as noteValidator from './scripts/noteValidator';
 
 //****************************************************************************//
 //                                                                            //
@@ -21,11 +22,6 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   const client = await MongoClient.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   const db = client.db(dbName);
   const collection = 'notes';
-
-  const validContext = ['all', 'artikkelit', 'muuntaja', 'viewer'];
-  const validComponentStyles = ['banner', 'dialog', 'banner_static'];
-  const validMessageStyles = ['alert', 'error', 'info', 'success'];
-  const timeNow = new Date();
 
   // Default projection for a note item
   // The returned note item object:
@@ -71,22 +67,22 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   async function addNoteItem(noteItem) {
     logger.info(`MongoNotes: Adding one note item ${JSON.stringify(noteItem)}`);
 
-    if (isNotObject(noteItem)) {
+    if (noteValidator.isNotObject(noteItem)) {
       logger.debug('MongoNotes: NoteItem parameter is not object');
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'NoteItem data is not valid');
     }
 
     const newNoteItem = {
-      blocksInteraction: validate(noteItem.blocksInteraction, isBoolean),
-      componentStyle: validate(noteItem.componentStyle, isValidComponentStyle),
-      context: validate(noteItem.context, isValidContext),
-      endDate: validate(noteItem.endDate, isValidEndDate),
-      isDismissible: validate(noteItem.isDismissible, isBoolean),
-      messageStyle: validate(noteItem.messageStyle, isValidMessageStyle),
-      messageText: validate(noteItem.messageText, isValidMessageText)
+      blocksInteraction: noteValidator.validate(noteItem.blocksInteraction, noteValidator.isBoolean),
+      componentStyle: noteValidator.validate(noteItem.componentStyle, noteValidator.isValidComponentStyle),
+      context: noteValidator.validate(noteItem.context, noteValidator.isValidContext),
+      endDate: noteValidator.validate(noteItem.endDate, noteValidator.isValidEndDate),
+      isDismissible: noteValidator.validate(noteItem.isDismissible, noteValidator.isBoolean),
+      messageStyle: noteValidator.validate(noteItem.messageStyle, noteValidator.isValidMessageStyle),
+      messageText: noteValidator.validate(noteItem.messageText, noteValidator.isValidMessageText)
     };
 
-    if (hasUndefinedProperty(newNoteItem)) {
+    if (noteValidator.hasUndefinedProperty(newNoteItem)) {
       logger.debug('MongoNotes: NoteItem data did not pass validation');
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'NoteItem data is not valid');
     }
@@ -104,93 +100,6 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     }
 
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `MongoNotes had error while adding a note ${noteItem}`);
-
-
-    /**
-     * Validate property with validator function
-     * @param {*} property
-     * @param {function} validator
-     * @returns {(*|undefined)}
-     */
-    function validate(property, validator) {
-      if (property === undefined) {
-        return undefined;
-      }
-      return validator(property) ? property : undefined;
-    }
-
-    /**
-     * Checks if noteItem is Object
-     * @param {*} noteItem
-     * @returns {Boolean}
-     */
-    function isNotObject(noteItem) {
-      return typeof noteItem !== 'object' || Object.keys(noteItem).length === 0 || Object.getPrototypeOf(noteItem) !== Object.prototype;
-    }
-
-    /**
-     * Validates if property is Boolean
-     * @param {*} property
-     * @returns {Boolean}
-     */
-    function isBoolean(property) {
-      return typeof property === 'boolean';
-    }
-
-    /**
-    * Validates if every app in list is valid context
-    * @param {*} appsList
-    * @returns {Boolean}
-    */
-    function isValidContext(appsList) {
-      return appsList.every((app) => validContext.includes(app));
-    }
-
-    /**
-     * Validates if message text is not empty and is String
-     * @param {*} messageText
-     * @returns {Boolean}
-     */
-    function isValidMessageText(messageText) {
-      return messageText.length > 0 && (typeof messageText === 'string' || messageText instanceof String);
-    }
-
-    /**
-     * Validates if end date is in Date format and is in the future
-     * @param {*} endDate
-     * @returns {Boolean}
-     */
-    function isValidEndDate(endDate) {
-      const endTime = new Date(endDate);
-      return endTime instanceof Date && !isNaN(endTime.valueOf()) && endTime.getTime() > timeNow.getTime();
-    }
-
-    /**
-     * Validates if style is found in the styles list
-     * @param {*} componentStyle
-     * @returns {Boolean}
-     */
-    function isValidComponentStyle(componentStyle) {
-      return validComponentStyles.some((value) => componentStyle === value);
-    }
-
-    /**
-    * Validates if message style is found in the message styles list
-    * @param {*} messageStyle
-    * @returns {Boolean}
-    */
-    function isValidMessageStyle(messageStyle) {
-      return validMessageStyles.some((value) => messageStyle === value);
-    }
-
-    /**
-     * Checks if noteItem has a property that is undefined
-     * @param {Object} noteItem
-     * @returns {Boolean};
-     */
-    function hasUndefinedProperty(noteItem) {
-      return Object.values(noteItem).some(property => property === undefined);
-    }
 
   }
 
