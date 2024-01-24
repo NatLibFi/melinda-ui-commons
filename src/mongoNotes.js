@@ -73,13 +73,13 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
     }
 
     const newNoteItem = {
-      blocksInteraction: noteValidator.validate(noteItem.blocksInteraction, noteValidator.isBoolean),
-      componentStyle: noteValidator.validate(noteItem.componentStyle, noteValidator.isValidComponentStyle),
-      context: noteValidator.validate(noteItem.context, noteValidator.isValidContext),
-      endDate: noteValidator.validate(noteItem.endDate, noteValidator.isValidEndDate),
-      isDismissible: noteValidator.validate(noteItem.isDismissible, noteValidator.isBoolean),
-      messageStyle: noteValidator.validate(noteItem.messageStyle, noteValidator.isValidMessageStyle),
-      messageText: noteValidator.validate(noteItem.messageText, noteValidator.isValidMessageText)
+      blocksInteraction: noteValidator.isBoolean(noteItem.blocksInteraction) ? noteItem.blocksInteraction : undefined,
+      componentStyle: noteValidator.isValidComponentStyle(noteItem.componentStyle) ? noteItem.componentStyle : undefined,
+      context: noteValidator.isValidContext(noteItem.context) ? noteItem.context : undefined,
+      endDate: noteValidator.isValidEndDate(noteItem.endDate) ? noteItem.endDate : undefined,
+      isDismissible: noteValidator.isBoolean(noteItem.isDismissible) ? noteItem.isDismissible : undefined,
+      messageStyle: noteValidator.isValidMessageStyle(noteItem.messageStyle) ? noteItem.messageStyle : undefined,
+      messageText: noteValidator.isValidMessageText(noteItem.messageText) ? noteItem.messageText : undefined
     };
 
     if (noteValidator.hasUndefinedProperty(newNoteItem)) {

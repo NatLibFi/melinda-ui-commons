@@ -4,19 +4,6 @@ const validMessageStyles = ['alert', 'error', 'info', 'success'];
 const timeNow = new Date();
 
 /**
- * Validate property with validator function
- * @param {*} property
- * @param {function} validator
- * @returns {(*|undefined)}
- */
-export function validate(property, validator) {
-  if (property === undefined) {
-    return undefined;
-  }
-  return validator(property) ? property : undefined;
-}
-
-/**
  * Checks if noteItem is Object
  * @param {object} noteItem
  * @returns {Boolean}
@@ -40,7 +27,7 @@ export function isBoolean(property) {
 * @returns {Boolean}
 */
 export function isValidContext(appsList) {
-  return appsList.every((app) => validContext.includes(app));
+  return appsList && appsList.every((app) => validContext.includes(app));
 }
 
 /**
@@ -49,7 +36,7 @@ export function isValidContext(appsList) {
  * @returns {Boolean}
  */
 export function isValidMessageText(messageText) {
-  return messageText.length > 0 && (typeof messageText === 'string' || messageText instanceof String);
+  return messageText && messageText.length > 0 && (typeof messageText === 'string' || messageText instanceof String);
 }
 
 /**
@@ -59,7 +46,7 @@ export function isValidMessageText(messageText) {
  */
 export function isValidEndDate(endDate) {
   const endTime = new Date(endDate);
-  return endTime instanceof Date && !isNaN(endTime.valueOf()) && endTime.getTime() > timeNow.getTime();
+  return endTime && endTime instanceof Date && !isNaN(endTime.valueOf()) && endTime.getTime() > timeNow.getTime();
 }
 
 /**
