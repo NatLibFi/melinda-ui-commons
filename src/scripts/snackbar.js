@@ -8,7 +8,7 @@
 // Function for showing messages for user
 //
 // Use:
-// - import showSnackbar to your app js from ui-utils
+// - import showSnackbar to your app js from uiUtils
 // - add empty div element to your app html with id 'snackbars' and class "snackbars"
 // - call function with a string to create default snackbar or with a object parameter to create custom snackbar
 //

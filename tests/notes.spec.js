@@ -21,7 +21,7 @@ let mongoFixtures;
 
 generateTests({
   callback,
-  path: [__dirname, '.', 'test-fixtures', 'notes'],
+  path: [__dirname, '.', 'testFixtures', 'notes'],
   recurse: false,
   useMetadataFile: true,
   fixura: {
@@ -42,7 +42,7 @@ generateTests({
 
 async function initMongofixtures() {
   mongoFixtures = await mongoFixturesFactory({
-    rootPath: [__dirname, '.', 'test-fixtures', 'notes'],
+    rootPath: [__dirname, '.', 'testFixtures', 'notes'],
     useObjectId: true,
     format: {
       endDate: v => new Date(v)
