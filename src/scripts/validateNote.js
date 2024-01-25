@@ -8,8 +8,8 @@ const timeNow = new Date();
  * @param {object} noteItem
  * @returns {Boolean}
  */
-export function isNotObject(noteItem) {
-  return typeof noteItem !== 'object' || Object.keys(noteItem).length === 0 || Object.getPrototypeOf(noteItem) !== Object.prototype;
+export function isObject(noteItem) {
+  return typeof noteItem === 'object' || Object.keys(noteItem).length > 0 || Object.getPrototypeOf(noteItem) === Object.prototype;
 }
 
 /**

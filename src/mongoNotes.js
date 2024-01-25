@@ -67,7 +67,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   async function addNoteItem(noteItem) {
     logger.info(`MongoNotes: Adding one note item ${JSON.stringify(noteItem)}`);
 
-    if (noteValidator.isNotObject(noteItem)) {
+    if (!noteValidator.isObject(noteItem)) {
       logger.debug('MongoNotes: NoteItem parameter is not object');
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'NoteItem data is not valid');
     }
