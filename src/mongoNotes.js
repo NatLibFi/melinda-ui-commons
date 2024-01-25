@@ -6,7 +6,7 @@ import {MongoClient, ObjectId} from 'mongodb';
 import sanitize from 'mongo-sanitize';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
-import * as noteValidator from './scripts/validateNote';
+import {construct, hasUndefinedProperty, isObject} from './scripts/validateNote.js';
 
 //****************************************************************************//
 //                                                                            //
@@ -67,22 +67,14 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   async function addNoteItem(noteItem) {
     logger.info(`MongoNotes: Adding one note item ${JSON.stringify(noteItem)}`);
 
-    if (!noteValidator.isObject(noteItem)) {
+    if (!isObject(noteItem)) {
       logger.debug('MongoNotes: NoteItem parameter is not object');
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'NoteItem data is not valid');
     }
 
-    const newNoteItem = {
-      blocksInteraction: noteValidator.isBoolean(noteItem.blocksInteraction) ? noteItem.blocksInteraction : undefined,
-      componentStyle: noteValidator.isValidComponentStyle(noteItem.componentStyle) ? noteItem.componentStyle : undefined,
-      context: noteValidator.isValidContext(noteItem.context) ? noteItem.context : undefined,
-      endDate: noteValidator.isValidEndDate(noteItem.endDate) ? noteItem.endDate : undefined,
-      isDismissible: noteValidator.isBoolean(noteItem.isDismissible) ? noteItem.isDismissible : undefined,
-      messageStyle: noteValidator.isValidMessageStyle(noteItem.messageStyle) ? noteItem.messageStyle : undefined,
-      messageText: noteValidator.isValidMessageText(noteItem.messageText) ? noteItem.messageText : undefined
-    };
+    const newNoteItem = construct(noteItem);
 
-    if (noteValidator.hasUndefinedProperty(newNoteItem)) {
+    if (hasUndefinedProperty(newNoteItem)) {
       logger.debug('MongoNotes: NoteItem data did not pass validation');
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'NoteItem data is not valid');
     }
