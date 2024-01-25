@@ -4,6 +4,17 @@ const validMessageStyles = ['alert', 'error', 'info', 'success'];
 const timeNow = new Date();
 
 
+//****************************************************************************//
+//                                                                            //
+// UTILS FOR MONGO SERVER NOTIFICATIONS                                       //
+//                                                                            //
+//****************************************************************************//
+
+
+//-----------------------------------------------------------------------------
+// VALIDATE AND CONSTRUCT NOTE ITEMS
+//-----------------------------------------------------------------------------
+
 /**
  * Checks if noteItem is Object
  * @param {object} noteItem
