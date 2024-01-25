@@ -14,7 +14,7 @@ export function isNotObject(noteItem) {
 
 /**
  * Validates if property is Boolean
- * @param {boolean} property
+ * @param {Boolean} property
  * @returns {Boolean}
  */
 export function isBoolean(property) {
@@ -41,7 +41,7 @@ export function isValidMessageText(messageText) {
 
 /**
  * Validates if end date is in Date format and is in the future
- * @param {*} endDate
+ * @param {Date} endDate
  * @returns {Boolean}
  */
 export function isValidEndDate(endDate) {
@@ -51,7 +51,7 @@ export function isValidEndDate(endDate) {
 
 /**
  * Validates if style is found in the styles list
- * @param {*} componentStyle
+ * @param {String} componentStyle
  * @returns {Boolean}
  */
 export function isValidComponentStyle(componentStyle) {
@@ -60,7 +60,7 @@ export function isValidComponentStyle(componentStyle) {
 
 /**
 * Validates if message style is found in the message styles list
-* @param {*} messageStyle
+* @param {String} messageStyle
 * @returns {Boolean}
 */
 export function isValidMessageStyle(messageStyle) {
@@ -69,7 +69,7 @@ export function isValidMessageStyle(messageStyle) {
 
 /**
  * Checks if noteItem has a property that is undefined
- * @param {object} noteItem
+ * @param {Object} noteItem
  * @returns {Boolean};
  */
 export function hasUndefinedProperty(noteItem) {
