@@ -6,12 +6,13 @@ import {ObjectId} from 'mongodb';
 import generateTests from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
 import mongoFixturesFactory from '@natlibfi/fixura-mongo';
-import createMongoNotesOperator from './mongoNotes.js';
+import createMongoNotesOperator from '../src/scripts/notes.js';
 
 
 //****************************************************************************//
 //                                                                            //
-// TEST SPECIFICATION FOR MONGO SERVER NOTIFICATIONS (mongoNotes)             //
+// TEST SPECIFICATION FOR SERVER NOTIFICATIONS                                //
+//    - testing with Mongo test fixtures                                      //
 //                                                                            //
 //****************************************************************************//
 
@@ -20,7 +21,7 @@ let mongoFixtures;
 
 generateTests({
   callback,
-  path: [__dirname, '..', 'test-fixtures', 'mongoNotes'],
+  path: [__dirname, '.', 'test-fixtures', 'notes'],
   recurse: false,
   useMetadataFile: true,
   fixura: {
@@ -41,7 +42,7 @@ generateTests({
 
 async function initMongofixtures() {
   mongoFixtures = await mongoFixturesFactory({
-    rootPath: [__dirname, '..', 'test-fixtures', 'mongoNotes'],
+    rootPath: [__dirname, '.', 'test-fixtures', 'notes'],
     useObjectId: true,
     format: {
       endDate: v => new Date(v)

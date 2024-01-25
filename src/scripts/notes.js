@@ -6,11 +6,12 @@ import {MongoClient, ObjectId} from 'mongodb';
 import sanitize from 'mongo-sanitize';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
-import {construct, hasUndefinedProperty, isObject} from './scripts/notificationUtils.js';
+import {construct, hasUndefinedProperty, isObject} from './notificationUtils.js';
 
 //****************************************************************************//
 //                                                                            //
-// MONGO SERVER NOTIFICATIONS FOR MELINDA UI APPLICATIONS                     //
+// SERVER NOTIFICATIONS FOR MELINDA UI APPLICATIONS                           //
+//    - collection 'notes' in Mongo DB                                        //
 //                                                                            //
 //****************************************************************************//
 
