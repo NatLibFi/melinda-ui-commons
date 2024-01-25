@@ -20,7 +20,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   const logger = createLogger();
 
   // Connect to mongo (MONGO)
-  const client = await MongoClient.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+  const client = await MongoClient.connect(MONGO_URI);
   const db = client.db(dbName);
   const collection = 'notes';
 
