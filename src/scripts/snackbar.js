@@ -39,6 +39,22 @@
 
 /* global eventHandled */
 
+// template for one snackbar -->
+const snackbarTemplate = `
+  <div id="snackbar" class="snackbar-container">
+    <div class="snackbar-icon">
+      <span class="material-icons">error_outline</span>
+    </div>
+    <div class="snackbar-text"></div>
+    <div class="snackbar-link"></div>
+    <div class="snackbar-close">
+      <div class="snackbar-close-text">
+        Sulje
+      </div>
+      <span class="material-icons snackbar-close-icon">close</span>
+    </div>
+  </div>
+`;
 
 window.showSnackbar = function (snackbarContent) {
 
@@ -47,20 +63,8 @@ window.showSnackbar = function (snackbarContent) {
     return;
   }
 
-  getSnackbarHtml()
-    .then(html => createSnackbar(snackbarContent, html))
-    .catch(error => console.log('Error while fetching snackbar html: ', error)); /* eslint-disable-line no-console */
+  createSnackbar(snackbarContent, snackbarTemplate);
 };
-
-
-// ************************************************************************************** //
-// ************************************************************************************** //
-// Fetch snackbar.html containing the template for one snackbar
-async function getSnackbarHtml() {
-  const response = await fetch('../templates/snackbar.hbs');
-  const html = await response.text();
-  return html;
-}
 
 
 // ************************************************************************************** //
@@ -76,8 +80,8 @@ async function getSnackbarHtml() {
 
 let timeoutId = null;
 
-function createSnackbar(snackbarContent, html) {
-  const snackbarElement = getNewSnackbar(html);
+function createSnackbar(snackbarContent, snackbarTemplate) {
+  const snackbarElement = getNewSnackbar(snackbarTemplate);
   const snackbarType = checkSnackbarType(snackbarContent);
 
   switch (true) {
@@ -106,11 +110,11 @@ function createSnackbar(snackbarContent, html) {
   //************************************************************************************** */
   // Helper functions for createSnackbar:
 
-  function getNewSnackbar(html) {
-    const parser = new DOMParser();
-    const snackbarDocument = parser.parseFromString(html, 'text/html');
-    const snackbarElement = snackbarDocument.getElementById('snackbar').cloneNode(true);
-    return snackbarElement;
+  function getNewSnackbar(snackbarTemplate) {
+    const template = document.createElement('template');
+    template.innerHTML = snackbarTemplate;
+    const snackbarElement = template.content.children;
+    return snackbarElement[0];
   }
 
   function checkSnackbarType() {
