@@ -4,7 +4,7 @@
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Navigation bar -->
-  {{> sharedPartials/navbar }}
+  {{> (shared "navbar") }}
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Home page -->
@@ -282,7 +282,7 @@
             <div class="info-contact-and-help-heading">
 
               <div class="contact-and-help-heading-icon">
-                <img src="/shared/images/logo-melinda-favicon-color-cropped.png">
+                 <img src={{ shared "/images/logo-melinda-favicon-color-cropped.png" }}>
               </div>
 
               <div class="contact-and-help-heading-text">
@@ -342,6 +342,6 @@
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Footer -->
-  {{> sharedPartials/footer }}
+  {{> (shared "footer") }}
 
 </div>

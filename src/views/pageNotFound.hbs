@@ -1,12 +1,12 @@
 <!-- [Page not found view (pageNotFound.hbs)] -->
 
-<script src="/shared/scripts/pageNotFound.js"></script>
+<script src={{ shared "/scripts/pageNotFound.js" }}></script>
 
 <div id="bodywrapper" class="viewport-full flex-column">
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Navigation bar -->
-  {{> sharedPartials/navbar }}
+  {{> (shared "navbar") }}
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Progress bar -->
@@ -185,7 +185,7 @@
               <div class="info-contact-and-help-heading">
 
                 <div class="contact-and-help-heading-icon">
-                  <img src="/shared/images/logo-melinda-favicon-color-cropped.png">
+                  <img src={{ shared "/images/logo-melinda-favicon-color-cropped.png" }}>
                 </div>
 
                 <div class="contact-and-help-heading-text">
@@ -239,7 +239,7 @@
       </div>
 
       <!-- For displaying info messages for user -->
-      {{> sharedPartials/snackbars }}
+      {{> (shared "snackbars") }}
 
     </div>
 
@@ -247,6 +247,6 @@
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Footer -->
-  {{> sharedPartials/footer }}
+  {{> (shared "footer") }}
 
 </div>
