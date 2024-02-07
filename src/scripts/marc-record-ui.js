@@ -11,7 +11,7 @@
 //****************************************************************************//
 
 
-window.showRecord = function (record, dest, decorator = {}, recordDivName = 'muuntaja', logRecord = true) {
+export function showRecord(record, dest, decorator = {}, recordDivName = 'muuntaja', logRecord = true) {
   if (logRecord) {
     console.log('Show Record:', record); /* eslint-disable-line no-console */
   }
@@ -150,4 +150,4 @@ window.showRecord = function (record, dest, decorator = {}, recordDivName = 'muu
     return span;
   }
 
-};
+}

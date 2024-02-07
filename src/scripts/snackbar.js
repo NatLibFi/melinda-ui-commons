@@ -37,7 +37,7 @@
 //****************************************************************************//
 
 
-/* global eventHandled */
+import {eventHandled} from './ui-utils.js';
 
 // template for one snackbar -->
 const snackbarTemplate = `
@@ -56,7 +56,7 @@ const snackbarTemplate = `
   </div>
 `;
 
-window.showSnackbar = function (snackbarContent) {
+export function showSnackbar(snackbarContent) {
 
   if (arguments.length === 0 || snackbarContent === null) {
     console.log('Snackbar needs arguments'); /* eslint-disable-line no-console */
@@ -64,7 +64,7 @@ window.showSnackbar = function (snackbarContent) {
   }
 
   createSnackbar(snackbarContent, snackbarTemplate);
-};
+}
 
 
 // ************************************************************************************** //

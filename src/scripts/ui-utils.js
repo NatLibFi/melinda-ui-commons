@@ -7,36 +7,33 @@
 //****************************************************************************//
 
 
-/* global eventHandled */
-
-
 //-----------------------------------------------------------------------------
 // Handling and ignoring event
 //-----------------------------------------------------------------------------
 
-window.eventHandled = function (event) {
+export function eventHandled(event) {
   if (event) {
     event.stopPropagation();
     event.preventDefault();
   }
 
   return true;
-};
+}
 
-window.ignore = function (event) {
+export function ignore(event) {
   return eventHandled(event);
-};
+}
 
 
 //-----------------------------------------------------------------------------
 // Helper for HTML component: accordion
 //-----------------------------------------------------------------------------
 
-window.toggleAccordion = function (event) {
+export function toggleAccordion(event) {
   const accordionId = event.target.id;
   const accordion = document.getElementById(accordionId);
 
   accordion.classList.toggle('expanded');
 
   return eventHandled(event);
-};
+}
