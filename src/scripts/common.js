@@ -1,4 +1,4 @@
-window.doRestCall = async function ({
+export async function doRestCall({
   url = undefined,
   method = undefined,
   body = undefined,
@@ -25,4 +25,4 @@ window.doRestCall = async function ({
   }
 
   return result;
-};
+}

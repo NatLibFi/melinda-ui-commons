@@ -4,12 +4,12 @@
 //                                                                            //
 //****************************************************************************//
 
-window.startProcess = function () {
+export function startProcess() {
   const progressbar = document.querySelector(`#progressbar`);
   progressbar.className = 'progress-bar';
-};
+}
 
-window.stopProcess = function () {
+export function stopProcess() {
   const progressbar = document.querySelector(`#progressbar`);
   progressbar.className = 'progress-bar-inactive';
-};
+}

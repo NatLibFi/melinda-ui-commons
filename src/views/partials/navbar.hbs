@@ -1,6 +1,6 @@
 <!-- [NavBar partial (navbar.hbs)] -->
 
-<script src="/shared/scripts/navbar.js"></script>
+<script type="module" src={{ shared "/scripts/navbar.js" }}></script>
 
 <div id="navbar" class="navbar">
 
@@ -12,7 +12,7 @@
 
       <div class="logo-area">
         <a href="/">
-          <img src="/shared/images/logo-melinda-text-horizontal-color-cropped.png">
+          <img src={{ shared "/images/logo-melinda-text-horizontal-color-cropped.png" }}>
         </a>
       </div>
 
@@ -121,8 +121,8 @@
         <div class="flex-fill flex-column"></div>
 
         {{#unless location}}
-        <!-- only if app is not found, show this go back function instead of app name -->
-        <div id="goBack" class="nav-link" onClick="return goBack(event)">
+        <!-- only if app is not found, show this go back functionality instead of app name -->
+        <div id="goBack" class="nav-link">
           <div class="nav-link-icon">
             <span class="material-icons">undo</span>
           </div>

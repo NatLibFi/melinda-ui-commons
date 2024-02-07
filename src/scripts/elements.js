@@ -2,30 +2,34 @@
 // HTML element helper functions
 //-----------------------------------------------------------------------------
 
+
 // enables the html element given as parameter
-window.enableElement = function (element) {
+export function enableElement(element) {
   element.removeAttribute('disabled');
-};
+}
+
 
 // disables the html element given as parameter
-window.disableElement = function (element) {
+export function disableElement(element) {
   element.disabled = true;
-};
+}
+
 
 // returns true if element is not visible
-window.isHidden = function (element) {
+export function isHidden(element) {
   return element.offsetParent === null;
-};
+}
+
 
 // returns true if element is hidden
-window.isVisible = function (element) {
+export function isVisible(element) {
   return element.offsetParent !== null;
-};
+}
 
 
 // highligts a html element with a background color for a moment
 // if no color is given as parameter, uses default color defined in the CSS
-window.highlightElement = function (element, color) {
+export function highlightElement(element, color) {
   element.classList.add('highlight');
 
   if (color) {
@@ -35,10 +39,10 @@ window.highlightElement = function (element, color) {
   setTimeout(() => {
     element.classList.remove('highlight');
   }, 5000);
-};
+}
 
 
-window.resetForms = function (...elements) {
+export function resetForms(...elements) {
   for (const element of elements) {
     const forms = element.querySelectorAll('form');
 
@@ -47,14 +51,14 @@ window.resetForms = function (...elements) {
     }
 
   }
-};
+}
 
 
 // returns an array of all html element descendants of the parent element
-window.getAllDescendants = function (parentElement) {
+export function getAllDescendants(parentElement) {
   const allDescendantElements = parentElement.getElementsByTagName('*');
   return [...allDescendantElements];
-};
+}
 
 
 //-----------------------------------------------------------------------------
@@ -63,12 +67,12 @@ window.getAllDescendants = function (parentElement) {
 
 // creates a new html element option and returns it
 // text and value attributes of element are given as parameters
-window.createElementOption = function (text, value) {
+export function createElementOption(text, value) {
   const option = document.createElement('option');
   option.text = text;
   option.value = value;
 
   return option;
-};
+}
 
 

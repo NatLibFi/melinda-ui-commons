@@ -4,7 +4,7 @@
 //                                                                            //
 //****************************************************************************//
 
-/* global eventHandled */
+import {eventHandled} from './ui-utils.js';
 
 
 window.addEventListener('load', (event) => {
