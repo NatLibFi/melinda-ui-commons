@@ -39,7 +39,8 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
       endDate: 1,
       isDismissible: 1,
       messageStyle: 1,
-      messageText: 1
+      messageText: 1,
+      url: 1
     }
   };
 
@@ -62,6 +63,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
    *   isDismissible: true,
    *   messageStyle: "info",
    *   messageText: "Test server notification message",
+   *   url: "https://www.kansalliskirjasto.fi/"
    *  }
    * @returns {void}
    */

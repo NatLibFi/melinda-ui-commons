@@ -49,7 +49,8 @@ export function construct(noteItem) {
       endDate: isValidEndDate(noteItem.endDate) ? noteItem.endDate : undefined,
       isDismissible: isBoolean(noteItem.isDismissible) ? noteItem.isDismissible : undefined,
       messageStyle: isValidMessageStyle(noteItem.messageStyle) ? noteItem.messageStyle : undefined,
-      messageText: isValidMessageText(noteItem.messageText) ? noteItem.messageText : undefined
+      messageText: isValidMessageText(noteItem.messageText) ? noteItem.messageText : undefined,
+      ...Boolean(noteItem.url) && {url: isValidUrl(noteItem.url) ? noteItem.url : undefined}
     };
 
 
@@ -108,6 +109,40 @@ export function construct(noteItem) {
       return messageText && messageText.length > 0 && (typeof messageText === 'string' || messageText instanceof String);
     }
 
+    /**
+     * See that urls are valid
+     * Requires it to contain protocol
+     * @param {String} url
+     * @returns {boolean} did it validate
+     */
+    function isValidUrl(url) {
+
+      return validateType(url) && validateFormat(url);
+
+      /**
+       *Check data basics, expected to be string
+       * @param {String} url
+       * @returns {boolean}
+       */
+      function validateType(url) {
+        return url && url.length > 0 && (typeof url === 'string' || url instanceof String);
+      }
+
+      /**
+       * Check if url format is valid via constructing it
+       * This way expects protocol to be within string (http/https)
+       *
+       * @param {String} url
+       * @returns {boolean} is url valid if it can be constructed
+       */
+      function validateFormat(url) {
+        try {
+          return Boolean(new URL(url));
+        } catch (error) {
+          return false;
+        }
+      }
+    }
   }
 }
 
