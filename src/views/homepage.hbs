@@ -1,10 +1,12 @@
 <!-- [Home page view (homepage.hbs)] -->
 
+<script type="module" src={{ shared "/scripts/homepage.js" }}></script>
+
 <div id="bodywrapper" class="viewport-full flex-column">
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Navigation bar -->
-  {{> sharedPartials/navbar }}
+  {{> (shared "navbar") }}
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Home page -->
@@ -132,7 +134,7 @@
         <!-- Accordion with help info -->
         <div class="accordion">
 
-          <div id="homepageHelpAccordion" class="accordion-heading" onClick="return toggleAccordion(event)">
+          <div id="homepageHelpAccordion" class="accordion-heading">
             <div class="accordion-heading-icon collapsed">
               <span class="material-icons">
                 <!-- + icon when accordion is collapsed, - icon when accordion is expanded -->
@@ -266,7 +268,7 @@
         <!-- Accordion with contact info -->
         <div class="accordion">
 
-          <div id="homepageContactAccordion" class="accordion-heading" onClick="return toggleAccordion(event)">
+          <div id="homepageContactAccordion" class="accordion-heading">
             <div class="accordion-heading-icon collapsed">
               <span class="material-icons">
                 <!-- + icon when accordion is collapsed, - icon when accordion is expanded -->
@@ -282,7 +284,7 @@
             <div class="info-contact-and-help-heading">
 
               <div class="contact-and-help-heading-icon">
-                <img src="/shared/images/logo-melinda-favicon-color-cropped.png">
+                 <img src={{ shared "/images/logo-melinda-favicon-color-cropped.png" }}>
               </div>
 
               <div class="contact-and-help-heading-text">
@@ -342,6 +344,6 @@
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Footer -->
-  {{> sharedPartials/footer }}
+  {{> (shared "footer") }}
 
 </div>
