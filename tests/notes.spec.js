@@ -1,14 +1,6 @@
 /* eslint-disable max-statements */
 /* eslint-disable functional/no-let */
 
-import {expect} from 'chai';
-import {ObjectId} from 'mongodb';
-import generateTests from '@natlibfi/fixugen';
-import {READERS} from '@natlibfi/fixura';
-import mongoFixturesFactory from '@natlibfi/fixura-mongo';
-import createMongoNotesOperator from '../src/scripts/notes.js';
-
-
 //****************************************************************************//
 //                                                                            //
 // TEST SPECIFICATION FOR SERVER NOTIFICATIONS                                //
@@ -17,37 +9,62 @@ import createMongoNotesOperator from '../src/scripts/notes.js';
 //****************************************************************************//
 
 
+import {expect} from 'chai';
+import {ObjectId} from 'mongodb';
+import path from 'path';
+import {fileURLToPath} from 'url';
+import fixugen from '@natlibfi/fixugen';
+import {READERS} from '@natlibfi/fixura';
+import fixuraMongo from '@natlibfi/fixura-mongo';
+import createMongoNotesOperator from '../src/scripts/notes.js';
+
+
 let mongoFixtures;
 
-generateTests({
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const {default: generateTests} = fixugen;
+const {default: createMongoFixtures} = fixuraMongo;
+
+const testsFixturesPath = [__dirname, '.', 'testFixtures', 'notes'];
+
+const fixuraParameters = {
+  failWhenNotFound: true,
+  reader: READERS.JSON
+};
+
+const mochaParameters = {
+  before: async () => {
+    await initMongofixtures();
+  },
+  beforeEach: () => mongoFixtures.clear(),
+  afterEach: () => mongoFixtures.clear(),
+  after: async () => {
+    await mongoFixtures.close();
+  }
+};
+
+const mongoFixturesParameters = {
+  rootPath: testsFixturesPath,
+  useObjectId: true,
+  format: {
+    endDate: v => new Date(v)
+  }
+};
+
+const testsParameters = {
   callback,
-  path: [__dirname, '.', 'testFixtures', 'notes'],
+  path: testsFixturesPath,
   recurse: false,
   useMetadataFile: true,
-  fixura: {
-    failWhenNotFound: true,
-    reader: READERS.JSON
-  },
-  mocha: {
-    before: async () => {
-      await initMongofixtures();
-    },
-    beforeEach: () => mongoFixtures.clear(),
-    afterEach: () => mongoFixtures.clear(),
-    after: async () => {
-      await mongoFixtures.close();
-    }
-  }
-});
+  fixura: fixuraParameters,
+  mocha: mochaParameters
+};
+
+generateTests(testsParameters);
 
 async function initMongofixtures() {
-  mongoFixtures = await mongoFixturesFactory({
-    rootPath: [__dirname, '.', 'testFixtures', 'notes'],
-    useObjectId: true,
-    format: {
-      endDate: v => new Date(v)
-    }
-  });
+  mongoFixtures = await createMongoFixtures(mongoFixturesParameters);
 }
 
 async function callback({
@@ -183,4 +200,3 @@ async function callback({
 
   throw new Error(`Unknown functionName: ${functionName}`);
 }
-
