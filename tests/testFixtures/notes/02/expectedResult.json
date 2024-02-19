@@ -7,7 +7,8 @@
       "endDate": "2050-12-20T21:01:58.146Z",
       "isDismissible": true,
       "messageStyle": "info",
-      "messageText": "Note for users"
+      "messageText": "Note for users",
+      "url": "https://www.kansalliskirjasto.fi/"
     },
     {
       "blocksInteraction": false,
