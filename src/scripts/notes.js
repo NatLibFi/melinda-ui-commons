@@ -1,19 +1,19 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-statements */
 
-import httpStatus from 'http-status';
-import {MongoClient, ObjectId} from 'mongodb';
-import sanitize from 'mongo-sanitize';
-import {createLogger} from '@natlibfi/melinda-backend-commons';
-import {Error as ApiError} from '@natlibfi/melinda-commons';
-import {construct, hasUndefinedProperty, isObject} from './notificationUtils.js';
-
 //****************************************************************************//
 //                                                                            //
 // SERVER NOTIFICATIONS FOR MELINDA UI APPLICATIONS                           //
 //    - collection 'notes' in Mongo DB                                        //
 //                                                                            //
 //****************************************************************************//
+
+import httpStatus from 'http-status';
+import {MongoClient, ObjectId} from 'mongodb';
+import sanitize from 'mongo-sanitize';
+import {createLogger} from '@natlibfi/melinda-backend-commons';
+import {Error as ApiError} from '@natlibfi/melinda-commons';
+import {construct, hasUndefinedProperty, isObject} from './notificationUtils.js';
 
 
 export default async function (MONGO_URI, dbName = 'melinda-ui') {
