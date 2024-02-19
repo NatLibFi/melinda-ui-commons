@@ -11,8 +11,6 @@
 
 import {expect} from 'chai';
 import {ObjectId} from 'mongodb';
-import path from 'path';
-import {fileURLToPath} from 'url';
 import fixugen from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
 import fixuraMongo from '@natlibfi/fixura-mongo';
@@ -21,12 +19,10 @@ import createMongoNotesOperator from '../src/scripts/notes.js';
 
 let mongoFixtures;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const {default: generateTests} = fixugen;
 const {default: createMongoFixtures} = fixuraMongo;
 
-const testsFixturesPath = [__dirname, '.', 'testFixtures', 'notes'];
+const testsFixturesPath = [import.meta.dirname, '.', 'testFixtures', 'notes'];
 
 const fixuraParameters = {
   failWhenNotFound: true,
@@ -134,7 +130,7 @@ async function callback({
   }
 
   //----------------------------------------------//
-  // Test fixtures 01-02 for adding one note and checking returned result
+  // Test fixture 03 for adding one note and checking returned result
   // Two checks are done
   //  - we check that the added note item properties match the result note item (id field omitted)
   //  - we chek that the result id is valid string version of BSON (by testing convertion to ObjectID)

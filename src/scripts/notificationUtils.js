@@ -1,8 +1,3 @@
-const validContext = ['all', 'artikkelit', 'muuntaja', 'viewer'];
-const validComponentStyles = ['banner', 'dialog', 'banner_static'];
-const validMessageStyles = ['alert', 'error', 'info', 'success'];
-const timeNow = new Date();
-
 
 //****************************************************************************//
 //                                                                            //
@@ -12,7 +7,7 @@ const timeNow = new Date();
 
 
 //-----------------------------------------------------------------------------
-// VALIDATE AND CONSTRUCT NOTE ITEMS
+// CHECKING PARAMETER TYPE
 //-----------------------------------------------------------------------------
 
 /**
@@ -25,12 +20,22 @@ export function isObject(noteItem) {
 }
 
 
+//-----------------------------------------------------------------------------
+// CONSTRUCTING NOTE ITEM AND VALIDATING THE PROPERTIES
+//-----------------------------------------------------------------------------
+
 /**
  * Constructs a new noteItem
  * @param {Object} noteItem
  * @returns {Object} a constructed noteItem
  */
 export function construct(noteItem) {
+
+  const validContext = ['all', 'artikkelit', 'muuntaja', 'viewer'];
+  const validComponentStyles = ['banner', 'dialog', 'banner_static'];
+  const validMessageStyles = ['alert', 'error', 'info', 'success'];
+  const timeNow = new Date();
+
   //note: if default values for noteItem are needed, apply them here
   return validate(noteItem);
 
@@ -50,7 +55,7 @@ export function construct(noteItem) {
       isDismissible: isBoolean(noteItem.isDismissible) ? noteItem.isDismissible : undefined,
       messageStyle: isValidMessageStyle(noteItem.messageStyle) ? noteItem.messageStyle : undefined,
       messageText: isValidMessageText(noteItem.messageText) ? noteItem.messageText : undefined,
-      ...Boolean(noteItem.url) && {url: isValidUrl(noteItem.url) ? noteItem.url : undefined}
+      ...noteItem.url ? {url: isValidUrl(noteItem.url) ? noteItem.url : undefined} : {}
     };
 
 
@@ -61,6 +66,15 @@ export function construct(noteItem) {
      */
     function isBoolean(property) {
       return typeof property === 'boolean';
+    }
+
+    /**
+   * Validates if property is String
+   * @param {String} property
+   * @returns {Boolean}
+   */
+    function isString(property) {
+      return typeof property === 'string' || property instanceof String;
     }
 
     /**
@@ -101,51 +115,30 @@ export function construct(noteItem) {
     }
 
     /**
-   * Validates if message text is not empty and is String
-   * @param {String} messageText
-   * @returns {Boolean}
+     * Validates if message text is not empty and is String
+     * @param {String} messageText
+     * @returns {Boolean}
    */
     function isValidMessageText(messageText) {
-      return messageText && messageText.length > 0 && (typeof messageText === 'string' || messageText instanceof String);
+      return messageText && messageText.length > 0 && isString(messageText);
     }
 
     /**
-     * See that urls are valid
-     * Requires it to contain protocol
+     * Validates if url is not empty and is parsable valid url
      * @param {String} url
-     * @returns {boolean} did it validate
+     * @returns {Boolean}
      */
     function isValidUrl(url) {
-
-      return validateType(url) && validateFormat(url);
-
-      /**
-       *Check data basics, expected to be string
-       * @param {String} url
-       * @returns {boolean}
-       */
-      function validateType(url) {
-        return url && url.length > 0 && (typeof url === 'string' || url instanceof String);
-      }
-
-      /**
-       * Check if url format is valid via constructing it
-       * This way expects protocol to be within string (http/https)
-       *
-       * @param {String} url
-       * @returns {boolean} is url valid if it can be constructed
-       */
-      function validateFormat(url) {
-        try {
-          return Boolean(new URL(url));
-        } catch (error) {
-          return false;
-        }
-      }
+      return url && url.length > 0 && isString(url) && URL.canParse(url);
     }
+
   }
 }
 
+
+//-----------------------------------------------------------------------------
+// VALIDATING CONSTRUCTED NOTE ITEM OBJECT
+//-----------------------------------------------------------------------------
 
 /**
  * Checks if noteItem has a property that is undefined

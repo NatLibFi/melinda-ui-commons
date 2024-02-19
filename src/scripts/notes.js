@@ -29,6 +29,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
   //  - has property '_id' removed
   //  - has property 'id' added
   //  - all other properties are returned without modifications
+  //      * url is an optional property and is therefore not always present in returned objects
   const noteItemProjection = {
     projection: {
       _id: 0,
@@ -63,7 +64,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
    *   isDismissible: true,
    *   messageStyle: "info",
    *   messageText: "Test server notification message",
-   *   url: "https://www.kansalliskirjasto.fi/"
+   *   url: "https://www.kansalliskirjasto.fi/" //optional property
    *  }
    * @returns {void}
    */
