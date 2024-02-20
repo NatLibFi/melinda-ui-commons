@@ -32,7 +32,7 @@ jobs:
   njsscan:
     name: Njsscan-check
     runs-on: ubuntu-latest
-    container: docker://node:14
+    container: docker://node:20
 
     steps:
     - name: Checkout the code
@@ -46,6 +46,7 @@ jobs:
   license-scan:
     name: License compliance check
     runs-on: ubuntu-latest
+    container: docker://node:20
 
     steps:
       - uses: actions/checkout@v4
@@ -55,6 +56,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    container: docker://node:20
     needs: [build-node-versions, njsscan]
     if: contains(github.ref, 'refs/tags/')
 
