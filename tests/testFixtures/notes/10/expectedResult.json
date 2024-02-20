@@ -1,39 +1,27 @@
 [
   {
-    "blocksInteraction": "false",
+    "blocksInteraction": true,
+    "componentStyle": "banner",
+    "context": [
+      "muuntaja",
+      "artikelit"
+    ],
+    "endDate": "2038-08-08T12:14:34.146Z",
+    "id": "65805a34d500f6a4ff2eccc4",
+    "isDismissible": false,
+    "messageStyle": "error",
+    "messageText": "Very serious error notification"
+  },
+  {
+    "blocksInteraction": false,
     "componentStyle": "dialog",
     "context": [
       "muuntaja"
     ],
-    "endDate": "2023-12-30T12:30:15.002",
-    "id": "65805a34d500f6a4ff2eccc4",
+    "endDate": "2050-12-20T21:01:58.146Z",
+    "id": "65805a34d500f6a4ff2eccc5",
     "isDismissible": true,
     "messageStyle": "info",
-    "messageText": "viesti"
-  },
-  {
-    "blocksInteraction": "false",
-    "componentStyle": "banner",
-    "context": [
-      "all"
-    ],
-    "endDate": "2023-12-30T12:31:15.002",
-    "id": "65805a34d500f6a4ff2eccc6",
-    "isDismissible": true,
-    "messageStyle": "alert",
-    "messageText": "kolmas viesti"
-  },
-  {
-    "blocksInteraction": "false",
-    "componentStyle": "banner",
-    "context": [
-      "muuntaja",
-      "viewer"
-    ],
-    "endDate": "2023-12-30T12:31:15.002",
-    "id": "65805a34d500f6a4ff2eccc8",
-    "isDismissible": true,
-    "messageStyle": "alert",
-    "messageText": "viides viesti"
+    "messageText": "Friendly reminder for all users"
   }
 ]

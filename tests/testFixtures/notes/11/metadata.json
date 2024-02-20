@@ -1,8 +1,8 @@
 {
-  "description": "Function: removeNoteItem, remove one Note item object by id",
-  "only": false,
-  "skip": false,
-  "functionName": "removeNoteItem",
-  "params": "65805a34d500f6a4ff2eccc4",
-  "preFillDb": true
-}
+    "description": "Function: getNoteItemsForApp, gets note items for specified app",
+    "only": false,
+    "skip": false,
+    "functionName": "getNoteItemsForApp",
+    "params": "muuntaja",
+    "preFillDb": true
+  }

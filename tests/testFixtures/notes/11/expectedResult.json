@@ -1,28 +1,39 @@
-{
-  "notes": [
-    {
-      "blocksInteraction": false,
-      "componentStyle": "dialog",
-      "context": [
-        "muuntaja"
-      ],
-      "endDate": "2050-12-20T21:01:58.146Z",
-      "isDismissible": true,
-      "messageStyle": "info",
-      "messageText": "Friendly reminder for all users"
-    },
-    {
-      "blocksInteraction": false,
-      "componentStyle": "banner",
-      "context": [
-        "artikkelit",
-        "muuntaja",
-        "viewer"
-      ],
-      "endDate": "2050-12-20T21:01:58.146Z",
-      "isDismissible": false,
-      "messageStyle": "alert",
-      "messageText": "Alerting users of service break"
-    }
-  ]
-}
+[
+  {
+    "blocksInteraction": "false",
+    "componentStyle": "dialog",
+    "context": [
+      "muuntaja"
+    ],
+    "endDate": "2023-12-30T12:30:15.002",
+    "id": "65805a34d500f6a4ff2eccc4",
+    "isDismissible": true,
+    "messageStyle": "info",
+    "messageText": "viesti"
+  },
+  {
+    "blocksInteraction": "false",
+    "componentStyle": "banner",
+    "context": [
+      "all"
+    ],
+    "endDate": "2023-12-30T12:31:15.002",
+    "id": "65805a34d500f6a4ff2eccc6",
+    "isDismissible": true,
+    "messageStyle": "alert",
+    "messageText": "kolmas viesti"
+  },
+  {
+    "blocksInteraction": "false",
+    "componentStyle": "banner",
+    "context": [
+      "muuntaja",
+      "viewer"
+    ],
+    "endDate": "2023-12-30T12:31:15.002",
+    "id": "65805a34d500f6a4ff2eccc8",
+    "isDismissible": true,
+    "messageStyle": "alert",
+    "messageText": "viides viesti"
+  }
+]

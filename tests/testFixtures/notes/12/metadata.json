@@ -1,8 +1,8 @@
 {
-  "description": "Function: removeNoteItemsByMessageStyle, remove all noteItems by given message type (style)",
+  "description": "Function: removeNoteItem, remove one Note item object by id",
   "only": false,
   "skip": false,
-  "functionName": "removeNoteItemsByMessageStyle",
-  "params": "error",
+  "functionName": "removeNoteItem",
+  "params": "65805a34d500f6a4ff2eccc4",
   "preFillDb": true
 }
