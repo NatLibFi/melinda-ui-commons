@@ -95,7 +95,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
       return {id: result.insertedId.toString(), ...rest};
     }
 
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `MongoNotes had error while adding a note ${noteItem}`);
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `MongoNotes could not add note ${noteItem}`);
 
   }
 
@@ -180,7 +180,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
       return false;
     }
 
-    throw new ApiError(httpStatus.NOT_FOUND, `MongoNotes had error while removing note with id ${noteId}`);
+    throw new ApiError(httpStatus.NOT_FOUND, `MongoNotes could not remove note with id ${noteId}`);
   }
 
   /**
@@ -204,7 +204,7 @@ export default async function (MONGO_URI, dbName = 'melinda-ui') {
       return false;
     }
 
-    throw new ApiError(httpStatus.NOT_FOUND, `MongoNotes had error while removing notes`);
+    throw new ApiError(httpStatus.NOT_FOUND, `MongoNotes could not remove notes`);
   }
 
 
