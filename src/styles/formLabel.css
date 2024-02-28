@@ -1,0 +1,58 @@
+/* ---------------------------------------------------------------------------- */
+/* LABEL FOR FORM INPUT FIELDS                                                  */
+/*                                                                              */
+/* label-wrapper is used in form-field-containers with input-wrappers           */
+/* - wrap <label> element with label-wrapper                                    */
+/* ---------------------------------------------------------------------------- */
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Default M size label */
+
+.form-field-container .label-wrapper {
+  display: flex;
+  flex-direction: row;
+  color: var(--color-blue-100);
+  font-family: var(--font-family-label);
+  font-size: var(--font-size-label-medium);
+  font-weight: var(--font-weight-label);
+}
+
+/* The space for label is reserved even without a label text */
+.form-field-container .label-wrapper label:empty {
+ height: 22px;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Required inputs have red asterisk * in the label */
+
+.form-field-container:has(.input-wrapper *:required) .label-wrapper>label:after {
+  content: " *";
+  color: var(--color-functional-red);
+  font-weight: 600;
+  font-size: var(--font-size-label-medium);
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Small S size label */
+
+
+.form-field-container.small .label-wrapper,
+.form-field-container.small .label-wrapper label,
+.form-field-container.small .label-wrapper span {
+  font-size: var(--font-size-label-small);
+}
+
+.form-field-container.small:has(.input-wrapper *:required) .label-wrapper>label:after {
+  font-size: var(--font-size-label-small);
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colors for labels */
+
+.form-field-container.inverse .label-wrapper,
+.form-field-container.inverse:has(.input-wrapper *:required) .label-wrapper>label:after {
+  color: var(--color-primary-white);
+}

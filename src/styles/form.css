@@ -1,0 +1,141 @@
+/* ---------------------------------------------------------------------------- */
+/* FORM CONTAINER AND FORM FIELD CONTAINER                                      */
+/*                                                                              */  
+/* Use form-container inside <form> element to style the form                   */
+/* Form container consists of a form header, form main content and form footer  */
+/*  - the header is the title for form                                          */
+/*  - the form content is grouped into smaller form sections                    */
+/*  - form submit buttons and other actions should be placed in footer          */
+/*                                                                              */
+/* Use form-field-container inside form sections to add actual form fields      */
+/* - form-field-container is the wrapper for all different form input fields    */
+/* - form-field-container consists of label wrapper and input wrapper           */
+/* ---------------------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------------------- */
+/* Default M size form */
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 64px;
+  margin-right: 64px;
+  margin-top: 64px;
+  margin-bottom: 64px;
+}
+
+/* form-header contains the headline for form */
+.form-container .form-header {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 40px;
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-headline-medium);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-headline-medium);
+  color: var(--color-primary-blue);
+}
+
+/* form-content is a wrapper for form-content-sections */
+.form-container .form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+/* form-content-section can contain many form field containers
+/* form fields inside a section can be lined vertically or horizontally */
+.form-container .form-content .form-content-section {
+  display: flex;
+  width: 100%;
+}
+
+/* Add some space between form fields in the same row */
+.form-container .form-content .form-content-section.direction-row {
+  flex-direction: row;
+  gap: 16px;
+}
+
+/* Direction column is a special case */
+/* Normally a new form content section should be used  */
+/* to display a form field on it's on row */
+/* Direction-column is used for example to group together several checkboxes */
+/* No extra space between form fields needed here */
+.form-container .form-content .form-content-section.direction-column {
+  flex-direction: column;
+}
+
+
+/* form-footer contains the actions for form (for example submit form or clear form) */
+.form-container .form-footer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 40px;
+  gap: 16px
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Small S size form */
+/* use class small also for every form-field-container in small forms  */
+
+.form-container.small {
+  display: flex;
+  flex-direction: column;
+  margin-left: 32px;
+  margin-right: 32px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.form-container.small .form-header {
+  margin-bottom: 20px;
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-headline-small);
+  line-height: var(--font-line-height-headline-small);
+}
+
+.form-container.small .form-content {
+  gap: 16px;
+}
+
+.form-container.small .direction-row {
+  gap: 8px;
+}
+
+.form-container.small .form-footer {
+  margin-top: 20px;
+  gap: 8px
+}
+
+/* ---------------------------------------------------------------------------- */
+/* form-field-container is a wrapper for label-wrapper and input-wrapper */
+
+.form-field-container {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  color: var(--color-blue-100);
+  background-color: transparent;
+  box-sizing: border-box;
+  width: fit-content;
+}
+
+/* Small S size fields */
+
+.form-field-container.small {
+  gap: 8px;
+}
+
+.form-field-container.full-width {
+  width: 100%;
+}
+
+.form-field-container.half-width {
+  width: 50%;
+}
+
+.form-field-container.quarter-width {
+  width: 25%;
+}

@@ -1,0 +1,78 @@
+/* ---------------------------------------------------------------------------- */
+/* INPUT TEXTAREA                                                               */
+/*                                                                              */
+/* Basic label-wrapper and input-wrapper is used as a starting point            */
+/* to create styles for input textarea.                                         */
+/* Use textarea instead of basic input                                          */
+/*  when you need the user to input longer text                                 */
+/* ---------------------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------------------- */
+/* Default M size textarea */
+
+.form-field-container.textarea .input-wrapper {
+  height: 100%;
+  padding-left: 0px;
+}
+
+.form-field-container.textarea .input-wrapper textarea {
+  display: flex;
+  resize: vertical;
+  border: none;
+  overflow: auto;
+  font-family: var(--font-family-input);
+  font-size: var(--font-size-input-medium);
+  color: var(--color-blue-100);
+  border: none;
+  flex-grow: 1;
+  padding-top: 12px;
+  padding-left: 16px;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Placeholder text in textarea input fields */
+.input-wrapper textarea::placeholder {
+  color: var(--color-blue-80);
+  font-family: var(--font-family-placeholder);
+}
+
+.input-wrapper textarea:focus-visible,
+.input-wrapper textarea:focus-within,
+.input-wrapper textarea:focus {
+  border: none;
+  outline: none;
+}
+
+.form-field-container[disabled=true] .input-wrapper textarea::placeholder {
+  color: var(--color-blue-60);
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Initial style for character count */
+.form-field-container.textarea label~.textarea-charactercount {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-label-small);
+  font-weight: var(--font-weight-content);
+  flex-grow: 1;
+  text-align: end;
+  margin-right: 2px;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Small S size textarea */
+
+.form-field-container.textarea.small .input-wrapper textarea {
+  font-size: var(--font-size-input-small);
+  padding-top: 6px;
+  padding-left: 8px;
+}
+
+.form-field-container.textarea.small .input-wrapper textarea::placeholder {
+  font-size: var(--font-size-input-small);
+}
+
+.form-field-container.textarea.small label~.textarea-charactercount {
+  font-size: var(--font-size-label-extra-small);
+}

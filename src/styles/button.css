@@ -6,6 +6,10 @@
 /* - button with icon only                                                      */
 /* - button with icon on before or after text                                   */
 /* - button with icons on both side of text                                     */
+/*                                                                              */
+/* Button styles are also used with form elements                               */
+/* - for example with .form-field-container .input-wrapper styles)              */
+/* ---------------------------------------------------------------------------- */
 
 
 /* ---------------------------------------------------------------------------- */
