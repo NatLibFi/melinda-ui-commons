@@ -1,0 +1,278 @@
+/* ---------------------------------------------------------------------------- */
+/* INPUT CHECKBOX                                                               */
+/*                                                                              */
+/* Basic label-wrapper and input-wrapper is used as a starting point            */
+/* to create styles for input checkbox.                                         */
+/* Many style definitions are shared with input radio                           */
+/* ---------------------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------------------- */
+/* Default M size checkbox */
+
+.form-field-container.checkbox {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+}
+
+.form-field-container.checkbox .input-wrapper,
+.form-field-container.checkbox .label-wrapper,
+.form-field-container.checkbox .input-wrapper input,
+.form-field-container.checkbox .input-wrapper span,
+.form-field-container.checkbox .label-wrapper label {
+  display: flex;
+}
+
+.form-field-container.checkbox .input-wrapper,
+.form-field-container.checkbox .input-wrapper input,
+.form-field-container.checkbox .input-wrapper span {
+  cursor: pointer;
+}
+
+.form-field-container.checkbox .label-wrapper label {
+  align-items: center;
+  justify-content: center;
+}
+
+.form-field-container.checkbox .input-wrapper {
+  border: none;
+  padding-left: 0px;
+  padding-right: 16px;
+  overflow: visible;
+  background-color: transparent;
+}
+
+/* Hiding the default checkbox */
+.form-field-container.checkbox .input-wrapper input {
+  display: none;
+}
+
+/* Common for custom checkbox */
+.form-field-container.checkbox .input-wrapper span {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--color-blue-100);
+  background-color: var(--color-primary-white);
+  color: var(--color-primary-white);
+  position: relative;
+  height: 24px;
+  width: 24px;
+  padding: 0px;
+  margin: 0px;
+}
+
+
+/* Custom checkbox */
+.form-field-container.checkbox .input-wrapper span {
+  border-radius: 3px;
+}
+
+.form-field-container.checkbox .input-wrapper>input[type="checkbox"]:checked+span:before {
+  content: 'check';
+  position: absolute;
+  background-color: var(--color-functional-blue);
+  height: 24px;
+  width: 24px;
+}
+
+.form-field-container.checkbox:focus-within .input-wrapper {
+  outline: none;
+  border: none;
+}
+
+.form-field-container.checkbox:focus-within .input-wrapper span {
+  outline-style: solid;
+  outline-color: var(--color-functional-blue);
+  border-color: var(--color-functional-blue);
+  border-style: solid;
+  border-width: 1px;
+  outline-width: 2px;
+}
+
+.form-field-container.checkbox .outer-link a {
+  text-decoration: underline dotted var(--color-functional-blue) 0.1rem;
+}
+
+.form-field-container.checkbox .outer-link a:hover {
+  color: var(--color-primary-blue);
+  text-decoration: underline solid var(--color-primary-blue) 0.1rem;
+}
+
+.form-field-container.checkbox:focus-within label a {
+  outline: none;
+  border: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Small input checkbox */
+
+.form-field-container.checkbox.small .input-wrapper {
+  padding-right: 12px;
+}
+
+.form-field-container.checkbox.small .input-wrapper span {
+  height: 20px;
+  width: 20px;
+}
+
+.form-field-container.checkbox.small .input-wrapper>input[type="checkbox"]:checked+span:before {
+  height: 20px;
+  width: 20px;
+}
+
+.form-field-container.checkbox.small .input-wrapper span.material-icons {
+  font-size: var(--font-size-icon-small);
+}
+
+.form-field-container.checkbox.small .input-wrapper>:not(button):last-child {
+  padding-right: 0px;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Input checkbox hover state */
+
+.form-field-container.checkbox:hover .input-wrapper>input[type="checkbox"]+span {
+  outline-color: var(--color-blue-100);
+  outline-style: solid;
+  outline-width: 1px;
+}
+
+.form-field-container.checkbox:hover .input-wrapper>input[type="checkbox"]:checked+span:before {
+  background-color: var(--color-blue-100);
+  outline-color: var(--color-blue-100);
+  outline-style: solid;
+  outline-width: 1px;
+}
+
+.form-field-container.checkbox .input-wrapper:hover {
+  border: none;
+  outline: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Input checkbox disabled state */
+/* form-field-container wrapper div should have attribute disabled="true" */
+/* also the input element itself should be disabled */
+
+.form-field-container.checkbox:focus-within[disabled=true] .input-wrapper {
+  outline: none;
+}
+
+.form-field-container.checkbox[disabled=true] .input-wrapper {
+  pointer-events: none;
+  background-color: transparent;
+}
+
+.form-field-container.checkbox[disabled=true] .input-wrapper input[type] {
+  pointer-events: none;
+  background-color: var(--color-grey-20);
+}
+
+.form-field-container.checkbox[disabled=true] .input-wrapper span {
+  color: var(--color-blue-80);
+  border-color: var(--color-blue-60);
+  background-color: var(--color-blue-20);
+}
+
+.form-field-container.checkbox[disabled=true] .input-wrapper>input[type="checkbox"]+span:before {
+  color: white;
+  background-color: var(--color-blue-60);
+  outline: none;
+  border-color: var(--color-blue-60);
+}
+
+.form-field-container.checkbox[disabled=true] label {
+  color: var(--color-grey-80);
+  font-weight: 300;
+}
+
+.form-field-container.checkbox[disabled=true]:hover .input-wrapper>input[type="checkbox"]+span {
+  background-color: var(--color-blue-20);
+  outline: none;
+  border-color: var(--color-blue-60);
+}
+
+.form-field-container.checkbox[disabled=true]:hover .input-wrapper>input[type="checkbox"]:checked+span:before {
+  color: white;
+  background-color: var(--color-blue-60);
+  outline: none;
+  border-color: var(--color-blue-60);
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colored input checkbox */
+
+.form-field-container.checkbox.inverse .input-wrapper span {
+  border-color: var(--color-primary-white);
+  border-width: 1px;
+  background-color: transparent;
+  color: var(--color-primary-white);
+}
+
+.form-field-container.checkbox.inverse .input-wrapper>input[type="checkbox"]:checked+span:before {
+  background-color: var(--color-primary-white);
+  color: var(--color-primary-blue);
+}
+
+.form-field-container.checkbox.inverse:hover .input-wrapper>input[type="checkbox"]:checked+span:before {
+  background-color: var(--color-primary-white);
+  color: var(--color-primary-blue);
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colored input checkbox hover state */
+
+.form-field-container.checkbox.inverse:hover .input-wrapper>input[type="checkbox"]+span {
+  outline-color: var(--color-primary-white);
+  outline-style: solid;
+  outline-width: 1px;
+}
+
+.form-field-container.checkbox.inverse:hover .input-wrapper>input[type="checkbox"]:checked+span:before {
+  outline-color: var(--color-primary-white);
+  outline-style: solid;
+  outline-width: 1px;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colored input checkbox disabled state */
+
+.form-field-container.checkbox.inverse[disabled=true] .input-wrapper {
+  pointer-events: none;
+}
+
+.form-field-container.checkbox.inverse[disabled=true] .input-wrapper input[type="checkbox"] {
+  pointer-events: none;
+}
+
+.form-field-container.checkbox.inverse[disabled=true] .input-wrapper span {
+  border-color: var(--color-blue-60);
+  background-color: var(--color-blue-80);
+}
+
+.form-field-container.checkbox.inverse[disabled=true] .input-wrapper>input[type="checkbox"]:checked+span:before {
+  background-color: var(--color-blue-80);
+  color: var(--color-blue-60);
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colored input checkbox disabled hover state */
+
+.form-field-container.checkbox.inverse[disabled=true]:hover .input-wrapper span {
+  border-color: var(--color-blue-60);
+  background-color: var(--color-blue-80);
+}
+
+.form-field-container.checkbox.inverse[disabled=true]:hover .input-wrapper>input[type="checkbox"]+span {
+  outline: none;
+  background-color: var(--color-blue-80);
+}
+
+.form-field-container.checkbox.inverse[disabled=true]:hover .input-wrapper>input[type="checkbox"]:checked+span:before {
+  outline: none;
+}

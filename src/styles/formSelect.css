@@ -1,0 +1,103 @@
+/* ---------------------------------------------------------------------------- */
+/* SELECT + OPTIONS                                                             */
+/*                                                                              */
+/* Basic label-wrapper and input-wrapper is used as a starting point            */
+/* to create styles for select.                                                 */
+/*                                                                              */
+/* Select form field provides a simple select dropdown with options             */
+/* - implemented with only CSS and HTML using <select> and <option> elements    */
+/* - follows NatLibFi style but does not implement it completely                */
+/* - use this select field when opting for minimal implementation without js    */
+/* ---------------------------------------------------------------------------- */
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Default M size select */
+
+.form-field-container.select .input-wrapper {
+  position: relative;
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 2px;
+  margin-left: 2px;
+  /* width: fit-content + 20px; */
+}
+
+.form-field-container.select .input-wrapper select {
+  appearance: none;
+  height: 100%;
+  width: 100%;
+  padding-left: 16px;
+  border: none;
+  outline: none;
+  background-color: var(--color-primary-white);
+  font-family: var(--font-family-input);
+  font-size: var(--font-size-input-medium);
+  color: var(--color-blue-100);
+}
+
+.form-field-container.select .input-wrapper select:has(option[value=""]:checked) {
+  color: var(--color-blue-80);
+  font-family: var(--font-family-placeholder);
+}
+
+.form-field-container.select .input-wrapper select option {
+  appearance: none;
+  width: 100%;
+  font-family: var(--font-family-placeholder);
+  font-size: var(--font-size-input-medium);
+  font-weight: var(--font-weight-placeholder);
+  color: var(--color-blue-100);
+}
+
+.form-field-container.select .input-wrapper select option:not([value=""]):checked {
+  appearance: none;
+  font-family: var(--font-family-buttont);
+  font-weight: 900;
+}
+
+.form-field-container.select .input-wrapper span {
+  padding: 0px;
+}
+
+.form-field-container.select .input-wrapper span.material-icons {
+  font-size: var(--font-size-icon-large);
+}
+
+.form-field-container.select .input-wrapper span:before,
+.form-field-container.select .input-wrapper:active span:before {
+  position: absolute;
+  pointer-events: none;
+  margin-right: 48px;
+}
+
+.form-field-container.select .input-wrapper span:before {
+  content: 'expand_more';
+}
+
+.form-field-container.select .input-wrapper:active span:before {
+  content: 'expand_less';
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Small S size select */
+
+.form-field-container.select.small .input-wrapper select {
+  padding-left: 12px;
+  font-size: var(--font-size-input-small);
+}
+
+.form-field-container.select.small .input-wrapper select option {
+  font-size: var(--font-size-input-small);
+}
+
+.form-field-container.select.small .input-wrapper span.material-icons {
+  font-size: var(--font-size-icon-small);
+}
+
+.form-field-container.select.small .input-wrapper span:before,
+.form-field-container.select.small .input-wrapper:active span:before {
+  margin-right: 48px;
+}
