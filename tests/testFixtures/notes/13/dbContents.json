@@ -1,0 +1,82 @@
+{
+  "notes": [
+    {
+      "_id": "65805a34d500f6a4ff2eccc4",
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "artikkelit",
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2023-12-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "Alert message 1"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc5",
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2023-11-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "Alert message 2"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc6",
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "viewer"
+      ],
+      "endDate": "2023-11-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "error",
+      "messageText": "Error message 1"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc7",
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "artikkelit",
+        "muuntaja",
+        "viewer"
+      ],
+      "endDate": "2023-12-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "alert",
+      "messageText": "Alert message 3"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc8",
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "muuntaja"
+      ],
+      "endDate": "2023-11-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "error",
+      "messageText": "Error message 2"
+    },
+    {
+      "_id": "65805a34d500f6a4ff2eccc9",
+      "blocksInteraction": "false",
+      "componentStyle": "dialog",
+      "context": [
+        "artikkelit",
+        "viewer"
+      ],
+      "endDate": "2023-09-30T12:30:15.002",
+      "isDismissible": true,
+      "messageStyle": "info",
+      "messageText": "Info message 1"
+    }
+  ]
+}

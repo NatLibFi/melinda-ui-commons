@@ -1,0 +1,17 @@
+{
+  "description": "Function: addNoteItem, do not add one noteItem object if url is not valid",
+  "functionName": "addNoteItemReturnsError",
+  "only": false,
+  "skip": false,
+  "params": {
+    "messageText": "Note with bad url",
+    "messageStyle": "alert",
+    "componentStyle": "banner",
+    "context": ["viewer"],
+    "blocksInteraction": true,
+    "isDismissible": true,
+    "endDate": "2024-12-30T12:30:15.002",
+    "url": "todo add url here later"
+  },
+  "preFillDb": true
+}

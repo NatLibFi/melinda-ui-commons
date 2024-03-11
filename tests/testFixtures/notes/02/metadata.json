@@ -1,0 +1,17 @@
+{
+  "description": "Function: addNoteItem, add one noteItem object even if there exists a noteItem with same properties",
+  "only": false,
+  "skip": false,
+  "functionName": "addNoteItem",
+  "preFillDb": true,
+  "params": {
+    "blocksInteraction": false,
+    "componentStyle": "dialog",
+    "context": ["muuntaja"],
+    "endDate": "2050-12-20T21:01:58.146Z",
+    "isDismissible": true,
+    "messageStyle": "info",
+    "messageText": "Note for users",
+    "url": "https://www.kansalliskirjasto.fi/"
+  }
+}

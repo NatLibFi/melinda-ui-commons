@@ -1,0 +1,17 @@
+{
+  "exclude": [
+    "**/*.spec.js"
+  ],
+  "reporter": [
+    "text"
+  ],
+  "require": [
+    "@babel/register"
+  ],
+  "sourceMap": false,
+  "instrument": false,
+  "lines": 80,
+  "statements": 80,
+  "functions": 80,
+  "branches": 80
+}

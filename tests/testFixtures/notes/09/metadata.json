@@ -1,0 +1,8 @@
+{
+    "description": "Function: getNoteItem, gets one item with id",
+    "only": false,
+    "skip": false,
+    "functionName": "getNoteItem",
+    "params": "65805a34d500f6a4ff2eccc5",
+    "preFillDb": true
+  }

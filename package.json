@@ -23,37 +23,32 @@
     "node": ">=20"
   },
   "scripts": {
-    "prepare": "npm run build",
-    "build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
     "lint": "eslint src",
-    "lint:dev": "eslint --fix src",
-    "test": "npm run lint"
+    "lint:fix": "eslint --fix src",
+    "test": "npm run lint && npm run test:base",
+    "test:base": "NODE_ENV=test nyc mocha --package ./package.json",
+    "test:dev": "npm run lint:fix && npm run test:base -- 'tests/*.spec.js'"
   },
   "dependencies": {
-    "cross-env": "^7.0.3",
-    "debug": "^4.3.4"
+    "@babel/runtime": "^7.23.9",
+    "@natlibfi/melinda-backend-commons": "^2.2.4",
+    "@natlibfi/melinda-commons": "^13.0.9",
+    "http-status": "^1.7.3",
+    "moment": "^2.29.4",
+    "mongo-sanitize": "^1.1.0",
+    "mongodb": "^6.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.4",
     "@babel/core": "^7.23.5",
-    "@babel/eslint-parser": "^7.23.3",
-    "@babel/node": "^7.22.19",
-    "@babel/preset-env": "^7.23.5",
+    "@babel/register": "^7.22.15",
     "@natlibfi/eslint-config-melinda-frontend": "^2.0.0",
-    "eslint": "^8.54.0"
-  },
-  "eslintConfig": {
-    "parser": "@babel/eslint-parser",
-    "extends": "@natlibfi/melinda-frontend"
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": "maintained node versions"
-        }
-      ]
-    ]
+    "@natlibfi/fixugen": "^2.0.3",
+    "@natlibfi/fixura": "^3.0.3",
+    "@natlibfi/fixura-mongo": "^2.0.10",
+    "chai": "^4.3.10",
+    "eslint": "^8.54.0",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0"
   }
 }

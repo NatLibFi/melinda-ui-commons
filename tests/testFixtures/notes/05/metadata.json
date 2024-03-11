@@ -1,0 +1,12 @@
+{
+  "description": "Function: addNoteItem, do not add one noteItem object if some obligatory properties are missing",
+  "functionName": "addNoteItemReturnsError",
+  "only": false,
+  "skip": false,
+  "params": {
+    "componentStyle": "dialog",
+    "messageStyle": "info",
+    "messageText": "Note for users"
+  },
+  "preFillDb": true
+}

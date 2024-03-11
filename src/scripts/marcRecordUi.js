@@ -1,6 +1,5 @@
 /* eslint-disable max-params */
 /* eslint-disable no-mixed-operators */
-/* eslint-disable functional/no-let */
 /* eslint-disable max-statements */
 
 
