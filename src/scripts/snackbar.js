@@ -36,7 +36,7 @@
 //****************************************************************************//
 
 
-import {eventHandled} from './ui-utils.js';
+import {eventHandled} from './uiUtils.js';
 
 // template for one snackbar -->
 const snackbarTemplate = `
