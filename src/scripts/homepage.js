@@ -4,7 +4,7 @@
 //                                                                            //
 //****************************************************************************//
 
-import {eventHandled, toggleAccordion} from './ui-utils.js';
+import {eventHandled, toggleAccordion} from './uiUtils.js';
 
 
 window.addEventListener('load', (event) => {
