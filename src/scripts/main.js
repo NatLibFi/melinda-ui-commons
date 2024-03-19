@@ -1,3 +1,4 @@
+import './combobox.js'
 import './common.js';
 import './uiUtils.js';
 import './elements.js';
