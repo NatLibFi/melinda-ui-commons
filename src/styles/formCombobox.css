@@ -1,0 +1,227 @@
+/* ---------------------------------------------------------------------------- */
+/* COMBOBOX                                                                     */
+/*                                                                              */
+/* Form field container and common wrapper styles for label and input           */
+/* are used as a base for combobox styles.                                      */
+/*                                                                              */
+/*  Combobox fully implements the NatLibFi style for dropdown menu,             */
+/*  but Javascript is also required to implement combobox features.             */
+/*                                                                              */
+/*  Use this combobox element instead of basic select element                   */
+/*  - when style is important                                                   */
+/*  - when you need more functionality                                          */
+/*                                                                              */
+/* Combobox form field combines currently two functionalities:                  */
+/* - a basic dropdown menu,                                                     */
+/*     where the user can select from predefined options                        */
+/* - a datalist-type of dropdown menu,                                          */
+/*     where the user can filter the options by entering a search term          */
+/* ---------------------------------------------------------------------------- */
+
+
+
+.form-field-container.combobox {
+
+  .custom-wrapper {
+    position: relative;
+    width: calc(100% - 12px);
+
+    .custom-select {
+      /* custom select dropdown is hidden at first */
+      display: none;
+    }
+
+  }
+
+  .input-wrapper {
+
+    select {
+      /* the default select is always hidden */
+      display: none;
+    }
+
+    button.icon-only {
+
+      &:hover {
+
+        span.material-icons {
+          color: var(--color-primary-blue);
+        }
+
+      }
+
+      &:active {
+
+        background-color: var(--color-primary-blue);
+
+        span.material-icons {
+          color: var(--color-primary-white);
+        }
+      }
+
+      span:before {
+        /* show icon arrow down for opening dropdown */
+        content: 'expand_more';
+        font-size: var(--font-size-icon-large);
+      }
+
+    }
+
+    input {
+
+      cursor: pointer;
+
+      &:focus {
+        cursor: text;
+      }
+
+    }
+  }
+
+
+  /* ---------------------------------------------------------------------------- */
+  /* expanded: show the custom select and option instead of the default */
+  &.expanded {
+
+    .input-wrapper {
+
+      button.icon-only {
+
+        span:before {
+          /* show icon arrow up for closing dropdown */
+          content: 'expand_less';
+          font-size: var(--font-size-icon-large);
+        }
+      }
+
+      input:not(:placeholder-shown)~button.icon-only {
+        /* styles applied when input has text (placeholder is not visible) */
+
+        span:before {
+          /* show close icon instead of toggle icons */
+          content: 'close';
+          font-size: var(--font-size-icon-medium);
+        }
+
+        &:hover {
+
+          span.material-icons {
+            color: var(--color-red-100);
+          }
+
+        }
+
+        &:active {
+          background-color: var(--color-red-100);
+
+          span.material-icons {
+            color: var(--color-primary-white);
+          }
+        }
+
+      }
+    }
+
+    .custom-wrapper {
+
+      .custom-select {
+        /* custom select dropdown is shown when expanded class is added to form field container */
+        position: absolute;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        border-style: solid;
+        border-width: 1px;
+        border-color: var(--color-blue-40);
+        margin-top: -12px;
+        margin-left: 6px;
+        margin-right: 6px;
+        border-top: none;
+        box-shadow: 0px 3px 8px 0.025em var(--color-grey-40);
+        scrollbar-color: var(--color-blue-60) var(--color-primary-white);
+        scrollbar-width: thin;
+        background-color: var(--color-primary-white);
+        width: 100%;
+
+        .custom-option {
+          display: flex;
+          flex-direction: column;
+          color: var(--color-blue-100);
+          cursor: default;
+
+          &.hidden {
+            display: none;
+          }
+
+          &[data-selected="true"] {
+            /* special style for the one option that is currently selected */
+            background-color: var(--color-blue-40);
+          }
+
+          &[data-value="undefined"] {
+            /* special style for "no results" option */
+            font-style: italic;
+            color: var(--color-blue-80);
+            pointer-events: none;
+          }
+
+          span.underlined {
+            text-decoration: underline;
+            text-underline-offset: 2.5px;
+          }
+
+          .custom-option-header {
+            font-family: var(--font-family-label);
+            font-weight: var(--font-weight-label);
+            font-size: var(--font-size-label-medium);
+            padding-top: 8px;
+            padding-left: 16px;
+            padding-right: 16px;
+          }
+
+          .custom-option-content {
+            font-family: var(--font-family-content);
+            font-weight: var(--font-weight-content);
+            font-size: var(--font-size-content-medium);
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-bottom: 8px;
+          }
+
+          &:hover,
+          /* hovering with mouse over options */
+          &:focus {
+            /* navigating with keyboard over options */
+            color: var(--color-primary-white);
+            background-color: var(--color-functional-blue);
+          }
+
+        }
+      }
+    }
+
+  }
+
+  /* ---------------------------------------------------------------------------- */
+  /* The inverse styles for combobox */
+  &.inverse {
+
+    &.expanded {
+
+      .custom-wrapper {
+
+        .custom-select {
+
+          .custom-option {
+
+            &:hover {
+              background-color: var(--color-blue-60);
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
