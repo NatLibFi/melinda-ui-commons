@@ -19,6 +19,7 @@
 .input-wrapper {
   display: flex;
   flex-direction: row;
+  flex-basis: 100%;
   font-family: var(--font-family-input);
   font-size: var(--font-size-input-medium);
   font-weight: var(--font-weight-input);

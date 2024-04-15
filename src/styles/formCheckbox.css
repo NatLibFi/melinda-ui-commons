@@ -23,6 +23,7 @@
 .form-field-container.checkbox .input-wrapper span,
 .form-field-container.checkbox .label-wrapper label {
   display: flex;
+  flex-basis: auto;
 }
 
 .form-field-container.checkbox .input-wrapper,
