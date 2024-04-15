@@ -45,3 +45,5 @@ tmp
 
 dist
 .env
+
+.vscode
