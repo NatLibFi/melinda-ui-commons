@@ -13,6 +13,7 @@
 .form-field-container .label-wrapper {
   display: flex;
   flex-direction: row;
+  flex-basis: 100%;
   color: var(--color-blue-100);
   font-family: var(--font-family-label);
   font-size: var(--font-size-label-medium);
@@ -21,7 +22,7 @@
 
 /* The space for label is reserved even without a label text */
 .form-field-container .label-wrapper label:empty {
- height: 22px;
+  height: 22px;
 }
 
 

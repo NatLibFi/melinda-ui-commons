@@ -63,6 +63,11 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
     //console.log(field)
     const row = document.createElement('div');
     row.classList.add('row');
+
+    if (field.uuid) {
+      row.id = field.uuid;
+    }
+
     if (decorator?.decorateField) {
       decorator.decorateField(row, field);
     }

@@ -23,6 +23,7 @@
 .form-field-container.radio .input-wrapper span,
 .form-field-container.radio .label-wrapper label {
   display: flex;
+  flex-basis: auto;
 }
 
 .form-field-container.radio .input-wrapper,

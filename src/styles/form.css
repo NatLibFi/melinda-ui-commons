@@ -114,8 +114,8 @@
 
 .form-field-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
-  flex-direction: column;
   color: var(--color-blue-100);
   background-color: transparent;
   box-sizing: border-box;

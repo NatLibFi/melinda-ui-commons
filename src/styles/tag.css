@@ -7,212 +7,179 @@
 /* ---------------------------------------------------------------------------- */
 
 
-/* 
-<div class="tag-container">
-
-    <div class="tag-wrapper" tabindex="0">
-      Keyword tag
-    </div>
-
-    <div class="tag-wrapper" tabindex="0">
-      <span class="material-icons">storage</span>
-      Index term tag
-    </div>
-
-    <div class="tag-wrapper filter" tabindex="0">
-      Filter tag
-      <span class="material-icons icon-close">close</span>
-    </div>
-
-    <div class="tag-wrapper static" tabindex="0">
-      Static tag
-    </div>
-
-    <div class="tag-wrapper selected" tabindex="0">
-      Tag is selected
-    </div>
-
-    <div class="tag-wrapper success" tabindex="0">
-      Tag has success
-      <span class="material-icons icon-check">check</span>
-    </div>
-
-</div>
- */
-
- .tag-container {
+.tag-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   padding: 12px;
   gap: 12px;
 
-  .tag-wrapper {
-    display: flex;
-    color: var(--color-primary-blue);
-    background-color: var(--color-blue-40);
-    font-size: var(--font-size-label-small);
-    font-family: var(--font-family-label);
-    font-weight: var(--font-weight-label);
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: fit-content;
-    height: 32px;
-    padding-left: 12px;
-    padding-right: 12px;
-    border-radius: 24px;
-    border-width: 2px;
+}
+
+.tag-wrapper {
+  display: flex;
+  color: var(--color-primary-blue);
+  background-color: var(--color-blue-40);
+  font-size: var(--font-size-label-small);
+  font-family: var(--font-family-label);
+  font-weight: var(--font-weight-label);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: fit-content;
+  min-height: 32px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 24px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: transparent;
+
+  span {
+    font-size: var(--font-size-icon-small);
+    padding-right: 8px;
+
+    &.icon-close,
+    &.icon-check {
+      display: none;
+    }
+
+  }
+
+  &:hover,
+  &:focus {
     border-style: solid;
-    border-color: transparent;
+    border-color: var(--color-blue-100);
+    border-width: 2px;
+    cursor: pointer;
+
+  }
+
+  &:active {
+    border-style: solid;
+    border-color: var(--color-blue-100);
+    border-width: 2px;
+    outline-offset: 2px;
+    outline-color: var(--color-blue-100);
+    outline-width: 2px;
+    outline-style: solid;
+
+    span {
+
+      &.icon-close {
+        color: var(--color-primary-white);
+        background-color: var(--color-functional-red);
+      }
+
+      &.icon-check {
+        color: var(--color-primary-white);
+        background-color: var(--color-functional-green);
+      }
+
+    }
+
+  }
+
+  &.static {
+    border-color: var(--color-blue-60);
+
+    &:hover,
+    &:focus {
+      background-color: var(--color-blue-60);
+      border-color: var(--color-blue-60);
+      cursor: default;
+    }
+
+    &:active {
+      background-color: var(--color-blue-60);
+      border-color: var(--color-blue-60);
+      cursor: default;
+      outline: none;
+    }
+
+  }
+
+  &.filter {
 
     span {
       font-size: var(--font-size-icon-small);
       padding-right: 8px;
 
-      &.icon-close,
-      &.icon-check {
-        display: none;
+      &.icon-close {
+        display: flex;
+        color: var(--color-blue-100);
+        border-color: var(--color-blue-100);
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 12px;
+        margin-left: 8px;
+        padding: 1px;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 50%;
       }
 
     }
 
     &:hover,
     &:focus {
-      border-style: solid;
-      border-color: var(--color-blue-100);
-      border-width: 2px;
-      cursor: pointer;
-
-    }
-
-    &:active {
-      border-style: solid;
-      border-color: var(--color-blue-100);
-      border-width: 2px;
-      outline-offset: 2px;
-      outline-color: var(--color-blue-100);
-      outline-width: 2px;
-      outline-style: solid;
 
       span {
 
         &.icon-close {
           color: var(--color-primary-white);
           background-color: var(--color-functional-red);
-        }
-
-        &.icon-check {
-          color: var(--color-primary-white);
-          background-color: var(--color-functional-green);
-        }
-
-      }
-
-    }
-
-    &.static {
-      border-color: var(--color-blue-60);
-
-      &:hover,
-      &:focus {
-        background-color: var(--color-blue-60);
-        border-color: var(--color-blue-60);
-        cursor: default;
-      }
-
-      &:active {
-        background-color: var(--color-blue-60);
-        border-color: var(--color-blue-60);
-        cursor: default;
-        outline: none;
-      }
-
-    }
-
-    &.filter {
-
-      span {
-        font-size: var(--font-size-icon-small);
-        padding-right: 8px;
-
-        &.icon-close {
-          display: flex;
-          color: var(--color-blue-100);
-          border-color: var(--color-blue-100);
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          font-size: 12px;
-          margin-left: 8px;
-          padding: 1px;
-          border-width: 1px;
-          border-style: solid;
-          border-radius: 50%;
-        }
-
-      }
-
-      &:hover,
-      &:focus {
-
-        span {
-
-          &.icon-close {
-            color: var(--color-primary-white);
-            background-color: var(--color-functional-red);
-            border-color: var(--color-functional-red);
-          }
-
-        }
-      }
-    }
-
-    &.success {
-
-      span {
-        font-size: var(--font-size-icon-small);
-        padding-right: 8px;
-
-        &.icon-check {
-          display: flex;
-          color: var(--color-primary-white);
-          background-color: var(--color-functional-green);
-          border-color: var(--color-functional-green);
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          font-size: 12px;
-          margin-left: 8px;
-          padding: 1px;
-          border-width: 1px;
-          border-style: solid;
-          border-radius: 50%;
+          border-color: var(--color-functional-red);
         }
 
       }
     }
+  }
 
-    &.selected {
-      color: var(--color-primary-white);
-      background-color: var(--color-blue-100);
+  &.success {
 
-      &:hover,
-      &:focus {
-        outline-offset: 2px;
-        outline-color: var(--color-blue-80);
-        outline-width: 2px;
-        outline-style: solid;
-      }
+    span {
+      font-size: var(--font-size-icon-small);
+      padding-right: 8px;
 
-      &:active {
-        outline-offset: 2px;
-        outline-color: var(--color-blue-100);
-        outline-width: 2px;
-        outline-style: solid;
+      &.icon-check {
+        display: flex;
+        color: var(--color-primary-white);
+        background-color: var(--color-functional-green);
+        border-color: var(--color-functional-green);
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 12px;
+        margin-left: 8px;
+        padding: 1px;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 50%;
       }
 
     }
   }
 
+  &.selected {
+    color: var(--color-primary-white);
+    background-color: var(--color-blue-100);
+
+    &:hover,
+    &:focus {
+      outline-offset: 2px;
+      outline-color: var(--color-blue-80);
+      outline-width: 2px;
+      outline-style: solid;
+    }
+
+    &:active {
+      outline-offset: 2px;
+      outline-color: var(--color-blue-100);
+      outline-width: 2px;
+      outline-style: solid;
+    }
+
+  }
 }
