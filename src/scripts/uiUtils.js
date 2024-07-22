@@ -23,17 +23,3 @@ export function eventHandled(event) {
 export function ignore(event) {
   return eventHandled(event);
 }
-
-
-//-----------------------------------------------------------------------------
-// Helper for HTML component: accordion
-//-----------------------------------------------------------------------------
-
-export function toggleAccordion(event) {
-  const accordionId = event.target.id;
-  const accordion = document.getElementById(accordionId);
-
-  accordion.classList.toggle('expanded');
-
-  return eventHandled(event);
-}

@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: row;
   font-family: var(--font-family-headline);
-  font-size: var(--font-size-headline-small);
+  font-size: var(--font-size-headline-medium);
   font-weight: var(--font-weight-headline);
   border-bottom-color: var(--color-blue-100);
   border-bottom-width: 1px;
@@ -23,6 +23,7 @@
   padding-top: 16px;
   padding-bottom: 16px;
   align-items: center;
+  color: var(--color-blue-100);
 }
 
 .accordion .accordion-heading .accordion-heading-icon {
@@ -83,6 +84,9 @@
   display: flex;
   flex-direction: row;
   padding-top: 16px;
+  padding-bottom: 16px;
+  color: var(--color-blue-100);
+  font-size: var(--font-size-label-large);
 }
 
 /* accordion icon is - when accordion can be closed */
