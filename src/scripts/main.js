@@ -5,3 +5,4 @@ import './elements.js';
 import './progressbar.js';
 import './snackbar.js';
 import './marcRecordUi.js';
+import './panelTabs.js';

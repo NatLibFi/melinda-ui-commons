@@ -19,10 +19,10 @@
 .form-container {
   display: flex;
   flex-direction: column;
-  margin-left: 64px;
-  margin-right: 64px;
-  margin-top: 64px;
-  margin-bottom: 64px;
+  padding-left: 64px;
+  padding-right: 64px;
+  padding-top: 64px;
+  padding-bottom: 64px;
 }
 
 /* form-header contains the headline for form */
@@ -83,10 +83,10 @@
 .form-container.small {
   display: flex;
   flex-direction: column;
-  margin-left: 32px;
-  margin-right: 32px;
-  margin-top: 32px;
-  margin-bottom: 32px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 32px;
+  padding-bottom: 32px;
 }
 
 .form-container.small .form-header {
