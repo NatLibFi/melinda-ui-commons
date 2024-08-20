@@ -17,7 +17,6 @@
 @import './tools.css';
 @import './modal.css';
 @import './dialog.css';
-@import './login.css';
 @import './navbar.css';
 @import './footer.css';
 @import './panel.css';
@@ -26,4 +25,5 @@
 @import './progressbar.css';
 @import './snackbar.css';
 @import './homepage.css';
+@import './loginpage.css';
 @import './pageNotFound.css';

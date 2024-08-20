@@ -42,17 +42,6 @@ export function highlightElement(element, color) {
 }
 
 
-export function resetForms(...elements) {
-  for (const element of elements) {
-    const forms = element.querySelectorAll('form');
-
-    for (const form of forms) {
-      form.reset();
-    }
-
-  }
-}
-
 
 // returns an array of all html element descendants of the parent element
 export function getAllDescendants(parentElement) {
@@ -74,5 +63,3 @@ export function createElementOption(text, value) {
 
   return option;
 }
-
-

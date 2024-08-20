@@ -7,7 +7,7 @@
 import {eventHandled} from './uiUtils.js';
 
 
-export function addTabsEventListeners() {
+export function addTabsEventListeners(activateTab) {
   const panelTabs = getAllPanelTabs();
 
   panelTabs.forEach(tab => {
@@ -20,6 +20,7 @@ export function addTabsEventListeners() {
 
 }
 
+
 export function clearAllTabSelections() {
   const tabs = getAllPanelTabs();
 
@@ -29,9 +30,35 @@ export function clearAllTabSelections() {
 
 }
 
+
 export function getAllPanelTabs() {
   return document.querySelectorAll('.panel-tab');
 }
+
+
+export function getAllPanelContents() {
+  return document.querySelectorAll('.panel-content');
+}
+
+
+export function hideAllPanelContents() {
+  const panelContents = getAllPanelContents();
+
+  panelContents.forEach(content => {
+    content.style.display = 'none';
+  })
+
+}
+
+
+export function inactivateAllTabs(inactivateTab) {
+  const tabs = getAllPanelTabs();
+
+  tabs.forEach(tab => {
+    inactivateTab(tab); //implement this function in your application
+  })
+}
+
 
 export function selectTab(tab) {
   clearAllTabSelections();

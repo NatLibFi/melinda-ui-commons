@@ -51,13 +51,14 @@
   align-items: center;
   color: var(--color-blue-100);
   background-color: transparent;
-  /* TODO: check if this can be removed */
-  /* padding-right: 12px; */
 }
 
-/* TODO: check if this can be removed */
 .form-field-container .input-wrapper>:not(button):last-child {
   padding-right: 16px;
+}
+
+.form-field-container .input-wrapper span:has(+input) {
+  padding-right: 12px;
 }
 
 .form-field-container .input-wrapper span.material-icons {
@@ -114,11 +115,14 @@
   font-size: var(--font-size-icon-small);
 }
 
-/* TODO: check if this can be removed
 .form-field-container.small .input-wrapper>:not(button):last-child {
   padding-right: 12px; 
 }
-*/
+
+.form-field-container.small .input-wrapper span:has(+input) {
+  padding-right: 8px;
+}
+
 
 .form-field-container.small input {
   font-size: var(--font-size-input-small);

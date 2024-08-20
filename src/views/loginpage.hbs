@@ -1,0 +1,399 @@
+<!-- [Login page view (loginpage.hbs)] -->
+
+<script type="module" src={{ shared "/scripts/loginpage.js" }}></script>
+
+<div id="bodywrapper" class="viewport-full flex-column">
+
+  {{> (shared "navbar") }}
+
+  <div id="progressbar" class="progress-bar-inactive"></div>
+
+  <div id="root">
+
+    <div id="loginPage" class="panels">
+
+      <div class="panel-container">
+
+        <div class="panel-action-wrapper">
+          <div id="panelTabFillForm" class="panel-tab current-tab">Kirjaudu sisään</div>
+          <div id="panelTabReadInstructions" class="panel-tab">Lue ohjeet</div>
+        </div>
+
+        <div class="panel-main-wrapper">
+
+          <div class="panel-header">Kirjautuminen Melinda-sovellukseen</div>
+
+          <!-- Panel content: fill the login form -->
+          <div id="panelContentForm" class="panel-content">
+
+            <form id="loginForm">
+
+              <div class="form-container">
+
+                <div class="form-header">
+                  Käytä Melinda-tunnustasi
+                </div>
+
+                <div class="form-content">
+
+                  <!-- Input: username -->
+                  <div class="form-content-section direction-row">
+
+                    <div id="usernameFormField" class="form-field-container full-width">
+                      <div class="label-wrapper">
+                        <label for="loginUsername">Käyttäjätunnus</label>
+                      </div>
+                      <div class="input-wrapper">
+                        <span class="material-icons">person</span>
+                        <input id="loginUsername" name="loginUsername" type="text" form="loginForm"
+                          placeholder="Syötä Melinda-tunnus" title="Käyttäjätunnus on vaadittu kenttä" required="true"
+                          spellcheck="false" autocomplete="username">
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- Input: password -->
+                  <div class="form-content-section direction-row">
+
+                    <div id="passwordFormField" class="form-field-container full-width">
+                      <div class="label-wrapper">
+                        <label for="loginPassword">Salasana</label>
+                      </div>
+                      <div class="input-wrapper">
+                        <span class="material-icons">lock</span>
+                        <input id="loginPassword" name="loginPassword" type="password" form="loginForm"
+                          placeholder="Syötä salasana" title="Salasana on vaadittu kenttä" required="true"
+                          spellcheck="false" autocomplete="current-password">
+                        <button id="passwordVisibilityButton" type="button" class="icon-only">
+                          <span id="visibilityIcon" class="material-icons"></span>
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- Checbox: privacy notice and cookies -->
+                  <div class="form-content-section direction-column">
+
+                    <div id="acceptTermsFormField" class="form-field-container checkbox full-width">
+                      <div class="label-wrapper">
+                        <label for="acceptTerms">
+                          <div class="input-wrapper">
+                            <input id="acceptTerms" name="accepterms" type="checkbox" form="contactUs">
+                            <span class="material-icons"></span>
+                          </div>
+                          <div class="outer-link">
+                            Hyväksyn
+                            <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank"
+                              rel="noopener noreferrer" title="Avautuu uuteen välilehteen"> tietosuojaselosteen <span
+                                class="material-icons open-in-new">open_in_new</span></a>
+                            ja evästeiden käytön. Henkilötietojen käsittelystä ja evästeistä tietoa
+                            Lue ohjeet -välilehdellä.
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="form-footer">
+
+                  <button type="submit" id="submitLogin" form="loginForm">
+                    Kirjaudu
+                  </button>
+
+                </div>
+
+              </div>
+
+            </form>
+
+          </div>
+
+          <!-- Panel content: instructions to read if help is needed with login -->
+          <div id="panelContentInstructions" class="panel-content">
+
+            <div class="info">
+
+              <div class="info-text">
+
+                <div class="info-text-ingress">
+                  Täältä löydät yhteystietojemme lisäksi vastauksia yleisimpiin kysymyksiin.
+                </div>
+
+              </div>
+
+              <!-- Accordion: what is Melinda application?-->
+              <div class="accordion">
+
+                <div id="needInfoAboutApplicationAccordion" class="accordion-heading">
+                  <div class="accordion-heading-icon collapsed">
+                    <span class="material-icons">
+                    </span>
+                  </div>
+                  <div class="accordion-heading-text">
+                    Tietoa Melinda-sovelluksista
+                  </div>
+                </div>
+
+                <div class="accordion-content">
+
+                  <div class="info-text">
+
+                    <div class="info-text-paragraph">
+                      Melinda-sovellukset ovat työkaluja aineiston kuvailijoille. Sovelluksia käytetään apuna
+                      esimerkiksi
+                      silloin, kun translitteroidaan tietueita tai muunnetaan tietueita aineistotyypistä toiseen.
+                    </div>
+
+                    <div class="info-text-paragraph">
+                      Melinda-sovelluksia hyödynnetään Melindan kuvailuympäristössä. Työkalujen perimmäinen tarkoitus on
+                      helpottaa kuvailijoiden työtä ja nopeuttaa tietuiden käsittelyä.
+                    </div>
+
+                    <div class="info-text-paragraph outer-link">
+                      <a href="https://www.kiwi.fi/x/JoHyEw" target="_blank" rel="noopener noreferrer"
+                        title="Avautuu uuteen välilehteen">Lue lisää Melinda-sovelluksista Melinda-wikistä <span
+                          class="material-icons open-in-new">open_in_new</span>
+                      </a>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Accordion: what is Melinda account?-->
+              <div class="accordion">
+
+                <div id="needInfoAboutAccountAccordion" class="accordion-heading">
+                  <div class="accordion-heading-icon collapsed">
+                    <span class="material-icons">
+                    </span>
+                  </div>
+                  <div class="accordion-heading-text">
+                    Tietoa Melinda-tunnuksesta
+                  </div>
+                </div>
+
+                <div class="accordion-content">
+
+                  <div class="info-text">
+
+                    <div class="info-text-paragraph">
+                      Melinda-tunnus koostuu käyttäjätunnuksesta ja salasanasta.
+                    </div>
+
+                    <div class="info-text-paragraph">
+                      Melinda-tunnuksella kirjaudutaan sisään Melinda-sovelluksiin ja Alephin kuvailukäyttöliittymään.
+                    </div>
+
+                    <div class="info-text-paragraph">
+                      Pyydä oman organisaatiosi pääkäyttäjää luomaan uusi Melinda-tunnus, jos käytössäsi ei vielä ole
+                      omaa
+                      henkilökohtaista tunnusta Melinda-sovelluksiin.
+                    </div>
+
+                    <div class="info-text-paragraph outer-link">
+                      <a href="https://www.kiwi.fi/x/woBoDQ" target="_blank" rel="noopener noreferrer"
+                        title="Avautuu uuteen välilehteen">Lue lisää Melinda-tunnuksen hakemisesta Melinda-wikistä
+                        <span class="material-icons open-in-new">open_in_new</span>
+                      </a>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Accordion: what are cookies-->
+              <div class="accordion">
+
+                <div id="needInfoAboutCookiesAccordion" class="accordion-heading">
+                  <div class="accordion-heading-icon collapsed">
+                    <span class="material-icons">
+                    </span>
+                  </div>
+                  <div class="accordion-heading-text">
+                    Tietosuoja ja evästeet
+                  </div>
+                </div>
+
+                <div class="accordion-content">
+
+                  <div class="info-text">
+
+                    <div class="info-text-paragraph">
+                      Melinda-sovelluksen käyttäminen edellyttää tietosuojailmoituksen ja evästeiden käytön
+                      hyväksymistä.
+                    </div>
+
+                    <div class="info-text-paragraph">
+                      Tietosuojailmoituksessa kerrotaan, miten rekisterinpitäjä käsittelee tietojasi. Melindan
+                      asiantuntijoille suunnatuista verkkokäyttöliittymistä on laadittu tietosuojailmoitus.
+                      Kuvailutietojen sisältämistä henkilötiedoista on erillinen tietosuojailmoitus. Tutustu
+                      tietosuojailmoituksiin huolellisesti.
+                    </div>
+
+                    <div class="info-text-paragraph">
+                      Kun kirjaudut sisään Melinda-sovellukseen, selain tallentaa laitteellesi evästetiedoston. Käytämme
+                      vain toiminnallisia evästeitä, joiden avulla Melinda-sovellukset toimivat oikein. Sen vuoksi
+                      evästeiden käytön hyväksyminen on välttämätöntä. Kun kirjaudut ulos Melinda-sovelluksesta,
+                      sovelluksen käyttämät evästeet ja muut väliaikaiset tiedostot poistetaan.
+                    </div>
+
+                    <div class="info-text-paragraph outer-link">
+                      <a href="https://www.kiwi.fi/x/_TKOBQ" target="_blank" rel="noopener noreferrer"
+                        title="Avautuu uuteen välilehteen">Tutustu tietosuojailmoituksiin Melinda-wikissä
+                        <span class="material-icons open-in-new">open_in_new</span>
+                      </a>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Accordion: forgot password?-->
+              <div class="accordion">
+
+                <div id="forgotPasswordAccordion" class="accordion-heading">
+                  <div class="accordion-heading-icon collapsed">
+                    <span class="material-icons">
+                    </span>
+                  </div>
+                  <div class="accordion-heading-text">
+                    Unohditko salasanasi?
+                  </div>
+                </div>
+
+                <div class="accordion-content">
+
+                  <div class="info-text">
+
+                    <div class="info-text-paragraph">
+                      Pyydä oman organisaatiosi pääkäyttäjää nollaamaan salasanasi.
+                    </div>
+
+                    <div class="info-text-paragraph">
+                      Uusi väliaikainen salasana saapuu sinulle sähköpostiviestinä. Seuraa sähköpostin ohjeita uuden
+                      salasanan asettamisesta Melinda-tunnukseesi.
+                    </div>
+
+                    <div class="info-text-paragraph outer-link">
+                      <a href="https://www.kiwi.fi/x/HQFOBQ" target="_blank" rel="noopener noreferrer"
+                        title="Avautuu uuteen välilehteen">
+                        Lue lisää salasanan vaihtamisesta Melinda-wikistä <span
+                          class="material-icons open-in-new">open_in_new</span>
+                      </a>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Accordion: need help?-->
+              <div class="accordion">
+
+                <div id="needHelpAccordion" class="accordion-heading">
+                  <div class="accordion-heading-icon collapsed">
+                    <span class="material-icons">
+                    </span>
+                  </div>
+                  <div class="accordion-heading-text">
+                    Ongelmia kirjautumisessa?
+                  </div>
+                </div>
+
+                <div class="accordion-content">
+
+                  <div class="info-text">
+
+                    <div class="info-text-paragraph email-link">
+                      Lähetä viesti Melinda-palveluun sähköpostilla:
+                      <a href="mailto:melinda-posti@helsinki.fi">melinda-posti@helsinki.fi</a>
+                    </div>
+
+                    <div class="info-text-paragraph">
+                      Lähetä meille tieto myös silloin, jos sovelluksessa kaikki ei mielestäsi
+                      toimi tavalliseen tapaan. Silloin pääsemme korjaamaan vian mahdollisimman nopeasti. Palaamme
+                      yhteydenottoosi ja kysymme aina tarvittaessa lisätietoja ongelmastasi.
+                    </div>
+
+                    <div class="info-text-paragraph outer-link">
+                      <a href="https://www.kiwi.fi/x/oxRiBQ" target="_blank" rel="noopener noreferrer"
+                        title="Avautuu uuteen välilehteen">Lue lisää Melindan tukipalveluista Melinda-wikistä
+                        <span class="material-icons open-in-new">open_in_new</span>
+                      </a>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Accordion: contact information-->
+              <div class="accordion">
+
+                <div id="contactAccordion" class="accordion-heading">
+                  <div class="accordion-heading-icon collapsed">
+                    <span class="material-icons">
+                    </span>
+                  </div>
+                  <div class="accordion-heading-text">
+                    Ota yhteyttä
+                  </div>
+                </div>
+
+                <div class="accordion-content">
+
+                  <div class="info-text">
+
+                    <div class="info-text-paragraph">
+                      Ota Melinda-palveluun yhteyttä, jos et löytänyt tältä sivulta vastausta kysymykseesi. Autamme
+                      mielellämme!
+                    </div>
+
+                    <div class="info-text-paragraph email-link">
+                      Lähetä viesti Melinda-palveluun sähköpostilla:
+                      <a href="mailto:melinda-posti@helsinki.fi">melinda-posti@helsinki.fi</a>
+                    </div>
+
+                    <div class="info-text-paragraph">
+                      Otamme mielellämme myös vastaan kaiken palautteen Melinda-sovelluksista, sillä pienetkin huomiot ja ehdotukset
+                      auttavat meitä Melinda-palvelun parantamisessa. Voit lähettää meille palautetta yllä mainittuun
+                      sähköpostiosoitteeseen.
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    {{> (shared "snackbars") }}
+
+  </div>
+
+  {{> (shared "footer") }}
+
+</div>
