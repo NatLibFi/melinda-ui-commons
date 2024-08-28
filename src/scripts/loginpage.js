@@ -4,7 +4,8 @@
 //                                                                            //
 //****************************************************************************//
 
-import {addPasswordVisibilityEventListeners, hidePassword} from './form.js';
+import {addToggleAccordionEventListeners, getAllAccordions, toggleAccordion} from './accordion.js';
+import {addPasswordVisibilityEventListeners} from './form.js';
 import {
   addTabsEventListeners, clearAllTabSelections, hideAllPanelContents,
   inactivateAllTabs, selectTab
@@ -27,6 +28,7 @@ function initializeLoginpage() {
   const passwordFormField = document.getElementById('passwordFormField');
 
   addPasswordVisibilityEventListeners(passwordFormField);
+  addToggleInstructionAccordionEventListeners();
 
   addTabsEventListeners(activateTab);
   clearAllTabSelections();
@@ -54,6 +56,11 @@ function initializeLoginpage() {
       hideAllPanelContents();
     }
 
+  }
+
+  function addToggleInstructionAccordionEventListeners() {
+    const instructionsAccordions = getAllAccordions(instructionsContent);
+    addToggleAccordionEventListeners(instructionsAccordions);
   }
 
 }
