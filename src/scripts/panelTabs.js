@@ -7,13 +7,13 @@
 import {eventHandled} from './uiUtils.js';
 
 
-export function addTabsEventListeners(activateTab) {
-  const panelTabs = getAllPanelTabs();
+export function addTabsEventListeners(activateTab, panel = null) {
+  const panelTabs = getAllPanelTabs(panel);
 
   panelTabs.forEach(tab => {
     tab.addEventListener('click', event => {
       eventHandled(event)
-      selectTab(tab);
+      selectTab(tab, panel);
       activateTab(tab); //implement this function in your application
     })
   })
@@ -21,8 +21,8 @@ export function addTabsEventListeners(activateTab) {
 }
 
 
-export function clearAllTabSelections() {
-  const tabs = getAllPanelTabs();
+export function clearAllTabSelections(panel) {
+  const tabs = getAllPanelTabs(panel);
 
   tabs.forEach(tab => {
     tab.classList.remove('current-tab');
@@ -31,7 +31,12 @@ export function clearAllTabSelections() {
 }
 
 
-export function getAllPanelTabs() {
+export function getAllPanelTabs(panelElement) {
+
+  if (panelElement) {
+    return panelElement.querySelectorAll('.panel-tab');
+  }
+
   return document.querySelectorAll('.panel-tab');
 }
 
@@ -60,7 +65,8 @@ export function inactivateAllTabs(inactivateTab) {
 }
 
 
-export function selectTab(tab) {
-  clearAllTabSelections();
+export function selectTab(tab, panel) {
+
+  clearAllTabSelections(panel);
   tab.classList.add('current-tab');
 }
