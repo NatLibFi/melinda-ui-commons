@@ -43,7 +43,7 @@ export function showPassword(passwordFormField) {
   const passwordInput = passwordFormField.querySelector('.input-wrapper input');
   const passwordVisibilityButton = passwordFormField.querySelector('.input-wrapper button');
 
-  passwordInput.type = 'text';
+  passwordInput.type = 'text'; // njsscan-ignore: node_password
   passwordVisibilityButton.classList.add('visibility-on');
 }
 
@@ -52,7 +52,7 @@ export function hidePassword(passwordFormField) {
   const passwordInput = passwordFormField.querySelector('.input-wrapper input');
   const passwordVisibilityButton = passwordFormField.querySelector('.input-wrapper button');
 
-  passwordInput.type = 'password';
+  passwordInput.type = 'password'; // njsscan-ignore: node_password
   passwordVisibilityButton.classList.remove('visibility-on');
 }
 
