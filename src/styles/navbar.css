@@ -172,7 +172,7 @@
 .primary-menu-bar {
   display: flex;
   flex-direction: row;
-  background-color: var(--color-primary-white);
+  background-color: var(--color-melinda-lightblue);
   padding: 12px;
   height: 66px;
 }
@@ -188,7 +188,7 @@
 }
 
 .logo-area:active {
-  outline-color: var(--color-primary-blue);
+  outline-color: var(--color-primary-white);
   outline-style: solid;
   outline-width: 0.2rem;
   outline-offset: 0.4rem
@@ -201,11 +201,11 @@
   justify-content: end;
   align-items: center;
   gap: 24px;
-  color: var(--color-primary-blue);
+  color: var(--color-primary-white);
 }
 
 .primary-navigation-links a .nav-link {
-  color: var(--color-primary-blue);
+  color: var(--color-primary-white);
 }
 
 .primary-menu-bar .nav-link:hover {
@@ -214,8 +214,8 @@
 }
 
 .primary-navigation-links .nav-link:active:not(.nav-link.link-disabled) {
-  color: var(--color-functional-blue);
-  outline-color: var(--color-primary-blue);
+  color: var(--color-primary-blue);
+  outline-color: var(--color-primary-white);
   outline-style: solid;
   outline-width: 0.2rem;
   outline-offset: .2rem;

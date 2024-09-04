@@ -93,6 +93,10 @@
   font-size: var(--font-size-input-small);
 }
 
+.form-field-container.select.small .input-wrapper span {
+  padding: 0px;
+}
+
 .form-field-container.select.small .input-wrapper span.material-icons {
   font-size: var(--font-size-icon-small);
 }

@@ -1,0 +1,195 @@
+/* ---------------------------------------------------------------------------- */
+/* Styles for login page                                                        */
+/* ---------------------------------------------------------------------------- */
+
+#loginPage {
+
+  /* Keep until color theme is designed */
+  button {
+    background-color: var(--color-primary-blue);
+    border-color: var(--color-primary-blue);
+  }
+
+  .panel-container {
+    min-width: 625px;
+    max-width: 875px;
+
+    .panel-content {
+
+      &#panelContentForm {
+
+        form#loginForm {
+
+          .form-container {
+
+            .form-content {
+
+              button#passwordVisibilityButton {
+                background-color: transparent;
+                border-color: transparent;
+
+                span {
+                  /* passing pointer events to parent element (button) */
+                  pointer-events: none;
+
+                  &:after {
+                    content: 'visibility_off';
+                  }
+                }
+
+                &.visibility-on {
+
+                  span:after {
+                    content: 'visibility';
+                  }
+
+                }
+
+                &:hover {
+                  background-color: var(--color-blue-100);
+                  border-color: var(--color-blue-100);
+
+                  span {
+                    color: var(--color-primary-white);
+                    background-color: var(--color-blue-100);
+                    border-color: var(--color-blue-100);
+                  }
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      &#panelContentInstructions {
+
+        .info {
+          flex-direction: column;
+          padding: 64px;
+          color: var(--color-blue-100);
+
+          .accordion {
+
+            .accordion-content {
+              flex-direction: column;
+            }
+
+          }
+
+          .info-text {
+            color: var(--color-primary-blue);
+            font-weight: 500;
+            line-height: 24px;
+
+            .info-text-ingress,
+            .info-text-paragraph {
+
+              &.outer-link,
+              &.email-link {
+
+                a {
+                  white-space: nowrap;
+
+                  &:hover {
+                    color: var(--color-primary-blue);
+                  }
+
+                }
+
+              }
+
+              &.outer-link {
+
+                a {
+                  text-decoration-line: underline;
+                  text-decoration-color: var(--color-functional-blue);
+                  text-decoration-style: dotted;
+                  text-decoration-thickness: 2px;
+                  text-underline-offset: 2px;
+
+
+                  &:hover {
+                    text-decoration-color: var(--color-primary-blue);
+                    text-decoration-style: solid;
+                  }
+
+                }
+
+              }
+
+              &.email-link {
+
+                a {
+                  text-decoration: none;
+
+                  &:hover {
+                    text-decoration: none;
+                  }
+
+                }
+
+              }
+
+            }
+
+            .info-text-ingress {
+              font-family: var(--font-family-headline);
+              font-size: var(--font-size-headline-medium);
+              font-weight: var(--font-weight-headline);
+              line-height: var(--font-line-height-headline-medium);
+              color: var(--color-primary-blue);
+              padding-bottom: 40px;
+
+              &.outer-link,
+              &.email-link {
+
+                a {
+                  font-size: var(--font-size-headline-medium);
+
+                  span.open-in-new {
+                    font-size: 18px;
+                  }
+
+                }
+
+              }
+
+            }
+
+            .info-text-paragraph {
+              font-family: var(--font-family-content);
+              font-size: 18px;
+              padding-bottom: 16px;
+
+              &.outer-link,
+              &.email-link {
+
+                a {
+                  font-size: 18px;
+
+                  span.open-in-new {
+                    font-size: 16px;
+                  }
+
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}

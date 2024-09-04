@@ -4,23 +4,14 @@
 
 <div id="bodywrapper" class="viewport-full flex-column">
 
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Navigation bar -->
   {{> (shared "navbar") }}
 
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Progress bar -->
   <div id="progressbar" class="progress-bar-inactive grey-20"></div>
 
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Application "tabs" -->
   <div id="root">
 
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Page not found tab -->
     <div id="pageNotFound">
 
-      <!-- ------------------------------------------------------------------------ -->
       <!-- General info about page not found and contact information -->
       <div id="pageNotFoundInfo" class="flex-column">
 
@@ -29,6 +20,13 @@
             sentiment_dissatisfied
           </span>
         </h3>
+
+        <div id="goBack">
+          <button class="icon-on-left">
+            <span class="material-icons">undo</span>
+            Siirry takaisin edelliselle sivulle
+          </button>
+        </div>
 
         <div class="homepage-contact-and-help">
 
@@ -57,8 +55,8 @@
 
                 <div class="info-contact-and-help-list-items">
 
-                  <a href="https://www.kiwi.fi/x/UoL9Ag" target="_blank"
-                    rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
+                  <a href="https://www.kiwi.fi/x/UoL9Ag" target="_blank" rel="noopener noreferrer"
+                    title="Avautuu uuteen välilehteen">
                     <div class="contact-and-help-list-item">
                       <div class="list-item-icon">
                         <span class="material-icons">
@@ -238,15 +236,12 @@
 
       </div>
 
-      <!-- For displaying info messages for user -->
       {{> (shared "snackbars") }}
 
     </div>
 
   </div>
 
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Footer -->
   {{> (shared "footer") }}
 
 </div>

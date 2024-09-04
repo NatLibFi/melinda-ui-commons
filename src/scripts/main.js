@@ -1,7 +1,11 @@
+import './accordion.js';
 import './combobox.js'
 import './common.js';
+import './form.js';
 import './uiUtils.js';
 import './elements.js';
 import './progressbar.js';
 import './snackbar.js';
 import './marcRecordUi.js';
+import './panelTabs.js';
+import './toolbar.js';

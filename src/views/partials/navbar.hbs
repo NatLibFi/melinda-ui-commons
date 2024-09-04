@@ -1,18 +1,20 @@
-<!-- [NavBar partial (navbar.hbs)] -->
+<!-- [Navigation bar partial (navbar.hbs)] -->
 
 <script type="module" src={{ shared "/scripts/navbar.js" }}></script>
 
 <div id="navbar" class="navbar">
 
-  <!-- Navbar contains two menu bars, primary and secondary -->
+  <!-- Navbar can contain two menu bars, primary and secondary -->
+  <!-- Primary menu bar contains Melinda logo and primary navigation links -->
+  <!-- Secondary menu bar contains secondary navigation links: path for navigation (faux breadcrumb) and app selection -->
+
   <div class="navbar-menu-bars">
 
-    <!-- Primary menu bar contains Melinda logo and primary navigation links -->
     <div class="primary-menu-bar">
 
       <div class="logo-area">
         <a href="/">
-          <img src={{ shared "/images/logo-melinda-text-horizontal-color-cropped.png" }}>
+          <img src={{ shared "/images/logo-melinda-text-horizontal-white-cropped.png" }}>
         </a>
       </div>
 
@@ -45,24 +47,24 @@
 
         <!-- Conditional rendering of user's name and the account menu dropdown  -->
         {{#if username}}
-        <!-- user profile dropdown menu button -->
-        <div id="accountMenu" class="account-menu navbar-dropdown-button">
-          <div class="nav-link">
-            <div class="nav-link-icon">
-              <span class="material-icons">person_outline</span>
-            </div>
-            <div id="username" class="nav-link-text">
-              <!-- Display user name here after login -->
-              {{username}}
-            </div>
-            <div class="nav-link-icon expand-more show">
-              <span class="material-icons">expand_more</span>
-            </div>
-            <div class="nav-link-icon expand-less">
-              <span class="material-icons">expand_less</span>
+          <!-- user profile dropdown menu button -->
+          <div id="accountMenu" class="account-menu navbar-dropdown-button">
+            <div class="nav-link">
+              <div class="nav-link-icon">
+                <span class="material-icons">person_outline</span>
+              </div>
+              <div id="username" class="nav-link-text">
+                <!-- Display user name here after login -->
+                {{username}}
+              </div>
+              <div class="nav-link-icon expand-more show">
+                <span class="material-icons">expand_more</span>
+              </div>
+              <div class="nav-link-icon expand-less">
+                <span class="material-icons">expand_less</span>
+              </div>
             </div>
           </div>
-        </div>
         {{/if}}
 
         <!-- ON HOLD: logout as separate button in primary navigation bar  -->
@@ -76,61 +78,6 @@
               </div>
             </div>
  -->
-
-      </div>
-
-    </div>
-
-    <!-- Secondary menu bar contains secondary navigation links: path for navigation (faux breadcrumb) and app selection -->
-    <div class="secondary-menu-bar">
-
-      <div class="secondary-navigation-links">
-
-        <!-- breadcrumb-->
-        <div class="app-navigation">
-
-          <!-- link to home -->
-          <a href="/home" class="link-home tooltip" tooltip-text="Etusivulle">
-            <div class="nav-link">
-              <div class="nav-link-icon">
-                <span class="material-icons">home</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Conditional rendering of page name and address  -->
-          {{#if location}}
-          <div class="nav-slash">
-            /
-          </div>
-
-          <!-- link to current app -->
-          <a href={{location.link}} id="appLink" class="link-app">
-            <div class="nav-link app-name">
-              <div id="appName" class="nav-link-text">
-                <!-- Displays current app's name here -->
-                {{location.name}}
-              </div>
-            </div>
-          </a>
-          {{/if}}
-
-        </div>
-
-        <!-- filler between breadcrumb and app selection menu -->
-        <div class="flex-fill flex-column"></div>
-
-        {{#unless location}}
-        <!-- only if app is not found, show this go back functionality instead of app name -->
-        <div id="goBack" class="nav-link">
-          <div class="nav-link-icon">
-            <span class="material-icons">undo</span>
-          </div>
-          <div class="nav-link-text">
-            EDELLINEN SIVU
-          </div>
-        </div>
-        {{/unless}}
 
       </div>
 
