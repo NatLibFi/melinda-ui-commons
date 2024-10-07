@@ -20,7 +20,6 @@
 
 .navbar {
   display: flex;
-  flex-grow: 1;
   flex-direction: column;
   font-family: var(--font-family-content);
 }
