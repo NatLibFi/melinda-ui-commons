@@ -3,7 +3,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: baseline;
+  align-items: center;
   margin-top: 0.25em;
   margin-bottom: 0.25em;
   background-color: var(--color-primary-white);
