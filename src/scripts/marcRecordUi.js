@@ -87,7 +87,7 @@ export function showRecordInDiv(record, recordDiv) {
     addTag(row, field.tag);
 
     // NB! Note that the current implementation will add a non-breaking space for indicatorless fields.
-    addInd(row, indicator1, indicator2);
+    addInd(row);
 
     if (field.value) {
       addValue(row, field.value);
@@ -106,10 +106,10 @@ export function showRecordInDiv(record, recordDiv) {
       row.appendChild(makeSpan('tag', value));
     }
 
-    function addInd(row, ind1, ind2) {
+    function addInd(row) {
       const span = makeSpan('inds');
-      add(span, ind1, 'ind1');
-      add(span, ind2, 'ind2');
+      add(span, field.ind1, 'ind1');
+      add(span, field.ind2, 'ind2');
       row.appendChild(span);
 
       function add(span, ind, className = 'ind') {
