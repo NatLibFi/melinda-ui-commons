@@ -77,18 +77,7 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
 
     addTag(row, field.tag);
 
-    //empty indicator execption handling
-    let indicator1 = field.ind1;
-    let indicator2 = field.ind2;
-    const emptyIndicator = '_';
-    const eitherIsEmpty = indicator1 === ' ' || indicator2 === ' ';
-    const bothAreEmpty = indicator1 === ' ' && indicator2 === ' ';
-
-    if (!bothAreEmpty && eitherIsEmpty) {
-      indicator1 = field.ind1 === ' ' ? emptyIndicator : field.ind1;
-      indicator2 = field.ind2 === ' ' ? emptyIndicator : field.ind2;
-    }
-
+    // NB! Note that the current implementation will add a non-breaking space for indicatorless fields.
     addInd(row, indicator1, indicator2);
 
     if (field.value) {
@@ -115,8 +104,21 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
       row.appendChild(span);
 
       function add(span, ind, className = 'ind') {
-        const value = ind && ind.trim() || '&nbsp;';
+        // Rather hackily a <span class="${className}">&nbsp;</span> is created for non-indicator fields...
+        const value = mapIndicatorToValue(ind);
         span.appendChild(makeSpan(className, null, value));
+      }
+
+      function mapIndicatorToValue(ind) {
+        if ( ind ) {
+          // '#' is the standard way to represent an empty indicator.
+          if ( ind === ' ') {
+            return '#';
+          }
+          return ind;
+        }
+        // For indicatorless fields (such as LDR and 00X) return a non-breaking space
+        return '&nbsp;';
       }
     }
 
