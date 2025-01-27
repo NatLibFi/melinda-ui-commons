@@ -19,10 +19,10 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
   // NB! As seen by iffy #Record usage we have used the same id more than once...
   // To alleviate the problem I (NV) have split the function into two parts
   const recordDiv = document.querySelector(`#${recordDivName} .record-merge-panel #${dest} #Record`);
-  return showRecordInDiv(record, recordDiv);
+  return showRecordInDiv(record, recordDiv, decorator);
 }
 
-export function showRecordInDiv(record, recordDiv) {
+export function showRecordInDiv(record, recordDiv, decorator = {}) {
   if (!recordDiv) {
     return;
   }
