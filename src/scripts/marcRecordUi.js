@@ -74,6 +74,10 @@ export function marcFieldToDiv(recordDiv, field, decorator = null) {
   const row = document.createElement('div');
   row.classList.add('row');
 
+  if (decorator?.whiteSpace) {
+    row.style.whiteSpace = decorator.whiteSpace;
+  }
+
   if (field.uuid) {
     row.id = field.uuid;
   }
@@ -81,7 +85,7 @@ export function marcFieldToDiv(recordDiv, field, decorator = null) {
   if (decorator?.decorateField) {
     decorator.decorateField(row, field);
   }
-  if (decorator?.onClick) {
+  if (decorator?.onClick) { // add keydown or input event?
     row.addEventListener('click', event => decorator.onClick(event, field));
   }
 
@@ -144,7 +148,7 @@ export function marcFieldToDiv(recordDiv, field, decorator = null) {
   }
 
   function makeSubfieldCode(code, index = 0) {
-    if (decorator.subfieldCodePrefix) {
+    if (decorator?.subfieldCodePrefix) {
       return makeSpan('code', `${decorator.subfieldCodePrefix}${code}`, null, index);
     }
     return makeSpan('code', code, null, index);
