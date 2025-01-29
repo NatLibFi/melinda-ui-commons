@@ -48,13 +48,13 @@ export function showRecordInDiv(record, recordDiv, decorator = {}) {
   }
 
   if (record.leader) {
-    addField(recordDiv, {tag: 'LDR', value: record.leader});
+    marcFieldToDiv(recordDiv, {tag: 'LDR', value: record.leader});
   }
 
   if (record.fields) {
     for (const field of record.fields) {
       const content = decorator?.getContent ? decorator.getContent(field) : field;
-      addField(recordDiv, content, decorator);
+      marcFieldToDiv(recordDiv, content, decorator);
     }
   }
 
@@ -66,94 +66,93 @@ export function showRecordInDiv(record, recordDiv, decorator = {}) {
     return 'Tapahtui virhe';
   }
 
+}
 
-  //-----------------------------------------------------------------------------
-  function addField(div, field, decorator = null) {
-    //console.log(field)
-    const row = document.createElement('div');
-    row.classList.add('row');
+//-----------------------------------------------------------------------------
+export function marcFieldToDiv(recordDiv, field, decorator = null) {
+  //console.log(field)
+  const row = document.createElement('div');
+  row.classList.add('row');
 
-    if (field.uuid) {
-      row.id = field.uuid;
-    }
+  if (field.uuid) {
+    row.id = field.uuid;
+  }
 
-    if (decorator?.decorateField) {
-      decorator.decorateField(row, field);
-    }
-    if (decorator?.onClick) {
-      row.addEventListener('click', event => decorator.onClick(event, field));
-    }
+  if (decorator?.decorateField) {
+    decorator.decorateField(row, field);
+  }
+  if (decorator?.onClick) {
+    row.addEventListener('click', event => decorator.onClick(event, field));
+  }
 
-    addTag(row, field.tag);
+  addTag(row, field.tag);
 
-    // NB! Note that the current implementation will add a non-breaking space for indicatorless fields.
-    addInd(row);
+  // NB! Note that the current implementation will add a non-breaking space for indicatorless fields.
+  addInd(row);
 
-    if (field.value) {
-      addValue(row, field.value);
-    } else if (field.subfields) {
-      for (const [index, subfield] of field.subfields.entries()) {
-        addSubfield(row, subfield, index);
-      }
-    }
-
-    div.appendChild(row);
-    return row;
-
-    //---------------------------------------------------------------------------
-
-    function addTag(row, value) {
-      row.appendChild(makeSpan('tag', value));
-    }
-
-    function addInd(row) {
-      const span = makeSpan('inds');
-      add(span, field.ind1, 'ind1');
-      add(span, field.ind2, 'ind2');
-      row.appendChild(span);
-
-      function add(span, ind, className = 'ind') {
-        // Rather hackily a <span class="${className}">&nbsp;</span> is created for non-indicator fields...
-        const value = mapIndicatorToValue(ind);
-        span.appendChild(makeSpan(className, null, value));
-      }
-
-      function mapIndicatorToValue(ind) {
-        if ( ind ) {
-          // '#' is the standard way to represent an empty indicator.
-          if ( ind === ' ') {
-            return '#';
-          }
-          return ind;
-        }
-        // For indicatorless fields (such as LDR and 00X) return a non-breaking space
-        return '&nbsp;';
-      }
-    }
-
-    function addValue(row, value) {
-      row.appendChild(makeSpan('value', value));
-    }
-
-    function addSubfield(row, subfield, index = 0) {
-      const span = makeSpan('subfield');
-      span.appendChild(makeSubfieldCode(subfield.code, index));
-      span.appendChild(makeSubfieldData(subfield.value, index));
-      row.appendChild(span);
-    }
-
-    function makeSubfieldCode(code, index = 0) {
-      if (decorator.subfieldCodePrefix) {
-        return makeSpan('code', `${decorator.subfieldCodePrefix}${code}`, null, index);
-      }
-      return makeSpan('code', code, null, index);
-    }
-
-    function makeSubfieldData(value, index = 0) {
-      return makeSpan('value', value, null, index);
+  if (field.value) {
+    addValue(row, field.value);
+  } else if (field.subfields) {
+    for (const [index, subfield] of field.subfields.entries()) {
+      addSubfield(row, subfield, index);
     }
   }
 
+  recordDiv.appendChild(row);
+  return row;
+
+  //---------------------------------------------------------------------------
+
+  function addTag(row, value) {
+    row.appendChild(makeSpan('tag', value));
+  }
+
+  function addInd(row) {
+    const span = makeSpan('inds');
+    add(span, field.ind1, 'ind1');
+    add(span, field.ind2, 'ind2');
+    row.appendChild(span);
+
+    function add(span, ind, className = 'ind') {
+      // Rather hackily a <span class="${className}">&nbsp;</span> is created for non-indicator fields...
+      const value = mapIndicatorToValue(ind);
+      span.appendChild(makeSpan(className, null, value));
+    }
+
+    function mapIndicatorToValue(ind) {
+      if ( ind ) {
+        // '#' is the standard way to represent an empty indicator.
+        if ( ind === ' ') {
+          return '#';
+        }
+        return ind;
+      }
+      // For indicatorless fields (such as LDR and 00X) return a non-breaking space
+      return '&nbsp;';
+    }
+  }
+
+  function addValue(row, value) {
+    row.appendChild(makeSpan('value', value));
+  }
+
+  function addSubfield(row, subfield, index = 0) {
+    const span = makeSpan('subfield');
+    span.appendChild(makeSubfieldCode(subfield.code, index));
+    span.appendChild(makeSubfieldData(subfield.value, index));
+    row.appendChild(span);
+  }
+
+  function makeSubfieldCode(code, index = 0) {
+    if (decorator.subfieldCodePrefix) {
+      return makeSpan('code', `${decorator.subfieldCodePrefix}${code}`, null, index);
+    }
+    return makeSpan('code', code, null, index);
+  }
+
+  function makeSubfieldData(value, index = 0) {
+    return makeSpan('value', value, null, index);
+  }
 
   //-----------------------------------------------------------------------------
   function makeSpan(className, text, html, index = 0) {
@@ -167,5 +166,5 @@ export function showRecordInDiv(record, recordDiv, decorator = {}) {
     }
     return span;
   }
-
 }
+
