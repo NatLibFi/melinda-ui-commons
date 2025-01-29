@@ -143,6 +143,9 @@ export function showRecordInDiv(record, recordDiv, decorator = {}) {
     }
 
     function makeSubfieldCode(code, index = 0) {
+      if (decorator.subfieldCodePrefix) {
+        return makeSpan('code', `${decorator.subfieldCodePrefix}${code}`, null, index);
+      }
       return makeSpan('code', code, null, index);
     }
 
