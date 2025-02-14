@@ -9,6 +9,14 @@
 //                                                                            //
 //****************************************************************************//
 
+// Settings:
+// - decorateField: no idea, maybe someone uses this, predates me (=NV),
+// - editableRecord: undefined/function(record), by default record is *NOT* editable.
+// - editableField: undefined/function(field, boolean = false), by default field is *NOT* editable.
+// - onClick: add eventListerer to a field. NOT used by me (NV) on editors. As there are way more listeners, I'm currently keeping them on the app side.
+// - subfieldPrefix: undefined/string, default is nothing, editor needs a non-empty value. NV uses '$$' as Aleph converts '$$' to a subfield separator anyways.
+// - uneditableFieldBackgroundColor: undefined/colour-string, undefined changes nothing
+// - whitespace - not mine
 
 export function showRecord(record, dest, settings = {}, recordDivName = 'muuntaja', logRecord = true) {
   if (logRecord) {
@@ -17,7 +25,7 @@ export function showRecord(record, dest, settings = {}, recordDivName = 'muuntaj
 
   // Get div to fill in the fields
   // NB! As seen by iffy #Record usage we have used the same id more than once...
-  // To alleviate the problem I (NV) have split the function into two parts
+  // To alleviate the problem I (NV) have split the function into two parts.
   const recordDiv = document.querySelector(`#${recordDivName} .record-merge-panel #${dest} #Record`);
   return showRecordInDiv(record, recordDiv, settings);
 }
@@ -31,6 +39,8 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
   if (!record) {
     return;
   }
+
+  const recordIsEditable = settings?.editableRecord ? settings.editableRecord(record) : false;
 
   if (record.error) {
     const error = document.createElement('div');
@@ -48,13 +58,16 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
   }
 
   if (record.leader) {
-    marcFieldToDiv(recordDiv, {tag: 'LDR', value: record.leader});
+    const leaderAsField = {tag: 'LDR', value: record.leader};
+    const leaderIsEditable = settings?.editableField ? settings.editableField(leaderAsField, recordIsEditable) : false;
+    marcFieldToDiv(recordDiv, leaderAsField, settings, leaderIsEditable);
   }
 
   if (record.fields) {
     for (const field of record.fields) {
+      const fieldIsEditable = settings?.editableField ? settings.editableField(field, recordIsEditable) : false;
       const content = settings?.getContent ? settings.getContent(field) : field;
-      marcFieldToDiv(recordDiv, content, settings);
+      marcFieldToDiv(recordDiv, content, settings, fieldIsEditable);
     }
   }
 
@@ -69,7 +82,7 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
 }
 
 //-----------------------------------------------------------------------------
-export function marcFieldToDiv(recordDiv, field, settings = null) {
+export function marcFieldToDiv(recordDiv, field, settings = null, fieldIsEditable = false) {
   //console.log(field)
   const row = document.createElement('div');
   row.classList.add('row');
@@ -88,6 +101,16 @@ export function marcFieldToDiv(recordDiv, field, settings = null) {
   if (settings?.onClick) { // add keydown or input event?
     row.addEventListener('click', event => settings.onClick(event, field));
   }
+
+  if (fieldIsEditable) {
+    row.setAttribute('contentEditable', true);
+  }
+  else {
+    if (settings?.uneditableFieldBackgroundColor) {
+      row.style.backgroundColor = settings.uneditableFieldBackgroundColor;
+    }
+  }
+
 
   addTag(row, field.tag);
 
