@@ -10,7 +10,7 @@
 //****************************************************************************//
 
 
-export function showRecord(record, dest, decorator = {}, recordDivName = 'muuntaja', logRecord = true) {
+export function showRecord(record, dest, settings = {}, recordDivName = 'muuntaja', logRecord = true) {
   if (logRecord) {
     console.log('Show Record:', record); /* eslint-disable-line no-console */
   }
@@ -19,10 +19,10 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
   // NB! As seen by iffy #Record usage we have used the same id more than once...
   // To alleviate the problem I (NV) have split the function into two parts
   const recordDiv = document.querySelector(`#${recordDivName} .record-merge-panel #${dest} #Record`);
-  return showRecordInDiv(record, recordDiv, decorator);
+  return showRecordInDiv(record, recordDiv, settings);
 }
 
-export function showRecordInDiv(record, recordDiv, decorator = {}) {
+export function showRecordInDiv(record, recordDiv, settings = {}) {
   if (!recordDiv) {
     return;
   }
@@ -53,8 +53,8 @@ export function showRecordInDiv(record, recordDiv, decorator = {}) {
 
   if (record.fields) {
     for (const field of record.fields) {
-      const content = decorator?.getContent ? decorator.getContent(field) : field;
-      marcFieldToDiv(recordDiv, content, decorator);
+      const content = settings?.getContent ? settings.getContent(field) : field;
+      marcFieldToDiv(recordDiv, content, settings);
     }
   }
 
@@ -69,24 +69,24 @@ export function showRecordInDiv(record, recordDiv, decorator = {}) {
 }
 
 //-----------------------------------------------------------------------------
-export function marcFieldToDiv(recordDiv, field, decorator = null) {
+export function marcFieldToDiv(recordDiv, field, settings = null) {
   //console.log(field)
   const row = document.createElement('div');
   row.classList.add('row');
 
-  if (decorator?.whiteSpace) {
-    row.style.whiteSpace = decorator.whiteSpace;
+  if (settings?.whiteSpace) {
+    row.style.whiteSpace = settings.whiteSpace;
   }
 
   if (field.uuid) {
     row.id = field.uuid;
   }
 
-  if (decorator?.decorateField) {
-    decorator.decorateField(row, field);
+  if (settings?.decorateField) {
+    settings.decorateField(row, field);
   }
-  if (decorator?.onClick) { // add keydown or input event?
-    row.addEventListener('click', event => decorator.onClick(event, field));
+  if (settings?.onClick) { // add keydown or input event?
+    row.addEventListener('click', event => settings.onClick(event, field));
   }
 
   addTag(row, field.tag);
@@ -148,8 +148,8 @@ export function marcFieldToDiv(recordDiv, field, decorator = null) {
   }
 
   function makeSubfieldCode(code, index = 0) {
-    if (decorator?.subfieldCodePrefix) {
-      return makeSpan('code', `${decorator.subfieldCodePrefix}${code}`, null, index);
+    if (settings?.subfieldCodePrefix) {
+      return makeSpan('code', `${settings.subfieldCodePrefix}${code}`, null, index);
     }
     return makeSpan('code', code, null, index);
   }
