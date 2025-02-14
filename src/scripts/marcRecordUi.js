@@ -40,6 +40,10 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
     return;
   }
 
+  if (!settings.editableRecord) {
+    console.log("SHOW ONLY! NO editableRecord() FUNCTION!");
+  }
+
   const recordIsEditable = settings?.editableRecord ? settings.editableRecord(record) : false;
 
   if (record.error) {
