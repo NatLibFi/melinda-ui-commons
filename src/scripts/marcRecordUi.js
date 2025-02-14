@@ -200,7 +200,7 @@ export function marcFieldToDiv(recordDiv, field, settings = null, fieldIsEditabl
   }
 }
 
-function isDataFieldTag(str = '') {
+export function isDataFieldTag(str = '') {
   const len = str.length;
   if (len < 3) {
     return true; // Everything is a datafield by default
@@ -269,7 +269,7 @@ function stringToMarcField(str, subfieldCodePrefix = '$$') { // subfieldCodePref
   return {tag, ind1, ind2, subfields, error: false};
 }
 
-function convertDataToSubfields(data, separator = '$$') { // move to melinda-ui-commons
+function convertDataToSubfields(data, separator = '$$') {
   if (separator.length < 1) {
     return {subfields: [], error: 'Missing subfield separator string'};
   }
@@ -315,7 +315,8 @@ export function resetFieldElem(elem, newValueAsString) {
 
 
 function marcFieldToHtml(elem, field) {
-  // aped from melinda-ui-commons marcFieldToDiv, move this there eventually... see if this can be removed...
+  // aped from melinda-ui-commons marcFieldToDiv (a text only alternative)...
+  // see if this can be removed...
   const tag = `<span class="tag">${field.tag.replace(/#/g, ' ') || ''}</span>`;
   const indicators = indicatorsToHtml(field);
   const data = dataToHtml(field);
