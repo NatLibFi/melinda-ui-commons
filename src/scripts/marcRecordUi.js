@@ -294,7 +294,7 @@ function convertDataToSubfields(data, separator = '$$') {
 
   const emptySubfieldIndex = subfields.findIndex((sf, i) => sf.length < 2); // 1st char is code and the rest is data
   if (emptySubfieldIndex > -1) {
-    return{subfields: [], error: `Subfield #${emptySubfieldIndex+1} (${artikkeliEditorSettings.subfieldCodePrefix}${subfields[emptySubfieldIndex].substring(0, 1)}) does not contain any data`};
+    return{subfields: [], error: `Subfield #${emptySubfieldIndex+1} (${separator}${subfields[emptySubfieldIndex].substring(0, 1)}) does not contain any data`};
   }
 
   return { subfields: subfields.map(sf => stringToSubfield(sf)), error: undefined};
