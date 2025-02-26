@@ -10,11 +10,11 @@
 //****************************************************************************//
 
 // Settings:
-// - decorateField: no idea, maybe someone uses this, predates me (=NV),
+// - decorateField: function,no idea what this is used for, maybe someone uses this, predates me (=NV),
 // - editableRecord: undefined/function(record), by default record is *NOT* editable.
 // - editableField: undefined/function(field, boolean = false), by default field is *NOT* editable.
 // - onClick: add eventListerer to a field. NOT used by me (NV) on editors. As there are way more listeners, I'm currently keeping them on the app side.
-// - subfieldPrefix: undefined/string, default is nothing, editor needs a non-empty value. NV uses '$$' as Aleph converts '$$' to a subfield separator anyways.
+// - subfieldCodePrefix: undefined/string, default is nothing, editor needs a non-empty value. NV uses '$$' as Aleph converts '$$' to a subfield separator anyways.
 // - uneditableFieldBackgroundColor: undefined/colour-string, undefined changes nothing
 // - whitespace - not mine
 
@@ -87,9 +87,10 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
 }
 
 //-----------------------------------------------------------------------------
-export function marcFieldToDiv(recordDiv, field, settings = null, fieldIsEditable = false) {
+export function marcFieldToDiv(recordDiv, field, settings = null, fieldIsEditable = false, altDocument = undefined) {
+  const myDocument = altDocument || document;
   //console.log(field)
-  const row = document.createElement('div');
+  const row = myDocument.createElement('div');
   row.classList.add('row');
 
   if (settings?.whiteSpace) {
@@ -120,14 +121,14 @@ export function marcFieldToDiv(recordDiv, field, settings = null, fieldIsEditabl
   addTag(row, field.tag);
 
   // NB! Note that the current implementation will add a non-breaking space for indicatorless fields.
-  addInd(row);
+  addIndicators(row);
 
-  if (field.value) {
-    addValue(row, field.value);
-  } else if (field.subfields) {
+  if (field.subfields) {
     for (const [index, subfield] of field.subfields.entries()) {
       addSubfield(row, subfield, index);
     }
+  } else {
+    addValue(row, field.value);
   }
 
   recordDiv.appendChild(row);
@@ -139,38 +140,51 @@ export function marcFieldToDiv(recordDiv, field, settings = null, fieldIsEditabl
     row.appendChild(makeSpan('tag', value));
   }
 
-  function addInd(row) {
+  function addIndicators(row) {
     const span = makeSpan('inds');
-    add(span, field.ind1, 'ind1');
-    add(span, field.ind2, 'ind2');
+    if (field.ind1) { // Field in editor might be incomplete and lack indicators
+      addIndicator(span, field.ind1, 'ind1');
+      if (field.ind2) {
+        addIndicator(span, field.ind2, 'ind2');
+      }
+    }
     row.appendChild(span);
 
-    function add(span, ind, className = 'ind') {
+    function addIndicator(span, ind, className = 'ind') {
       // Rather hackily a <span class="${className}">&nbsp;</span> is created for non-indicator fields...
       const value = mapIndicatorToValue(ind);
       span.appendChild(makeSpan(className, null, value));
     }
 
     function mapIndicatorToValue(ind) { // field -> web page
-      if ( ind ) {
-        // '#' is the standard way to represent an empty indicator.
-        if ( ind === ' ') {
-          return '#';
-        }
-        return ind;
+      if (!isDataFieldTag(field.tag)) {
+        return '&nbsp;'; // ' ' or &nbsp;?
       }
-      // For indicatorless fields (such as LDR and 00X) return a non-breaking space
-      return '&nbsp;';
+      if ( ind === ' ') {
+        return '#'; // '#' is the standard way to represent an empty indicator.
+      }
+      return ind;
     }
   }
 
   function addValue(row, value) {
+    const normalizedValue  = normalizeValue();
     row.appendChild(makeSpan('value', value));
+
+    function normalizeValue() {
+      if (!value) {
+        return '';
+      }
+      if (!isDataFieldTag(field.tag)) {
+        return `<span class="value">${field.value.replace(/ /gu, '#')}</span>`;
+      }
+      return value;
+    }
   }
 
   function addSubfield(row, subfield, index = 0) {
     const span = makeSpan('subfield');
-    span.appendChild(makeSubfieldCode(subfield.code, index));
+    span.appendChild(makeSubfieldCode(`${subfield.code}`, index));
     span.appendChild(makeSubfieldData(subfield.value, index));
     row.appendChild(span);
   }
@@ -188,7 +202,7 @@ export function marcFieldToDiv(recordDiv, field, settings = null, fieldIsEditabl
 
   //-----------------------------------------------------------------------------
   function makeSpan(className, text, html, index = 0) {
-    const span = document.createElement('span');
+    const span = myDocument.createElement('span');
     span.setAttribute('class', className);
     span.setAttribute('index', index);
     if (text) {
@@ -304,19 +318,19 @@ function convertDataToSubfields(data, separator = '$$') {
   }
 }
 
-export function resetFieldElem(elem, newValueAsString) {
+export function resetFieldElem(elem, newValueAsString, settings = {}, editable = true) {
   const marcField = stringToMarcField(newValueAsString.replace(/\n/gu, ' ')); // No idea why /\s/ did not work,,,
+  marcFieldToDiv(elem, marcField, settings, editable);
 
-  const fieldAsHtml = marcFieldToHtml(elem, marcField); // add (...settings, true)...
-
-  elem.innerHTML = fieldAsHtml;
+  //const fieldAsHtml = marcFieldToHtml(elem, marcField); // add (...settings, true)...
+  //elem.innerHTML = fieldAsHtml;
 }
 
 
-
+/*
 function marcFieldToHtml(elem, field) {
-  // aped from melinda-ui-commons marcFieldToDiv (a text only alternative)...
-  // see if this can be removed...
+  // Aped from melinda-ui-commons marcFieldToDiv (this is a text-only alternative)...
+  // See if we can eventually remove this...
   const tag = `<span class="tag">${field.tag.replace(/#/g, ' ') || ''}</span>`;
   const indicators = indicatorsToHtml(field);
   const data = dataToHtml(field);
@@ -362,3 +376,4 @@ function marcFieldToHtml(elem, field) {
     return `<span>${subfieldsToHtml}</span>`;
   }
 }
+*/
