@@ -1,0 +1,7 @@
+{
+  "description": "Convert a control field to HTML",
+  "only": false,
+  "decorator": {
+    "subfieldCodePrefix": "$$"
+  }
+}

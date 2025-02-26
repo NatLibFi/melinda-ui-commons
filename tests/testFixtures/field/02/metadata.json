@@ -1,0 +1,7 @@
+{
+  "description": "Convert an incomplete (partial tag only) datafield to HTML",
+  "only": false,
+  "decorator": {
+    "subfieldCodePrefix": "$$"
+  }
+}
