@@ -1,1 +1,5 @@
-{ "tag": "500", "ind1": " " }
+{
+    "tag": "500",
+    "ind1": " ",
+    "error": "Incomplete field 500"
+}

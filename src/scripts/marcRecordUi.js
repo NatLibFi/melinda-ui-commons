@@ -144,9 +144,9 @@ export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settin
 
   function addIndicators(row) {
     const span = makeSpan('inds');
-    if (field.ind1) { // Field in editor might be incomplete and lack indicators
+    if (field.ind1 || field.value) { // Field in editor might be incomplete and lack indicators
       addIndicator(span, field.ind1, 'ind1');
-      if (field.ind2) {
+      if (field.ind2 || field.value) {
         addIndicator(span, field.ind2, 'ind2');
       }
     }
@@ -235,7 +235,7 @@ export function isDataFieldTag(str = '') {
 function normalizeIndicator(ind, tag) { // convert data from web page to marc
   //console.log(`Process indicator '${ind}'`);
   if (!isDataFieldTag(tag)) { // tag.match(/^(?:00[1-9]|FMT|LDR)$/) ) {
-      return '&nbsp;';
+      return ' ';
   }
   if ( ind.match(/^[0-9]$/u) ) {
       return ind;
@@ -251,7 +251,7 @@ export function getEditorFields(editorElementId = 'Record') {
   return [...parentElem.children].map(div => stringToMarcField(div.textContent)); // converts children into an editable array
 }
 
-function stringToMarcField(str, subfieldCodePrefix = '$$') { // subfieldCodePrefix should come from settings
+export function stringToMarcField(str, subfieldCodePrefix = '$$') { // subfieldCodePrefix should come from settings, should it? (it's not that obvious here)
   //console.log(`String2field: '${str}'`);
   const len = str.length;
   if (len <= 3) {
@@ -262,17 +262,17 @@ function stringToMarcField(str, subfieldCodePrefix = '$$') { // subfieldCodePref
 
   const ind1 = normalizeIndicator(str.substring(3, 4), tag);
   if ( len === 4) {
-    return {tag, ind1, error: `incomplete field ${tag}`}; //, ind2: ' '};
+    return {tag, ind1, error: `Incomplete field ${tag}`}; //, ind2: ' '};
   }
 
   const ind2 = normalizeIndicator(str.substring(4, 5), tag);
   if ( len === 5) {
-    return {tag, ind1, ind2, error: `incomplete field ${tag}`};
+    return {tag, ind1, ind2, error: `Incomplete field ${tag}`};
   }
 
   const rest = str.substring(5);
   if (!isDataFieldTag(tag)) {
-    return {tag, ind1, ind2, value: rest.replace('#', ' '), error: rest.length <= 5 ? `incomplete field ${tag}` : false};
+    return {tag, ind1, ind2, value: rest.replace(/#/gu, ' '), error: rest.length <= 5 ? `Incomplete field ${tag}` : false};
   }
 
   const {subfields, error} = convertDataToSubfields(rest, subfieldCodePrefix);
@@ -327,6 +327,20 @@ export function resetFieldElem(elem, newValueAsString, settings = {}, editable =
 
   //const fieldAsHtml = marcFieldToHtml(elem, marcField); // add (...settings, true)...
   //elem.innerHTML = fieldAsHtml;
+}
+
+
+export function filterField(field) {
+  // Field contains field.error (for debugging and error messages) and control fields have fake indicators (for UI).
+  // Strip these when a) converting the whole record, or b) testing.
+  if (isDataFieldTag(field.tag)) {
+    return {tag: field.tag, ind1: field.ind1, ind2: field.ind2, subfields: field.subfields.map(sf => filterSubfields(sf))};
+  }
+  return {tag: field.tag, value: field.value};
+
+  function filterSubfields(subfield) {
+    return {code: subfield.code, value: subfield.value};
+  }
 }
 
 

@@ -13,7 +13,7 @@ import {JSDOM} from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><div id="editor"></div>');
 const document = dom.window.document;
 
-describe('editor (whole record) ', () => {
+describe('json -> html ', () => {
   generateTests({
     callback,
     path: [import.meta.dirname, 'testFixtures', 'field'],
