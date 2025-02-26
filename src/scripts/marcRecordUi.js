@@ -65,14 +65,14 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
   if (record.leader) {
     const leaderAsField = {tag: 'LDR', value: record.leader};
     const leaderIsEditable = settings?.editableField ? settings.editableField(leaderAsField, recordIsEditable) : false;
-    marcFieldToDiv(recordDiv, leaderAsField, settings, leaderIsEditable);
+    marcFieldToDiv(recordDiv, undefined, leaderAsField, settings, leaderIsEditable);
   }
 
   if (record.fields) {
     for (const field of record.fields) {
       const fieldIsEditable = settings?.editableField ? settings.editableField(field, recordIsEditable) : false;
       const content = settings?.getContent ? settings.getContent(field) : field;
-      marcFieldToDiv(recordDiv, content, settings, fieldIsEditable);
+      marcFieldToDiv(recordDiv, undefined,  content, settings, fieldIsEditable);
     }
   }
 
@@ -87,10 +87,11 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
 }
 
 //-----------------------------------------------------------------------------
-export function marcFieldToDiv(recordDiv, field, settings = null, fieldIsEditable = false, altDocument = undefined) {
+export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settings = null, fieldIsEditable = false, altDocument = undefined) {
+  // Export for testing only! Otherwise don't use from outside!
   const myDocument = altDocument || document;
   //console.log(field)
-  const row = myDocument.createElement('div');
+  const row = originalRow || myDocument.createElement('div');
   row.classList.add('row');
 
   if (settings?.whiteSpace) {
@@ -131,7 +132,9 @@ export function marcFieldToDiv(recordDiv, field, settings = null, fieldIsEditabl
     addValue(row, field.value);
   }
 
-  recordDiv.appendChild(row);
+  if (recordDiv) {
+    recordDiv.appendChild(row);
+  }
   return row;
 
   //---------------------------------------------------------------------------
@@ -320,7 +323,7 @@ function convertDataToSubfields(data, separator = '$$') {
 
 export function resetFieldElem(elem, newValueAsString, settings = {}, editable = true) {
   const marcField = stringToMarcField(newValueAsString.replace(/\n/gu, ' ')); // No idea why /\s/ did not work,,,
-  marcFieldToDiv(elem, marcField, settings, editable);
+  marcFieldToDiv(null, elem, marcField, settings, editable);
 
   //const fieldAsHtml = marcFieldToHtml(elem, marcField); // add (...settings, true)...
   //elem.innerHTML = fieldAsHtml;

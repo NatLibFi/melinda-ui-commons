@@ -34,7 +34,7 @@ describe('editor (whole record) ', () => {
     const elem = document.getElementById('editor');
     elem.innerHTML = '';
 
-    const outputHtml = marcFieldToDiv(elem, inputField, decorator, true, document).innerHTML.replace(/></g, '>\n<');
+    const outputHtml = marcFieldToDiv(undefined, elem, inputField, decorator, true, document).innerHTML.replace(/></g, '>\n<');
 
     expect(outputHtml).to.equal(targetHtml);
   }
