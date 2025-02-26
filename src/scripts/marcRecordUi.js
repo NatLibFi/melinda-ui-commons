@@ -118,7 +118,6 @@ export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settin
     }
   }
 
-
   addTag(row, field.tag);
 
   // NB! Note that the current implementation will add a non-breaking space for indicatorless fields.
@@ -172,14 +171,14 @@ export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settin
 
   function addValue(row, value) {
     const normalizedValue  = normalizeValue();
-    row.appendChild(makeSpan('value', value));
+    row.appendChild(makeSpan('value', normalizedValue));
 
     function normalizeValue() {
       if (!value) {
         return '';
       }
       if (!isDataFieldTag(field.tag)) {
-        return `<span class="value">${field.value.replace(/ /gu, '#')}</span>`;
+        return field.value.replace(/ /gu, '#');
       }
       return value;
     }
