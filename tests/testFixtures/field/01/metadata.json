@@ -1,5 +1,7 @@
 {
   "description": "Convert a datafield to HTML",
   "only": false,
-  "decorator": {}
+  "decorator": {
+    "subfieldCodePrefix": "$$"
+  }
 }
