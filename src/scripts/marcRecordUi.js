@@ -88,9 +88,12 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
 
 //-----------------------------------------------------------------------------
 export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settings = null, fieldIsEditable = false, altDocument = undefined) {
-  // Export for testing only! Otherwise don't use from outside!
+  // This function should not be used imported (expect for testing)!
+
+  // altDocument is a jsdom document. We need it for testing.
   const myDocument = altDocument || document;
-  //console.log(field)
+
+  // NB! Typically recordDiv (parent of row div) or originalRow div is empty, as only one of them is needed.
   const row = originalRow || myDocument.createElement('div');
   row.classList.add('row');
 
@@ -131,7 +134,7 @@ export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settin
     addValue(row, field.value);
   }
 
-  if (recordDiv) {
+  if (recordDiv && !originalRow) {
     recordDiv.appendChild(row);
   }
   return row;
@@ -223,6 +226,7 @@ export function isDataFieldTag(str = '') {
   }
   const tag = str.substring(0, 3);
 
+  // Everything except a control field is a data field...
   if (['FMT', 'LDR', '000', '001', '002', '003', '004', '005', '006', '007', '008', '009'].includes(tag)) {
     return false;
   }
@@ -234,7 +238,9 @@ export function isDataFieldTag(str = '') {
 
 function normalizeIndicator(ind, tag) { // convert data from web page to marc
   //console.log(`Process indicator '${ind}'`);
-  if (!isDataFieldTag(tag)) { // tag.match(/^(?:00[1-9]|FMT|LDR)$/) ) {
+  if (!isDataFieldTag(tag)) {
+      // Even control fields contain slots/fake indicators for indicators, so that records looks good in the browser.
+      // Fake indicators are removed when fields are converted into a real record.
       return ' ';
   }
   if ( ind.match(/^[0-9]$/u) ) {
@@ -325,14 +331,15 @@ export function resetFieldElem(elem, newValueAsString, settings = {}, editable =
   elem.innerHTML = '';
   marcFieldToDiv(null, elem, marcField, settings, editable);
 
+  //// ye olde version (kept for reference for a while):
   //const fieldAsHtml = marcFieldToHtml(elem, marcField); // add (...settings, true)...
   //elem.innerHTML = fieldAsHtml;
 }
 
 
 export function filterField(field) {
-  // Field contains field.error (for debugging and error messages) and control fields have fake indicators (for UI).
-  // Strip these when a) converting the whole record, or b) testing.
+  // Field contains field.error (for debugging and error messages) and control fields have fake indicators.
+  // Copy and return relevant fields when a) converting the whole record, or b) testing.
   if (isDataFieldTag(field.tag)) {
     return {tag: field.tag, ind1: field.ind1, ind2: field.ind2, subfields: field.subfields.map(sf => filterSubfields(sf))};
   }
@@ -344,6 +351,7 @@ export function filterField(field) {
 }
 
 
+// 1st artikkelit version: keep for reference for now, if there are bugs, as the integrated versions differs here and there...
 /*
 function marcFieldToHtml(elem, field) {
   // Aped from melinda-ui-commons marcFieldToDiv (this is a text-only alternative)...
