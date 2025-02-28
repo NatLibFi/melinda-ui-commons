@@ -9,13 +9,13 @@
 //                                                                            //
 //****************************************************************************//
 
-// Settings:
+// NV's comments about Settings:
 // - decorateField: function,no idea what this is used for, maybe someone uses this, predates me (=NV),
 // - editableRecord: undefined/function(record), by default record is *NOT* editable.
 // - editableField: undefined/function(field, boolean = false), by default field is *NOT* editable.
-// - onClick: add eventListerer to a field. NOT used by me (NV) on editors. As there are way more listeners, I'm currently keeping them on the app side.
+// - onClick: add eventListerer to a field. NOT used by me (NV) on editors. As my editor uses way more listeners, I'm currently keeping them on the app side.
 // - subfieldCodePrefix: undefined/string, default is nothing, editor needs a non-empty value. NV uses '$$' as Aleph converts '$$' to a subfield separator anyways.
-// - uneditableFieldBackgroundColor: undefined/colour-string, undefined changes nothing
+// - uneditableFieldBackgroundColor: undefined/string-taht-specifies-colour, undefined changes nothing
 // - whitespace - not mine
 
 export function showRecord(record, dest, settings = {}, recordDivName = 'muuntaja', logRecord = true) {
@@ -25,9 +25,10 @@ export function showRecord(record, dest, settings = {}, recordDivName = 'muuntaj
   console.log('showRecord() is deprecated. Use showRecordInDiv() instead!');
 
   // Get div to fill in the fields
-  // NB! As seen by iffy #Record usage we have used the same id more than once...
-  // To alleviate the problem I (NV) have split the function into two parts.
+  // NV: NB! mere '#Record' might not work. I've seen colleagues using same #Record ID twice.
+  // Also `#${recordDivName} .record-merge-panel #${dest} #Record` is just terrible hard-coding.
   const recordDiv = document.querySelector(`#${recordDivName} .record-merge-panel #${dest} #Record`);
+  // To alleviate the problem I (NV) have split the function into two parts (the latter half being more generic showRecordInDiv())
   return showRecordInDiv(record, recordDiv, settings);
 }
 
@@ -108,7 +109,7 @@ export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settin
   if (settings?.decorateField) {
     settings.decorateField(row, field);
   }
-  if (settings?.onClick) { // add keydown or input event?
+  if (settings?.onClick) { // add similar keydown or input event?
     row.addEventListener('click', event => settings.onClick(event, field));
   }
 
@@ -123,7 +124,7 @@ export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settin
 
   addTag(row, field.tag);
 
-  // NB! Note that the current implementation will add a non-breaking space for indicatorless fields.
+  // NB! Note that the current implementation will add two non-breaking spaces for indicatorless fields.
   addIndicators(row);
 
   if (field.subfields) {
@@ -220,20 +221,10 @@ export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settin
 }
 
 export function isDataFieldTag(str = '') {
-  const len = str.length;
-  if (len < 3) {
-    return true; // Everything is a datafield by default
-  }
-  const tag = str.substring(0, 3);
+  const tag = str.substring(0, 3); // This can be called with the whole "500##$$aLorum Ipsum." style strings as well.
 
   // Everything except a control field is a data field...
-  if (['FMT', 'LDR', '000', '001', '002', '003', '004', '005', '006', '007', '008', '009'].includes(tag)) {
-    return false;
-  }
-  return true;
-  //const result = tag.match(/^(?:0[1-9][0-9]|[1-9][0-9][0-9])$/u) !== null ? true : false;
-  //console.log(`isDataFieldTag(${tag}): ${result}`);
-  //return result;
+  return !['FMT', 'LDR', '000', '001', '002', '003', '004', '005', '006', '007', '008', '009'].includes(tag);
 }
 
 function normalizeIndicator(ind, tag) { // convert data from web page to marc
@@ -257,7 +248,7 @@ export function getEditorFields(editorElementId = 'Record') {
   return [...parentElem.children].map(div => stringToMarcField(div.textContent)); // converts children into an editable array
 }
 
-export function stringToMarcField(str, subfieldCodePrefix = '$$') { // subfieldCodePrefix should come from settings, should it? (it's not that obvious here)
+export function stringToMarcField(str, subfieldCodePrefix = '$$') { // settings.subfieldCodePrefix
   //console.log(`String2field: '${str}'`);
   const len = str.length;
   if (len <= 3) {
@@ -327,7 +318,7 @@ function convertDataToSubfields(data, separator = '$$') {
 }
 
 export function resetFieldElem(elem, newValueAsString, settings = {}, editable = true) {
-  const marcField = stringToMarcField(newValueAsString.replace(/\n/gu, ' ')); // No idea why /\s/ did not work,,,
+  const marcField = stringToMarcField(newValueAsString.replace(/\n/gu, ' ')); // No idea why /\s/ did not work... 
   elem.innerHTML = '';
   marcFieldToDiv(null, elem, marcField, settings, editable);
 
