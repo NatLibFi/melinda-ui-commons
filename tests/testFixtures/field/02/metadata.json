@@ -1,5 +1,9 @@
 {
   "description": "Convert an incomplete (partial tag only) datafield to HTML",
+  "field": {
+    "tag": "50",
+    "error": "Incomplete field 50"
+  },
   "only": false,
   "decorator": {
     "subfieldCodePrefix": "$$"
