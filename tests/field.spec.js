@@ -13,7 +13,7 @@ import {JSDOM} from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><div id="editor"></div>');
 const document = dom.window.document;
 
-describe('json -> html ', () => {
+describe('json field -> html div', () => {
   generateTests({
     callback,
     path: [import.meta.dirname, 'testFixtures', 'field'],
@@ -25,18 +25,25 @@ describe('json -> html ', () => {
     }
   });
 
-  function callback({getFixture, decorator = {}}) {
-    const inputField = JSON.parse(getFixture('field.json'));
+  function callback({getFixture, field, decorator = {}}) {
+    const inputField = field;
     //console.log(JSON.stringify(inputField));
+
     const targetHtml = getFixture('target.html');
     //console.log(targetHtml);
 
     const elem = document.getElementById('editor');
     elem.innerHTML = '';
 
-    const outputHtml = marcFieldToDiv(undefined, elem, inputField, decorator, true, document).innerHTML.replace(/></g, '>\n<');
+    const outputHtml = marcFieldToDiv(undefined, elem, inputField, decorator, true, document).innerHTML;
 
-    expect(outputHtml).to.equal(targetHtml);
+    expect(localPrettyPrint(outputHtml)).to.equal(localPrettyPrint(targetHtml));
+
+    function localPrettyPrint(html) {
+      // marcFieldToDiv() return html in a single line, which is hard to read and does not work well with expect.
+      // Convert htmls to multiline format to improve readibility and debugability.
+      return html.replace(/></g, '>\n<');
+    }
   }
 
 });

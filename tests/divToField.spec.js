@@ -23,8 +23,8 @@ describe('html div->json field ', () => {
     }
   });
 
-  function callback({getFixture, decorator = {}}) {
-    const targetJson = JSON.parse(getFixture('field.json'));
+  function callback({getFixture, field, decorator = {}}) {
+    const targetJson = field; // JSON.parse(getFixture('field.json'));
     //console.log(JSON.stringify(inputField));
     const inputHtml = `<!DOCTYPE html><div id="editor">${getFixture('target.html')}</div>`.replace(/\n/gu, '');
     //console.log(inputHtml);
