@@ -416,8 +416,8 @@ function setCursorPosition(elem, position) { // This should go to melinda-ui-com
   }
 }
 
-function isEditableDiv(elem) { // move to melinda-ui-commons?
-  // As per hearsay: we might have a function for this in melinda-commons...
+export function isEditableDiv(elem) {
+  // As per hearsay: we might have a function for this somewhere...
   const tmp = elem.getAttribute('contenteditable');
   if (tmp === undefined || tmp === false || tmp === null || tmp === 'false') {
     return false;
