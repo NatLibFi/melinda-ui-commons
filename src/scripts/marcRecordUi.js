@@ -15,8 +15,7 @@
 // - editableField: undefined/function(field, boolean = false), by default field is *NOT* editable.
 // - onClick: add eventListerer to a field. NOT used by me (NV) on editors. As my editor uses way more listeners, I'm currently keeping them on the app side.
 // - subfieldCodePrefix: undefined/string, default is nothing, editor needs a non-empty value. NV uses '$$' as Aleph converts '$$' to a subfield separator anyways.
-// - uneditableFieldBackgroundColor: undefined/string-taht-specifies-colour, undefined changes nothing
-// - whitespace - not mine
+// - uneditableFieldBackgroundColor: undefined/string-that-specifies-colour, undefined changes nothing
 
 export function showRecord(record, dest, settings = {}, recordDivName = 'muuntaja', logRecord = true) {
   if (logRecord) {
@@ -97,10 +96,6 @@ export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settin
   // NB! Typically recordDiv (parent of row div) or originalRow div is empty, as only one of them is needed.
   const row = originalRow || myDocument.createElement('div');
   row.classList.add('row');
-
-  if (settings?.whiteSpace) {
-    row.style.whiteSpace = settings.whiteSpace;
-  }
 
   if (field.uuid) {
     row.id = field.uuid;
