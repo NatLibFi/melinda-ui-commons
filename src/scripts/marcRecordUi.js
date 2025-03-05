@@ -540,7 +540,7 @@ function editorHandleInput(event, settings) {
       // NB! This currently does nothing on purpose
       const protectedAreaSize = getProtectedAreaSize(fieldAsString);
       if (position > 5 && position < protectedAreaSize) { // It's a datafield. We protect first subfields prefix
-        fieldAsString = `${fieldAsString.substr(0, 5)}${artikkeliEditorSettings.subfieldCodePrefix}${fieldAsString.substr(protectedAreaSize)}`;
+        fieldAsString = `${fieldAsString.substr(0, 5)}${settings.subfieldCodePrefix}${fieldAsString.substr(protectedAreaSize)}`;
       }
     }
   }
@@ -555,7 +555,7 @@ function editorHandleInput(event, settings) {
   }
   */
 
-  resetFieldElem(elem, fieldAsString, artikkeliEditorSettings);
+  resetFieldElem(elem, fieldAsString, settings);
   setCursorPosition(elem, position);
 
   /*
