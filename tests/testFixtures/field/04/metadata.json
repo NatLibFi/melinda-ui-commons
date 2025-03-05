@@ -1,0 +1,8 @@
+{
+  "description": "Convert a control field to HTML",
+  "field": { "tag": "008", "value": "012345c2000    fi 89012345678901234fin8 " },
+  "only": false,
+  "decorator": {
+    "subfieldCodePrefix": "$$"
+  }
+}

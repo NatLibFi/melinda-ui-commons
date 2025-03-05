@@ -1,0 +1,10 @@
+{
+  "description": "Convert a datafield to HTML",
+  "field": { "tag": "500", "ind1": " ", "ind2": " ", "subfields": [
+    { "code": "a", "value": "The paths of glory lead but to the grave" }
+  ]},
+  "only": false,
+  "decorator": {
+    "subfieldCodePrefix": "$$"
+  }
+}

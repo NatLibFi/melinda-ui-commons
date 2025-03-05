@@ -1,0 +1,12 @@
+{
+  "description": "Convert an incomplete (tag and ind1) datafield to HTML",
+  "field": {
+    "tag": "500",
+    "ind1": " ",
+    "error": "Incomplete field 500"
+  },
+  "only": false,
+  "decorator": {
+    "subfieldCodePrefix": "$$"
+  }
+}

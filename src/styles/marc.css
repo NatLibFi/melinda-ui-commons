@@ -19,6 +19,8 @@
   padding-right: 4px;
   padding-top: 2px;
   padding-bottom: 2px;
+  white-space: pre-wrap;  /* NV: control fields might be better off without wrap, but long datafields should be multiline for readability's sake  */
+  min-height: 24px; /* NV: I defined a min height as we can have empty fields whilst editing, and they would otherwise collapse */
 }
 
 .marc-record .row:hover {
