@@ -14,6 +14,7 @@
 // - editableRecord: undefined/function(record), by default record is *NOT* editable.
 // - editableField: undefined/function(field, boolean = false), by default field is *NOT* editable.
 // - onClick: add eventListerer to a field. NOT used by me (NV) on editors. As my editor uses way more listeners, I'm currently keeping them on the app side.
+// - pasteHandler: undefined/function
 // - subfieldCodePrefix: undefined/string, default is nothing, editor needs a non-empty value. NV uses '$$' as Aleph converts '$$' to a subfield separator anyways.
 // - uneditableFieldBackgroundColor: undefined/string-that-specifies-colour, undefined changes nothing
 
@@ -336,55 +337,265 @@ export function filterField(field) {
   }
 }
 
-
-// 1st artikkelit version: keep for reference for now, if there are bugs, as the integrated versions differs here and there...
-/*
-function marcFieldToHtml(elem, field) {
-  // Aped from melinda-ui-commons marcFieldToDiv (this is a text-only alternative)...
-  // See if we can eventually remove this...
-  const tag = `<span class="tag">${field.tag.replace(/#/g, ' ') || ''}</span>`;
-  const indicators = indicatorsToHtml(field);
-  const data = dataToHtml(field);
-  return `${tag}${indicators}${data}`
-
-
-  function indicatorToHtml(indicator) {
-    if (!isDataFieldTag(field.tag)) {
-      return '&nbsp;'; // ' ' or &nbsp;?
-    }
-    if ( indicator === ' ') {
-      return '#';
-    }
-    return indicator;
+export function getPreviousEditableSibling(elem) { // melinda-ui-commons?
+  const prevElem = elem.previousSibling;
+  if (!prevElem) {
+    //console.log("  NO PREV");
+    return prevElem;
   }
-
-  function indicatorsToHtml() {
-    const ind1 = indicatorToHtml(field.ind1);
-    const ind2 = indicatorToHtml(field.ind2);
-
-    //console.log(`IND1: '${field.ind1}', IND2: '${field.ind2}'`);
-
-    if (!field.ind1) {
-      return '<span class="inds"></span>';
-    }
-    if (!field.ind2) {
-      return `<span class="inds"><span class="ind1">${ind1}</span></span>`;
-    }
-    return `<span class="inds"><span class="ind1">${ind1}</span><span class="ind2">${ind2}</span></span>`;
+  if (isEditableDiv(prevElem)) {
+    //console.log("  IT'S ME");
+    //console.log(elem.textContent);
+    //console.log(prevElem.textContent);
+    return prevElem;
   }
+  //console.log("  TRY NEXT");
+  return getPreviousEditableSibling(prevElem);
+}
 
-  function dataToHtml() {
-    if (!field.subfields) {
-      if (!field.value) {
-        return '<span class="value"></span>';
-      }
-      if (!isDataFieldTag(field.value)) {
-        return `<span class="value">${field.value.replace(/ /gu, '#')}</span>`;
-      }
-      return `<span class="value">${field.value}</span>`;
+export function getNextEditableSibling(elem) { // melinda-ui-commons?
+  const nextElem = elem.nextSibling;
+  if (!nextElem) {
+    //console.log("  NO NEXT");
+    return nextElem;
+  }
+  if (isEditableDiv(nextElem)) {
+    //console.log(`  IT'S ME: ${nextElem.textContent}`);
+    return nextElem;
+  }
+  //console.log("  TRY NEXT");
+  return getNextEditableSibling(nextElem);
+}
+
+// Inspired by https://stackoverflow.com/questions/4811822/get-a-ranges-start-and-end-offsets-relative-to-its-parent-container/4812022#4812022
+function getCursorPosition(element) { // This should go to melinda-ui-commons
+  var doc = element.ownerDocument || element.document; // mere element.document should be enough for us
+  var win = doc.defaultView;
+
+  const sel = win.getSelection();
+
+  if (sel.rangeCount > 0) {
+    const range = sel.getRangeAt(0); // win.getSelection().getRangeAt(0);
+    const preCaretRange = range.cloneRange();
+    preCaretRange.selectNodeContents(element);
+    preCaretRange.setEnd(range.endContainer, range.endOffset);
+    return preCaretRange.toString().length;
+  }
+  return 0;
+}
+
+// Inspired by https://stackoverflow.com/questions/36869503/set-caret-position-in-contenteditable-div-that-has-children
+function setCursorPosition(elem, position) { // This should go to melinda-ui-commons
+  let todoList = elem.childNodes;
+  setCursorPosition2(todoList, position);
+
+  function setCursorPosition2(todo, position) {
+    console.log(`Setting cursor to ${position}, with ${todo.length} element(s) to process`);
+    const [currNode, ...remaining] = todo;
+    if (!currNode) { // failure of some sort, abort
+      console.log('Cursor positioning failed')
+      return;
     }
-    const subfieldsToHtml = field.subfields.map(sf => `<span class="subfield"><span class="code">$$${sf.code}</span><span class="value">${sf.value}</span></span>`).join('');
-    return `<span>${subfieldsToHtml}</span>`;
+    console.log(` Curr node type: ${currNode.nodeType} (${typeof currNode.nodeType})`);
+    if (currNode.nodeType == 3) { // text node
+      console.log(` Text node, length: ${currNode.length}`);
+      if (currNode.length < position) { // Not yet there
+        return setCursorPosition2(remaining, position - currNode.length);
+      }
+      // Success
+      const range = document.createRange();
+      const sel = window.getSelection();
+      range.setStart(currNode, position);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+      return;
+    }
+    // Process currNode's children:
+    return setCursorPosition2([...currNode.childNodes, ...remaining], position);
   }
 }
-*/
+
+function isEditableDiv(elem) { // move to melinda-ui-commons?
+  // As per hearsay: we might have a function for this in melinda-commons...
+  const tmp = elem.getAttribute('contenteditable');
+  if (tmp === undefined || tmp === false || tmp === null || tmp === 'false') {
+    return false;
+  }
+  //console.log(`DIV VAL: ${tmp} for ${elem.textContent}`);
+  return true;
+}
+
+
+function editorHandlePaste(event) {
+  // Default function for handling paste.
+  // Can be overridden using using settings.pasteHandler.
+
+  const elem = event.currentTarget;
+  const position = getCursorPosition(elem);
+
+  const protectedAreaSize = getProtectedAreaSize(elem.textContent);
+  if (position < protectedAreaSize && elem.textContent.length > position) { // Can't paste here mate!
+     console.log(`Can't paste in the protected area (tag, indicators, first subfield separator) area! (POS=${position}/${protectedAreaSize})`);
+    event.preventDefault(); // Blocks input event
+    return;
+  }
+
+  // Position >= protectedAreaSize: Paste will be done by browser and then handleInput() will be triggered as well...
+}
+
+function editorHandleKeyDown(event, settings) { // for field divs
+
+  if ([38, 40].includes(event.keyCode)) {
+    // console.log(`EVENT: KEY DOWN ${event.keyCode}`);
+    // 38: key up, 40: key down
+    event.preventDefault(); // Blocks input event
+    const elem = event.currentTarget;
+    const position = getCursorPosition(elem);
+    if (!elem || !isEditableDiv(elem)) { // hope that only editables available are "my" field divs
+      return;
+    }
+    let otherElem = undefined
+    if (event.keyCode === 38) {
+      //console.log(` TRY TO LOCATE PREV FOR DIV thats contains ${elem.textContent}`);
+      otherElem = getPreviousEditableSibling(elem);
+    }
+    else if (event.keyCode === 40) {
+      //console.log(` TRY TO LOCATE NEXT FOR DIV thats contains ${elem.textContent}`);
+      otherElem = getNextEditableSibling(elem);
+    }
+    if (otherElem) {
+      //console.log("   HIT!");
+      otherElem.focus();
+      const newPosition = otherElem.textContent.length < position ? otherElem.textContent.length : position;
+      setCursorPosition(otherElem, newPosition);
+    }
+  }
+}
+
+
+
+function getProtectedAreaSize(value) {
+  // controlfields are fully protected (= prevent paste)
+  if (!isDataFieldTag(value)) {
+    return value.length;
+  }
+  /*
+  if (isDataFieldTag(value)) {
+    // Data field: tag(3) + indicators (2) + prefix.length ('$$'==2). Don't protect subfield code (1)
+    return 5 + articleEditorSettings.subfieldCodePrefix.length;
+  }
+    */
+  // Control field: tag (3) + empty (2)
+  return 5;
+}
+
+function getOvertypeLength(event, inputText, fieldAsString, position) { // position means position when text has been added or removed
+  if (!inputText) {
+    if (event.inputType === 'deleteContentBackward') {
+      return -1;
+    }
+
+    return 0;
+  }
+
+  if (position === fieldAsString.length) {
+    // If there's nothing on the right, there's no need for overtype :-)
+    return 0;
+  }
+  const jumpSize = inputText.length;
+  const startPosition = position - jumpSize;
+  //const tailLength = fieldAsString.length.position;
+  //const originalLength = startPosition + tailLength;
+  let i=0;
+  const protectedAreaSize = getProtectedAreaSize(fieldAsString);
+  while (i < jumpSize && startPosition+i < protectedAreaSize) {
+    i++;
+  }
+  // console.log(`START: ${startPosition}, LEN: ${jumpSize}, OVERTYPE: ${i} char(s)`);
+  return i;
+}
+
+function editorHandleInput(event, settings) {
+  var elem = event.currentTarget;
+  console.log(`INPUT EVENT ${event.inputType} in '${elem.textContent}'`);
+
+  const position = getCursorPosition(elem);
+
+  let fieldAsString = elem.textContent;
+  const overtypeLength = getOvertypeLength(event, event.data, fieldAsString, position);
+  console.log(`INPUT: '${event.data || 'N/A'}', OVERTYPE: ${overtypeLength}, POSITION: ${position}/${fieldAsString.length}`);
+  if ( overtypeLength < 0) { // Backspace (cut?)
+    if (position === fieldAsString.length) {
+      console.log(' Removing from end requires no action');
+      // Do nothing
+    }
+    else if (position < 5)  { // Replace the letter that was deleted by a backspace with a space character.
+      // NB! This presumes that overtype length is -1. Won't work for longer cuts!
+      console.log(` Replace removal with a space...\n  '${fieldAsString}`);
+      fieldAsString = `${fieldAsString.substr(0, position)} ${fieldAsString.substr(position)}`;
+      console.log(`  '${fieldAsString}'`);
+    }
+    else {
+      // NB! This currently does nothing on purpose
+      const protectedAreaSize = getProtectedAreaSize(fieldAsString);
+      if (position > 5 && position < protectedAreaSize) { // It's a datafield. We protect first subfields prefix
+        fieldAsString = `${fieldAsString.substr(0, 5)}${artikkeliEditorSettings.subfieldCodePrefix}${fieldAsString.substr(protectedAreaSize)}`;
+      }
+    }
+  }
+  else if (overtypeLength > 0) {
+    fieldAsString = `${fieldAsString.substr(0, position)}${fieldAsString.substr(position+overtypeLength)}`;
+  }
+
+  /*
+  // Currently we reset things every time. Later on there might be reason to optimize, so keep the code, though.
+  if (!fieldNeedsReseting()) {
+    return;
+  }
+  */
+
+  resetFieldElem(elem, fieldAsString, artikkeliEditorSettings);
+  setCursorPosition(elem, position);
+
+  /*
+  function fieldNeedsReseting() {
+    // optimize: don't reset field unless we (probably) have to do so.
+    if (!event.data) {
+      return true;
+    }
+    const jumpSize = event.data.length;
+    const startPosition = position - jumpSize;
+    //console.log(`RESET? START: ${startPosition}, SIZE: ${jumpSize}`);
+    if (startPosition <= 7) {
+      return true;
+    }
+    if (event.data.includes('\t') || event.data.includes('\n')) {
+      return true;
+    }
+    if (fieldAsString.substr(startPosition-2, 2+jumpSize).includes('$')) { // This should use subfieldCodePrefix?
+      return true;
+    }
+    return false;
+  }
+  */
+
+}
+
+export function addEditorRowListerers(df, settings = {}) {
+  // TODO: check settings whether default functions should be used
+  const pasteHandler = settings.pasteHandler || editorHandlePaste;
+  df.addEventListener('paste', function(event) {
+    pasteHandler(event, settings);
+  });
+
+  const inputHandler = settings.inputHandler || editorHandleInput;
+  df.addEventListener('input', function(event) {
+    inputHandler(event, settings);
+  });
+
+  const keyDownHandler = settings.keyDownHandler || editorHandleKeyDown;
+  df.addEventListener('keydown', function(event) {
+    keyDownHandler(event, settings);
+  });
+}
