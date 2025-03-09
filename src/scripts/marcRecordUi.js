@@ -570,7 +570,6 @@ function editorHandleInput(event, settings) {
       return true;
     }
 
-    
     if (event.data.includes('\t') || event.data.includes('\n')) {
       return true;
     }
@@ -609,4 +608,56 @@ export function addEditorRowListerers(df, settings = {}) {
   df.addEventListener('keydown', function(event) {
     keyDownHandler(event, settings);
   });
+}
+
+export function markAllFieldsUneditable(settings) {
+  // I call this typically after clicking save button.
+  // After save, reload the record and display modified record!
+  // However, we should have failure handling functions which normalizes fields
+  if (!settings.editorDivId) {
+    return;
+  }
+
+  const parentElem = document.getElementById(settings.editorDivId);
+  if (!parentElem) {
+    return;
+  }
+  const fieldDivs = [...parentElem.children]; // converts children into an (editable) array
+  console.log(`Set all ${fieldDivs.length} fields uneditable`);
+  //fieldDivs.forEach(fieldDiv => fieldDiv.setAttribute('contenteditable', false));
+  fieldDivs.forEach(fieldDiv => markFieldUneditable(fieldDiv));
+
+  function markFieldUneditable(fieldDiv) {
+    // Does not remove listeners (on purpose, for now at least)
+    fieldDiv.removeAttribute('contenteditable', false);
+    if(settings.uneditableFieldBackgroundColor) {
+      fieldDiv.style.backgroundColor = settings.uneditableFieldBackgroundColor;
+    }
+  }
+}
+
+export function undoMarkAllFieldsUneditable(settings) {
+  // After save, reload the record and display modified record! (not by this functions)
+  // However, we should have failure handling functions (if save fails, for example, due to validation issues). Thus this function!
+  // I really don't like this function, but it is better than nothing. Howeve, avoid calling this, if you can do without.
+  // UNTESTED!
+  if (!settings.editorDivId) {
+    return;
+  }
+
+  const parentElem = document.getElementById(settings.editorDivId);
+  if (!parentElem) {
+    return;
+  }
+  const fieldDivs = [...parentElem.children]; // converts children into an (editable) array
+  console.log(`Set all ${fieldDivs.length} fields uneditable`);
+  //fieldDivs.forEach(fieldDiv => fieldDiv.setAttribute('contenteditable', false));
+  fieldDivs.forEach(fieldDiv => markFieldEditability(fieldDiv));
+
+  function markFieldEditability(fieldDiv) {
+    const marcField = stringToMarcField(fieldDiv.textContent);
+    const fieldIsEditable = settings?.editableField ? settings.editableField(marcField, true) : false; // here we assume that this function is only called by editable records!
+
+    marcFieldToDiv(undefined, fieldDiv, marcField, settings, fieldIsEditable, undefined);
+  }
 }
