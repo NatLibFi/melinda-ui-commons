@@ -368,8 +368,8 @@ export function getNextEditableSibling(elem) { // melinda-ui-commons?
 }
 
 // Inspired by https://stackoverflow.com/questions/4811822/get-a-ranges-start-and-end-offsets-relative-to-its-parent-container/4812022#4812022
-function getCursorPosition(element) { // This should go to melinda-ui-commons
-  var doc = element.ownerDocument || element.document; // mere element.document should be enough for us
+function getCursorPosition(element) {
+  var doc = element.ownerDocument || element.document; // Though mere element.document should be enough for us
   var win = doc.defaultView;
 
   const sel = win.getSelection();
@@ -385,7 +385,7 @@ function getCursorPosition(element) { // This should go to melinda-ui-commons
 }
 
 // Inspired by https://stackoverflow.com/questions/36869503/set-caret-position-in-contenteditable-div-that-has-children
-function setCursorPosition(elem, position) { // This should go to melinda-ui-commons
+function setCursorPosition(elem, position) {
   let todoList = elem.childNodes;
   setCursorPosition2(todoList, position);
 
@@ -548,17 +548,16 @@ function editorHandleInput(event, settings) {
     fieldAsString = `${fieldAsString.substr(0, position)}${fieldAsString.substr(position+overtypeLength)}`;
   }
 
-  /*
-  // Currently we reset things every time. Later on there might be reason to optimize, so keep the code, though.
+
+  // If field is reset/redone, the history is lost, thus reset it only when necessary!
   if (!fieldNeedsReseting()) {
     return;
   }
-  */
 
   resetFieldElem(elem, fieldAsString, settings);
   setCursorPosition(elem, position);
 
-  /*
+
   function fieldNeedsReseting() {
     // optimize: don't reset field unless we (probably) have to do so.
     if (!event.data) {
@@ -567,18 +566,30 @@ function editorHandleInput(event, settings) {
     const jumpSize = event.data.length;
     const startPosition = position - jumpSize;
     //console.log(`RESET? START: ${startPosition}, SIZE: ${jumpSize}`);
-    if (startPosition <= 7) {
+    if (startPosition <= 7 || jumpSize > 1) {
       return true;
     }
+
+    
     if (event.data.includes('\t') || event.data.includes('\n')) {
       return true;
     }
-    if (fieldAsString.substr(startPosition-2, 2+jumpSize).includes('$')) { // This should use subfieldCodePrefix?
-      return true;
+
+    if (settings.subfieldCodePrefix === '$$') {
+      if (fieldAsString.substr(startPosition-2, 2+jumpSize).includes('$')) {
+        return true;
+      }
+      return false;
     }
-    return false;
+    if (settings.subfieldCodePrefix === '‡') {
+      if (fieldAsString.substr(startPosition-2, 2+jumpSize).includes('‡')) {
+        return true;
+      }
+      return false;
+    }
+
+    return true;
   }
-  */
 
 }
 
