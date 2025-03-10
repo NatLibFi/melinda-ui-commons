@@ -21,6 +21,8 @@
 // - subfieldCodePrefix: undefined/string, default is nothing, editor needs a non-empty value. NV uses '$$' as Aleph converts '$$' to a subfield separator anyways.
 // - uneditableFieldBackgroundColor: undefined/string-that-specifies-colour, undefined changes nothing
 
+window.activeFieldElement = undefined; // Global variable for determining the row/field that last had focus
+
 export function showRecord(record, dest, settings = {}, recordDivName = 'muuntaja', logRecord = true) {
   if (logRecord) {
     console.log('Show Record:', record); /* eslint-disable-line no-console */
@@ -430,6 +432,35 @@ export function isEditableDiv(elem) {
 }
 
 
+function editorHandleFocus(event, settings) {
+  const elem = event.currentTarget;
+  window.activeFieldElement = elem;
+  activateButtons(settings);
+  
+}
+
+function activateButtons(settings) { // app or melinda-ui-commons?
+  const addAboveElem = document.getElementById('addNewRowAbove');
+  if (addAboveElem) {
+    addAboveElem.addEventListener('click', function(event) {
+      addNewRowAbove(event, settings)
+    });
+    addAboveElem.removeAttribute('disabled');
+  }
+  const addBelowElem = document.getElementById('addNewRowBelow');
+  if (addBelowElem) {
+    addBelowElem.addEventListener('click', function(event) {
+      addNewRowBelow(event, settings);
+    });
+    addBelowElem.removeAttribute('disabled');
+  }
+  const removeRowElem = document.getElementById('removeActiveRow');
+  if (removeRowElem) {
+    removeRowElem.addEventListener('click', removeActiveRow);
+    removeRowElem.removeAttribute('disabled');
+  }
+}
+
 function editorHandlePaste(event) {
   // Default function for handling paste.
   // Can be overridden using using settings.pasteHandler.
@@ -596,7 +627,7 @@ function editorHandleInput(event, settings) {
 }
 
 const defaultHandlers = [
-  // { 'type': 'focus', 'func': editorFocusHandler },
+  { 'type': 'focus', 'func': editorHandleFocus },
   { 'type': 'input', 'func': editorHandleInput },
   { 'type': 'keydown', 'func': editorHandleKeyDown},
   { 'type': 'paste', 'func': editorHandlePaste }
@@ -611,28 +642,6 @@ export function addEditorRowListerers(fieldElement, settings = {}) {
       activeHandler(event, settings);
     });
   }
-  /*
-  // TODO: check settings whether default functions should be used
-  const pasteHandler = settings.pasteHandler || editorHandlePaste;
-  df.addEventListener('paste', function(event) {
-    pasteHandler(event, settings);
-  });
-
-  const inputHandler = settings.inputHandler || editorHandleInput;
-  df.addEventListener('input', function(event) {
-    inputHandler(event, settings);
-  });
-
-  const keyDownHandler = settings.keyDownHandler || editorHandleKeyDown;
-  df.addEventListener('keydown', function(event) {
-    keyDownHandler(event, settings);
-  });
-
-  const focusHandler = settings.focusHandler || editorFocusHandler;
-  df.addEventListener('focus', function(event) {
-    focusHandler(event, settings);
-  });
-  */
 }
 
 export function markAllFieldsUneditable(settings) {
@@ -685,4 +694,92 @@ export function undoMarkAllFieldsUneditable(settings) {
 
     marcFieldToDiv(undefined, fieldDiv, marcField, settings, fieldIsEditable, undefined);
   }
+}
+
+function addNewRowAbove(event, settings) {
+  event.preventDefault();
+  const elem = window.activeFieldElement;
+  if (elem) {
+    console.log(`Add row above ${elem.textContent.substr(3)}`);
+    const newElem = getNewElement(settings);
+    if (newElem) {
+      elem.insertAdjacentElement('beforebegin', newElem);
+      newElem.focus();
+      return;
+    }
+  }
+  //displayErrors('No active row detected!');
+  addRowFallback(settings);
+}
+
+function addNewRowBelow(event, settings) {
+  event.preventDefault();
+  const elem = window.activeFieldElement;
+  if (elem) {
+    console.log("Add row below");
+    const newElem = getNewElement(settings);
+    if (newElem) {
+      elem.insertAdjacentElement('afterend', newElem);
+      newElem.focus();
+      return;
+    }
+  }
+  //displayErrors('No active row detected!');
+  addRowFallback();
+}
+
+function addRowFallback(settings) {
+  const parentElem = document.getElementById(settings.editorDivId);
+  if (parentElem) {
+    console.log("Fallback: Add row LAST");
+    const newElem = getNewElement(settings);
+    parentElem.insertAdjacentElement('beforeend', newElem);
+    newElem.focus();
+    return;
+  }
+  console.log("Failed to add row.");
+}
+
+
+function removeActiveRow(event) {
+  event.preventDefault();
+  const elem = window.activeFieldElement;
+  if (elem) {
+    console.log("Remove row");
+    const elem2 = getNextEditableSibling(elem) || getPreviousEditableSibling(elem);
+    elem.remove();
+    window.activeFieldElement = elem2;
+    if (elem2) { // put focus on next element
+      elem2.focus();
+    }
+    else {
+      deactivateRemoveActiveRowButton();
+    }
+    return;
+  }
+  displayErrors('No active row detected!');
+  console.log("No editor row selected (for deletion)")
+}
+
+export function convertFieldsToRecord(fields, settings = {}) { // this should go to melinda-ui-commons...
+  if (fields == undefined) {
+    fields = getEditorFields(settings.editorDivId); // Get default fields
+  }
+  const [leader, ...otherFields] = fields
+  //const validationErrors = extractErrorsFromFields(fields); // Validate?
+  if (otherFields.length < 1) {
+    return {error: 'no fields'};
+  }
+
+  const filteredFields = otherFields.map(f => filterField(f));  // Drop errors and other extra data
+
+  if (leader.tag !== 'LDR') {
+    return {error: 'first field should be leader'};
+  }
+
+  return {
+    leader: leader.value,
+    fields: filteredFields
+  }
+
 }
