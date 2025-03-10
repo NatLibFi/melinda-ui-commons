@@ -796,7 +796,7 @@ function getNewElement(settings) {
   const newElem = document.createElement('div');
   const subfieldCodePrefix = settings?.subfieldCodePrefix || '';
 
-  resetFieldElem(newElem, `TAG##${subfieldCodePrefix}aLorum ipsum.`, artikkeliEditorSettings);
+  resetFieldElem(newElem, `TAG##${subfieldCodePrefix}aLorum ipsum.`, settings);
   newElem.setAttribute('contentEditable', true); // 'plaintext-only');
   newElem.style.minHeight = '24px'; // We should add this to class 'row' in melinda-ui-commons (reason: row height behaves badly if there's no content)
   addEditorRowListerers(newElem, settings);
