@@ -21,7 +21,7 @@
 // - subfieldCodePrefix: undefined/string, default is nothing, editor needs a non-empty value. NV uses '$$' as Aleph converts '$$' to a subfield separator anyways.
 // - uneditableFieldBackgroundColor: undefined/string-that-specifies-colour, undefined changes nothing
 
-window.activeFieldElement = undefined; // Global variable for determining the row/field that last had focus
+// window.activeFieldElement = undefined; // Global variable for determining the row/field that last had focus. DO this is app, breaks tests...
 
 export function showRecord(record, dest, settings = {}, recordDivName = 'muuntaja', logRecord = true) {
   if (logRecord) {
