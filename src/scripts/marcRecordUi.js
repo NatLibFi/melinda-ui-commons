@@ -13,6 +13,9 @@
 // - decorateField: function,no idea what this is used for, maybe someone uses this, predates me (=NV),
 // - editableRecord: undefined/function(record), by default record is *NOT* editable.
 // - editableField: undefined/function(field, boolean = false), by default field is *NOT* editable.
+// - focusHandler
+// - inputHandler
+// - keyDownHandler
 // - onClick: add eventListerer to a field. NOT used by me (NV) on editors. As my editor uses way more listeners, I'm currently keeping them on the app side.
 // - pasteHandler: undefined/function
 // - subfieldCodePrefix: undefined/string, default is nothing, editor needs a non-empty value. NV uses '$$' as Aleph converts '$$' to a subfield separator anyways.
@@ -592,7 +595,23 @@ function editorHandleInput(event, settings) {
 
 }
 
-export function addEditorRowListerers(df, settings = {}) {
+const defaultHandlers = [
+  // { 'type': 'focus', 'func': editorFocusHandler },
+  { 'type': 'input', 'func': editorHandleInput },
+  { 'type': 'keyDown', 'func': editorHandleKeyDown},
+  { 'type': 'paste', 'func': editorHandlePaste }
+];
+
+export function addEditorRowListerers(fieldElement, settings = {}) {
+  defaultHandlers.forEach(handler => setHandler(handler));
+
+  function setHandler(handler) {
+    const activeHandler = settings[`${handler.type}Handler`] || handler.func;
+    fieldElement.addEventListener(handler.type, function(event) {
+      activeHandler(event, settings);
+    });
+  }
+  /*
   // TODO: check settings whether default functions should be used
   const pasteHandler = settings.pasteHandler || editorHandlePaste;
   df.addEventListener('paste', function(event) {
@@ -608,6 +627,12 @@ export function addEditorRowListerers(df, settings = {}) {
   df.addEventListener('keydown', function(event) {
     keyDownHandler(event, settings);
   });
+
+  const focusHandler = settings.focusHandler || editorFocusHandler;
+  df.addEventListener('focus', function(event) {
+    focusHandler(event, settings);
+  });
+  */
 }
 
 export function markAllFieldsUneditable(settings) {
