@@ -434,6 +434,7 @@ export function isEditableDiv(elem) {
 
 export function editorHandleFocus(event, settings) {
   const elem = event.currentTarget;
+  console.log(`editorHandleFocus: ${elem.textContent}`);
   window.activeFieldElement = elem;
   activateButtons(settings);
   
