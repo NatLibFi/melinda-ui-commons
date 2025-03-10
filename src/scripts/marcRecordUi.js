@@ -432,7 +432,7 @@ export function isEditableDiv(elem) {
 }
 
 
-function editorHandleFocus(event, settings) {
+export function editorHandleFocus(event, settings) {
   const elem = event.currentTarget;
   window.activeFieldElement = elem;
   activateButtons(settings);
@@ -761,6 +761,14 @@ function removeActiveRow(event) {
   console.log("No editor row selected (for deletion)")
 }
 
+function deactivateRemoveActiveRowButton() {
+  const removeRowElem = document.getElementById('removeActiveRow');
+  if (removeRowElem) {
+    removeRowElem.removeEventListener('click', removeActiveRow);
+    removeRowElem.setAttribute('disabled', true);
+  }
+}
+
 export function convertFieldsToRecord(fields, settings = {}) { // this should go to melinda-ui-commons...
   if (fields == undefined) {
     fields = getEditorFields(settings.editorDivId); // Get default fields
@@ -782,4 +790,16 @@ export function convertFieldsToRecord(fields, settings = {}) { // this should go
     fields: filteredFields
   }
 
+}
+
+function getNewElement(settings) {
+  const newElem = document.createElement('div');
+  const subfieldCodePrefix = settings?.subfieldCodePrefix || '';
+
+  resetFieldElem(newElem, `TAG##${subfieldCodePrefix}aLorum ipsum.`, artikkeliEditorSettings);
+  newElem.setAttribute('contentEditable', true); // 'plaintext-only');
+  newElem.style.minHeight = '24px'; // We should add this to class 'row' in melinda-ui-commons (reason: row height behaves badly if there's no content)
+  addEditorRowListerers(newElem, settings);
+
+  return newElem;
 }
