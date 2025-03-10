@@ -598,7 +598,7 @@ function editorHandleInput(event, settings) {
 const defaultHandlers = [
   // { 'type': 'focus', 'func': editorFocusHandler },
   { 'type': 'input', 'func': editorHandleInput },
-  { 'type': 'keyDown', 'func': editorHandleKeyDown},
+  { 'type': 'keydown', 'func': editorHandleKeyDown},
   { 'type': 'paste', 'func': editorHandlePaste }
 ];
 
