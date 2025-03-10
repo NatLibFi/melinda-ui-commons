@@ -761,7 +761,7 @@ function removeActiveRow(event) {
   console.log("No editor row selected (for deletion)")
 }
 
-function deactivateRemoveActiveRowButton() {
+export function deactivateRemoveActiveRowButton() {
   const removeRowElem = document.getElementById('removeActiveRow');
   if (removeRowElem) {
     removeRowElem.removeEventListener('click', removeActiveRow);
