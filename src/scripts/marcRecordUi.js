@@ -452,7 +452,7 @@ export function activateButtons(settings) { // app or melinda-ui-commons?
     //addBelowElem.addEventListener('click', function(event) {
     //  addNewRowBelow(event, settings);
     //});
-    addBelowElem.onclick = function(event) { addBelowElem(event, settings)};
+    addBelowElem.onclick = function(event) { addNewRowBelow(event, settings)};
     addBelowElem.removeAttribute('disabled');
   }
   const removeRowElem = document.getElementById('removeActiveRow');
