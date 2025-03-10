@@ -435,17 +435,17 @@ export function isEditableDiv(elem) {
 export function editorHandleFocus(event, settings) {
   const elem = event.currentTarget;
   console.log(`editorHandleFocus: ${elem.textContent}`);
+
   window.activeFieldElement = elem;
   activateButtons(settings);
   
 }
 
-function activateButtons(settings) { // app or melinda-ui-commons?
+export function activateButtons(settings) { // app or melinda-ui-commons?
   const addAboveElem = document.getElementById('addNewRowAbove');
   if (addAboveElem) {
-    addAboveElem.addEventListener('click', function(event) {
-      addNewRowAbove(event, settings)
-    });
+    //addAboveElem.addEventListener('click', function(event) {
+    addAboveElem.onclick = function(event) { addNewRowAbove(event, settings) };
     addAboveElem.removeAttribute('disabled');
   }
   const addBelowElem = document.getElementById('addNewRowBelow');
@@ -717,7 +717,7 @@ function addNewRowBelow(event, settings) {
   event.preventDefault();
   const elem = window.activeFieldElement;
   if (elem) {
-    console.log("Add row below");
+    console.log(`Add row below ${elem.textContent.substr(3)}`);
     const newElem = getNewElement(settings);
     if (newElem) {
       elem.insertAdjacentElement('afterend', newElem);
@@ -797,8 +797,8 @@ function getNewElement(settings) {
   const newElem = document.createElement('div');
   const subfieldCodePrefix = settings?.subfieldCodePrefix || '';
 
-  resetFieldElem(newElem, `TAG##${subfieldCodePrefix}aLorum ipsum.`, settings);
-  newElem.setAttribute('contentEditable', true); // 'plaintext-only');
+  resetFieldElem(newElem, settings.newFieldValue || `TAG##${subfieldCodePrefix}aLorum ipsum.`, settings);
+  newElem.setAttribute('contentEditable', true);
   newElem.style.minHeight = '24px'; // We should add this to class 'row' in melinda-ui-commons (reason: row height behaves badly if there's no content)
   addEditorRowListerers(newElem, settings);
 
