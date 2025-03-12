@@ -442,6 +442,7 @@ export function editorHandleFocus(event, settings) {
 }
 
 export function activateButtons(settings) { // app or melinda-ui-commons?
+  console.log('activateButtons');
   const addAboveElem = document.getElementById('addNewRowAbove');
   if (addAboveElem) {
     addAboveElem.onclick = function(event) { addNewRowAbove(event, settings) }; // There can/should be only one (Somehow event listerers get multiplier despite being the same)
@@ -457,6 +458,7 @@ export function activateButtons(settings) { // app or melinda-ui-commons?
   }
   const removeRowElem = document.getElementById('removeActiveRow');
   if (removeRowElem) {
+    console.log('activateButtons(): removeRowElement')
     removeRowElem.addEventListener('click', removeActiveRow);
     removeRowElem.removeAttribute('disabled');
   }
@@ -710,7 +712,11 @@ function addNewRowAbove(event, settings) {
     }
   }
   //displayErrors('No active row detected!');
+
+   // The next command adds row to the end, should we add it to the start?
+   // But where it should be added? After LDR, after control fields (00X), or...
   addRowFallback(settings);
+  
 }
 
 function addNewRowBelow(event, settings) {
@@ -726,7 +732,7 @@ function addNewRowBelow(event, settings) {
     }
   }
   //displayErrors('No active row detected!');
-  addRowFallback();
+  addRowFallback(settings);
 }
 
 function addRowFallback(settings) {
@@ -743,6 +749,7 @@ function addRowFallback(settings) {
 
 
 function removeActiveRow(event) {
+  console.log('remov row 1')
   event.preventDefault();
   const elem = window.activeFieldElement;
   if (elem) {
