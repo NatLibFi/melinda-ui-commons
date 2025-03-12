@@ -345,30 +345,25 @@ export function filterField(field) {
 export function getPreviousEditableSibling(elem) { // melinda-ui-commons?
   const prevElem = elem.previousSibling;
   if (!prevElem) {
-    //console.log("  NO PREV");
     return prevElem;
   }
   if (isEditableDiv(prevElem)) {
-    //console.log("  IT'S ME");
     //console.log(elem.textContent);
     //console.log(prevElem.textContent);
     return prevElem;
   }
-  //console.log("  TRY NEXT");
   return getPreviousEditableSibling(prevElem);
 }
 
 export function getNextEditableSibling(elem) { // melinda-ui-commons?
   const nextElem = elem.nextSibling;
   if (!nextElem) {
-    //console.log("  NO NEXT");
     return nextElem;
   }
   if (isEditableDiv(nextElem)) {
     //console.log(`  IT'S ME: ${nextElem.textContent}`);
     return nextElem;
   }
-  //console.log("  TRY NEXT");
   return getNextEditableSibling(nextElem);
 }
 
@@ -395,15 +390,15 @@ function setCursorPosition(elem, position) {
   setCursorPosition2(todoList, position);
 
   function setCursorPosition2(todo, position) {
-    console.log(`Setting cursor to ${position}, with ${todo.length} element(s) to process`);
+    //console.log(`Setting cursor to ${position}, with ${todo.length} element(s) to process`);
     const [currNode, ...remaining] = todo;
     if (!currNode) { // failure of some sort, abort
-      console.log('Cursor positioning failed')
+      //console.log('Cursor positioning failed')
       return;
     }
-    console.log(` Curr node type: ${currNode.nodeType} (${typeof currNode.nodeType})`);
+    //console.log(` Curr node type: ${currNode.nodeType} (${typeof currNode.nodeType})`);
     if (currNode.nodeType == 3) { // text node
-      console.log(` Text node, length: ${currNode.length}`);
+      //console.log(` Text node, length: ${currNode.length}`);
       if (currNode.length < position) { // Not yet there
         return setCursorPosition2(remaining, position - currNode.length);
       }
@@ -434,7 +429,7 @@ export function isEditableDiv(elem) {
 
 export function editorHandleFocus(event, settings) {
   const elem = event.currentTarget;
-  console.log(`editorHandleFocus: ${elem.textContent}`);
+  //console.log(`editorHandleFocus: ${elem.textContent}`);
 
   window.activeFieldElement = elem;
   activateButtons(settings);
@@ -442,7 +437,7 @@ export function editorHandleFocus(event, settings) {
 }
 
 export function activateButtons(settings) { // app or melinda-ui-commons?
-  console.log('activateButtons');
+  //console.log('activateButtons');
   const addAboveElem = document.getElementById('addNewRowAbove');
   if (addAboveElem) {
     addAboveElem.onclick = function(event) { addNewRowAbove(event, settings) }; // There can/should be only one (Somehow event listerers get multiplier despite being the same)
@@ -458,7 +453,7 @@ export function activateButtons(settings) { // app or melinda-ui-commons?
   }
   const removeRowElem = document.getElementById('removeActiveRow');
   if (removeRowElem) {
-    console.log('activateButtons(): removeRowElement')
+    //console.log('activateButtons(): removeRowElement')
     removeRowElem.addEventListener('click', removeActiveRow);
     removeRowElem.removeAttribute('disabled');
   }
@@ -555,23 +550,23 @@ function getOvertypeLength(event, inputText, fieldAsString, position) { // posit
 
 function editorHandleInput(event, settings) {
   var elem = event.currentTarget;
-  console.log(`INPUT EVENT ${event.inputType} in '${elem.textContent}'`);
+  //console.log(`INPUT EVENT ${event.inputType} in '${elem.textContent}'`);
 
   const position = getCursorPosition(elem);
 
   let fieldAsString = elem.textContent;
   const overtypeLength = getOvertypeLength(event, event.data, fieldAsString, position);
-  console.log(`INPUT: '${event.data || 'N/A'}', OVERTYPE: ${overtypeLength}, POSITION: ${position}/${fieldAsString.length}`);
+  //console.log(`INPUT: '${event.data || 'N/A'}', OVERTYPE: ${overtypeLength}, POSITION: ${position}/${fieldAsString.length}`);
   if ( overtypeLength < 0) { // Backspace (cut?)
     if (position === fieldAsString.length) {
-      console.log(' Removing from end requires no action');
+      // console.log(' Removing from end requires no action');
       // Do nothing
     }
     else if (position < 5)  { // Replace the letter that was deleted by a backspace with a space character.
       // NB! This presumes that overtype length is -1. Won't work for longer cuts!
-      console.log(` Replace removal with a space...\n  '${fieldAsString}`);
+      //console.log(` Replace removal with a space...\n  '${fieldAsString}`);
       fieldAsString = `${fieldAsString.substr(0, position)} ${fieldAsString.substr(position)}`;
-      console.log(`  '${fieldAsString}'`);
+      //console.log(`  '${fieldAsString}'`);
     }
     else {
       // NB! This currently does nothing on purpose
@@ -660,7 +655,7 @@ export function markAllFieldsUneditable(settings) {
     return;
   }
   const fieldDivs = [...parentElem.children]; // converts children into an (editable) array
-  console.log(`Set all ${fieldDivs.length} fields uneditable`);
+  //console.log(`Set all ${fieldDivs.length} fields uneditable`);
   //fieldDivs.forEach(fieldDiv => fieldDiv.setAttribute('contenteditable', false));
   fieldDivs.forEach(fieldDiv => markFieldUneditable(fieldDiv));
 
@@ -687,8 +682,7 @@ export function undoMarkAllFieldsUneditable(settings) {
     return;
   }
   const fieldDivs = [...parentElem.children]; // converts children into an (editable) array
-  console.log(`Set all ${fieldDivs.length} fields uneditable`);
-  //fieldDivs.forEach(fieldDiv => fieldDiv.setAttribute('contenteditable', false));
+  //console.log(`Set all ${fieldDivs.length} fields editable`);
   fieldDivs.forEach(fieldDiv => markFieldEditability(fieldDiv));
 
   function markFieldEditability(fieldDiv) {
@@ -749,11 +743,11 @@ function addRowFallback(settings) {
 
 
 function removeActiveRow(event) {
-  console.log('remov row 1')
+  //console.log('remove row 1')
   event.preventDefault();
   const elem = window.activeFieldElement;
   if (elem) {
-    console.log("Remove row");
+    //console.log("Remove row");
     const elem2 = getNextEditableSibling(elem) || getPreviousEditableSibling(elem);
     elem.remove();
     window.activeFieldElement = elem2;
@@ -766,7 +760,7 @@ function removeActiveRow(event) {
     return;
   }
   displayErrors('No active row detected!');
-  console.log("No editor row selected (for deletion)")
+  //console.log("No editor row selected (for deletion)")
 }
 
 export function deactivateRemoveActiveRowButton() {
