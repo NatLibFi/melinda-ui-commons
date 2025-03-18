@@ -805,3 +805,38 @@ function getNewElement(settings) {
 
   return newElem;
 }
+
+export function displayErrors(errors, displayElementId = 'editorNotes') {
+  if (typeof errors === 'string') {
+    errors = [errors];
+  }
+  const displayElement = document.getElementById(displayElementId);
+
+  if (!displayElement) { return; }
+
+  displayElement.innerHTML = '';
+  if (errors.length == 0) { return; }
+  const errorMessages = errors.join('<br>\n');
+  displayElement.innerHTML = errorMessages;
+  displayElement.classList.add('record-error');
+  displayElement.classList.remove('record-success', 'record-valid');
+
+  highlightElement(displayElement);
+}
+
+export function displayNotes(notes, displayElementId = 'editorNotes') {
+  if (typeof notes === 'string') {
+    notes = [notes];
+  }
+  const displayElement = document.getElementById(displayElementId);
+
+  if (!displayElement) { return; }
+
+  displayElement.innerHTML = '';
+  if (notes.length == 0) { return; }
+  const messages = notes.join('<br>\n');
+  displayElement.innerHTML = messages;
+  displayElement.classList.add('record-valid');
+  displayElement.classList.remove('record-error', 'record-success');
+  highlightElement(displayElement);
+}
