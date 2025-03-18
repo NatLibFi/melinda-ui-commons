@@ -2,7 +2,7 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable max-statements */
 
-import {highlightElement} from 'elements.js';
+import {highlightElement} from './elements.js';
 
 //****************************************************************************//
 //                                                                            //
