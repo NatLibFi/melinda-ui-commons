@@ -710,7 +710,7 @@ function addNewRowAbove(event, settings) {
 
    // The next command adds row to the end, should we add it to the start?
    // But where it should be added? After LDR, after control fields (00X), or...
-  addRowFallback(settings);
+  addRowFallback(settings, false);
   
 }
 
@@ -727,19 +727,38 @@ function addNewRowBelow(event, settings) {
     }
   }
   displayErrors('No active row detected!');
-  addRowFallback(settings);
+  addRowFallback(settings, true);
 }
 
-function addRowFallback(settings) {
+function addRowFallback(settings, beforeEnd = true) {
   const parentElem = document.getElementById(settings.editorDivId);
   if (parentElem) {
-    console.log("Fallback: Add row LAST");
-    const newElem = getNewElement(settings);
-    parentElem.insertAdjacentElement('beforeend', newElem);
+    console.log(`Fallback: Add row ${beforeEnd ? 'END' : 'BEGIN'}`);
+    const sisterElem = getSisterElem(parentElem);
+    if (sisterElem) {
+      const position = beforeEnd ? 'beforebegin' : 'afterend';
+      sisterElem.insertAdjacentElement(position, newElem);
+    }
+    else {
+      const position = beforeEnd ? 'beforeend' : 'afterbegin';
+      parentElem.insertAdjacentElement(position, newElem)
+    }
     newElem.focus();
     return;
   }
   console.log("Failed to add row.");
+
+
+  function getSisterElem(parentElem) {
+    const goalPostSister = beforeEnd ? parentElem.lastChild : parentElem.firstChild;
+    if (isEditableDiv(goalPostSister)) {
+      return goalPostSister;
+    }
+    if (beforeEnd) {
+      return getPreviousEditableSibling(goalPostSister);
+    }
+    return getNextEditableSibling(goalPostSister);
+  }
 }
 
 
