@@ -251,7 +251,7 @@ export function getEditorFields(editorElementId = 'Record', subfieldCodePrefix =
 }
 
 export function stringToMarcField(str, subfieldCodePrefix = '$$') { // export since used in tests. settings.subfieldCodePrefix
-  console.log(`String2field: '${str}', '${subfieldCodePrefix}'`);
+  // console.log(`String2field: '${str}', '${subfieldCodePrefix}'`);
   const len = str.length;
   if (len <= 3) {
     return {tag: str, error: `Incomplete field ${str}`};
@@ -320,7 +320,6 @@ function convertDataToSubfields(data, separator = '$$') {
 }
 
 function resetFieldElem(elem, newValueAsString, settings = {}, editable = true) {
-  console.log(JSON.stringify(settings));
   const marcField = stringToMarcField(newValueAsString.replace(/\n/gu, ' '), settings.subfieldCodePrefix); // No idea why /\s/ did not work... 
   elem.innerHTML = '';
   marcFieldToDiv(null, elem, marcField, settings, editable);
@@ -395,7 +394,6 @@ function setCursorPosition(elem, position) {
     //console.log(`Setting cursor to ${position}, with ${todo.length} element(s) to process`);
     const [currNode, ...remaining] = todo;
     if (!currNode) { // failure of some sort, abort
-      //console.log('Cursor positioning failed')
       return;
     }
     //console.log(` Curr node type: ${currNode.nodeType} (${typeof currNode.nodeType})`);
@@ -424,7 +422,6 @@ export function isEditableDiv(elem) {
   if (tmp === undefined || tmp === false || tmp === null || tmp === 'false') {
     return false;
   }
-  //console.log(`DIV VAL: ${tmp} for ${elem.textContent}`);
   return true;
 }
 
@@ -491,11 +488,9 @@ function editorHandleKeyDown(event, settings) { // for field divs
     }
     let otherElem = undefined
     if (event.keyCode === 38) {
-      //console.log(` TRY TO LOCATE PREV FOR DIV thats contains ${elem.textContent}`);
       otherElem = getPreviousEditableSibling(elem);
     }
     else if (event.keyCode === 40) {
-      //console.log(` TRY TO LOCATE NEXT FOR DIV thats contains ${elem.textContent}`);
       otherElem = getNextEditableSibling(elem);
     }
     if (otherElem) {
@@ -727,7 +722,7 @@ function addNewRowBelow(event, settings) {
       return;
     }
   }
-  //displayErrors('No active row detected!');
+  displayErrors('No active row detected!');
   addRowFallback(settings);
 }
 
