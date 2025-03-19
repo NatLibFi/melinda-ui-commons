@@ -432,11 +432,9 @@ export function editorHandleFocus(event, settings) {
 
   window.activeFieldElement = elem;
   activateButtons(settings);
-  
 }
 
-export function activateButtons(settings) { // app or melinda-ui-commons?
-  //console.log('activateButtons');
+export function activateAddRowButtons(settings) {
   const addAboveElem = document.getElementById('addNewRowAbove');
   if (addAboveElem) {
     addAboveElem.onclick = function(event) { addNewRowAbove(event, settings) }; // There can/should be only one (Somehow event listerers get multiplier despite being the same)
@@ -450,11 +448,17 @@ export function activateButtons(settings) { // app or melinda-ui-commons?
     addBelowElem.onclick = function(event) { addNewRowBelow(event, settings)};
     addBelowElem.removeAttribute('disabled');
   }
+}
+
+export function activateButtons(settings) { // app or melinda-ui-commons?
+  console.log('activateButtons');
+  activateAddRowButtons(settings);
+
   const removeRowElem = document.getElementById('removeActiveRow');
   if (removeRowElem) {
     //console.log('activateButtons(): removeRowElement')
     removeRowElem.addEventListener('click', removeActiveRow);
-    removeRowElem.removeAttribute('disabled');
+    removeRowElem.removeAttribute('disabled'); // might be disabled immediately afterwards as this requires selected elem...
   }
 }
 
