@@ -292,7 +292,7 @@ function convertDataToSubfields(data, separator = '$$') {
     return {subfields: [], error: 'Not enough data yet'};
   }
   if ( data.substring(0, separator.length) !== separator ) {
-    return {subfields: [], error: 'Data segment should begin with \'${separator}\''};
+    return {subfields: [], error: `Data segment should begin with '${separator}'`};
   }
   const data2 = data.substring(separator.length);
   const subfields = data2.split(separator);
@@ -319,7 +319,7 @@ function convertDataToSubfields(data, separator = '$$') {
   }
 }
 
-export function resetFieldElem(elem, newValueAsString, settings = {}, editable = true) {
+function resetFieldElem(elem, newValueAsString, settings = {}, editable = true) {
   const marcField = stringToMarcField(newValueAsString.replace(/\n/gu, ' '), settings.subfieldCodePrefix); // No idea why /\s/ did not work... 
   elem.innerHTML = '';
   marcFieldToDiv(null, elem, marcField, settings, editable);
