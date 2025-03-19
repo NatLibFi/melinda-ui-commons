@@ -863,6 +863,6 @@ export function displayNotes(notes, displayElementId = 'editorNotes') {
 }
 
 export function extractErrors(settings) {
-  const fields = getEditorFields(settings.editorDivId, artikkeliEditorSettings.subfieldCodePrefix);
+  const fields = getEditorFields(settings.editorDivId, settings.subfieldCodePrefix);
   return fields.filter(f => f.error).map(f => f.error);
 }
