@@ -245,9 +245,9 @@ function normalizeIndicator(ind, tag) { // convert data from web page to marc
 
 
 // Read field divs and convert them to marc fields (leader is converted into a LDR field)
-export function getEditorFields(editorElementId = 'Record') {
+export function getEditorFields(editorElementId = 'Record', subfieldCodePrefix = '$$') {
   const parentElem = document.getElementById(editorElementId);
-  return [...parentElem.children].map(div => stringToMarcField(div.textContent)); // converts children into an editable array
+  return [...parentElem.children].map(div => stringToMarcField(div.textContent), subfieldCodePrefix); // [].map() converts children into an editable array
 }
 
 export function stringToMarcField(str, subfieldCodePrefix = '$$') { // settings.subfieldCodePrefix
@@ -320,7 +320,7 @@ function convertDataToSubfields(data, separator = '$$') {
 }
 
 export function resetFieldElem(elem, newValueAsString, settings = {}, editable = true) {
-  const marcField = stringToMarcField(newValueAsString.replace(/\n/gu, ' ')); // No idea why /\s/ did not work... 
+  const marcField = stringToMarcField(newValueAsString.replace(/\n/gu, ' '), settings.subfieldCodePrefix); // No idea why /\s/ did not work... 
   elem.innerHTML = '';
   marcFieldToDiv(null, elem, marcField, settings, editable);
 
@@ -687,7 +687,7 @@ export function undoMarkAllFieldsUneditable(settings) {
   fieldDivs.forEach(fieldDiv => markFieldEditability(fieldDiv));
 
   function markFieldEditability(fieldDiv) {
-    const marcField = stringToMarcField(fieldDiv.textContent);
+    const marcField = stringToMarcField(fieldDiv.textContent, settings.subfieldCodePrefix);
     const fieldIsEditable = settings?.editableField ? settings.editableField(marcField, true) : false; // here we assume that this function is only called by editable records!
 
     marcFieldToDiv(undefined, fieldDiv, marcField, settings, fieldIsEditable, undefined);
@@ -774,7 +774,7 @@ export function deactivateRemoveActiveRowButton() {
 
 export function convertFieldsToRecord(fields, settings = {}) { // this should go to melinda-ui-commons...
   if (fields == undefined) {
-    fields = getEditorFields(settings.editorDivId); // Get default fields
+    fields = getEditorFields(settings.editorDivId, settings.subfieldCodePrefix); // Get default fields
   }
   const [leader, ...otherFields] = fields
   //const validationErrors = extractErrorsFromFields(fields); // Validate?
