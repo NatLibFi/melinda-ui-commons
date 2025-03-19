@@ -247,6 +247,10 @@ function normalizeIndicator(ind, tag) { // convert data from web page to marc
 // Read field divs and convert them to marc fields (leader is converted into a LDR field)
 export function getEditorFields(editorElementId = 'Record', subfieldCodePrefix = '$$') {
   const parentElem = document.getElementById(editorElementId);
+  if (!parentElem) {
+    console.log(`WARNING: getEditorFields(): no element '${editorElementId}' found!`);
+    return [];
+  }
   return [...parentElem.children].map(div => stringToMarcField(div.textContent, subfieldCodePrefix)); // [].map() converts children into an editable array
 }
 
@@ -833,7 +837,10 @@ export function displayErrors(errors, displayElementId = 'editorNotes') {
   }
   const displayElement = document.getElementById(displayElementId);
 
-  if (!displayElement) { return; }
+  if (!displayElement) {
+    console.log(`WARNING: displayErrors(): element '${displayElementId}' not found!`)
+    return;
+  }
 
   displayElement.innerHTML = '';
   if (errors.length == 0) { return; }
