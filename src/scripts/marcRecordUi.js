@@ -247,11 +247,11 @@ function normalizeIndicator(ind, tag) { // convert data from web page to marc
 // Read field divs and convert them to marc fields (leader is converted into a LDR field)
 export function getEditorFields(editorElementId = 'Record', subfieldCodePrefix = '$$') {
   const parentElem = document.getElementById(editorElementId);
-  return [...parentElem.children].map(div => stringToMarcField(div.textContent), subfieldCodePrefix); // [].map() converts children into an editable array
+  return [...parentElem.children].map(div => stringToMarcField(div.textContent, subfieldCodePrefix)); // [].map() converts children into an editable array
 }
 
-export function stringToMarcField(str, subfieldCodePrefix = '$$') { // settings.subfieldCodePrefix
-  //console.log(`String2field: '${str}'`);
+export function stringToMarcField(str, subfieldCodePrefix = '$$') { // export since used in tests. settings.subfieldCodePrefix
+  console.log(`String2field: '${str}', '${subfieldCodePrefix}'`);
   const len = str.length;
   if (len <= 3) {
     return {tag: str, error: `Incomplete field ${str}`};
@@ -320,6 +320,7 @@ function convertDataToSubfields(data, separator = '$$') {
 }
 
 function resetFieldElem(elem, newValueAsString, settings = {}, editable = true) {
+  console.log(JSON.stringify(settings));
   const marcField = stringToMarcField(newValueAsString.replace(/\n/gu, ' '), settings.subfieldCodePrefix); // No idea why /\s/ did not work... 
   elem.innerHTML = '';
   marcFieldToDiv(null, elem, marcField, settings, editable);
