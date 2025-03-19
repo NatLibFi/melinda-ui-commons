@@ -733,6 +733,7 @@ function addNewRowBelow(event, settings) {
 function addRowFallback(settings, beforeEnd = true) {
   const parentElem = document.getElementById(settings.editorDivId);
   if (parentElem) {
+    const newElem = getNewElement(settings);
     console.log(`Fallback: Add row ${beforeEnd ? 'END' : 'BEGIN'}`);
     const sisterElem = getSisterElem(parentElem);
     if (sisterElem) {
