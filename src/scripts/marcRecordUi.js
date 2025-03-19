@@ -861,3 +861,8 @@ export function displayNotes(notes, displayElementId = 'editorNotes') {
   displayElement.classList.remove('record-error', 'record-success');
   highlightElement(displayElement);
 }
+
+export function extractErrors(settings) {
+  const fields = getEditorFields(settings.editorDivId, artikkeliEditorSettings.subfieldCodePrefix);
+  return fields.filter(f => f.error).map(f => f.error);
+}
