@@ -737,7 +737,7 @@ function addRowFallback(settings, beforeEnd = true) {
     console.log(`Fallback: Add row ${beforeEnd ? 'END' : 'BEGIN'}`);
     const sisterElem = getSisterElem(parentElem);
     if (sisterElem) {
-      const position = beforeEnd ? 'beforebegin' : 'afterend';
+      const position = beforeEnd ? 'afterend' : 'beforebegin';
       sisterElem.insertAdjacentElement(position, newElem);
     }
     else {
