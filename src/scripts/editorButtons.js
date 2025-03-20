@@ -87,13 +87,11 @@ function addNewRowAbove(event, settings) {
     event.preventDefault();
     const elem = window.activeFieldElement;
     if (elem) {
-      console.log(`Add row above ${elem.textContent.substr(3)}`);
-      const newElem = getNewElement(settings);
-      if (newElem) {
+        console.log(`Add row above ${elem.textContent.substr(3)}`);
+        const newElem = getNewElement(settings);
         elem.insertAdjacentElement('beforebegin', newElem);
         newElem.focus();
         return;
-      }
     }
     //displayErrors('No active row detected!');
 
@@ -108,11 +106,9 @@ function addNewRowBelow(event, settings) {
   if (elem) {
     console.log(`Add row below ${elem.textContent.substr(3)}`);
     const newElem = getNewElement(settings);
-    if (newElem) {
-      elem.insertAdjacentElement('afterend', newElem);
-      newElem.focus();
-      return;
-    }
+    elem.insertAdjacentElement('afterend', newElem);
+    newElem.focus();
+    return;
   }
   displayErrors('No active row detected!');
   addRowFallback(settings, true);
