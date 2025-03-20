@@ -2,7 +2,7 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable max-statements */
 
-import {highlightElement} from './elements.js';
+import {disableElement, highlightElement} from './elements.js';
 
 //****************************************************************************//
 //                                                                            //
@@ -438,7 +438,7 @@ export function editorHandleFocus(event, settings) {
   activateButtons(settings);
 }
 
-export function activateAddRowButtons(settings) {
+export function activateAddRowButtons(settings = {}) {
   const addAboveElem = document.getElementById('addNewRowAbove');
   if (addAboveElem) {
     addAboveElem.onclick = function(event) { addNewRowAbove(event, settings) }; // There can/should be only one (Somehow event listerers get multiplier despite being the same)
@@ -789,11 +789,32 @@ function removeActiveRow(event) {
 }
 
 export function deactivateRemoveActiveRowButton() {
+  disableElementId('removeActiveRow');
+  /*
   const removeRowElem = document.getElementById('removeActiveRow');
   if (removeRowElem) {
-    removeRowElem.removeEventListener('click', removeActiveRow);
-    removeRowElem.setAttribute('disabled', true);
+    // removeRowElem.removeEventListener('click', removeActiveRow); // is this necessary? probably not...
+    disableElement(removeRowElem);
   }
+    */
+}
+
+export const editorButtonIds = ['addNewRowAbove', 'addNewRowBelow', 'cancelEditButton', 'removeActiveRow', 'saveEditButton', 'validateEditButton'];
+
+export function deactivateEditorButtons() {
+  editorButtons.forEach(id => disableElementId(id));
+}
+
+
+
+function disableElementId(id) {
+  const elem = document.getElementById(id);
+  if (!elem) {
+    console.log(`disableElementId(): can't locate element (id=${id})`);
+    return;
+  }
+  disableElement(elem);
+
 }
 
 export function convertFieldsToRecord(fields, settings = {}) { // this should go to melinda-ui-commons...
