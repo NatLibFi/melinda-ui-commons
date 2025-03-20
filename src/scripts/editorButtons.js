@@ -3,6 +3,7 @@
 //
 
 import {disableElement, enableElement} from './elements.js';
+import {getNextEditableSibling, getPreviousEditableSibling} from './marcRecordUi.js';
 
 const editorButtonIds = ['addNewRowAbove', 'addNewRowBelow', 'cancelEditButton', 'removeActiveRow', 'saveEditButton', 'validateEditButton'];
 
@@ -12,39 +13,18 @@ export function initEditorButtonsHandlers(settings = {}) {
       addAboveElem.onclick = function(event) { addNewRowAbove(event, settings) }; // There can/should be only one (Somehow event listerers get multiplier despite being the same)
       //addAboveElem.removeAttribute('disabled');
     }
+
     const addBelowElem = document.getElementById('addNewRowBelow');
     if (addBelowElem) {
       addBelowElem.onclick = function(event) { addNewRowBelow(event, settings)};
       //addBelowElem.removeAttribute('disabled');
     }
-}
 
-
-
-
-function removeActiveRow(event) {
-    //console.log('remove row 1')
-    event.preventDefault();
-    const elem = window.activeFieldElement;
-    if (elem) {
-      //console.log("Remove row");
-      const elem2 = getNextEditableSibling(elem) || getPreviousEditableSibling(elem);
-      elem.remove();
-      window.activeFieldElement = elem2;
-      if (elem2) { // put focus on next element
-        elem2.focus();
-      }
-      else {
-        deactivateRemoveActiveRowButton();
-      }
-      return;
+    const removeActiveRowElem= document.getElementById('removeActiveRow');
+    if (removeActiveRowElem) {
+        removeActiveRowElem.onclick = function(event) { removeActiveRow(event); }
     }
-    displayErrors('No active row detected!');
-    //console.log("No editor row selected (for deletion)")
 }
-
-
-
 
 export function deactivateEditorButtons() {
   editorButtonIds.forEach(id => disableElementById(id));
@@ -103,24 +83,24 @@ function addNewRowBelow(event, settings) {
   addRowFallback(settings, true);
 }
 
-function removeActiveRow(event) {
-  //console.log('remove row 1')
-  event.preventDefault();
-  const elem = window.activeFieldElement;
-  if (elem) {
-    //console.log("Remove row");
-    const elem2 = getNextEditableSibling(elem) || getPreviousEditableSibling(elem);
-    elem.remove();
-    window.activeFieldElement = elem2;
-    if (elem2) { // put focus on next element
-      elem2.focus();
-    }
-    else {
-      deactivateRemoveActiveRowButton();
-    }
-    return;
-  }
-  displayErrors('No active row detected!');
-  //console.log("No editor row selected (for deletion)")
-}
 
+function removeActiveRow(event) {
+    //console.log('remove row 1')
+    event.preventDefault();
+    const elem = window.activeFieldElement;
+    if (elem) {
+      //console.log("Remove row");
+      const elem2 = getNextEditableSibling(elem) || getPreviousEditableSibling(elem);
+      elem.remove();
+      window.activeFieldElement = elem2;
+      if (elem2) { // put focus on next element
+        elem2.focus();
+      }
+      else {
+        deactivateRemoveActiveRowButton();
+      }
+      return;
+    }
+    displayErrors('No active row detected!');
+    //console.log("No editor row selected (for deletion)")
+}
