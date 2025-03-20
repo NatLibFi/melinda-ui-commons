@@ -57,14 +57,7 @@ function disableElementById(id) {
 }
 
 export function deactivateRemoveActiveRowButton() {
-  disableElementId('removeActiveRow');
-  /*
-  const removeRowElem = document.getElementById('removeActiveRow');
-  if (removeRowElem) {
-    // removeRowElem.removeEventListener('click', removeActiveRow); // is this necessary? probably not...
-    disableElement(removeRowElem);
-  }
-    */
+  disableElementById('removeActiveRow');
 }
 
 function addNewRowBelow(event, settings) {
