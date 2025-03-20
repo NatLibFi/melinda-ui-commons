@@ -802,11 +802,11 @@ export function deactivateRemoveActiveRowButton() {
 export const editorButtonIds = ['addNewRowAbove', 'addNewRowBelow', 'cancelEditButton', 'removeActiveRow', 'saveEditButton', 'validateEditButton'];
 
 export function deactivateEditorButtons() {
-  editorButtons.forEach(id => disableElementById(id));
+  editorButtonIds.forEach(id => disableElementById(id));
 }
 
 export function activateEditorButtons() {
-  editorButtons.forEach(id => enableElementById(id));
+  editorButtonIds.forEach(id => enableElementById(id));
 }
 
 function enableElementById(id) {
