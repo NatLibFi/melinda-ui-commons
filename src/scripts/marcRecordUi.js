@@ -279,7 +279,7 @@ export function stringToMarcField(str, subfieldCodePrefix = '$$') { // export si
     return {tag, ind1, ind2, value: rest.replace(/#/gu, ' '), error: rest.length <= 5 ? `Incomplete field ${tag}` : false};
   }
 
-  const {subfields, error} = convertDataToSubfields(rest, subfieldCodePrefix);
+  const {subfields, error} = convertDataToSubfields(tag, rest, subfieldCodePrefix);
   //if (subfields.length === 0) {
   if (error) {
     //console.log(`Failed to parse '${str}': ${error}`);
@@ -289,7 +289,7 @@ export function stringToMarcField(str, subfieldCodePrefix = '$$') { // export si
   return {tag, ind1, ind2, subfields, error: false};
 }
 
-function convertDataToSubfields(data, separator = '$$') {
+function convertDataToSubfields(tag, data, separator = '$$') {
   if (separator.length < 1) {
     return {subfields: [], error: 'Missing subfield separator string'};
   }
@@ -307,14 +307,17 @@ function convertDataToSubfields(data, separator = '$$') {
     return{subfields: [], error: `Subfield #${noSubfieldCodeIndex+1} does not contain a subfield code (nor data)`};
   }
 
+
   const illegalSubfieldCodeIndex = subfields.findIndex((sf, i) => sf.match(/^[^a-z0-9]/u));
   if (illegalSubfieldCodeIndex > -1) {
     return {subfields: [], error: `Subfield #${illegalSubfieldCodeIndex+1} has unexpected subfield code '${subfields[illegalSubfieldCodeIndex].substring(0, 1)}'`};
   }
 
-  const emptySubfieldIndex = subfields.findIndex((sf, i) => sf.length < 2); // 1st char is code and the rest is data
-  if (emptySubfieldIndex > -1) {
-    return{subfields: [], error: `Subfield #${emptySubfieldIndex+1} (${separator}${subfields[emptySubfieldIndex].substring(0, 1)}) does not contain any data`};
+  if (tag !== 'CAT') { // CAT's empty $b is so common, that there's no point to complain about it, esp. as it is oft uneditable.
+    const emptySubfieldIndex = subfields.findIndex((sf, i) => sf.length < 2); // 1st char is code and the rest is data
+    if (emptySubfieldIndex > -1) {
+      return{subfields: [], error: `Subfield #${emptySubfieldIndex+1} (${separator}${subfields[emptySubfieldIndex].substring(0, 1)}) does not contain any data`};
+    }
   }
 
   return { subfields: subfields.map(sf => stringToSubfield(sf)), error: undefined};
@@ -732,6 +735,7 @@ export function displayNotes(notes, displayElementId = 'editorNotes') {
 }
 
 export function extractErrors(settings) {
-  const fields = getEditorFields(settings.editorDivId, settings.subfieldCodePrefix);
+  // 2025-03-20: we are now only returning errors for fields that are editable, and thus fixable. (Should we parameterize this?)
+  const fields = getEditorFields(settings.editorDivId, settings.subfieldCodePrefix).filter(editableField);
   return fields.filter(f => f.error).map(f => f.error);
 }
