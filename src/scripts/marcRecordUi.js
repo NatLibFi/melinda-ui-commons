@@ -2,7 +2,7 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable max-statements */
 
-import {disableElement, highlightElement} from './elements.js';
+import {disableElement, enableElement, highlightElement} from './elements.js';
 
 //****************************************************************************//
 //                                                                            //
@@ -802,19 +802,30 @@ export function deactivateRemoveActiveRowButton() {
 export const editorButtonIds = ['addNewRowAbove', 'addNewRowBelow', 'cancelEditButton', 'removeActiveRow', 'saveEditButton', 'validateEditButton'];
 
 export function deactivateEditorButtons() {
-  editorButtons.forEach(id => disableElementId(id));
+  editorButtons.forEach(id => disableElementById(id));
+}
+
+export function activateEditorButtons() {
+  editorButtons.forEach(id => enableElementById(id));
+}
+
+function enableElementById(id) {
+  const elem = document.getElementById(id);
+  if (!elem) {
+    console.log(`enableElementById(): can't locate element (id=${id})`);
+    return;
+  }
+  enableElement(elem);
 }
 
 
-
-function disableElementId(id) {
+function disableElementById(id) {
   const elem = document.getElementById(id);
   if (!elem) {
-    console.log(`disableElementId(): can't locate element (id=${id})`);
+    console.log(`disableElementById(): can't locate element (id=${id})`);
     return;
   }
   disableElement(elem);
-
 }
 
 export function convertFieldsToRecord(fields, settings = {}) { // this should go to melinda-ui-commons...
