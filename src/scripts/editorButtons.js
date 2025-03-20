@@ -60,22 +60,6 @@ export function deactivateRemoveActiveRowButton() {
   disableElementById('removeActiveRow');
 }
 
-function addNewRowBelow(event, settings) {
-  event.preventDefault();
-  const elem = window.activeFieldElement;
-  if (elem) {
-    console.log(`Add row below ${elem.textContent.substr(3)}`);
-    const newElem = getNewElement(settings);
-    if (newElem) {
-      elem.insertAdjacentElement('afterend', newElem);
-      newElem.focus();
-      return;
-    }
-  }
-  displayErrors('No active row detected!');
-  addRowFallback(settings, true);
-}
-
 
 function removeActiveRow(event) {
     //console.log('remove row 1')
@@ -98,6 +82,26 @@ function removeActiveRow(event) {
     //console.log("No editor row selected (for deletion)")
 }
 
+
+function addNewRowAbove(event, settings) {
+    event.preventDefault();
+    const elem = window.activeFieldElement;
+    if (elem) {
+      console.log(`Add row above ${elem.textContent.substr(3)}`);
+      const newElem = getNewElement(settings);
+      if (newElem) {
+        elem.insertAdjacentElement('beforebegin', newElem);
+        newElem.focus();
+        return;
+      }
+    }
+    //displayErrors('No active row detected!');
+
+     // The next command adds row to the end, should we add it to the start?
+     // But where it should be added? After LDR, after control fields (00X), or...
+    addRowFallback(settings, false);
+}
+
 function addNewRowBelow(event, settings) {
   event.preventDefault();
   const elem = window.activeFieldElement;
@@ -114,6 +118,7 @@ function addNewRowBelow(event, settings) {
   addRowFallback(settings, true);
 }
 
+  
 function addRowFallback(settings, beforeEnd = true) {
   const parentElem = document.getElementById(settings.editorDivId);
   if (parentElem) {

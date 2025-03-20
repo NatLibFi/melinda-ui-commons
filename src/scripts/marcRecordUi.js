@@ -670,26 +670,6 @@ export function undoMarkAllFieldsUneditable(settings) {
   }
 }
 
-function addNewRowAbove(event, settings) {
-  event.preventDefault();
-  const elem = window.activeFieldElement;
-  if (elem) {
-    console.log(`Add row above ${elem.textContent.substr(3)}`);
-    const newElem = getNewElement(settings);
-    if (newElem) {
-      elem.insertAdjacentElement('beforebegin', newElem);
-      newElem.focus();
-      return;
-    }
-  }
-  //displayErrors('No active row detected!');
-
-   // The next command adds row to the end, should we add it to the start?
-   // But where it should be added? After LDR, after control fields (00X), or...
-  addRowFallback(settings, false);
-}
-
-
 export function convertFieldsToRecord(fields, settings = {}) { // this should go to melinda-ui-commons...
   if (fields == undefined) {
     fields = getEditorFields(settings.editorDivId, settings.subfieldCodePrefix); // Get default fields
