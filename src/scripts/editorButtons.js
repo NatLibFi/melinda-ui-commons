@@ -3,7 +3,7 @@
 //
 
 import {disableElement, enableElement} from './elements.js';
-import {getNextEditableSibling, getPreviousEditableSibling, resetFieldElem} from './marcRecordUi.js';
+import {addEditorRowListerers, getNextEditableSibling, getPreviousEditableSibling, resetFieldElem} from './marcRecordUi.js';
 
 const editorButtonIds = ['addNewRowAbove', 'addNewRowBelow', 'cancelEditButton', 'removeActiveRow', 'saveEditButton', 'validateEditButton'];
 
@@ -118,7 +118,7 @@ function addNewRowBelow(event, settings) {
   addRowFallback(settings, true);
 }
 
-  
+
 function addRowFallback(settings, beforeEnd = true) {
   const parentElem = document.getElementById(settings.editorDivId);
   if (parentElem) {
