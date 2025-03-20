@@ -2,7 +2,8 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable max-statements */
 
-import {disableElement, enableElement, highlightElement} from './elements.js';
+import {highlightElement} from './elements.js';
+import {activateEditorButtons} from './editorButtons.js';
 
 //****************************************************************************//
 //                                                                            //
@@ -433,37 +434,8 @@ export function isEditableDiv(elem) {
 export function editorHandleFocus(event, settings) {
   const elem = event.currentTarget;
   //console.log(`editorHandleFocus: ${elem.textContent}`);
-
   window.activeFieldElement = elem;
-  activateButtons(settings);
-}
-
-export function activateAddRowButtons(settings = {}) {
-  const addAboveElem = document.getElementById('addNewRowAbove');
-  if (addAboveElem) {
-    addAboveElem.onclick = function(event) { addNewRowAbove(event, settings) }; // There can/should be only one (Somehow event listerers get multiplier despite being the same)
-    addAboveElem.removeAttribute('disabled');
-  }
-  const addBelowElem = document.getElementById('addNewRowBelow');
-  if (addBelowElem) {
-    //addBelowElem.addEventListener('click', function(event) {
-    //  addNewRowBelow(event, settings);
-    //});
-    addBelowElem.onclick = function(event) { addNewRowBelow(event, settings)};
-    addBelowElem.removeAttribute('disabled');
-  }
-}
-
-export function activateButtons(settings) { // app or melinda-ui-commons?
-  console.log('activateButtons');
-  activateAddRowButtons(settings);
-
-  const removeRowElem = document.getElementById('removeActiveRow');
-  if (removeRowElem) {
-    //console.log('activateButtons(): removeRowElement')
-    removeRowElem.addEventListener('click', removeActiveRow);
-    removeRowElem.removeAttribute('disabled'); // might be disabled immediately afterwards as this requires selected elem...
-  }
+  activateEditorButtons(settings);
 }
 
 function editorHandlePaste(event) {
@@ -629,7 +601,7 @@ function editorHandleInput(event, settings) {
 
 }
 
-const defaultHandlers = [
+const defaultEditorRowHandlers = [
   { 'type': 'focus', 'func': editorHandleFocus },
   { 'type': 'input', 'func': editorHandleInput },
   { 'type': 'keydown', 'func': editorHandleKeyDown},
@@ -637,7 +609,7 @@ const defaultHandlers = [
 ];
 
 export function addEditorRowListerers(fieldElement, settings = {}) {
-  defaultHandlers.forEach(handler => setHandler(handler));
+  defaultEditorRowHandlers.forEach(handler => setHandler(handler));
 
   function setHandler(handler) {
     const activeHandler = settings[`${handler.type}Handler`] || handler.func;
@@ -767,66 +739,7 @@ function addRowFallback(settings, beforeEnd = true) {
 }
 
 
-function removeActiveRow(event) {
-  //console.log('remove row 1')
-  event.preventDefault();
-  const elem = window.activeFieldElement;
-  if (elem) {
-    //console.log("Remove row");
-    const elem2 = getNextEditableSibling(elem) || getPreviousEditableSibling(elem);
-    elem.remove();
-    window.activeFieldElement = elem2;
-    if (elem2) { // put focus on next element
-      elem2.focus();
-    }
-    else {
-      deactivateRemoveActiveRowButton();
-    }
-    return;
-  }
-  displayErrors('No active row detected!');
-  //console.log("No editor row selected (for deletion)")
-}
 
-export function deactivateRemoveActiveRowButton() {
-  disableElementId('removeActiveRow');
-  /*
-  const removeRowElem = document.getElementById('removeActiveRow');
-  if (removeRowElem) {
-    // removeRowElem.removeEventListener('click', removeActiveRow); // is this necessary? probably not...
-    disableElement(removeRowElem);
-  }
-    */
-}
-
-export const editorButtonIds = ['addNewRowAbove', 'addNewRowBelow', 'cancelEditButton', 'removeActiveRow', 'saveEditButton', 'validateEditButton'];
-
-export function deactivateEditorButtons() {
-  editorButtonIds.forEach(id => disableElementById(id));
-}
-
-export function activateEditorButtons() {
-  editorButtonIds.forEach(id => enableElementById(id));
-}
-
-function enableElementById(id) {
-  const elem = document.getElementById(id);
-  if (!elem) {
-    console.log(`enableElementById(): can't locate element (id=${id})`);
-    return;
-  }
-  enableElement(elem);
-}
-
-
-function disableElementById(id) {
-  const elem = document.getElementById(id);
-  if (!elem) {
-    console.log(`disableElementById(): can't locate element (id=${id})`);
-    return;
-  }
-  disableElement(elem);
-}
 
 export function convertFieldsToRecord(fields, settings = {}) { // this should go to melinda-ui-commons...
   if (fields == undefined) {
