@@ -24,6 +24,14 @@ export function initEditorButtonsHandlers(settings = {}) {
     if (removeActiveRowElem) {
         removeActiveRowElem.onclick = function(event) { removeActiveRow(event); }
     }
+
+    // This one is not a handler... maybe I should rename the function...
+    if (settings.hideCancelEditButton) {
+        const elem = document.getElementById('cancelEditButton');
+        if (elem) {
+            elem.style.display = 'none';
+        }
+    }
 }
 
 export function deactivateEditorButtons() {
