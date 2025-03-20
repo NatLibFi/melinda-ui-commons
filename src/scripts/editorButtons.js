@@ -3,7 +3,7 @@
 //
 
 import {disableElement, enableElement} from './elements.js';
-import {getNextEditableSibling, getPreviousEditableSibling} from './marcRecordUi.js';
+import {getNextEditableSibling, getPreviousEditableSibling, resetFieldElem} from './marcRecordUi.js';
 
 const editorButtonIds = ['addNewRowAbove', 'addNewRowBelow', 'cancelEditButton', 'removeActiveRow', 'saveEditButton', 'validateEditButton'];
 

@@ -324,7 +324,7 @@ function convertDataToSubfields(data, separator = '$$') {
   }
 }
 
-function resetFieldElem(elem, newValueAsString, settings = {}, editable = true) {
+export function resetFieldElem(elem, newValueAsString, settings = {}, editable = true) {
   const marcField = stringToMarcField(newValueAsString.replace(/\n/gu, ' '), settings.subfieldCodePrefix); // No idea why /\s/ did not work... 
   elem.innerHTML = '';
   marcFieldToDiv(null, elem, marcField, settings, editable);
