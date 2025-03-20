@@ -97,3 +97,51 @@ function removeActiveRow(event) {
     displayErrors('No active row detected!');
     //console.log("No editor row selected (for deletion)")
 }
+
+function addNewRowBelow(event, settings) {
+  event.preventDefault();
+  const elem = window.activeFieldElement;
+  if (elem) {
+    console.log(`Add row below ${elem.textContent.substr(3)}`);
+    const newElem = getNewElement(settings);
+    if (newElem) {
+      elem.insertAdjacentElement('afterend', newElem);
+      newElem.focus();
+      return;
+    }
+  }
+  displayErrors('No active row detected!');
+  addRowFallback(settings, true);
+}
+
+function addRowFallback(settings, beforeEnd = true) {
+  const parentElem = document.getElementById(settings.editorDivId);
+  if (parentElem) {
+    const newElem = getNewElement(settings);
+    console.log(`Fallback: Add row ${beforeEnd ? 'END' : 'BEGIN'}`);
+    const sisterElem = getSisterElem(parentElem);
+    if (sisterElem) {
+      const position = beforeEnd ? 'afterend' : 'beforebegin';
+      sisterElem.insertAdjacentElement(position, newElem);
+    }
+    else {
+      const position = beforeEnd ? 'beforeend' : 'afterbegin';
+      parentElem.insertAdjacentElement(position, newElem)
+    }
+    newElem.focus();
+    return;
+  }
+  console.log("Failed to add row.");
+
+
+  function getSisterElem(parentElem) {
+    const goalPostSister = beforeEnd ? parentElem.lastChild : parentElem.firstChild;
+    if (isEditableDiv(goalPostSister)) {
+      return goalPostSister;
+    }
+    if (beforeEnd) {
+      return getPreviousEditableSibling(goalPostSister);
+    }
+    return getNextEditableSibling(goalPostSister);
+  }
+}
