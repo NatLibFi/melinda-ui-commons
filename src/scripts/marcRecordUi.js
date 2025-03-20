@@ -736,6 +736,6 @@ export function displayNotes(notes, displayElementId = 'editorNotes') {
 
 export function extractErrors(settings) {
   // 2025-03-20: we are now only returning errors for fields that are editable, and thus fixable. (Should we parameterize this?)
-  const fields = getEditorFields(settings.editorDivId, settings.subfieldCodePrefix).filter(editableField);
+  const fields = getEditorFields(settings.editorDivId, settings.subfieldCodePrefix).filter(settings.editableField);
   return fields.filter(f => f.error).map(f => f.error);
 }
