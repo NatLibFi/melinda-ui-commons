@@ -118,7 +118,7 @@ function addNewRowBelow(event, settings) {
     newElem.focus();
     return;
   }
-  displayErrors('No active row detected!');
+  //displayErrors('No active row detected!');
   addRowFallback(settings, true);
 }
 
