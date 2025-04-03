@@ -49,9 +49,11 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
     return;
   }
 
+  /*
   if (!settings.editableRecord) {
     console.log("SHOW ONLY! NO editableRecord() FUNCTION!");
   }
+  */
 
   const recordIsEditable = settings?.editableRecord ? settings.editableRecord(record) : false;
 
@@ -648,10 +650,11 @@ export function markAllFieldsUneditable(settings) {
   }
 }
 
+
 export function undoMarkAllFieldsUneditable(settings) {
-  // After save, reload the record and display modified record! (not by this functions)
+  // After a save, the modified record is reloaded and displayed modified record! (not done by this functions, though)
   // However, we should have failure handling functions (if save fails, for example, due to validation issues). Thus this function!
-  // I really don't like this function, but it is better than nothing. Howeve, avoid calling this, if you can do without.
+  // I really don't like this function, but it is better than nothing. However, avoid calling this, if you can do without.
   // UNTESTED!
   if (!settings.editorDivId) {
     return;
