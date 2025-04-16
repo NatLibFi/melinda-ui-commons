@@ -3,7 +3,6 @@
 //
 
 import {disableElement, enableElement} from './elements.js';
-import {addEditorRowListerers, displayErrors, getNextEditableSibling, getPreviousEditableSibling, isEditableDiv, resetFieldElem} from './marcRecordUi.js';
 
 const editorButtonIds = ['addNewRowAbove', 'addNewRowBelow', 'cancelEditButton', 'removeActiveRow', 'saveEditButton', 'validateEditButton'];
 
