@@ -33,31 +33,35 @@ function editorHandleInput(event, settings) {
 
     const position = getCursorPosition(elem);
 
-    let fieldAsString = elem.textContent;
-    const overtypeLength = getOvertypeLength(event, event.data, fieldAsString, position);
+
     //console.log(`INPUT: '${event.data || 'N/A'}', OVERTYPE: ${overtypeLength}, POSITION: ${position}/${fieldAsString.length}`);
-    if ( overtypeLength < 0) { // Backspace (cut?)
-      if (position === fieldAsString.length) {
-        // console.log(' Removing from end requires no action');
-        // Do nothing
-      }
-      else if (position < 5)  { // Replace the letter that was deleted by a backspace with a space character.
-        // NB! This presumes that overtype length is -1. Won't work for longer cuts!
-        //console.log(` Replace removal with a space...\n  '${fieldAsString}`);
-        fieldAsString = `${fieldAsString.substr(0, position)} ${fieldAsString.substr(position)}`;
-        //console.log(`  '${fieldAsString}'`);
-      }
-      else {
-        // NB! This currently does nothing on purpose
-        const protectedAreaSize = getProtectedAreaSize(fieldAsString);
-        if (position > 5 && position < protectedAreaSize) { // It's a datafield. We protect first subfields prefix
-          fieldAsString = `${fieldAsString.substr(0, 5)}${settings.subfieldCodePrefix}${fieldAsString.substr(protectedAreaSize)}`;
+
+    function insertOrOvertype(currentContent) {
+        const overtypeLength = getOvertypeLength(event, event.data, currentContent, position);
+        if ( overtypeLength < 0) { // Backspace (or cut)
+            if (position === fieldAsString.length) { // Removing from end requires no action/protection
+                return currentContent;
+            }
+            if (position < 5 )  { // Within tag+indicator area: Replace the letter that was deleted by a backspace with a space character.
+                // NB! This presumes that overtype length is -1. Won't work for longer cuts!
+                //console.log(` Replace removal with a space...\n  '${fieldAsString}`);
+                //console.log(`  '${fieldAsString}'`);
+                return `${currentContent.substr(0, position)} ${currentContent.substr(position)}`;
+            }
+
+            const protectedAreaSize = getProtectedAreaSize();
+            if (position > 5 && position < protectedAreaSize) { // It's a datafield. We protect first subfields prefix
+                return `${currentContent.substr(0, 5)}${settings.subfieldCodePrefix}${currentContent.substr(protectedAreaSize)}`;
+            }
+            return currentContent;
         }
-      }
+        if (overtypeLength > 0) {
+            return `${currentContent.substr(0, position)}${currentContent.substr(position+overtypeLength)}`;
+        }
+        return currentContent
     }
-    else if (overtypeLength > 0) {
-      fieldAsString = `${fieldAsString.substr(0, position)}${fieldAsString.substr(position+overtypeLength)}`;
-    }
+
+    const fieldAsString = insertOrOvertype(elem.textContent);
 
     // If field is reset/redone, the history is lost, thus reset it only when necessary!
     if (!fieldNeedsReseting()) {
@@ -165,10 +169,10 @@ function getCursorPosition(element) {
 
 function getOvertypeLength(event, inputText, fieldAsString, position) { // position means position when text has been added or removed
     if (!inputText) {
-      if (event.inputType === 'deleteContentBackward') {
+      if (event.inputType === 'deleteContentBackward') { // backspace or cut (at least in chrome). However, knowing backspace length would be nice...
         return -1;
       }
-
+      // Can this happen?
       return 0;
     }
 
