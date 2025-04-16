@@ -4,7 +4,7 @@
 
 import {highlightElement} from './elements.js';
 import {activateEditorButtons} from './editorButtons.js';
-import {getNextEditableSibling, getPreviousEditableSibling, isEditableDiv, resetFieldElem} from './editorUtils.js';
+import {getNextEditableSibling, getPreviousEditableSibling, isDataFieldTag, isEditableDiv, resetFieldElem} from './editorUtils.js';
 
 //****************************************************************************//
 //                                                                            //
@@ -101,28 +101,6 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
 }
 
 
-export function isDataFieldTag(str = '') {
-  const tag = str.substring(0, 3); // This can be called with the whole "500##$$aLorum Ipsum." style strings as well.
-
-  // Everything except a control field is a data field...
-  return !['FMT', 'LDR', '000', '001', '002', '003', '004', '005', '006', '007', '008', '009'].includes(tag);
-}
-
-function normalizeIndicator(ind, tag) { // convert data from web page to marc
-  //console.log(`Process indicator '${ind}'`);
-  if (!isDataFieldTag(tag)) {
-      // Even control fields contain slots/fake indicators for indicators, so that records looks good in the browser.
-      // Fake indicators are removed when fields are converted into a real record.
-      return ' ';
-  }
-  if ( ind.match(/^[0-9]$/u) ) {
-      return ind;
-  }
-  // Note: this converts illegal indicator values to default value '#'. Needed by editor
-  return ' ';
-}
-
-
 // Read field divs and convert them to marc fields (leader is converted into a LDR field)
 export function getEditorFields(editorElementId = 'Record', subfieldCodePrefix = '$$') {
   const parentElem = document.getElementById(editorElementId);
@@ -165,6 +143,21 @@ export function stringToMarcField(str, subfieldCodePrefix = '$$') { // export si
   }
 
   return {tag, ind1, ind2, subfields, error: false};
+
+  function normalizeIndicator(ind, tag) { // convert data from web page to marc
+    //console.log(`Process indicator '${ind}'`);
+    if (!isDataFieldTag(tag)) {
+        // Even control fields contain slots/fake indicators for indicators, so that records looks good in the browser.
+        // Fake indicators are removed when fields are converted into a real record.
+        return ' ';
+    }
+    if ( ind.match(/^[0-9]$/u) ) {
+        return ind;
+    }
+    // Note: this converts illegal indicator values to default value '#'. Needed by editor
+    return ' ';
+  }
+
 }
 
 function convertDataToSubfields(tag, data, separator = '$$') {
@@ -219,255 +212,133 @@ export function filterField(field) {
   }
 }
 
-// Inspired by https://stackoverflow.com/questions/4811822/get-a-ranges-start-and-end-offsets-relative-to-its-parent-container/4812022#4812022
-function getCursorPosition(element) {
-  var doc = element.ownerDocument || element.document; // Though mere element.document should be enough for us
-  var win = doc.defaultView;
+export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settings = null, fieldIsEditable = false, altDocument = undefined) {
+  // This function should not be used imported (expect for testing)!
 
-  const sel = win.getSelection();
+  // altDocument is a jsdom document. We need it for testing.
+  const myDocument = altDocument || document;
 
-  if (sel.rangeCount > 0) {
-    const range = sel.getRangeAt(0); // win.getSelection().getRangeAt(0);
-    const preCaretRange = range.cloneRange();
-    preCaretRange.selectNodeContents(element);
-    preCaretRange.setEnd(range.endContainer, range.endOffset);
-    return preCaretRange.toString().length;
-  }
-  return 0;
-}
+  // NB! Typically recordDiv (parent of row div) or originalRow div is empty, as only one of them is needed.
+  const row = originalRow || myDocument.createElement('div');
+  row.classList.add('row');
 
-// Inspired by https://stackoverflow.com/questions/36869503/set-caret-position-in-contenteditable-div-that-has-children
-function setCursorPosition(elem, position) {
-  let todoList = elem.childNodes;
-  setCursorPosition2(todoList, position);
-
-  function setCursorPosition2(todo, position) {
-    //console.log(`Setting cursor to ${position}, with ${todo.length} element(s) to process`);
-    const [currNode, ...remaining] = todo;
-    if (!currNode) { // failure of some sort, abort
-      return;
-    }
-    //console.log(` Curr node type: ${currNode.nodeType} (${typeof currNode.nodeType})`);
-    if (currNode.nodeType == 3) { // text node
-      //console.log(` Text node, length: ${currNode.length}`);
-      if (currNode.length < position) { // Not yet there
-        return setCursorPosition2(remaining, position - currNode.length);
-      }
-      // Success
-      const range = document.createRange();
-      const sel = window.getSelection();
-      range.setStart(currNode, position);
-      range.collapse(true);
-      sel.removeAllRanges();
-      sel.addRange(range);
-      return;
-    }
-    // Process currNode's children:
-    return setCursorPosition2([...currNode.childNodes, ...remaining], position);
-  }
-}
-
-
-
-
-export function editorHandleFocus(event, settings) {
-  const elem = event.currentTarget;
-  //console.log(`editorHandleFocus: ${elem.textContent}`);
-  window.activeFieldElement = elem;
-  activateEditorButtons(settings);
-}
-
-function editorHandlePaste(event) {
-  // Default function for handling paste.
-  // Can be overridden using using settings.pasteHandler.
-
-  const elem = event.currentTarget;
-  const position = getCursorPosition(elem);
-
-  const protectedAreaSize = getProtectedAreaSize(elem.textContent);
-  if (position < protectedAreaSize && elem.textContent.length > position) { // Can't paste here mate!
-     console.log(`Can't paste in the protected area (tag, indicators, first subfield separator) area! (POS=${position}/${protectedAreaSize})`);
-    event.preventDefault(); // Blocks input event
-    return;
+  if (field.uuid) {
+    row.id = field.uuid;
   }
 
-  // Position >= protectedAreaSize: Paste will be done by browser and then handleInput() will be triggered as well...
-}
-
-function editorHandleKeyDown(event, settings) { // for field divs
-
-  if ([38, 40].includes(event.keyCode)) {
-    // console.log(`EVENT: KEY DOWN ${event.keyCode}`);
-    // 38: key up, 40: key down
-    event.preventDefault(); // Blocks input event
-    const elem = event.currentTarget;
-    const position = getCursorPosition(elem);
-    if (!elem || !isEditableDiv(elem)) { // hope that only editables available are "my" field divs
-      return;
-    }
-    let otherElem = undefined
-    if (event.keyCode === 38) {
-      otherElem = getPreviousEditableSibling(elem);
-    }
-    else if (event.keyCode === 40) {
-      otherElem = getNextEditableSibling(elem);
-    }
-    if (otherElem) {
-      //console.log("   HIT!");
-      otherElem.focus();
-      const newPosition = otherElem.textContent.length < position ? otherElem.textContent.length : position;
-      setCursorPosition(otherElem, newPosition);
-    }
+  if (settings?.decorateField) {
+    settings.decorateField(row, field);
   }
-}
-
-
-
-function getProtectedAreaSize(value) {
-  // controlfields are fully protected (= prevent paste)
-  if (!isDataFieldTag(value)) {
-    return value.length;
-  }
-  /*
-  if (isDataFieldTag(value)) {
-    // Data field: tag(3) + indicators (2) + prefix.length ('$$'==2). Don't protect subfield code (1)
-    return 5 + articleEditorSettings.subfieldCodePrefix.length;
-  }
-    */
-  // Control field: tag (3) + empty (2)
-  return 5;
-}
-
-function getOvertypeLength(event, inputText, fieldAsString, position) { // position means position when text has been added or removed
-  if (!inputText) {
-    if (event.inputType === 'deleteContentBackward') {
-      return -1;
-    }
-
-    return 0;
+  if (settings?.onClick) { // add similar keydown or input event?
+    row.addEventListener('click', event => settings.onClick(event, field));
   }
 
-  if (position === fieldAsString.length) {
-    // If there's nothing on the right, there's no need for overtype :-)
-    return 0;
+  if (fieldIsEditable) {
+    row.setAttribute('contentEditable', true);
   }
-  const jumpSize = inputText.length;
-  const startPosition = position - jumpSize;
-  //const tailLength = fieldAsString.length.position;
-  //const originalLength = startPosition + tailLength;
-  let i=0;
-  const protectedAreaSize = getProtectedAreaSize(fieldAsString);
-  while (i < jumpSize && startPosition+i < protectedAreaSize) {
-    i++;
+  else {
+    if (settings?.uneditableFieldBackgroundColor) {
+      row.style.backgroundColor = settings.uneditableFieldBackgroundColor;
+    }
   }
-  // console.log(`START: ${startPosition}, LEN: ${jumpSize}, OVERTYPE: ${i} char(s)`);
-  return i;
-}
 
-function editorHandleInput(event, settings) {
-  var elem = event.currentTarget;
-  //console.log(`INPUT EVENT ${event.inputType} in '${elem.textContent}'`);
+  addTag(row, field.tag);
 
-  const position = getCursorPosition(elem);
+  // NB! Note that the current implementation will add two non-breaking spaces for indicatorless fields.
+  addIndicators(row);
 
-  let fieldAsString = elem.textContent;
-  const overtypeLength = getOvertypeLength(event, event.data, fieldAsString, position);
-  //console.log(`INPUT: '${event.data || 'N/A'}', OVERTYPE: ${overtypeLength}, POSITION: ${position}/${fieldAsString.length}`);
-  if ( overtypeLength < 0) { // Backspace (cut?)
-    if (position === fieldAsString.length) {
-      // console.log(' Removing from end requires no action');
-      // Do nothing
+  if (field.subfields) {
+    for (const [index, subfield] of field.subfields.entries()) {
+      addSubfield(row, subfield, index);
     }
-    else if (position < 5)  { // Replace the letter that was deleted by a backspace with a space character.
-      // NB! This presumes that overtype length is -1. Won't work for longer cuts!
-      //console.log(` Replace removal with a space...\n  '${fieldAsString}`);
-      fieldAsString = `${fieldAsString.substr(0, position)} ${fieldAsString.substr(position)}`;
-      //console.log(`  '${fieldAsString}'`);
-    }
-    else {
-      // NB! This currently does nothing on purpose
-      const protectedAreaSize = getProtectedAreaSize(fieldAsString);
-      if (position > 5 && position < protectedAreaSize) { // It's a datafield. We protect first subfields prefix
-        fieldAsString = `${fieldAsString.substr(0, 5)}${settings.subfieldCodePrefix}${fieldAsString.substr(protectedAreaSize)}`;
+  } else {
+    addValue(row, field.value);
+  }
+
+  if (recordDiv && !originalRow) {
+    recordDiv.appendChild(row);
+  }
+  return row;
+
+  //---------------------------------------------------------------------------
+
+  function addTag(row, value) {
+    row.appendChild(makeSpan('tag', value));
+  }
+
+  function addIndicators(row) {
+    const span = makeSpan('inds');
+    if (field.ind1 || field.value) { // Field in editor might be incomplete and lack indicators
+      addIndicator(span, field.ind1, 'ind1');
+      if (field.ind2 || field.value) {
+        addIndicator(span, field.ind2, 'ind2');
       }
     }
-  }
-  else if (overtypeLength > 0) {
-    fieldAsString = `${fieldAsString.substr(0, position)}${fieldAsString.substr(position+overtypeLength)}`;
-  }
+    row.appendChild(span);
 
-
-  // If field is reset/redone, the history is lost, thus reset it only when necessary!
-  if (!fieldNeedsReseting()) {
-    return;
-  }
-
-  resetFieldElem(elem, fieldAsString, settings);
-  setCursorPosition(elem, position);
-
-
-  function fieldNeedsReseting() {
-    // optimize: don't reset field unless we (probably) have to do so.
-    if (!event.data) {
-      return true;
-    }
-    const jumpSize = event.data.length;
-    const startPosition = position - jumpSize;
-    //console.log(`RESET? START: ${startPosition}, SIZE: ${jumpSize}`);
-    if (startPosition <= 7 || jumpSize > 1) {
-      return true;
+    function addIndicator(span, ind, className = 'ind') {
+      // Rather hackily a <span class="${className}">&nbsp;</span> is created for non-indicator fields...
+      const value = mapIndicatorToValue(ind);
+      span.appendChild(makeSpan(className, null, value));
     }
 
-    if (event.data.includes('\t') || event.data.includes('\n')) {
-      return true;
-    }
-
-    if (settings.subfieldCodePrefix === '$$') {
-      if (fieldAsString.substr(startPosition-2, 2+jumpSize).includes('$')) {
-        return true;
+    function mapIndicatorToValue(ind) { // field -> web page
+      if (!isDataFieldTag(field.tag)) {
+        return '&nbsp;'; // ' ' or &nbsp;?
       }
-      return false;
-    }
-    if (settings.subfieldCodePrefix === '‡') {
-      if (fieldAsString.substr(startPosition-2, 2+jumpSize).includes('‡')) {
-        return true;
+      if ( ind === ' ') {
+        return '#'; // '#' is the standard way to represent an empty indicator.
       }
-      return false;
+      return ind;
     }
-
-    return true;
   }
 
-}
+  function addValue(row, value) {
+    const normalizedValue  = normalizeValue();
+    row.appendChild(makeSpan('value', normalizedValue));
 
-
-
-export function markAllFieldsUneditable(settings) {
-  // I call this typically after clicking save button.
-  // After save, reload the record and display modified record!
-  // However, we should have failure handling functions which normalizes fields
-  if (!settings.editorDivId) {
-    return;
-  }
-
-  const parentElem = document.getElementById(settings.editorDivId);
-  if (!parentElem) {
-    return;
-  }
-  const fieldDivs = [...parentElem.children]; // converts children into an (editable) array
-  //console.log(`Set all ${fieldDivs.length} fields uneditable`);
-  //fieldDivs.forEach(fieldDiv => fieldDiv.setAttribute('contenteditable', false));
-  fieldDivs.forEach(fieldDiv => markFieldUneditable(fieldDiv));
-
-  function markFieldUneditable(fieldDiv) {
-    // Does not remove listeners (on purpose, for now at least)
-    fieldDiv.removeAttribute('contenteditable', false);
-    if(settings.uneditableFieldBackgroundColor) {
-      fieldDiv.style.backgroundColor = settings.uneditableFieldBackgroundColor;
+    function normalizeValue() {
+      if (!value) {
+        return '';
+      }
+      if (!isDataFieldTag(field.tag)) {
+        return field.value.replace(/ /gu, '#');
+      }
+      return value;
     }
+  }
+
+  function addSubfield(row, subfield, index = 0) {
+    const span = makeSpan('subfield');
+    span.appendChild(makeSubfieldCode(`${subfield.code}`, index));
+    span.appendChild(makeSubfieldData(subfield.value, index));
+    row.appendChild(span);
+  }
+
+  function makeSubfieldCode(code, index = 0) {
+    if (settings?.subfieldCodePrefix) {
+      return makeSpan('code', `${settings.subfieldCodePrefix}${code}`, null, index);
+    }
+    return makeSpan('code', code, null, index);
+  }
+
+  function makeSubfieldData(value, index = 0) {
+    return makeSpan('value', value, null, index);
+  }
+
+  //-----------------------------------------------------------------------------
+  function makeSpan(className, text, html, index = 0) {
+    const span = myDocument.createElement('span');
+    span.setAttribute('class', className);
+    span.setAttribute('index', index);
+    if (text) {
+      span.textContent = text;
+    } else if (html) {
+      span.innerHTML = html;
+    }
+    return span;
   }
 }
-
 
 export function convertFieldsToRecord(fields, settings = {}) { // this should go to melinda-ui-commons...
   if (fields == undefined) {
@@ -491,9 +362,6 @@ export function convertFieldsToRecord(fields, settings = {}) { // this should go
   }
 
 }
-
-
-
 
 
 export function extractErrors(settings) {
