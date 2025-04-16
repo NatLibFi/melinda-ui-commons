@@ -5,8 +5,8 @@ import fixugen from '@natlibfi/fixugen';
 const {default: generateTests} = fixugen;
 
 
-
-import {filterField, stringToMarcField} from '../src/scripts/marcRecordUi.js';
+import {stringToMarcField} from '../src/scripts/editorUtils.js';
+import {filterField} from '../src/scripts/marcRecordUi.js';
 
 import {JSDOM} from 'jsdom';
 

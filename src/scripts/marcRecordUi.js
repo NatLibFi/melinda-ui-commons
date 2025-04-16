@@ -2,7 +2,6 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable max-statements */
 
-import {activateEditorButtons} from './editorButtons.js';
 import {isDataFieldTag, stringToMarcField} from './editorUtils.js';
 
 //****************************************************************************//

@@ -1,4 +1,5 @@
 import {getNextEditableSibling, getPreviousEditableSibling, isDataFieldTag, isEditableDiv, resetFieldElem} from './editorUtils.js';
+import {activateEditorButtons} from './editorButtons.js';
 
 const defaultEditorRowHandlers = [
     { 'type': 'focus', 'func': editorHandleFocus },
