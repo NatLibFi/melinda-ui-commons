@@ -3,7 +3,7 @@
 /* eslint-disable max-statements */
 
 import {activateEditorButtons} from './editorButtons.js';
-import {isDataFieldTa, stringToMarcField} from './editorUtils.js';
+import {isDataFieldTag, stringToMarcField} from './editorUtils.js';
 
 //****************************************************************************//
 //                                                                            //
