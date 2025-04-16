@@ -1,4 +1,4 @@
-import {isDataFieldTag, isEditableDiv} from './editorUtils.js';
+import {getNextEditableSibling, getPreviousEditableSibling, isDataFieldTag, isEditableDiv, resetFieldElem} from './editorUtils.js';
 
 const defaultEditorRowHandlers = [
     { 'type': 'focus', 'func': editorHandleFocus },

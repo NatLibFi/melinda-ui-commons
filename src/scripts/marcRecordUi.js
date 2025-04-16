@@ -3,7 +3,7 @@
 /* eslint-disable max-statements */
 
 import {activateEditorButtons} from './editorButtons.js';
-import {getNextEditableSibling, getPreviousEditableSibling, isDataFieldTag, isEditableDiv, resetFieldElem} from './editorUtils.js';
+import {isDataFieldTag} from './editorUtils.js';
 
 //****************************************************************************//
 //                                                                            //
