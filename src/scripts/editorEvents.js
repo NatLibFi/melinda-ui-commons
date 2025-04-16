@@ -39,13 +39,13 @@ function editorHandleInput(event, settings) {
     function insertOrOvertype(currentContent) {
         const overtypeLength = getOvertypeLength(event, event.data, currentContent, position);
         if ( overtypeLength < 0) { // Backspace (or cut)
-            if (position === fieldAsString.length) { // Removing from end requires no action/protection
+            if (position === currentContent.length) { // Removing from end requires no action/protection
                 return currentContent;
             }
             if (position < 5 )  { // Within tag+indicator area: Replace the letter that was deleted by a backspace with a space character.
                 // NB! This presumes that overtype length is -1. Won't work for longer cuts!
-                //console.log(` Replace removal with a space...\n  '${fieldAsString}`);
-                //console.log(`  '${fieldAsString}'`);
+                //console.log(` Replace removal with a space...\n  '${currentContent}`);
+                //console.log(`  '${currentContent}'`);
                 return `${currentContent.substr(0, position)} ${currentContent.substr(position)}`;
             }
 
