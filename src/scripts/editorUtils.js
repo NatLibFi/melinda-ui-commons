@@ -328,7 +328,7 @@ function convertDataToSubfields(tag, data, separator = '$$') {
     if (separator.length < 1) {
       return {subfields: [], error: 'Missing subfield separator string'};
     }
-    if ( data.length < 4 ) {
+    if ( data.length < separator.length + 2 ) {
       return {subfields: [], error: 'Not enough data yet'};
     }
     if ( data.substring(0, separator.length) !== separator ) {
