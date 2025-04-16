@@ -1,7 +1,7 @@
 //
-// Functions for defaultbuttons
+// Functions for default buttons
 //
-
+import {isEditableDiv} from './editorUtils.js';
 import {disableElement, enableElement} from './elements.js';
 
 const editorButtonIds = ['addNewRowAbove', 'addNewRowBelow', 'cancelEditButton', 'removeActiveRow', 'saveEditButton', 'validateEditButton'];
