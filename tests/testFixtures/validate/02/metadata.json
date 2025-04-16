@@ -1,0 +1,9 @@
+{
+  "description": "Validate content...",
+  "input": "500##$$foo$$b",
+  "error": "500: Subfield #2 ($$b) does not contain any data",
+  "only": true,
+  "decorator": {
+    "subfieldCodePrefix": "$$"
+  }
+}

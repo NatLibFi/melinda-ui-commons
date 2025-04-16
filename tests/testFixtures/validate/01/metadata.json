@@ -1,0 +1,9 @@
+{
+  "description": "Validate content...",
+  "input": "500##$$foo",
+  "error": false,
+  "only": true,
+  "decorator": {
+    "subfieldCodePrefix": "$$"
+  }
+}
