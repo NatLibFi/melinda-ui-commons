@@ -3,6 +3,7 @@
 //
 import {displayErrors, getNextEditableSibling, getPreviousEditableSibling, isEditableDiv, resetFieldElem} from './editorUtils.js';
 import {disableElement, enableElement} from './elements.js';
+import {addEditorRowListerers} from './editorEvents.js';
 
 const editorButtonIds = ['addNewRowAbove', 'addNewRowBelow', 'cancelEditButton', 'removeActiveRow', 'saveEditButton', 'validateEditButton'];
 
