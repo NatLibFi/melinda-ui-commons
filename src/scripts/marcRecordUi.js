@@ -2,7 +2,6 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable max-statements */
 
-import {highlightElement} from './elements.js';
 import {activateEditorButtons} from './editorButtons.js';
 import {getNextEditableSibling, getPreviousEditableSibling, isDataFieldTag, isEditableDiv, resetFieldElem} from './editorUtils.js';
 
