@@ -148,6 +148,5 @@ export function extractErrors(settings) {
   if (fields.length === 0) {
     return [`No input data found (ref: ${settings.editorDivId})`];
   }
-  console.log(`extarctError() is looking at ${fields.length} field(s)`);
   return fields.filter(f => f.error).map(f => f.error);
 }
