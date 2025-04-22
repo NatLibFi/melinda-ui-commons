@@ -51,12 +51,6 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
     return;
   }
 
-  /*
-  if (!settings.editableRecord) {
-    console.log("SHOW ONLY! NO editableRecord() FUNCTION!");
-  }
-  */
-
   const recordIsEditable = settings?.editableRecord ? settings.editableRecord(record) : false;
 
   if (record.error) {
@@ -151,5 +145,8 @@ export function convertFieldsToRecord(fields, settings = {}) { // this should go
 export function extractErrors(settings) {
   // 2025-03-20: we are now only returning errors for fields that are editable, and thus fixable. (Should we parameterize this?)
   const fields = getEditorFields(settings.editorDivId, settings.subfieldCodePrefix).filter(settings.editableField);
+  if (fields.length === 0) {
+    return [`No input data found (ref: ${settings.editorDivId})`];
+  }
   return fields.filter(f => f.error).map(f => f.error);
 }
