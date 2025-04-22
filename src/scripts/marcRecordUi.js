@@ -2,10 +2,11 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable max-statements */
 
+import {isDataFieldTag, marcFieldToDiv, stringToMarcField} from './editorUtils.js';
 
 //****************************************************************************//
 //                                                                            //
-// MARC field editor                                                          //
+// MARC record editor                                                         //
 //                                                                            //
 //****************************************************************************//
 
@@ -13,13 +14,21 @@
 // - decorateField: function,no idea what this is used for, maybe someone uses this, predates me (=NV),
 // - editableRecord: undefined/function(record), by default record is *NOT* editable.
 // - editableField: undefined/function(field, boolean = false), by default field is *NOT* editable.
+// - focusHandler
+// - inputHandler
+// - keyDownHandler
 // - onClick: add eventListerer to a field. NOT used by me (NV) on editors. As my editor uses way more listeners, I'm currently keeping them on the app side.
+// - pasteHandler: undefined/function
 // - subfieldCodePrefix: undefined/string, default is nothing, editor needs a non-empty value. NV uses '$$' as Aleph converts '$$' to a subfield separator anyways.
 // - uneditableFieldBackgroundColor: undefined/string-that-specifies-colour, undefined changes nothing
 
+// window.activeFieldElement = undefined; // Global variable for determining the row/field that last had focus. DO this is app, breaks tests...
+
+
 export function showRecord(record, dest, settings = {}, recordDivName = 'muuntaja', logRecord = true) {
+  // Check modern muuntaja. If not needed, then remove this function.
   if (logRecord) {
-    console.log('Show Record:', record); /* eslint-disable-line no-console */
+    console.log('Show Record:', record); // eslint-disable-line no-console
   }
   console.log('showRecord() is deprecated. Use showRecordInDiv() instead!');
 
@@ -31,6 +40,7 @@ export function showRecord(record, dest, settings = {}, recordDivName = 'muuntaj
   return showRecordInDiv(record, recordDiv, settings);
 }
 
+
 export function showRecordInDiv(record, recordDiv, settings = {}) {
   if (!recordDiv) {
     return;
@@ -39,10 +49,6 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
 
   if (!record) {
     return;
-  }
-
-  if (!settings.editableRecord) {
-    console.log("SHOW ONLY! NO editableRecord() FUNCTION!");
   }
 
   const recordIsEditable = settings?.editableRecord ? settings.editableRecord(record) : false;
@@ -86,240 +92,15 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
 
 }
 
-//-----------------------------------------------------------------------------
-export function marcFieldToDiv(recordDiv, originalRow = undefined, field, settings = null, fieldIsEditable = false, altDocument = undefined) {
-  // This function should not be used imported (expect for testing)!
-
-  // altDocument is a jsdom document. We need it for testing.
-  const myDocument = altDocument || document;
-
-  // NB! Typically recordDiv (parent of row div) or originalRow div is empty, as only one of them is needed.
-  const row = originalRow || myDocument.createElement('div');
-  row.classList.add('row');
-
-  if (field.uuid) {
-    row.id = field.uuid;
-  }
-
-  if (settings?.decorateField) {
-    settings.decorateField(row, field);
-  }
-  if (settings?.onClick) { // add similar keydown or input event?
-    row.addEventListener('click', event => settings.onClick(event, field));
-  }
-
-  if (fieldIsEditable) {
-    row.setAttribute('contentEditable', true);
-  }
-  else {
-    if (settings?.uneditableFieldBackgroundColor) {
-      row.style.backgroundColor = settings.uneditableFieldBackgroundColor;
-    }
-  }
-
-  addTag(row, field.tag);
-
-  // NB! Note that the current implementation will add two non-breaking spaces for indicatorless fields.
-  addIndicators(row);
-
-  if (field.subfields) {
-    for (const [index, subfield] of field.subfields.entries()) {
-      addSubfield(row, subfield, index);
-    }
-  } else {
-    addValue(row, field.value);
-  }
-
-  if (recordDiv && !originalRow) {
-    recordDiv.appendChild(row);
-  }
-  return row;
-
-  //---------------------------------------------------------------------------
-
-  function addTag(row, value) {
-    row.appendChild(makeSpan('tag', value));
-  }
-
-  function addIndicators(row) {
-    const span = makeSpan('inds');
-    if (field.ind1 || field.value) { // Field in editor might be incomplete and lack indicators
-      addIndicator(span, field.ind1, 'ind1');
-      if (field.ind2 || field.value) {
-        addIndicator(span, field.ind2, 'ind2');
-      }
-    }
-    row.appendChild(span);
-
-    function addIndicator(span, ind, className = 'ind') {
-      // Rather hackily a <span class="${className}">&nbsp;</span> is created for non-indicator fields...
-      const value = mapIndicatorToValue(ind);
-      span.appendChild(makeSpan(className, null, value));
-    }
-
-    function mapIndicatorToValue(ind) { // field -> web page
-      if (!isDataFieldTag(field.tag)) {
-        return '&nbsp;'; // ' ' or &nbsp;?
-      }
-      if ( ind === ' ') {
-        return '#'; // '#' is the standard way to represent an empty indicator.
-      }
-      return ind;
-    }
-  }
-
-  function addValue(row, value) {
-    const normalizedValue  = normalizeValue();
-    row.appendChild(makeSpan('value', normalizedValue));
-
-    function normalizeValue() {
-      if (!value) {
-        return '';
-      }
-      if (!isDataFieldTag(field.tag)) {
-        return field.value.replace(/ /gu, '#');
-      }
-      return value;
-    }
-  }
-
-  function addSubfield(row, subfield, index = 0) {
-    const span = makeSpan('subfield');
-    span.appendChild(makeSubfieldCode(`${subfield.code}`, index));
-    span.appendChild(makeSubfieldData(subfield.value, index));
-    row.appendChild(span);
-  }
-
-  function makeSubfieldCode(code, index = 0) {
-    if (settings?.subfieldCodePrefix) {
-      return makeSpan('code', `${settings.subfieldCodePrefix}${code}`, null, index);
-    }
-    return makeSpan('code', code, null, index);
-  }
-
-  function makeSubfieldData(value, index = 0) {
-    return makeSpan('value', value, null, index);
-  }
-
-  //-----------------------------------------------------------------------------
-  function makeSpan(className, text, html, index = 0) {
-    const span = myDocument.createElement('span');
-    span.setAttribute('class', className);
-    span.setAttribute('index', index);
-    if (text) {
-      span.textContent = text;
-    } else if (html) {
-      span.innerHTML = html;
-    }
-    return span;
-  }
-}
-
-export function isDataFieldTag(str = '') {
-  const tag = str.substring(0, 3); // This can be called with the whole "500##$$aLorum Ipsum." style strings as well.
-
-  // Everything except a control field is a data field...
-  return !['FMT', 'LDR', '000', '001', '002', '003', '004', '005', '006', '007', '008', '009'].includes(tag);
-}
-
-function normalizeIndicator(ind, tag) { // convert data from web page to marc
-  //console.log(`Process indicator '${ind}'`);
-  if (!isDataFieldTag(tag)) {
-      // Even control fields contain slots/fake indicators for indicators, so that records looks good in the browser.
-      // Fake indicators are removed when fields are converted into a real record.
-      return ' ';
-  }
-  if ( ind.match(/^[0-9]$/u) ) {
-      return ind;
-  }
-  // Note: this converts illegal indicator values to default value '#'. Needed by editor
-  return ' ';
-}
-
 
 // Read field divs and convert them to marc fields (leader is converted into a LDR field)
-export function getEditorFields(editorElementId = 'Record') {
+export function getEditorFields(editorElementId = 'Record', subfieldCodePrefix = '$$') {
   const parentElem = document.getElementById(editorElementId);
-  return [...parentElem.children].map(div => stringToMarcField(div.textContent)); // converts children into an editable array
-}
-
-export function stringToMarcField(str, subfieldCodePrefix = '$$') { // settings.subfieldCodePrefix
-  //console.log(`String2field: '${str}'`);
-  const len = str.length;
-  if (len <= 3) {
-    return {tag: str, error: `Incomplete field ${str}`};
+  if (!parentElem) {
+    console.log(`WARNING: getEditorFields(): no element '${editorElementId}' found!`);
+    return [];
   }
-
-  const tag = str.substring(0, 3);
-
-  const ind1 = normalizeIndicator(str.substring(3, 4), tag);
-  if ( len === 4) {
-    return {tag, ind1, error: `Incomplete field ${tag}`}; //, ind2: ' '};
-  }
-
-  const ind2 = normalizeIndicator(str.substring(4, 5), tag);
-  if ( len === 5) {
-    return {tag, ind1, ind2, error: `Incomplete field ${tag}`};
-  }
-
-  const rest = str.substring(5);
-  if (!isDataFieldTag(tag)) {
-    return {tag, ind1, ind2, value: rest.replace(/#/gu, ' '), error: rest.length <= 5 ? `Incomplete field ${tag}` : false};
-  }
-
-  const {subfields, error} = convertDataToSubfields(rest, subfieldCodePrefix);
-  //if (subfields.length === 0) {
-  if (error) {
-    //console.log(`Failed to parse '${str}': ${error}`);
-    return {tag, ind1, ind2, value: rest, error: `${tag}: ${error}`}; // This is erronous state, as subfields failed to parse
-  }
-
-  return {tag, ind1, ind2, subfields, error: false};
-}
-
-function convertDataToSubfields(data, separator = '$$') {
-  if (separator.length < 1) {
-    return {subfields: [], error: 'Missing subfield separator string'};
-  }
-  if ( data.length < 4 ) {
-    return {subfields: [], error: 'Not enough data yet'};
-  }
-  if ( data.substring(0, separator.length) !== separator ) {
-    return {subfields: [], error: 'Data segment should begin with \'${separator}\''};
-  }
-  const data2 = data.substring(separator.length);
-  const subfields = data2.split(separator);
-
-  const noSubfieldCodeIndex = subfields.findIndex((sf, i) => sf.length < 1); // 1st char is code and the rest is data
-  if (noSubfieldCodeIndex > -1) {
-    return{subfields: [], error: `Subfield #${noSubfieldCodeIndex+1} does not contain a subfield code (nor data)`};
-  }
-
-  const illegalSubfieldCodeIndex = subfields.findIndex((sf, i) => sf.match(/^[^a-z0-9]/u));
-  if (illegalSubfieldCodeIndex > -1) {
-    return {subfields: [], error: `Subfield #${illegalSubfieldCodeIndex+1} has unexpected subfield code '${subfields[illegalSubfieldCodeIndex].substring(0, 1)}'`};
-  }
-
-  const emptySubfieldIndex = subfields.findIndex((sf, i) => sf.length < 2); // 1st char is code and the rest is data
-  if (emptySubfieldIndex > -1) {
-    return{subfields: [], error: `Subfield #${emptySubfieldIndex+1} (${separator}${subfields[emptySubfieldIndex].substring(0, 1)}) does not contain any data`};
-  }
-
-  return { subfields: subfields.map(sf => stringToSubfield(sf)), error: undefined};
-
-  function stringToSubfield(str) {
-    return {'code': str.substring(0, 1), 'value': str.substring(1)};
-  }
-}
-
-export function resetFieldElem(elem, newValueAsString, settings = {}, editable = true) {
-  const marcField = stringToMarcField(newValueAsString.replace(/\n/gu, ' ')); // No idea why /\s/ did not work... 
-  elem.innerHTML = '';
-  marcFieldToDiv(null, elem, marcField, settings, editable);
-
-  //// ye olde version (kept for reference for a while):
-  //const fieldAsHtml = marcFieldToHtml(elem, marcField); // add (...settings, true)...
-  //elem.innerHTML = fieldAsHtml;
+  return [...parentElem.children].map(div => stringToMarcField(div.textContent, subfieldCodePrefix)); // [].map() converts children into an editable array
 }
 
 
@@ -337,54 +118,35 @@ export function filterField(field) {
 }
 
 
-// 1st artikkelit version: keep for reference for now, if there are bugs, as the integrated versions differs here and there...
-/*
-function marcFieldToHtml(elem, field) {
-  // Aped from melinda-ui-commons marcFieldToDiv (this is a text-only alternative)...
-  // See if we can eventually remove this...
-  const tag = `<span class="tag">${field.tag.replace(/#/g, ' ') || ''}</span>`;
-  const indicators = indicatorsToHtml(field);
-  const data = dataToHtml(field);
-  return `${tag}${indicators}${data}`
-
-
-  function indicatorToHtml(indicator) {
-    if (!isDataFieldTag(field.tag)) {
-      return '&nbsp;'; // ' ' or &nbsp;?
-    }
-    if ( indicator === ' ') {
-      return '#';
-    }
-    return indicator;
+export function convertFieldsToRecord(fields, settings = {}) { // this should go to melinda-ui-commons...
+  if (fields == undefined) {
+    fields = getEditorFields(settings.editorDivId, settings.subfieldCodePrefix); // Get default fields
+  }
+  const [leader, ...otherFields] = fields
+  //const validationErrors = extractErrorsFromFields(fields); // Validate?
+  if (otherFields.length < 1) {
+    return {error: 'no fields'};
   }
 
-  function indicatorsToHtml() {
-    const ind1 = indicatorToHtml(field.ind1);
-    const ind2 = indicatorToHtml(field.ind2);
+  const filteredFields = otherFields.map(f => filterField(f));  // Drop errors and other extra data
 
-    //console.log(`IND1: '${field.ind1}', IND2: '${field.ind2}'`);
-
-    if (!field.ind1) {
-      return '<span class="inds"></span>';
-    }
-    if (!field.ind2) {
-      return `<span class="inds"><span class="ind1">${ind1}</span></span>`;
-    }
-    return `<span class="inds"><span class="ind1">${ind1}</span><span class="ind2">${ind2}</span></span>`;
+  if (leader.tag !== 'LDR') {
+    return {error: 'first field should be leader'};
   }
 
-  function dataToHtml() {
-    if (!field.subfields) {
-      if (!field.value) {
-        return '<span class="value"></span>';
-      }
-      if (!isDataFieldTag(field.value)) {
-        return `<span class="value">${field.value.replace(/ /gu, '#')}</span>`;
-      }
-      return `<span class="value">${field.value}</span>`;
-    }
-    const subfieldsToHtml = field.subfields.map(sf => `<span class="subfield"><span class="code">$$${sf.code}</span><span class="value">${sf.value}</span></span>`).join('');
-    return `<span>${subfieldsToHtml}</span>`;
+  return {
+    leader: leader.value,
+    fields: filteredFields
   }
+
 }
-*/
+
+
+export function extractErrors(settings) {
+  // 2025-03-20: we are now only returning errors for fields that are editable, and thus fixable. (Should we parameterize this?)
+  const fields = getEditorFields(settings.editorDivId, settings.subfieldCodePrefix).filter(settings.editableField);
+  if (fields.length === 0) {
+    return [`No input data found (ref: ${settings.editorDivId})`];
+  }
+  return fields.filter(f => f.error).map(f => f.error);
+}

@@ -14,7 +14,7 @@ import {JSDOM} from 'jsdom';
 describe('html div->json field ', () => {
   generateTests({
     callback,
-    path: [import.meta.dirname, 'testFixtures', 'field'],
+    path: [import.meta.dirname, 'testFixtures', 'validate'],
     recurse: false,
     useMetadataFile: true,
     fixura: {
@@ -23,7 +23,7 @@ describe('html div->json field ', () => {
     }
   });
 
-  function callback({getFixture, field, decorator = {}}) {
+  function callback({getFixture, field, error, input, decorator = {}}) {
     const targetJson = field; // JSON.parse(getFixture('field.json'));
     //console.log(JSON.stringify(inputField));
     const inputHtml = `<!DOCTYPE html><div id="editor">${getFixture('target.html')}</div>`.replace(/\n/gu, '');
@@ -33,14 +33,12 @@ describe('html div->json field ', () => {
     const document = dom.window.document;
 
     const elem = document.getElementById('editor');
-    const textContent = elem.textContent;
-    //console.log(`FIELD CONTENT: ${textContent}`);
-    const outputJson = stringToMarcField(elem.textContent, decorator.subfieldCodePrefix);
-    if (outputJson.error) {
-      expect(outputJson).to.eql(targetJson);
-      return;
-    }
-    expect(filterField(outputJson)).to.eql(targetJson);
+    //const textContent = elem.textContent;
+    const outputJson = stringToMarcField(input, decorator.subfieldCodePrefix);
+    const realError = outputJson.error;
+    //console.log(realError);
+    expect(realError).to.eql(error);
+
   }
 
 });

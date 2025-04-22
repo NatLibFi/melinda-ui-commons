@@ -1,0 +1,9 @@
+{
+  "description": "01: validd field",
+  "input": "500##$$foo",
+  "error": false,
+  "only": false,
+  "decorator": {
+    "subfieldCodePrefix": "$$"
+  }
+}

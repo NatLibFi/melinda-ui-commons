@@ -1,0 +1,26 @@
+<!-- [EditorButtos partial (editorButtos.hbs)] -->
+
+<!-- editor are rendered in this container div -->
+
+<!-- This is the default editor row. Work in progress... Currently onclick etc should be implemented in the app code... -->
+<!-- By default, this block is hidden (display none (vs flex). I make it visible only when there's an editable record. -->
+<div id="editorButtons" style="display: none; width: 100%;">
+    <button id="addNewRowAbove" class="alternate-blue tooltip" tooltip-text="Lisää rivi aktiivisen rivin yläpuolelle">
+        <span class="material-symbols-outlined">add_row_above</span> Lisää rivi ylle
+    </button>
+    <button id="addNewRowBelow" class="alternate-blue tooltip" tooltip-text="Lisää rivi aktiivisen rivin alapuolelle">
+        <span class="material-symbols-outlined">add_row_below</span> Lisää rivi alle
+    </button>
+    <button id="removeActiveRow" class="alternate-blue tooltip" tooltip-text="Poista aktiivinen rivi">
+        <span class="material-symbols-outlined">variable_remove</span> Poista aktiivinen rivi
+    </button>
+    <button class="alternate-red" id="cancelEditButton" onclick="return cancelEdit(event)">
+        <span class="material-symbols-outlined">cancel</span> Sulje tallentamatta
+    </button>
+    <button id="validateEditButton" class="tooltip" onclick="return validateEditorRecord(event)" tooltip-text="Tee joukko paikallisia tarkistuksia">
+        <span class="material-symbols-outlined">search_check</span> Tarkista tietue
+    </button>
+    <button id="saveEditButton" class="tooltip" onclick="return saveEditorRecord(event)" tooltip-text="Tarkista tietue palvelimella ja tallenna se">
+        <span class="material-symbols-outlined">deployed_code_update</span> Tallenna
+    </button>
+</div>

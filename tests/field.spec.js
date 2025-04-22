@@ -6,7 +6,7 @@ import fixugen from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
 const {default: generateTests} = fixugen;
 
-import {marcFieldToDiv} from '../src/scripts/marcRecordUi.js';
+import {marcFieldToDiv} from '../src/scripts/editorUtils.js';
 
 import {JSDOM} from 'jsdom';
 
