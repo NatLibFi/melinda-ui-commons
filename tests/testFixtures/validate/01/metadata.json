@@ -1,8 +1,8 @@
 {
-  "description": "Validate content...",
+  "description": "01: validd field",
   "input": "500##$$foo",
   "error": false,
-  "only": true,
+  "only": false,
   "decorator": {
     "subfieldCodePrefix": "$$"
   }
