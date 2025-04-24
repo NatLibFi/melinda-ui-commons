@@ -11,18 +11,26 @@ export async function doRestCall({
     ...contentType ? {'Content-Type': contentType} : {}
   };
 
-  const result = await fetch(
-    url,
-    {
-      method,
-      headers,
-      ...body ? {body} : {}
+  try {
+    const result = await fetch(
+      url,
+      {
+        method,
+        headers,
+        ...body ? {body} : {}
+      }
+    );
+
+    if (result.ok) {
+      if (resultAsJson) {
+        return result.json();
+      }
+      return result;
     }
-  );
-
-  if (resultAsJson) {
-    return result.json();
+    throw new Error(result.status);
   }
-
-  return result;
+  catch (error) {
+    console.error('fetch() failed', error);
+    return undefined;
+  }
 }
