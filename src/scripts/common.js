@@ -3,7 +3,8 @@ export async function doRestCall({
   method = undefined,
   body = undefined,
   contentType = undefined,
-  resultAsJson = false
+  resultAsJson = false,
+  failureResult = undefined
 }) {
 
   const headers = {
@@ -31,6 +32,6 @@ export async function doRestCall({
   }
   catch (error) {
     console.error('fetch() failed', error);
-    return undefined;
+    return failureResult;
   }
 }
