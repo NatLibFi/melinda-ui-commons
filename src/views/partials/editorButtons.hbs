@@ -5,14 +5,14 @@
 <!-- This is the default editor row. Work in progress... Currently onclick etc should be implemented in the app code... -->
 <!-- By default, this block is hidden (display none (vs flex). I make it visible only when there's an editable record. -->
 <div id="editorButtons" style="display: none; width: 100%;">
-    <button id="addNewRowAbove" class="alternate-blue tooltip" tooltip-text="Lisää rivi aktiivisen rivin yläpuolelle">
-        <span class="material-symbols-outlined">add_row_above</span> Lisää rivi ylle
+    <button id="addNewRowAbove" class="alternate-blue tooltip" tooltip-text="Lisää kenttä aktiivisen kentän yläpuolelle">
+        <span class="material-symbols-outlined">add_row_above</span> Lisää kenttä ylle
     </button>
-    <button id="addNewRowBelow" class="alternate-blue tooltip" tooltip-text="Lisää rivi aktiivisen rivin alapuolelle">
-        <span class="material-symbols-outlined">add_row_below</span> Lisää rivi alle
+    <button id="addNewRowBelow" class="alternate-blue tooltip" tooltip-text="Lisää kenttä aktiivisen kentän alapuolelle">
+        <span class="material-symbols-outlined">add_row_below</span> Lisää kenttä alle
     </button>
-    <button id="removeActiveRow" class="alternate-blue tooltip" tooltip-text="Poista aktiivinen rivi">
-        <span class="material-symbols-outlined">variable_remove</span> Poista aktiivinen rivi
+    <button id="removeActiveRow" class="alternate-blue tooltip" tooltip-text="Poista aktiivinen kenttä">
+        <span class="material-symbols-outlined">variable_remove</span> Poista aktiivinen kenttä
     </button>
     <button class="alternate-red" id="cancelEditButton" onclick="return cancelEdit(event)">
         <span class="material-symbols-outlined">cancel</span> Sulje tallentamatta
