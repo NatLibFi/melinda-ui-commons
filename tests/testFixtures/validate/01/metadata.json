@@ -1,5 +1,5 @@
 {
-  "description": "01: validd field",
+  "description": "01: valid field",
   "input": "500##$$foo",
   "error": false,
   "only": false,
