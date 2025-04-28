@@ -6,7 +6,6 @@ const {default: generateTests} = fixugen;
 
 
 import {stringToMarcField} from '../src/scripts/editorUtils.js';
-import {filterField} from '../src/scripts/marcRecordUi.js';
 
 import {JSDOM} from 'jsdom';
 
