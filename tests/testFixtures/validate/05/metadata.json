@@ -1,0 +1,9 @@
+{
+  "description": "04 validate field: first subfield does not start where it ought to",
+  "input": ["001  123456789", "001  666", "245##$aNimeke."],
+  "errors": ["Non-repeatable 001 appears more than once!"],
+  "only": false,
+  "decorator": {
+    "subfieldCodePrefix": "$"
+  }
+}
