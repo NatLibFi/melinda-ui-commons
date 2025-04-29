@@ -141,12 +141,48 @@ export function convertFieldsToRecord(fields, settings = {}) { // this should go
 
 }
 
+function getNonRepeatableDuplicateErrors(fields, tags, result = []) {
+  return innerLoop(tags, result);
 
-export function extractErrors(settings) {
+  function innerLoop(tags, result) {
+    const [currTag, ...remaingingTags] = tags;
+    if (!currTag) {
+      return result;
+    }
+
+    // NB! "tag" value '1' can be used to see how many '1XX' fields there are.
+    const relevantFields = fields.filter(f => f.tag.substring(0, currTag.length) === currTag);
+    console.log(`${currTag} must be non-repeatable; got ${relevantFields.length} instance(s)`);
+    const currentError = relevantFields.length > 1 ?  [`Non-repeatable ${normalizeTag(currTag)} appears more than once!`] : [];
+    return innerLoop(remaingingTags, [...result, ...currentError]);
+  }
+
+  function normalizeTag(tag) {
+    if (tag.length == 1) { // '1' => '1XX'
+      return normalizeTag`${tag}XX`;
+    }
+    return tag;
+  }
+}
+
+export function extractErrors(settings, defaultFields = []) {
   // 2025-03-20: we are now only returning errors for fields that are editable, and thus fixable. (Should we parameterize this?)
-  const fields = getEditorFields(settings.editorDivId, settings.subfieldCodePrefix).filter(settings.editableField);
+  // 2025-04-29: added defaultFields. It's used only by tests (to smuggle fields for tests)
+  const fields = defaultFields.length === 0 ? getEditorFields(settings.editorDivId, settings.subfieldCodePrefix).filter(settings.editableField) : defaultFields;
   if (fields.length === 0) {
     return [`No input data found (ref: ${settings.editorDivId})`];
   }
-  return fields.filter(f => f.error).map(f => f.error);
+
+  const fieldInternalErrors = fields.filter(f => f.error).map(f => f.error);
+  const recordLevelErrors = getRecordLevelErrors(fields);
+  return [...recordLevelErrors, ...fieldInternalErrors];
+
+  function getRecordLevelErrors(fields) {
+    const nonRepeatables = getNonRepeatableDuplicateErrors(fields, ['LDR', '001', '003', '008']);
+    console.log(`GOT ${nonRepeatables.length} NON-REPEATABILITY ERROR(S)!`);
+    // Should we check 00X lengths?
+    // What else?
+    return [...nonRepeatables];
+  }
 }
+
