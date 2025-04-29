@@ -297,7 +297,8 @@ export function stringToMarcField(str, subfieldCodePrefix = '$$') { // export si
 
     const rest = str.substring(5);
     if (!isDataFieldTag(tag)) {
-      return {tag, ind1, ind2, value: rest.replace(/#/gu, ' '), error: rest.length <= 5 ? `Incomplete field ${tag}` : false};
+      // Should we check tag-specific control field lengths here? (eg. 008 is always 40 chars etc)
+      return {tag, ind1, ind2, value: rest.replace(/#/gu, ' '), error: rest.length == 0 ? `Control field ${tag} contains no data` : false};
     }
 
     const {subfields, error} = convertDataToSubfields(tag, rest, subfieldCodePrefix);
