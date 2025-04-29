@@ -1,7 +1,7 @@
 {
   "description": "03 validate field content",
-  "input": "600## |foo$ |Bcontent",
-  "error": "600: Subfield #2 has unexpected subfield code 'B'",
+  "input": ["600## |foo$ |Bcontent"],
+  "errors": ["600: Subfield #2 has unexpected subfield code 'B'"],
   "only": false,
   "decorator": {
     "subfieldCodePrefix": " |"

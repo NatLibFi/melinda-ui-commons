@@ -1,7 +1,7 @@
 {
-  "description": "01: valid field",
-  "input": "500##$$foo",
-  "error": false,
+  "description": "01: valid fields",
+  "input": ["001  123456789", "500##$$foo", "700##$$aJoku nimi"],
+  "errors": [],
   "only": false,
   "decorator": {
     "subfieldCodePrefix": "$$"
