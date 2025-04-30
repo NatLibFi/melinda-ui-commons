@@ -159,7 +159,7 @@ function getNonRepeatableDuplicateErrors(fields, tags, result = []) {
 
   function normalizeTag(tag) {
     if (tag.length == 1) { // '1' => '1XX'
-      return normalizeTag`${tag}XX`;
+      return `${tag}XX`;
     }
     return tag;
   }
