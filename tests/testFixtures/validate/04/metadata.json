@@ -1,7 +1,7 @@
 {
   "description": "04 validate field: first subfield does not start where it ought to",
-  "input": "700##aaa|foo|Bcontent",
-  "error": "700: Data segment should begin with '|'",
+  "input": ["700##aaa|foo|Bcontent"],
+  "errors": ["700: Data segment should begin with '|'"],
   "only": false,
   "decorator": {
     "subfieldCodePrefix": "|"

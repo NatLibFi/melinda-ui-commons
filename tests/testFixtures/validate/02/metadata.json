@@ -1,7 +1,7 @@
 {
-  "description": "02:_validate field: no data",
-  "input": "500##$$foo$$b",
-  "error": "500: Subfield #2 ($$b) does not contain any data",
+  "description": "02: validate field: no data",
+  "input": ["500##$$foo$$b"],
+  "errors": ["500: Subfield #2 ($$b) does not contain any data"],
   "only": false,
   "decorator": {
     "subfieldCodePrefix": "$$"

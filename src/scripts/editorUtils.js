@@ -277,7 +277,7 @@ export function undoMarkAllFieldsUneditable(settings) {
 }
 
 export function stringToMarcField(str, subfieldCodePrefix = '$$') { // export since used in tests. settings.subfieldCodePrefix
-    // console.log(`String2field: '${str}', '${subfieldCodePrefix}'`);
+    console.log(`String2field: '${str}', '${subfieldCodePrefix}'`);
     const len = str.length;
     if (len <= 3) {
       return {tag: str, error: `Incomplete field ${str}`};
@@ -297,17 +297,21 @@ export function stringToMarcField(str, subfieldCodePrefix = '$$') { // export si
 
     const rest = str.substring(5);
     if (!isDataFieldTag(tag)) {
-      return {tag, ind1, ind2, value: rest.replace(/#/gu, ' '), error: rest.length <= 5 ? `Incomplete field ${tag}` : false};
+      // Should we check tag-specific control field lengths here? (eg. 008 is always 40 chars etc)
+      return {tag, ind1, ind2, value: rest.replace(/#/gu, ' '), error: rest.length == 0 ? `Control field ${tag} contains no data` : false};
     }
 
     const {subfields, error} = convertDataToSubfields(tag, rest, subfieldCodePrefix);
+    const tagAndError = error ? `${tag}: ${error}` : error;
     //if (subfields.length === 0) {
-    if (error) {
+    console.log(`TAG='${tag}'`);
+
+    if (subfields.length === 0) {
       //console.log(`Failed to parse '${str}': ${error}`);
-      return {tag, ind1, ind2, value: rest, error: `${tag}: ${error}`}; // This is erronous state, as subfields failed to parse
+      return {tag, ind1, ind2, value: rest, error: tagAndError}; // This is erronous state, as subfields failed to parse
     }
 
-    return {tag, ind1, ind2, subfields, error: false};
+    return {tag, ind1, ind2, subfields, error: tagAndError};
 
     function normalizeIndicator(ind, tag) { // convert data from web page to marc
       //console.log(`Process indicator '${ind}'`);
@@ -335,26 +339,30 @@ function convertDataToSubfields(tag, data, separator = '$$') {
       return {subfields: [], error: `Data segment should begin with '${separator}'`};
     }
     const data2 = data.substring(separator.length);
-    const subfields = data2.split(separator);
+    const subfieldStrings = data2.split(separator);
 
-    const noSubfieldCodeIndex = subfields.findIndex((sf, i) => sf.length < 1); // 1st char is code and the rest is data
+    const noSubfieldCodeIndex = subfieldStrings.findIndex((sf, i) => sf.length < 1); // 1st char is code and the rest is data
     if (noSubfieldCodeIndex > -1) {
       return{subfields: [], error: `Subfield #${noSubfieldCodeIndex+1} does not contain a subfield code (nor data)`};
     }
 
-    const illegalSubfieldCodeIndex = subfields.findIndex((sf, i) => sf.match(/^[^a-z0-9]/u));
+    const illegalSubfieldCodeIndex = subfieldStrings.findIndex((sf, i) => sf.match(/^[^a-z0-9]/u));
     if (illegalSubfieldCodeIndex > -1) {
-      return {subfields: [], error: `Subfield #${illegalSubfieldCodeIndex+1} has unexpected subfield code '${subfields[illegalSubfieldCodeIndex].substring(0, 1)}'`};
+      return {subfields: [], error: `Subfield #${illegalSubfieldCodeIndex+1} has unexpected subfield code '${subfieldStrings[illegalSubfieldCodeIndex].substring(0, 1)}'`};
     }
 
     if (tag !== 'CAT') { // CAT's empty $b is so common, that there's no point to complain about it, esp. as it is oft uneditable.
-      const emptySubfieldIndex = subfields.findIndex((sf, i) => sf.length < 2); // 1st char is code and the rest is data
+      const emptySubfieldIndex = subfieldStrings.findIndex((sf, i) => sf.length < 2); // 1st char is code and the rest is data
       if (emptySubfieldIndex > -1) {
-        return{subfields: [], error: `Subfield #${emptySubfieldIndex+1} (${separator}${subfields[emptySubfieldIndex].substring(0, 1)}) does not contain any data`};
+        return{subfields: [], error: `Subfield #${emptySubfieldIndex+1} (${separator}${subfieldStrings[emptySubfieldIndex].substring(0, 1)}) does not contain any data`};
       }
     }
 
-    return { subfields: subfields.map(sf => stringToSubfield(sf)), error: undefined};
+    const subfields = subfieldStrings.map(str => stringToSubfield(str));
+    if (tag === 'TAG') { // Added row that has not been renamed
+      return { subfields: subfields, error: `Illegal tag name`};
+    }
+    return { subfields: subfields, error: false};
 
     function stringToSubfield(str) {
       return {'code': str.substring(0, 1), 'value': str.substring(1)};
