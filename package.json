@@ -1,6 +1,6 @@
 {
   "name": "@natlibfi/melinda-ui-commons",
-  "version": "5.0.0",
+  "version": "6.0.0-alpha.1",
   "description": "Common modules for Melinda UI applications",
   "author": {
     "name": "The National Library of Finland"
