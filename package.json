@@ -20,35 +20,30 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
+    "prepare": "npm run build",
+    "build": "esbuild \"src/**/*.js\" --sourcemap --platform=node --outdir=dist",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
-    "test": "npm run lint && npm run test:base",
-    "test:base": "NODE_ENV=test nyc mocha --package ./package.json",
-    "test:dev": "npm run lint:fix && npm run test:base -- 'tests/*.spec.js'"
+    "test:base": "node --test --test-force-exit --experimental-test-coverage --test-reporter=spec './tests/*.test.js'",
+    "test": "npm run lint && npm run test:base"
   },
   "dependencies": {
-    "@babel/runtime": "^7.26.10",
-    "@natlibfi/melinda-backend-commons": "^2.3.6",
-    "@natlibfi/melinda-commons": "^13.0.17",
+    "@natlibfi/melinda-backend-commons": "^3.0.0-alpha.6",
+    "@natlibfi/melinda-commons": "^14.0.0-alpha.3",
     "http-status": "^2.1.0",
     "moment": "^2.30.1",
     "mongo-sanitize": "^1.1.0",
-    "mongodb": "^6.16.0"
+    "mongodb": "^6.19.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.26.4",
-    "@babel/core": "^7.26.10",
-    "@natlibfi/eslint-config-melinda-frontend": "^2.0.2",
-    "@natlibfi/fixugen": "^2.0.12",
-    "@natlibfi/fixura": "^3.0.11",
-    "@natlibfi/fixura-mongo": "^2.0.10",
-    "chai": "^4.5.0",
-    "eslint": "^8.57.1",
-    "jsdom": "^26.1.0",
-    "mocha": "^10.8.2",
-    "nyc": "^17.1.0"
+    "@natlibfi/fixugen": "^3.0.0-alpha.6",
+    "@natlibfi/fixura": "^4.0.0-alpha.13",
+    "@natlibfi/fixura-mongo": "^3.0.0-alpha.5",
+    "esbuild": "^0.25.10",
+    "eslint": "^9.35.0",
+    "jsdom": "^26.1.0"
   }
 }

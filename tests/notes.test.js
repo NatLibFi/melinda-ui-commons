@@ -9,18 +9,15 @@
 //****************************************************************************//
 
 
-import {expect} from 'chai';
+import assert from 'node:assert';
 import {ObjectId} from 'mongodb';
-import fixugen from '@natlibfi/fixugen';
+import generateTests from '@natlibfi/fixugen';
 import {READERS} from '@natlibfi/fixura';
-import fixuraMongo from '@natlibfi/fixura-mongo';
+import createMongoFixtures from '@natlibfi/fixura-mongo';
 import createMongoNotesOperator from '../src/scripts/notes.js';
 
 
 let mongoFixtures;
-
-const {default: generateTests} = fixugen;
-const {default: createMongoFixtures} = fixuraMongo;
 
 const testsFixturesPath = [import.meta.dirname, '.', 'testFixtures', 'notes'];
 
@@ -29,7 +26,7 @@ const fixuraParameters = {
   reader: READERS.JSON
 };
 
-const mochaParameters = {
+const hooksParameters = {
   before: async () => {
     await initMongofixtures();
   },
@@ -54,7 +51,7 @@ const testsParameters = {
   recurse: false,
   useMetadataFile: true,
   fixura: fixuraParameters,
-  mocha: mochaParameters
+  hooks: hooksParameters
 };
 
 generateTests(testsParameters);
@@ -77,46 +74,6 @@ async function callback({
     await mongoFixtures.populate(getFixture('dbContents.json'));
   }
 
-  //----------------------------------------------------------------------//
-  // Test helper for testing scenarios where error is the expected result
-  const expectError = async (noteFunction, errorMessage, errorStatus) => {
-    let errorWasThrown;
-
-    await noteFunction()
-      .then(() => {
-        // the note function in test was executed without errors
-        // this should not happen if we test for errors
-        // test fails
-        errorWasThrown = false;
-      })
-      .catch((error) => {
-        // note function in test resulted in error as expected
-        errorWasThrown = true;
-
-        expect(error).to.be.an('Error');
-
-        if (errorMessage) {
-          expect(error.payload).to.equal(errorMessage);
-        }
-
-        if (errorStatus) {
-          expect(error.status).to.equal(errorStatus);
-        }
-
-        mongoFixtures.dump()
-          .then((dump) => {
-            expect(dump).to.eql(expectedResult);
-          });
-
-      });
-
-    // we are expecting error in the test
-    // that is why errorWasCatched should be true
-    expect(errorWasThrown).to.eql(true);
-
-  };
-
-
   //-----------------------------------------------------------------------------
   // TEST FUNCTIONS FOR ADDING SERVER NOTIFICATIONS
   //-----------------------------------------------------------------------------
@@ -126,7 +83,8 @@ async function callback({
   if (functionName === 'addNoteItem') {
     await mongoNotesOperator.addNoteItem(params);
     const dump = await mongoFixtures.dump();
-    return expect(dump).to.eql(expectedResult);
+    assert.deepStrictEqual(dump, expectedResult);
+    return;
   }
 
   //----------------------------------------------//
@@ -137,13 +95,26 @@ async function callback({
   if (functionName === 'addNoteItemReturnsNoteItem') {
     const result = await mongoNotesOperator.addNoteItem(params);
     const {id, ...rest} = result;
-    return expect(rest).to.eql(expectedResult) && expect(new ObjectId(id).toString()).to.eql(id);
+    assert.deepStrictEqual(rest, expectedResult) && assert.equal(new ObjectId(id).toString(), id);
+    return;
   }
 
   //----------------------------------------------//
   // Test fixtures 04-08 for adding one note that results in error
   if (functionName === 'addNoteItemReturnsError') {
-    return expectError(() => mongoNotesOperator.addNoteItem(params), 'NoteItem data is not valid', 500);
+    try {
+      await mongoNotesOperator.addNoteItem(params);
+    } catch (error) {
+      assert(error instanceof Error);
+      assert.equal(error.payload, 'NoteItem data is not valid');
+      assert.equal(error.status, '500');
+
+      const dump = await mongoFixtures.dump();
+      assert.deepStrictEqual(dump, expectedResult);
+
+      return;
+    };
+    throw new Error('This should throw!');
   }
 
 
@@ -155,21 +126,24 @@ async function callback({
   // Test fixtures 09 for getting one note with id
   if (functionName === 'getNoteItem') {
     const result = await mongoNotesOperator.getNoteItem(params);
-    return expect(result).to.eql(expectedResult);
+    assert.deepStrictEqual(result, expectedResult);
+    return;
   }
 
   //----------------------------------------------//
   // Test fixture 10 for getting all notes
   if (functionName === 'getNoteItems') {
     const result = await mongoNotesOperator.getNoteItems();
-    return expect(result).to.eql(expectedResult);
+    assert.deepStrictEqual(result, expectedResult);
+    return;
   }
 
   //----------------------------------------------//
   // Test fixture 11 for getting notes with context
   if (functionName === 'getNoteItemsForApp') {
     const result = await mongoNotesOperator.getNoteItemsForApp(params);
-    return expect(result).to.eql(expectedResult);
+    assert.deepStrictEqual(result, expectedResult);
+    return;
   }
 
 
@@ -182,7 +156,8 @@ async function callback({
   if (functionName === 'removeNoteItem') {
     await mongoNotesOperator.removeNoteItem(params);
     const dump = await mongoFixtures.dump();
-    return expect(dump).to.eql(expectedResult);
+    assert.deepStrictEqual(dump, expectedResult);
+    return;
   }
 
   //----------------------------------------------//
@@ -190,7 +165,8 @@ async function callback({
   if (functionName === 'removeNoteItemsByMessageStyle') {
     await mongoNotesOperator.removeNoteItemsByMessageStyle(params);
     const dump = await mongoFixtures.dump();
-    return expect(dump).to.eql(expectedResult);
+    assert.deepStrictEqual(dump, expectedResult);
+    return;
   }
 
 
