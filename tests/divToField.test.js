@@ -1,9 +1,8 @@
-import {expect} from 'chai';
+import assert from 'node:assert';
+import {describe} from 'node:test';
 
 import {READERS} from '@natlibfi/fixura';
-import fixugen from '@natlibfi/fixugen';
-const {default: generateTests} = fixugen;
-
+import generateTests from '@natlibfi/fixugen';
 
 import {stringToMarcField} from '../src/scripts/editorUtils.js';
 import {filterField} from '../src/scripts/marcRecordUi.js';
@@ -37,10 +36,10 @@ describe('html div->json field ', () => {
     //console.log(`FIELD CONTENT: ${textContent}`);
     const outputJson = stringToMarcField(elem.textContent, decorator.subfieldCodePrefix);
     if (outputJson.error) {
-      expect(outputJson).to.eql(targetJson);
+      assert.deepStrictEqual(outputJson, targetJson);
       return;
     }
-    expect(filterField(outputJson)).to.eql(targetJson);
+    assert.deepStrictEqual(filterField(outputJson), targetJson);
   }
 
 });

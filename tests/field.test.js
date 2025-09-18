@@ -1,10 +1,10 @@
-import {expect} from 'chai';
-import fixugen from '@natlibfi/fixugen';
+import assert from 'node:assert';
+import {describe} from 'node:test';
+import generateTests from '@natlibfi/fixugen';
+import {READERS} from '@natlibfi/fixura';
 
 //import {MarcRecord} from '@natlibfi/marc-record';
 //import createReducer from './postprocessor';
-import {READERS} from '@natlibfi/fixura';
-const {default: generateTests} = fixugen;
 
 import {marcFieldToDiv} from '../src/scripts/editorUtils.js';
 
@@ -37,7 +37,7 @@ describe('json field -> html div', () => {
 
     const outputHtml = marcFieldToDiv(undefined, elem, inputField, decorator, true, document).innerHTML;
 
-    expect(localPrettyPrint(outputHtml)).to.equal(localPrettyPrint(targetHtml));
+    assert.deepStrictEqual(localPrettyPrint(outputHtml), localPrettyPrint(targetHtml));
 
     function localPrettyPrint(html) {
       // marcFieldToDiv() return html in a single line, which is hard to read and does not work well with expect.
