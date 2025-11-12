@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/natlibfi/melinda-ui-commons/issues"
   },
-  "version": "6.0.0-alpha.2",
+  "version": "6.0.0",
   "type": "module",
   "engines": {
     "node": ">=22"
