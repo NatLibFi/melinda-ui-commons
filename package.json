@@ -43,6 +43,6 @@
     "@natlibfi/fixura-mongo": "^3.0.0",
     "esbuild": "^0.28.0",
     "eslint": "^10.3.0",
-    "jsdom": "^27.2.0"
+    "jsdom": "^29.1.1"
   }
 }
