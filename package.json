@@ -11,7 +11,7 @@
   ],
   "homepage": "https://www.npmjs.com/package/@natlibfi/melinda-ui-commons",
   "repository": {
-    "url": "https://github.com/NatLibFi/melinda-ui-commons"
+    "url": "git+https://github.com/NatLibFi/melinda-ui-commons.git"
   },
   "bugs": {
     "url": "https://github.com/natlibfi/melinda-ui-commons/issues"
