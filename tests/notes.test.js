@@ -1,6 +1,4 @@
-/* eslint-disable max-statements */
-/* eslint-disable functional/no-let */
-
+ 
 //****************************************************************************//
 //                                                                            //
 // TEST SPECIFICATION FOR SERVER NOTIFICATIONS                                //
