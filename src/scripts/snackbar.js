@@ -58,7 +58,7 @@ const snackbarTemplate = `
 export function showSnackbar(snackbarContent) {
 
   if (arguments.length === 0 || snackbarContent === null) {
-    console.log('Snackbar needs arguments'); /* eslint-disable-line no-console */
+    console.log('Snackbar needs arguments');  
     return;
   }
 
@@ -91,13 +91,13 @@ function createSnackbar(snackbarContent, snackbarTemplate) {
     createCustomSnackbar(snackbarContent);
     break;
   default:
-    console.log('Snackbar argument type should be string or object'); /* eslint-disable-line no-console */
+    console.log('Snackbar argument type should be string or object');  
     return;
   }
 
   const text = snackbarElement.querySelector(`.snackbar-text`).innerHTML;
   if (text === 'undefined' || text === '') {
-    console.log('Snackbar is missing text and is not displayed!'); /* eslint-disable-line no-console */
+    console.log('Snackbar is missing text and is not displayed!');  
     return;
   }
 

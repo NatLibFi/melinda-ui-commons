@@ -1,6 +1,6 @@
-/* eslint-disable max-params */
-/* eslint-disable no-mixed-operators */
-/* eslint-disable max-statements */
+ 
+ 
+ 
 
 import {isDataFieldTag, marcFieldToDiv, stringToMarcField} from './editorUtils.js';
 
@@ -28,7 +28,7 @@ import {isDataFieldTag, marcFieldToDiv, stringToMarcField} from './editorUtils.j
 export function showRecord(record, dest, settings = {}, recordDivName = 'muuntaja', logRecord = true) {
   // Check modern muuntaja. If not needed, then remove this function.
   if (logRecord) {
-    console.log('Show Record:', record); // eslint-disable-line no-console
+    console.log('Show Record:', record);  
   }
   console.log('showRecord() is deprecated. Use showRecordInDiv() instead!');
 
@@ -57,7 +57,7 @@ export function showRecordInDiv(record, recordDiv, settings = {}) {
     const error = document.createElement('div');
     error.classList.add('error');
     error.textContent = getHumanReadableErrorMessage(record.error);
-    console.error(record.error); /* eslint-disable-line no-console */
+    console.error(record.error);  
     recordDiv.appendChild(error);
   }
 
