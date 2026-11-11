@@ -1,0 +1,13 @@
+{
+  // Build-only config — emits the legacy browser scripts without typechecking.
+  // `tsc --noEmit` (typecheck) uses the base tsconfig.json.
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*.js"],
+  "exclude": ["node_modules", "dist", "src/*.test.ts", "src/empty.d.ts"],
+  "compilerOptions": {
+    "checkJs": false,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false
+  }
+}

@@ -11,7 +11,7 @@
 import httpStatus from 'http-status';
 import {MongoClient, ObjectId} from 'mongodb';
 import sanitize from 'mongo-sanitize';
-import {createLogger} from '@natlibfi/melinda-backend-commons';
+import {createLogger} from '@natlibfi/melinda-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 import {construct, hasUndefinedProperty, isObject} from './notificationUtils.js';
 
