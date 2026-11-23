@@ -179,18 +179,6 @@
 .marc-merge-diff .marc-merge-diff-swap {
   grid-column: 3;
   justify-self: center;
-  padding: 4px 12px;
-  border: none;
-  border-radius: 4px;
-  background: #00457c;
-  color: #fff;
-  font-size: 14px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.marc-merge-diff .marc-merge-diff-swap:hover {
-  background: #005a9e;
 }
 
 /* Inputs row: [input + fetch] (col 1) | TAG (col 3) | [input + fetch]
@@ -222,17 +210,6 @@
 
 .marc-merge-diff .marc-merge-diff-side button {
   flex: none;
-  padding: 6px 14px;
-  border: none;
-  border-radius: 4px;
-  background: #00457c;
-  color: #fff;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.marc-merge-diff .marc-merge-diff-side button:hover {
-  background: #005a9e;
 }
 
 .marc-merge-diff .marc-merge-diff-tag {

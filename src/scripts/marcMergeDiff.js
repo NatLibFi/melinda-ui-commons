@@ -711,10 +711,11 @@ export function renderMarcPairDiff(container, diff, options = {}) {
  * body stays empty (the host shows the diff once both records are loaded).
  *
  * @param {Element} container
- * @param {{sourceId: string, baseId: string, source: (object|null|undefined), base: (object|null|undefined)}} state
+ * @param {{sourceId: string, baseId: string, source: (object|null|undefined), base: (object|null|undefined),
+ *          swapDisabled?: boolean}} state
  *        sourceId/baseId are the record-ID texts shown in the inputs;
  *        source/base are the loaded MARC records (null/undefined = not
- *        yet loaded).
+ *        yet loaded); swapDisabled (optional) disables the swap button.
  * @param {{labelSource?: string, labelBase?: string, showSummary?: boolean,
  *          onSwap?: () => void,
  *          onFetchSource?: (id: string) => void,
@@ -753,10 +754,13 @@ export function renderMarcMergeDiff(container, state, options = {}) {
   labelA.textContent = labelSource;
 
   const swapButton = document.createElement('button');
-  swapButton.className = 'marc-merge-diff-swap';
+  swapButton.className = 'marc-merge-diff-swap material-icons tooltip icon-only';
   swapButton.type = 'button';
-  swapButton.setAttribute('aria-label', 'Vaihda tietueet');
-  swapButton.textContent = '\u21c6'; // ⇆
+  swapButton.setAttribute('tooltip-text', 'Vaihda');
+  swapButton.textContent = 'swap_horiz';
+  if (state.swapDisabled) {
+    swapButton.disabled = true;
+  }
 
   const labelB = document.createElement('span');
   labelB.className = 'marc-merge-diff-side-label';
@@ -781,8 +785,9 @@ export function renderMarcMergeDiff(container, state, options = {}) {
   inputSource.autocomplete = 'off';
   const fetchSource = document.createElement('button');
   fetchSource.type = 'button';
-  fetchSource.className = 'marc-merge-diff-fetch marc-merge-diff-fetch-source';
-  fetchSource.textContent = 'Hae';
+  fetchSource.className = 'material-icons tooltip icon-only';
+  fetchSource.setAttribute('tooltip-text', 'Hae');
+  fetchSource.textContent = 'search';
   sideA.append(inputSource, fetchSource);
 
   const tag = document.createElement('span');
@@ -800,8 +805,9 @@ export function renderMarcMergeDiff(container, state, options = {}) {
   inputBase.autocomplete = 'off';
   const fetchBase = document.createElement('button');
   fetchBase.type = 'button';
-  fetchBase.className = 'marc-merge-diff-fetch marc-merge-diff-fetch-base';
-  fetchBase.textContent = 'Hae';
+  fetchBase.className = 'material-icons tooltip icon-only';
+  fetchBase.setAttribute('tooltip-text', 'Hae');
+  fetchBase.textContent = 'search';
   sideB.append(inputBase, fetchBase);
 
   inputsRow.append(sideA, tag, sideB);
