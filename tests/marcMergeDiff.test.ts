@@ -45,13 +45,13 @@ describe('marcMergeDiff — rendering (jsdom)', () => {
     assert.ok(handle.root.classList.contains('marc-merge-diff'));
     assert.ok(handle.root.classList.contains('BoxShadow'));
     assert.equal(container.querySelector('.marc-merge-diff'), handle.root);
-    // header row: side labels (defaults) + the swap button with the ⇆ glyph
+    // header row: side labels (defaults) + the swap button (material-icons: swap_horiz)
     const labels = handle.root.querySelectorAll('.marc-merge-diff-side-label');
     assert.equal(labels.length, 2);
     assert.equal(labels[0].textContent, 'Toissijainen tietue');
     assert.equal(labels[1].textContent, 'Ensisijainen tietue');
     assert.ok(handle.swapButton.classList.contains('marc-merge-diff-swap'));
-    assert.equal(handle.swapButton.textContent, '\u21c6'); // ⇆
+    assert.equal(handle.swapButton.textContent, 'swap_horiz'); // material icon
     // inputs row: the state ids, per-side classes, TAG label
     assert.ok(handle.inputs.source.classList.contains('marc-merge-diff-input-source'));
     assert.ok(handle.inputs.base.classList.contains('marc-merge-diff-input-base'));
