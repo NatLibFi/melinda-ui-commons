@@ -1,0 +1,308 @@
+/* ---------------------------------------------------------------------------- */
+/* Contact card                                                                 */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.40. A page liftup with the contact information of a       */
+/* person or a service: a round image or placeholder, a name section and a     */
+/* contact info section with icon links M and static items with icons.        */
+/*                                                                              */
+/*   <section class="contact-card" aria-labelledby="...">                       */
+/*    <div class="contact-card-layout">                                         */
+/*     <div class="contact-card-header">                                        */
+/*       <img class="image-round contact-card-image" src="..." alt="">          */
+/*         or                                                                   */
+/*       <span class="contact-card-placeholder" aria-hidden="true">             */
+/*         <i class="fa-solid fa-user"></i>                                     */
+/*       </span>                                                                */
+/*       <div class="contact-card-name">                                        */
+/*         <h3 class="contact-card-heading" id="...">Firstname Lastname</h3>    */
+/*         <p class="contact-card-title">Title(s) of person</p>   (optional)    */
+/*         <p class="contact-card-text">Unit Name</p>                           */
+/*         <p class="contact-card-text">Department Name</p>                     */
+/*       </div>                                                                 */
+/*     </div>                                                                   */
+/*     <div class="contact-card-info">                                          */
+/*       <ul class="contact-card-items">                                        */
+/*         <li>                                                                 */
+/*           <a class="link icon-link" href="mailto:...">                       */
+/*             <i class="fa-light fa-at icon-link-icon" aria-hidden="true"></i> */
+/*             <span class="icon-link-text">name@helsinki.fi</span>             */
+/*           </a>                                                               */
+/*         </li>                                                                */
+/*         <li class="contact-card-item">                                       */
+/*           <i class="fa-light fa-envelope contact-card-icon"                  */
+/*              aria-hidden="true"></i>                                         */
+/*           <span><span class="visually-hidden">Postal address: </span>        */
+/*             National Library<br>P.O.Box 15</span>                            */
+/*         </li>                                                                */
+/*       </ul>                                                                  */
+/*       <ul class="contact-card-items">...</ul>        (second group, optional)*/
+/*     </div>                                                                   */
+/*    </div>                                                                    */
+/*   </section>                                                                 */
+/*                                                                              */
+/*   Background           Blue 20                                               */
+/*   Image                105 x 105 round (image.css .image-round)              */
+/*   Placeholder          Blue 60 circle, Blue 20 Font Awesome Solid icon       */
+/*   Name                 Heading S                                             */
+/*   Title of person      Body M Italic                                         */
+/*   Other static text    Body M                                                */
+/*   Separator            1 px Blue 60                                          */
+/*   Links                Icon link M (iconLink.css), static items look the     */
+/*                        same: Icon M, 16 px between icon and text             */
+/*                                                                              */
+/*   Narrow (mobile, below 48 rem): padding 24 / 16 px, image and name section  */
+/*     centred, 16 px between image, name section, separator and links, 4 px    */
+/*     in the name section, 16 px between items. Cards 16 px apart.             */
+/*   Wide (desktop): padding 24 / 40 px, image and name section side by side,   */
+/*     24 px between image, name section and separator, 40 px from the          */
+/*     separator to the links, 8 px in the name section, 16 px between items,   */
+/*     24 px between link groups. Cards 24 px apart. The name section has a     */
+/*     fixed width, so the separators line up in a list of cards.               */
+/*                                                                              */
+/*   List of cards        .contact-card-list                                    */
+/*                                                                              */
+/* The style guide shows the title, unit and department in Blue 100 at 80 %     */
+/* (#305175 on Blue 20, contrast 7.5:1); here they are the text colour at 80 %. */
+/*                                                                              */
+/* States come from link.css and iconLink.css. The style guide defines no       */
+/* inverse card: the colours of the card do not depend on its surroundings, so  */
+/* a card keeps its Blue 20 look also inside an .inverse section.               */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-primary-20/60, --style-color-heading, --style-color-text,    */
+/*   --style-color-icon, --style-color-link, --style-color-link-hover,          */
+/*   --style-color-link-focus                                                   */
+/* ---------------------------------------------------------------------------- */
+
+
+.contact-card {
+  --contact-card-image-size: 6.5625rem;
+  --contact-card-name-width: 16.5rem;
+
+  container: contact-card / inline-size;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  background-color: var(--style-color-primary-20);
+  color: var(--style-color-text);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-body-m);
+}
+
+/* The layout is on this wrapper so that the container query below can change */
+/* it (a container query does not style the container itself)                */
+.contact-card-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  padding: var(--spacing-24) var(--spacing-16);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Image and name section: centred on narrow cards                              */
+
+.contact-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-16);
+  text-align: center;
+}
+
+.contact-card .contact-card-image {
+  --image-round-size: var(--contact-card-image-size);
+  flex: none;
+}
+
+.contact-card-placeholder {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--contact-card-image-size);
+  height: var(--contact-card-image-size);
+  border-radius: 50%;
+  background-color: var(--style-color-primary-60);
+  color: var(--style-color-primary-20);
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.contact-card-name {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  min-width: 0;
+
+  > * {
+    margin: 0;
+  }
+}
+
+.contact-card .contact-card-heading {
+  margin: 0;
+  color: var(--style-color-heading);
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-heading-s);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-heading-s);
+  letter-spacing: 0;
+}
+
+.contact-card :is(.contact-card-title, .contact-card-name .contact-card-text) {
+  color: color-mix(in srgb, var(--style-color-text) 80%, transparent);
+}
+
+.contact-card .contact-card-title {
+  font-style: italic;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Contact info: separator above on narrow cards, link groups in one column     */
+
+.contact-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  min-width: 0;
+  padding-top: var(--spacing-16);
+  border-top: 1px solid var(--style-color-primary-60);
+}
+
+/* Body M also on the lists: defaults.css gives ul and li the list font */
+.contact-card-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &,
+  > li {
+    font-family: var(--font-family-content);
+    font-size: var(--font-size-body-m);
+    font-weight: var(--font-weight-content);
+    line-height: var(--font-line-height-body-m);
+  }
+
+  > li {
+    margin: 0;
+  }
+}
+
+/* Static item: same layout as an icon link M */
+.contact-card-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-16);
+  color: var(--style-color-text);
+
+  > :not(.contact-card-icon) {
+    min-width: 0;
+  }
+}
+
+.contact-card-item .contact-card-icon {
+  flex: none;
+  width: 1.25em;
+  height: var(--icon-size-m);
+  margin-top: calc((var(--font-line-height-body-m) - var(--icon-size-m)) / 2);
+  color: var(--style-color-icon);
+  font-size: var(--icon-size-m);
+  line-height: 1;
+  text-align: center;
+}
+
+/* Links keep their light background colours also inside an .inverse section */
+.contact-card .contact-card-items .icon-link {
+  color: var(--style-color-link);
+
+  &:is(:hover, :active, .state-hover) {
+    color: var(--style-color-link-hover);
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    color: var(--style-color-link-hover);
+    outline-color: var(--style-color-link-focus);
+  }
+}
+
+/* Long e-mail addresses and URLs wrap instead of overflowing the card */
+.contact-card .icon-link-text {
+  overflow-wrap: anywhere;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Wide cards: image and name section on the left, vertical separator          */
+
+@container contact-card (min-width: 48rem) {
+
+  .contact-card-layout {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--spacing-24) var(--spacing-40);
+  }
+
+  .contact-card-header {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--spacing-24);
+    flex: none;
+    width: calc(var(--contact-card-image-size) + var(--spacing-24) + var(--contact-card-name-width));
+    margin-right: var(--spacing-24);
+    text-align: start;
+  }
+
+  .contact-card-name {
+    flex: 1 1 auto;
+    gap: var(--spacing-8);
+  }
+
+  .contact-card-info {
+    flex: 1 1 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: var(--spacing-16) var(--spacing-24);
+    padding-top: 0;
+    padding-left: var(--spacing-40);
+    border-top: 0;
+    border-left: 1px solid var(--style-color-primary-60);
+  }
+
+  .contact-card-items {
+    flex: 1 1 14rem;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* List of cards: 16 px apart on narrow screens, 24 px on wide                  */
+
+.contact-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    margin: 0;
+  }
+}
+
+@media (min-width: 601px) {
+
+  .contact-card-list {
+    gap: var(--spacing-24);
+  }
+}
