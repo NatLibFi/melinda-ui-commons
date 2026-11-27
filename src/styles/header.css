@@ -1,0 +1,465 @@
+/* ---------------------------------------------------------------------------- */
+/* Header                                                                       */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.54-55 and 58-60. The header is modular: an optional link  */
+/* bar, the primary menu bar (logo area and primary navigation links), an       */
+/* optional secondary menu bar and an optional alert banner (status.css).       */
+/*                                                                              */
+/*   <header class="site-header">                                               */
+/*     <div class="header-link-bar">                    (optional, Blue 100)    */
+/*       <a class="header-link-bar-link" href="...">University of Helsinki      */
+/*         <i class="fa-regular fa-arrow-up-right-from-square" ...></i></a>     */
+/*     </div>                                                                   */
+/*     <div class="header-menu-bar">                    (primary menu bar)      */
+/*       <a class="header-logo" href="/"><img ...>                              */
+/*         <span class="header-service-name">Melinda</span></a>   (optional)    */
+/*       <nav class="header-navigation" aria-label="Main">                      */
+/*         <ul class="header-menu-links">                                       */
+/*           <li><a class="menu-link" href="...">                               */
+/*             <i class="fa-light fa-circle-question menu-link-icon" ...></i>   */
+/*             <span class="menu-link-text">Help</span></a></li>                */
+/*         </ul>                                                                */
+/*       </nav>                                                                 */
+/*       <ul class="header-mobile-links">...</ul>       (shown on mobile only)  */
+/*     </div>                                                                   */
+/*     <nav class="header-secondary-bar">               (optional)              */
+/*       <ul class="header-menu-links">...</ul>                                 */
+/*     </nav>                                                                   */
+/*     <div class="header-alert">                       (optional)              */
+/*       <div class="status-banner status-alert">...</div>                      */
+/*     </div>                                                                   */
+/*   </header>                                                                  */
+/*                                                                              */
+/* Menu links (p.55): Link M (Public Sans Semibold 16 px), 12 px between icon   */
+/* and text. Main icon Icon M Light in a 24 px box, dropdown chevron Icon S.    */
+/*                                                                              */
+/*   Menu link            a.menu-link                                           */
+/*   Menu dropdown link   button.menu-link.menu-link-dropdown                   */
+/*                        aria-expanded, with .menu-link-chevron after the text */
+/*   Menu outlined link   a.menu-link.menu-link-outlined (login, user menu)     */
+/*                                                                              */
+/* Hover: Link Blue, 2 px underline 2 px under the text (dropdown chevron: 2 px */
+/* line 4 px under the chevron, 2 px wider on both sides). Focus: Link Blue,    */
+/* underlined, 2 px focus outline with rounded corners. Outlined link: 1 px     */
+/* border, 2 px Link Blue on hover and focus. Inverse (.inverse): white in all  */
+/* states.                                                                      */
+/*                                                                              */
+/* Mobile (p.58): the header is a size container; under 48 rem the link bar is  */
+/* 36 px with Link S, the menu bar 56 px with 8 / 16 px padding and a 40 px     */
+/* logo, the primary navigation is hidden and the .header-mobile-links (icon    */
+/* buttons, Icon L, 1 x 40 px Blue 40 spacer lines 16 px from the icons) are    */
+/* shown. The mobile main menu itself belongs to menu.css (navigation menus).   */
+/*                                                                              */
+/* .state-hover and .state-focus show the states without interaction, for       */
+/* documentation pages only.                                                    */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-header-background, --style-color-header-text,                */
+/*   --style-color-header-text-hover, --style-color-header-secondary-*,         */
+/*   --style-color-primary, --style-color-primary-40, --style-color-on-primary  */
+/*                                                                              */
+/* Kansalliskirjasto: white menu bar, Blue 100 links, Link Blue hover, Blue 20  */
+/* secondary menu bar. Melinda: a service with its own brand identity (p.60)    */
+/* keeps the common components, in the Melinda light blue menu bar with white   */
+/* links and a Blue 100 secondary menu bar.                                     */
+/* ---------------------------------------------------------------------------- */
+
+
+.site-header {
+  container: site-header / inline-size;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--font-family-link);
+}
+
+.header-menu-links,
+.header-mobile-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Link bar: Blue 100, 44 px, Link M, external icon XXS                         */
+
+.header-link-bar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-24);
+  min-height: 44px;
+  padding: 0 var(--spacing-24);
+  background-color: var(--style-color-primary);
+}
+
+.header-link-bar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  border-radius: 2px;
+  color: var(--style-color-on-primary);
+  font-family: var(--font-family-link);
+  font-size: var(--font-size-interactive-m);
+  font-weight: var(--font-weight-link);
+  line-height: var(--font-line-height-interactive-m);
+  text-decoration-line: none;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+
+  i {
+    font-size: var(--icon-size-xxs);
+  }
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    color: var(--style-color-on-primary);
+    text-decoration-line: underline;
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline: 2px solid var(--style-color-on-primary);
+    outline-offset: var(--spacing-4);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Primary menu bar: 90 px, logo max 70 px on the left, links on the right      */
+
+.header-menu-bar {
+  --menu-link-color: var(--style-color-header-text);
+  --menu-link-hover-color: var(--style-color-header-text-hover);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-40);
+  min-height: 90px;
+  padding: var(--spacing-8) var(--spacing-24);
+  background-color: var(--style-color-header-background);
+  color: var(--menu-link-color);
+}
+
+/* Kansalliskirjasto: a Blue 40 line separates the white menu bar from a white page */
+[data-style="kansalliskirjasto"] .header-menu-bar {
+  border-bottom: 1px solid var(--style-color-primary-40);
+}
+
+/* White menu bar with Blue 100 links in both styles: a header variation for a */
+/* service with its own brand identity and its own coloured logo (p.60)       */
+.header-menu-bar.header-menu-bar-white {
+  --menu-link-color: var(--style-color-link-strong);
+  --menu-link-hover-color: var(--style-color-link);
+  border-bottom: 1px solid var(--style-color-primary-40);
+  background-color: var(--style-color-background);
+}
+
+.header-logo {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--spacing-24);
+  border-radius: 4px;
+  color: var(--menu-link-color);
+  text-decoration: none;
+
+  img {
+    display: block;
+    max-height: 70px;
+    max-width: 100%;
+  }
+
+  /* The National Library logo is wide and low: 50 px keeps it within 70 px */
+  img.header-logo-natlib {
+    max-height: 50px;
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline: 2px solid var(--menu-link-hover-color);
+    outline-offset: var(--spacing-4);
+  }
+}
+
+/* Service name after the logo when the logo does not contain it */
+.header-service-name {
+  font-family: var(--font-family-brand);
+  font-size: var(--font-size-heading-m);
+  line-height: 1.2;
+}
+
+.header-navigation {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.header-menu-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-8) var(--spacing-32);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Secondary menu bar: 60 px, Blue 20 (any brand colour), Link M                */
+
+.header-secondary-bar {
+  --menu-link-color: var(--style-color-header-secondary-text);
+  --menu-link-hover-color: var(--style-color-header-secondary-text-hover);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-height: 60px;
+  padding: var(--spacing-8) var(--spacing-24);
+  background-color: var(--style-color-header-secondary-background);
+  color: var(--menu-link-color);
+}
+
+/* Alert banner in the header area, under the menu bars */
+.header-alert {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Menu links                                                                   */
+
+.menu-link {
+  --menu-link-gap: var(--spacing-12);
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--menu-link-gap);
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--menu-link-color, var(--style-color-link-strong));
+  font-family: var(--font-family-link);
+  font-size: var(--font-size-interactive-m);
+  font-weight: var(--font-weight-link);
+  line-height: var(--font-line-height-interactive-m);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+
+  .menu-link-text {
+    text-decoration-line: none;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+  }
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    color: var(--menu-link-hover-color, var(--style-color-link));
+
+    .menu-link-text {
+      text-decoration-line: underline;
+    }
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline: 2px solid currentColor;
+    outline-offset: var(--spacing-2);
+  }
+}
+
+/* Menu dropdown links and header icon buttons are <button>s: keep the       */
+/* button.css hover and active background, border and outline off them      */
+button.menu-link,
+button.header-icon-button:not([aria-expanded="true"]) {
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    border-color: transparent;
+    background-color: transparent;
+  }
+}
+
+button.menu-link,
+button.header-icon-button {
+  &:active:not(:focus-visible, .state-focus) {
+    outline: none;
+  }
+}
+
+/* Main icon: Icon M, fits a 24 x 24 px square */
+.menu-link-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-24);
+  height: var(--spacing-24);
+  font-size: var(--icon-size-m);
+}
+
+/* Dropdown chevron: Icon S. On hover a 2 px line 4 px under the chevron, */
+/* 2 px wider than the chevron on both sides */
+.menu-link-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2px 2px;
+  border-bottom: 2px solid transparent;
+  font-size: var(--icon-size-s);
+  transition: transform 0.2s;
+}
+
+.menu-link-dropdown {
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) .menu-link-chevron {
+    border-bottom-color: currentColor;
+  }
+
+  &[aria-expanded="true"] .menu-link-chevron {
+    transform: rotate(180deg);
+    border-bottom-color: transparent;
+    border-top: 2px solid transparent;
+  }
+}
+
+/* Outlined menu link: 1 px border, padding 10 16, 6 px corners. */
+/* Hover and focus: 2 px Link Blue border, focus outline without offset */
+.menu-link-outlined {
+  --menu-link-border: 1px;
+  padding: calc(10px - var(--menu-link-border) + 1px) calc(var(--spacing-16) - var(--menu-link-border) + 1px);
+  border: var(--menu-link-border) solid currentColor;
+  border-radius: 6px;
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    --menu-link-border: 2px;
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline: none;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse: white menu links on dark backgrounds                                */
+
+.inverse .menu-link,
+.menu-link.inverse {
+  &,
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    color: var(--style-color-on-primary);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Mobile icon links: Icon L buttons with 1 x 40 px Blue 40 spacer lines        */
+
+.header-mobile-links {
+  display: none;
+  align-items: center;
+  margin-left: auto;
+
+  li {
+    display: flex;
+    align-items: center;
+  }
+
+  li + li::before {
+    content: "";
+    width: 1px;
+    height: var(--spacing-40);
+    margin: 0 var(--spacing-8);
+    background-color: var(--style-color-primary-40);
+  }
+}
+
+.header-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-40);
+  height: var(--spacing-40);
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--menu-link-color);
+  font-size: var(--icon-size-l);
+  cursor: pointer;
+
+  &:is(:hover, :active, .state-hover) {
+    color: var(--menu-link-hover-color);
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    color: var(--menu-link-hover-color);
+    outline: 2px solid currentColor;
+    outline-offset: 0;
+  }
+
+  &[aria-expanded="true"] {
+    background-color: var(--style-color-primary-20);
+    color: var(--style-color-primary);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Mobile header                                                                */
+
+@container site-header (max-width: 48rem) {
+
+  .header-link-bar {
+    min-height: 36px;
+    padding: 0 var(--spacing-16);
+  }
+
+  .header-link-bar-link {
+    font-size: var(--font-size-interactive-s);
+    line-height: var(--font-line-height-interactive-s);
+  }
+
+  .header-menu-bar {
+    gap: var(--spacing-16);
+    min-height: 56px;
+    padding: var(--spacing-8) var(--spacing-16);
+  }
+
+  .header-logo {
+    gap: var(--spacing-12);
+    min-width: 0;
+
+    img,
+    img.header-logo-natlib {
+      max-height: 40px;
+    }
+  }
+
+  .header-service-name {
+    font-size: var(--font-size-heading-s);
+  }
+
+  .header-menu-bar .header-navigation,
+  .header-secondary-bar {
+    display: none;
+  }
+
+  .header-mobile-links {
+    display: flex;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Windows high contrast: keep the focus outline and the outlined link border   */
+
+@media (forced-colors: active) {
+  .menu-link-outlined {
+    border-color: LinkText;
+  }
+
+  .menu-link:is(:focus-visible, .state-focus),
+  .header-icon-button:is(:focus-visible, .state-focus) {
+    outline-color: Highlight;
+  }
+}

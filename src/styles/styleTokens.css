@@ -128,6 +128,10 @@
   --style-color-header-background: var(--color-melinda-lightblue);
   --style-color-header-text: var(--color-primary-white);
   --style-color-header-text-hover: var(--color-primary-blue);
+  /* HEADER: secondary menu bar (header.css) */
+  --style-color-header-secondary-background: var(--color-primary-blue);
+  --style-color-header-secondary-text: var(--color-primary-white);
+  --style-color-header-secondary-text-hover: var(--color-primary-white);
 
   /* FOOTER: service banner above the National Library banner */
   --style-color-footer-banner-background: var(--color-melinda-green);
@@ -182,6 +186,10 @@
   --style-color-header-background: var(--color-primary-white);
   --style-color-header-text: var(--color-primary-blue);
   --style-color-header-text-hover: var(--color-functional-blue);
+  /* HEADER: secondary menu bar, Blue 20 (style guide p.54) */
+  --style-color-header-secondary-background: var(--color-blue-20);
+  --style-color-header-secondary-text: var(--color-primary-blue);
+  --style-color-header-secondary-text-hover: var(--color-functional-blue);
 
   /* FOOTER */
   --style-color-footer-banner-background: var(--color-primary-blue);
