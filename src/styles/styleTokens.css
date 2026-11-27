@@ -104,6 +104,20 @@
   /* FOOTER: service banner above the National Library banner */
   --style-color-footer-banner-background: var(--color-melinda-green);
   --style-color-footer-banner-text-hover: var(--color-primary-blue);
+
+  /* HIGHLIGHT: flash effect on an element that needs attention */
+  --style-color-highlight: var(--color-functional-yellow);
+  --style-highlight-radius: 1em;
+
+  /* MESSAGES: notification (snackbar) background and icon per message style */
+  --style-color-message-info-background: var(--color-blue-60);
+  --style-color-message-info-icon: var(--color-blue-100);
+  --style-color-message-success-background: var(--color-green-80);
+  --style-color-message-success-icon: var(--color-green-100);
+  --style-color-message-alert-background: var(--color-yellow-80);
+  --style-color-message-alert-icon: var(--color-blue-100);
+  --style-color-message-error-background: var(--color-red-80);
+  --style-color-message-error-icon: var(--color-red-100);
 }
 
 
@@ -129,4 +143,32 @@
   /* FOOTER */
   --style-color-footer-banner-background: var(--color-primary-blue);
   --style-color-footer-banner-text-hover: var(--color-blue-40);
+
+  /* HIGHLIGHT: highlighted cell colour Blue 40 (style guide p.48), 4 px radius */
+  --style-color-highlight: var(--color-blue-40);
+  --style-highlight-radius: 4px;
+
+  /* MESSAGES: alert banner and status message colours (style guide p.48) */
+  --style-color-message-info-background: var(--color-blue-40);
+  --style-color-message-info-icon: var(--color-blue-100);
+  --style-color-message-success-background: var(--color-green-40);
+  --style-color-message-success-icon: var(--color-green-100);
+  --style-color-message-alert-background: var(--color-yellow-60);
+  --style-color-message-alert-icon: var(--color-blue-100);
+  --style-color-message-error-background: var(--color-red-40);
+  --style-color-message-error-icon: var(--color-red-100);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Style-specific content                                                       */
+/* Most markup is the same in both styles. When content differs (for example    */
+/* the logo in the navbar and footer), add both versions to the markup and mark */
+/* them with data-style-only. The version for the other style is hidden.        */
+/*   <img data-style-only="melinda" ...>                                        */
+/*   <img data-style-only="kansalliskirjasto" ...>                              */
+
+:root:not([data-style="kansalliskirjasto"]) [data-style-only="kansalliskirjasto"],
+[data-style="kansalliskirjasto"] [data-style-only="melinda"] {
+  display: none !important;
 }

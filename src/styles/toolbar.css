@@ -251,3 +251,38 @@
   }
 
 }
+
+/* ---------------------------------------------------------------------------- */
+/* Kansalliskirjasto style                                                      */
+/* Toolbar actions are icon links L (style guide p.16):                         */
+/*  - link blue text and icons, underlined on hover                             */
+/*  - 16 px between icon and text                                               */
+/*  - focus and expanded state: 2 px Blue 100 outline with 4 px radius          */
+
+[data-style="kansalliskirjasto"] .toolbar {
+
+  .toolbar-actions .toolbar-action {
+    color: var(--style-color-link);
+
+    .toolbar-action-text {
+      padding-left: 16px;
+    }
+
+    &:hover {
+      color: var(--style-color-link);
+    }
+
+    &.expanded,
+    &:active:not([disabled]),
+    &:focus-visible {
+      color: var(--style-color-link-hover);
+      outline: 2px solid var(--style-color-primary);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+  }
+
+  .toolbar-dropdowns .toolbar-dropdown .dropdown-content .dropdown-header {
+    border-bottom-width: 1px;
+  }
+}

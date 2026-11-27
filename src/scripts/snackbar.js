@@ -143,26 +143,27 @@ function createSnackbar(snackbarContent, snackbarTemplate) {
 
       // style 'info' is the default status message
       // snackbar has blue background with info icon
-      let backgroundColor = 'var(--color-blue-60)';
-      let iconColor = 'var(--color-blue-100)';
+      // colours are style tokens (styleTokens.css), so they follow the selected style
+      let backgroundColor = 'var(--style-color-message-info-background)';
+      let iconColor = 'var(--style-color-message-info-icon)';
       let icon = 'error_outline';
 
 
       if (style === 'success') {
-        backgroundColor = 'var(--color-green-80)';
-        iconColor = 'var(--color-green-100)';
+        backgroundColor = 'var(--style-color-message-success-background)';
+        iconColor = 'var(--style-color-message-success-icon)';
         icon = 'check_circle_outline';
       }
 
       if (style === 'alert') {
-        backgroundColor = 'var(--color-yellow-80)';
-        iconColor = 'var(--color-blue-100)';
+        backgroundColor = 'var(--style-color-message-alert-background)';
+        iconColor = 'var(--style-color-message-alert-icon)';
         icon = 'warning_amber';
       }
 
       if (style === 'error') {
-        backgroundColor = 'var(--color-red-80)';
-        iconColor = 'var(--color-red-100)';
+        backgroundColor = 'var(--style-color-message-error-background)';
+        iconColor = 'var(--style-color-message-error-icon)';
         icon = 'report_gmailerrorred';
       }
 

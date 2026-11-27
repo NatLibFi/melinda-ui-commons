@@ -133,3 +133,72 @@
 
   }
 }
+
+/* ---------------------------------------------------------------------------- */
+/* Kansalliskirjasto style                                                      */
+/*  - panel: page liftup look (style guide p.36): white box without shadow,     */
+/*    Heading M headline, 24 px padding                                         */
+/*  - tabs: tabbed navigation M on a light background (style guide p.31):       */
+/*    current tab has the content colour and a 2 px Blue 100 top line,         */
+/*    other tabs are one shade darker, focus outline 2 px with 6 px radius      */
+
+[data-style="kansalliskirjasto"] .panels {
+
+  .panel-container {
+
+    .panel-action-wrapper {
+      gap: 2px;
+      margin-bottom: 0px;
+
+      .panel-tab {
+        background-color: var(--style-color-primary-40);
+        border: none;
+        border-top: 2px solid transparent;
+
+        &.current-tab {
+          background-color: var(--style-color-background);
+          border-top-color: var(--style-color-primary);
+          box-shadow: none;
+
+          &:hover {
+            box-shadow: none;
+          }
+        }
+
+        &:hover {
+          border-top-color: var(--style-color-primary);
+          box-shadow: none;
+        }
+
+        &:active,
+        &:focus-visible {
+          border-top-color: transparent;
+          border-radius: 6px;
+          outline: 2px solid var(--style-color-primary);
+          outline-offset: -2px;
+        }
+      }
+    }
+
+    .panel-main-wrapper {
+      background-color: var(--style-color-background);
+      border: 1px solid var(--style-color-primary-40);
+      box-shadow: none;
+
+      .panel-header {
+        background-color: var(--style-color-background);
+        font-size: var(--font-size-headline-medium);
+        padding: 24px 24px 16px 24px;
+      }
+
+      .panel-content {
+        padding: 0px 24px 24px 24px;
+      }
+    }
+
+    /* current tab and the panel below it form one area */
+    &:has(.panel-action-wrapper) .panel-main-wrapper {
+      border-top: none;
+    }
+  }
+}

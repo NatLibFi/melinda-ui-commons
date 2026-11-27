@@ -93,3 +93,54 @@ dialog:modal {
   font-size: var(--font-size-button-large);
   font-weight: var(--font-weight-button);
 }
+
+/* ---------------------------------------------------------------------------- */
+/* Kansalliskirjasto style                                                      */
+/* The style guide has no dialog. The dialog follows the status message and     */
+/* liftup styles (style guide p.36, p.48):                                      */
+/*  - square corners, dark blue backdrop                                        */
+/*  - left aligned Heading S headline and Blue 100 text                         */
+
+[data-style="kansalliskirjasto"] dialog,
+dialog[data-style="kansalliskirjasto"] {
+  border-radius: 0px;
+  padding: 24px;
+  color: var(--style-color-primary);
+
+  &::backdrop {
+    background: rgba(0, 40, 85, 0.6);
+  }
+
+  &:modal {
+    color: var(--style-color-primary);
+  }
+
+  .dialog-icon {
+    justify-content: flex-start;
+    padding: 0px 0px 16px 0px;
+  }
+
+  .dialog-headline {
+    justify-content: flex-start;
+    padding: 0px;
+    font-family: var(--font-family-headline);
+    font-weight: var(--font-weight-headline);
+  }
+
+  .dialog-supporting-text {
+    color: var(--style-color-primary);
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 16px;
+    padding-bottom: 24px;
+  }
+
+  .dialog-actions {
+    gap: 16px;
+    padding: 0px;
+
+    button {
+      margin-left: 0px;
+    }
+  }
+}

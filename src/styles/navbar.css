@@ -518,3 +518,49 @@
 .secondary-menu-bar-dropdown .dropdown-button-close:active {
   color: var(--style-color-link);
 }
+
+/* ************************************************************ */
+/* Kansalliskirjasto style                                      */
+/* Header for closely related services (style guide p.59):      */
+/*  - white primary menu bar with a Blue 40 bottom line         */
+/*  - National Library logo and the service name on the left    */
+/*  - Blue 100 navigation links, link blue on hover             */
+
+[data-style="kansalliskirjasto"] {
+
+  .primary-menu-bar {
+    border-bottom: 1px solid var(--style-color-primary-40);
+  }
+
+  .logo-area {
+
+    .logo-and-service-name {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 24px;
+      text-decoration: none;
+
+      img {
+        max-height: 50px;
+      }
+
+      .service-name {
+        font-family: var(--font-family-brand);
+        font-size: var(--font-size-headline-medium);
+        color: var(--style-color-primary);
+      }
+    }
+
+    &:active {
+      outline-color: var(--style-color-primary);
+      outline-width: 2px;
+      border-radius: 4px;
+    }
+  }
+
+  .primary-navigation-links .nav-link:active:not(.nav-link.link-disabled) {
+    outline-color: var(--style-color-primary);
+    outline-width: 2px;
+  }
+}

@@ -263,3 +263,45 @@
   .natlib-link a:active {
     outline-offset: 0.4rem
   }
+
+/* ************************************************************ */
+/* Kansalliskirjasto style                                      */
+/* Default National Library footer (style guide p.61-63):       */
+/*  - Blue 100 background, white text                           */
+/*  - four columns: logo and contact, about, links, links       */
+/*  - National Library logo in the first column, so the         */
+/*    separate National Library banner is not shown            */
+/*  - smaller type: Heading S headings, Body S text and links   */
+
+[data-style="kansalliskirjasto"] .footer {
+
+  .melinda-banner {
+    padding: 48px 64px;
+    gap: 48px;
+  }
+
+  .melinda-logo img {
+    max-height: 90px;
+    margin-bottom: 24px;
+  }
+
+  .footer-heading {
+    font-size: var(--font-size-headline-small);
+    padding-bottom: 16px;
+  }
+
+  .footer-heading-small,
+  .footer-text,
+  .footer-paragraph {
+    font-size: var(--font-size-content-small);
+  }
+
+  .footer-link-text,
+  .footer-email {
+    font-size: var(--font-size-link-small);
+  }
+
+  .footer-link-list {
+    gap: 12px;
+  }
+}

@@ -15,8 +15,13 @@
       <div id="melindaLogoAndContact" class="melinda-logo-and-contact-info">
 
         <div class="melinda-logo">
-          <a href="/">
-            <img src={{ shared "/images/logo-melinda-text-vertical-white-cropped.png" }}>
+          <!-- Melinda style: Melinda logo, the National Library banner is shown below -->
+          <a href="/" data-style-only="melinda">
+            <img src={{ shared "/images/logo-melinda-text-vertical-white-cropped.png" }} alt="Melinda">
+          </a>
+          <!-- Kansalliskirjasto style: National Library logo in the first column, no separate banner -->
+          <a href="https://www.kansalliskirjasto.fi" target="_blank" rel="noopener noreferrer" data-style-only="kansalliskirjasto">
+            <img src={{ shared "/images/logo-natlib-centered-white-cropped.png" }} alt="Kansalliskirjasto">
           </a>
         </div>
 
@@ -235,7 +240,7 @@
     </div>
 
     <!-- NatLib banner to identify the site as a National Library service -->
-    <div class="natlib-banner">
+    <div class="natlib-banner" data-style-only="melinda">
 
       <!-- NatLib logo -->
       <div id="natLibLogo" class="natlib-logo">

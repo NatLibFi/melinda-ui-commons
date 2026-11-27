@@ -13,8 +13,14 @@
     <div class="primary-menu-bar">
 
       <div class="logo-area">
-        <a href="/">
-          <img src={{ shared "/images/logo-melinda-text-horizontal-white-cropped.png" }}>
+        <!-- Melinda style: white Melinda logo on the light blue menu bar -->
+        <a href="/" data-style-only="melinda">
+          <img src={{ shared "/images/logo-melinda-text-horizontal-white-cropped.png" }} alt="Melinda">
+        </a>
+        <!-- Kansalliskirjasto style: National Library logo and service name on the white menu bar -->
+        <a href="/" class="logo-and-service-name" data-style-only="kansalliskirjasto">
+          <img src={{ shared "/images/logo-natlib-centered-blue-cropped.png" }} alt="Kansalliskirjasto">
+          <span class="service-name">Melinda</span>
         </a>
       </div>
 
