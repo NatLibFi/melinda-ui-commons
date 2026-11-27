@@ -1,0 +1,141 @@
+/* ---------------------------------------------------------------------------- */
+/* Outlined links (CTA links)                                                   */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.17. An outlined link (OL link, CTA link) is a main link   */
+/* (link.css) inside a button-like container: add .outlined-link to a link size */
+/* class. For an icon add .icon-link too (iconLink.css). Outlined links are     */
+/* links, not buttons: always an <a href>.                                      */
+/*                                                                              */
+/*   Size          Classes                  Container height  Side padding     */
+/*   M (default)   .link .outlined-link     3 rem / 48 px     16 px            */
+/*   L             .link-l .outlined-link   3.5 rem / 56 px   16 px            */
+/*   S             .link-s .outlined-link   2 rem / 32 px     12 px            */
+/*                                                                              */
+/*   <a class="link icon-link outlined-link" href="...">                        */
+/*     <i class="fa-light fa-arrow-right icon-link-icon" aria-hidden="true"></i>*/
+/*     <span class="icon-link-text">Read our strategy</span>                    */
+/*   </a>                                                                       */
+/*                                                                              */
+/* Container: 2 px border in the link colour, 6 px rounded corners. All sizes   */
+/* are Link Blue (also L, as in the p.17 examples), hover Blue 100 with the     */
+/* text underlined. Focus: Blue 100, text underlined and the 2 px focus outline */
+/* outside the container, 2 px away, with corners rounded to match. S links     */
+/* are not underlined on focus, as in link.css. Inverse (.inverse): white in    */
+/* all states. Links have no disabled state.                                    */
+/*                                                                              */
+/* On top of an image add .outlined-link-shadow: a soft shadow in the           */
+/* background colour (--gradient-color inside a .gradient-overlay) keeps the    */
+/* white link readable on the light parts of the image.                         */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-link, --style-color-link-hover, --style-color-link-focus,    */
+/*   --style-color-on-primary, --style-color-gradient                           */
+/* ---------------------------------------------------------------------------- */
+
+
+.outlined-link {
+  --outlined-link-height: var(--spacing-48);
+  --outlined-link-padding-x: var(--spacing-16);
+  --outlined-link-line-height: var(--font-line-height-interactive-m);
+  --outlined-link-border: 2px;
+  --outlined-link-radius: 6px;
+  /* link.css draws the focus outline from these: 2 px outside the container */
+  --link-focus-offset: var(--spacing-2);
+  --link-focus-radius: calc(var(--outlined-link-radius) + var(--link-focus-offset));
+
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: var(--outlined-link-height);
+  /* Vertical padding centres one line of text in the container height */
+  padding:
+    calc((var(--outlined-link-height) - var(--outlined-link-line-height)) / 2 - var(--outlined-link-border))
+    var(--outlined-link-padding-x);
+  border: var(--outlined-link-border) solid currentColor;
+  border-radius: var(--outlined-link-radius);
+  background: none;
+  color: var(--style-color-link);
+  vertical-align: middle;
+
+  &:hover,
+  &:active,
+  &.state-hover,
+  &:focus-visible,
+  &.state-focus {
+    color: var(--style-color-link-hover);
+  }
+
+  &:focus-visible,
+  &.state-focus {
+    outline-color: var(--style-color-link-focus);
+  }
+}
+
+/* Without an icon: text and the external icon flow inline */
+.outlined-link:not(.icon-link) {
+  display: inline-block;
+}
+
+.link-l.outlined-link {
+  --outlined-link-height: var(--spacing-56);
+  --outlined-link-line-height: var(--font-line-height-interactive-l);
+}
+
+.link-s.outlined-link {
+  --outlined-link-height: var(--spacing-32);
+  --outlined-link-padding-x: var(--spacing-12);
+  --outlined-link-line-height: var(--font-line-height-interactive-s);
+
+  /* link.css keeps S hover Link Blue: outlined S links turn Blue 100 */
+  &:hover,
+  &:active,
+  &.state-hover {
+    color: var(--style-color-link-hover);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse: on dark backgrounds white border and text in all states             */
+
+.inverse .outlined-link,
+.outlined-link.inverse {
+  &,
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    color: var(--style-color-on-primary);
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline-color: var(--style-color-on-primary);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* On top of an image: shadow in the background colour around the container    */
+/* and the text                                                                 */
+
+.outlined-link-shadow {
+  --outlined-link-shadow-color: color-mix(in srgb, var(--gradient-color, var(--style-color-gradient)) 85%, transparent);
+  box-shadow: 0 0 6px var(--outlined-link-shadow-color);
+  text-shadow: 0 0 6px var(--outlined-link-shadow-color);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Group: outlined links side by side, wrapping on narrow screens               */
+
+.outlined-link-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* S links (CTA link S examples) are 12 px apart */
+.outlined-link-group:has(.link-s.outlined-link) {
+  gap: var(--spacing-12);
+}
