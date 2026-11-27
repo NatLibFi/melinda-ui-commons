@@ -1,0 +1,189 @@
+/* ---------------------------------------------------------------------------- */
+/* Breadcrumbs                                                                  */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.29. All crumbs are links, the current page is not part    */
+/* of the breadcrumb. Put the breadcrumb in the hero element right before the   */
+/* main heading, also in the DOM.                                               */
+/*                                                                              */
+/*   <nav class="breadcrumb" aria-label="Breadcrumb">                           */
+/*     <ol class="breadcrumb-list">                                             */
+/*       <li class="breadcrumb-item breadcrumb-home">                           */
+/*         <a class="breadcrumb-link" href="/">                                 */
+/*           <i class="fa-regular fa-house breadcrumb-home-icon"                */
+/*              aria-hidden="true"></i>                                         */
+/*           <span class="breadcrumb-home-text">Home</span>                     */
+/*         </a>                                                                 */
+/*         <span class="breadcrumb-separator" aria-hidden="true">/</span>       */
+/*       </li>                                                                  */
+/*       <li class="breadcrumb-item">                                           */
+/*         <a class="breadcrumb-link" href="/services">Services</a>             */
+/*         <span class="breadcrumb-separator" aria-hidden="true">/</span>       */
+/*       </li>                                                                  */
+/*     </ol>                                                                    */
+/*   </nav>                                                                     */
+/*                                                                              */
+/* Font Heading XXS (15 / 22 px, Semibold, all caps), Blue 100, white on dark   */
+/* backgrounds (.inverse). 8 px between a crumb and the "/" separator, which    */
+/* is hidden from screen readers; 4 px between rows.                            */
+/*                                                                              */
+/* Desktop: "Home" written out. Mobile (breadcrumb 600 px wide or less, a       */
+/* container query, so a narrow column gets the mobile layout too): the home    */
+/* link is the house icon (Icon S, Regular) and "Home" is visually hidden, so   */
+/* it stays the accessible name. The crumbs after the icon wrap with a hanging  */
+/* indent: rows start where the first crumb after the icon starts.             */
+/* The container query makes .breadcrumb take its width from its parent, not   */
+/* from its content: use it as a block (full width), not inside an inline-     */
+/* block, a max-content grid column or a flex item that does not stretch.      */
+/*                                                                              */
+/* States as in link.css: underlined on hover, focus outline 2 px Blue 100      */
+/* (white on dark backgrounds) with rounded corners, text underlined.           */
+/* .state-hover and .state-focus show the states without interaction, for       */
+/* documentation pages only.                                                    */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-link-strong, --style-color-link-focus,                       */
+/*   --style-color-on-primary                                                   */
+/* ---------------------------------------------------------------------------- */
+
+
+.breadcrumb {
+  --breadcrumb-gap: var(--spacing-8);
+  --breadcrumb-row-gap: var(--spacing-4);
+  --breadcrumb-color: var(--style-color-link-strong);
+  --breadcrumb-focus-color: var(--style-color-link-focus);
+  /* Mobile: width of the home crumb (icon + separator) and the gaps around it */
+  --breadcrumb-home-width: calc(var(--icon-size-s) + var(--breadcrumb-gap) + 0.5em);
+
+  container: breadcrumb / inline-size;
+  color: var(--breadcrumb-color);
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-heading-xxs);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-heading-xxs);
+  text-transform: uppercase;
+}
+
+.breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--breadcrumb-row-gap) var(--breadcrumb-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumb-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--breadcrumb-gap);
+  max-width: 100%;
+  margin: 0;
+}
+
+.breadcrumb-separator {
+  flex: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Crumb links                                                                  */
+
+.breadcrumb-link {
+  /* Focus outline 4 px away from the text, 6 px visible corner radius */
+  --breadcrumb-focus-offset: var(--spacing-4);
+  --breadcrumb-focus-radius: 6px;
+
+  min-width: 0;
+  border-radius: calc(var(--breadcrumb-focus-radius) - var(--breadcrumb-focus-offset));
+  color: inherit;
+  overflow-wrap: break-word;
+  text-decoration-line: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+
+  &:hover,
+  &:active,
+  &.state-hover {
+    color: inherit;
+    text-decoration-line: underline;
+  }
+
+  &:focus-visible,
+  &.state-focus {
+    outline: 2px solid var(--breadcrumb-focus-color);
+    outline-offset: var(--breadcrumb-focus-offset);
+    text-decoration-line: underline;
+  }
+}
+
+/* Desktop: the home link is text, the icon is hidden */
+.breadcrumb-home-icon {
+  display: none;
+  font-size: var(--icon-size-s);
+  line-height: 1;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Mobile: house icon for the home link, hanging indent for wrapped rows        */
+
+@container breadcrumb (max-width: 600px) {
+
+  .breadcrumb-list {
+    padding-left: calc(var(--breadcrumb-home-width) + var(--breadcrumb-gap));
+  }
+
+  .breadcrumb-home {
+    box-sizing: border-box;
+    justify-content: space-between;
+    width: var(--breadcrumb-home-width);
+    margin-left: calc(-1 * (var(--breadcrumb-home-width) + var(--breadcrumb-gap)));
+  }
+
+  .breadcrumb-home .breadcrumb-link {
+    --breadcrumb-focus-offset: 3px;
+    --breadcrumb-focus-radius: 4px;
+    display: inline-flex;
+    align-self: center;
+  }
+
+  .breadcrumb-home-icon {
+    display: inline-block;
+  }
+
+  /* Hidden visually, still the accessible name of the home link */
+  .breadcrumb-home-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse: on dark backgrounds white in all states                             */
+
+.inverse .breadcrumb,
+.breadcrumb.inverse {
+  --breadcrumb-color: var(--style-color-on-primary);
+  --breadcrumb-focus-color: var(--style-color-on-primary);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Windows high contrast: keep the focus outline visible                        */
+
+@media (forced-colors: active) {
+
+  .breadcrumb-link:is(:focus-visible, .state-focus) {
+    outline-color: Highlight;
+  }
+}
