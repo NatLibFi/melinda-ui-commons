@@ -117,6 +117,9 @@
   --style-color-quote-line: var(--color-melinda-green-custom);
   --style-color-caption-background: color-mix(in srgb, var(--color-melinda-green) 20%, var(--color-primary-white));
 
+  /* ICONS: default icon colour (icon.css), Melinda dark blue like the headings */
+  --style-color-icon: var(--color-melinda-darkblue);
+
   /* HIGHLIGHT: flash effect on an element that needs attention */
   --style-color-highlight: var(--color-functional-yellow);
   --style-highlight-radius: 1em;
@@ -166,6 +169,9 @@
   --style-color-heading: var(--color-blue-100);
   --style-color-quote-line: var(--color-blue-80);
   --style-color-caption-background: var(--color-blue-20);
+
+  /* ICONS: Blue 100 icons (style guide p.19) */
+  --style-color-icon: var(--color-blue-100);
 
   /* HIGHLIGHT: highlighted cell colour Blue 40 (style guide p.48), 4 px radius */
   --style-color-highlight: var(--color-blue-40);

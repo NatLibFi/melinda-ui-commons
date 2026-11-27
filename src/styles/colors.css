@@ -81,4 +81,16 @@
     --color-teal-40: #D3ECF2;
     --color-teal-20: #E6F7FA;
 
+    /* SOCIAL MEDIA BRAND COLORS */
+    /*  - sharing widget icons use the brand colours of the channels (style guide p.20) */
+    /*  - some do not pass contrast requirements, allowed because a visible text label follows */
+    --color-brand-facebook: #1877F2;
+    --color-brand-twitter: #1DA1F2;
+    --color-brand-linkedin: #0A66C2;
+    --color-brand-youtube: #FF0000;
+    --color-brand-instagram: #E4405F;
+    --color-brand-pinterest: #E60023;
+    --color-brand-whatsapp: #25D366;
+    --color-brand-reddit: #FF4500;
+
 }

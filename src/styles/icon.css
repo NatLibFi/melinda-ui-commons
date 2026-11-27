@@ -1,0 +1,345 @@
+/* ---------------------------------------------------------------------------- */
+/* Icons                                                                        */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.18-20. Icons come from the Font Awesome icon library.     */
+/* Font Awesome itself is not loaded here: the application loads it, for        */
+/* example with a Font Awesome Pro kit in the layout <head>:                    */
+/*   <script src="https://kit.fontawesome.com/<kit id>.js"                      */
+/*           crossorigin="anonymous"></script>                                  */
+/*                                                                              */
+/* Light is the default weight, Regular is used for the small sizes XXS-S:      */
+/*   <i class="fa-light fa-magnifying-glass icon-m" aria-hidden="true"></i>     */
+/*   <i class="fa-regular fa-arrow-up-right-from-square icon-xxs"               */
+/*      aria-hidden="true"></i>                                                 */
+/*                                                                              */
+/*   Sizes         .icon-xxs (12 px) .icon-xs (14 px) .icon-s (16 px)           */
+/*                 .icon-m (20 px) .icon-l (24 px) .icon-xl (32 px)             */
+/*                 .icon-xxl (40 px)                                            */
+/*   Colours       .icon-color-primary (Blue 100, default), .icon-color-link,   */
+/*                 .icon-color-error, .icon-color-accent, .icon-color-white     */
+/*   Social media  .social-media-links (footer channel links)                   */
+/*   Sharing       .share-widget, .share-link, .share-icon-<channel>            */
+/*                                                                              */
+/* The size and colour classes also work on Google Material icons               */
+/* (<span class="material-icons">) that are still used in the components.       */
+/* Decorative icons get aria-hidden="true". Inside .inverse (dark background)   */
+/* icons and links are white.                                                   */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-icon, --style-color-link, --style-color-error,               */
+/*   --style-color-accent, --style-color-focus, --style-color-on-primary        */
+/* Sharing icons use the --color-brand-* colours from colors.css.               */
+/* ---------------------------------------------------------------------------- */
+
+
+:root {
+  --icon-size-xxs: 0.75rem;   /* 12 px, FA Regular */
+  --icon-size-xs: 0.875rem;   /* 14 px, FA Regular */
+  --icon-size-s: 1rem;        /* 16 px, FA Regular */
+  --icon-size-m: 1.25rem;     /* 20 px, FA Light */
+  --icon-size-l: 1.5rem;      /* 24 px, FA Light */
+  --icon-size-xl: 2rem;       /* 32 px, FA Light */
+  --icon-size-xxl: 2.5rem;    /* 40 px, FA Light */
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Sizes                                                                        */
+
+.icon-xxs {
+  font-size: var(--icon-size-xxs);
+}
+
+.icon-xs {
+  font-size: var(--icon-size-xs);
+}
+
+.icon-s {
+  font-size: var(--icon-size-s);
+}
+
+.icon-m {
+  font-size: var(--icon-size-m);
+}
+
+.icon-l {
+  font-size: var(--icon-size-l);
+}
+
+.icon-xl {
+  font-size: var(--icon-size-xl);
+}
+
+.icon-xxl {
+  font-size: var(--icon-size-xxl);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Colours: primarily Blue 100, white and link blue. Other colours where they   */
+/* carry meaning, for example the error colour in an alert message.             */
+
+.icon-color-primary {
+  color: var(--style-color-icon);
+}
+
+.icon-color-link {
+  color: var(--style-color-link);
+}
+
+.icon-color-error {
+  color: var(--style-color-error);
+}
+
+.icon-color-accent {
+  color: var(--style-color-accent);
+}
+
+.icon-color-white,
+.inverse .icon-color-primary {
+  color: var(--style-color-on-primary);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Social media channel links (footer)                                          */
+/* Brand icon, visible channel name and the external link icon. A visually      */
+/* hidden "Follow us" / "Seuraa meitä" text precedes the channel name, so a     */
+/* screen reader reads "Follow us on Facebook".                                 */
+
+.social-media-links {
+  color: var(--style-color-text);
+
+  .social-media-links-title {
+    margin: 0 0 1rem 0;
+    color: var(--style-color-heading);
+    font-family: var(--font-family-headline);
+    font-weight: var(--font-weight-headline);
+    font-size: var(--font-size-heading-s);
+    line-height: var(--font-line-height-heading-s);
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 4px;
+    color: var(--style-color-text);
+    font-family: var(--font-family-link);
+    font-weight: var(--font-weight-link);
+    font-size: var(--font-size-interactive-m);
+    line-height: var(--font-line-height-interactive-m);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--style-color-focus);
+      outline-offset: 2px;
+    }
+
+    /* brand icon */
+    > :first-child {
+      font-size: var(--icon-size-l);
+      color: var(--style-color-icon);
+    }
+
+    /* external link icon after the channel name */
+    > :last-child {
+      margin-left: -0.25rem;
+      font-size: var(--icon-size-xxs);
+    }
+  }
+}
+
+.inverse .social-media-links,
+.social-media-links.inverse {
+
+  .social-media-links-title,
+  a,
+  a > :first-child {
+    color: var(--style-color-on-primary);
+  }
+
+  a:focus-visible {
+    outline-color: var(--style-color-on-primary);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Sharing widget                                                               */
+/* A <details> element: the summary holds the "Share this page" heading (always */
+/* heading level 2), the list holds the share links. Each link starts with a    */
+/* visually hidden "Share this page" text. Icons use the channel brand colours; */
+/* the email and share link icons use the icon colour.                          */
+
+.share-widget {
+
+  > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 4px;
+    color: var(--style-color-link);
+    list-style: none;
+    cursor: pointer;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:hover .share-widget-title {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--style-color-focus);
+      outline-offset: 2px;
+    }
+
+    .share-widget-toggle {
+      font-size: var(--icon-size-xxs);
+      transition: transform 0.2s;
+    }
+  }
+
+  &[open] > summary .share-widget-toggle {
+    transform: rotate(180deg);
+  }
+
+  .share-widget-title {
+    display: inline;
+    margin: 0;
+    color: inherit;
+    font-family: var(--font-family-link);
+    font-weight: var(--font-weight-link);
+    font-size: var(--font-size-interactive-m);
+    line-height: var(--font-line-height-interactive-m);
+  }
+
+  .share-widget-links {
+    display: grid;
+    grid-template-columns: repeat(4, max-content);
+    gap: 1rem 2.5rem;
+    margin: 1.25rem 0 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* two columns, filled column by column; on mobile as many 9 rem columns as fit (two on a phone) */
+  &.share-widget-compact .share-widget-links {
+    grid-template-columns: repeat(2, max-content);
+    grid-template-rows: repeat(4, auto);
+    grid-auto-flow: column;
+  }
+
+  @media (max-width: 600px) {
+
+    .share-widget-links,
+    &.share-widget-compact .share-widget-links {
+      grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+      grid-template-rows: none;
+      grid-auto-flow: row;
+      column-gap: 1rem;
+    }
+  }
+}
+
+/* share link: link text S, icon XL, text Blue 100 */
+.share-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem;
+  margin: -0.25rem;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--style-color-text);
+  text-align: left;
+  overflow-wrap: break-word;
+  font-family: var(--font-family-link);
+  font-weight: var(--font-weight-link);
+  font-size: var(--font-size-interactive-s);
+  line-height: var(--font-line-height-interactive-s);
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--style-color-focus);
+  }
+
+  > :first-child {
+    flex-shrink: 0;
+    font-size: var(--icon-size-xl);
+  }
+}
+
+/* brand colour of the channel; email and share link icons use the icon colour */
+[class*="share-icon-"],
+.share-link > :first-child {
+  color: var(--share-icon-color, var(--style-color-icon));
+}
+
+.share-icon-facebook {
+  --share-icon-color: var(--color-brand-facebook);
+}
+
+.share-icon-twitter {
+  --share-icon-color: var(--color-brand-twitter);
+}
+
+.share-icon-linkedin {
+  --share-icon-color: var(--color-brand-linkedin);
+}
+
+.share-icon-youtube {
+  --share-icon-color: var(--color-brand-youtube);
+}
+
+.share-icon-instagram {
+  --share-icon-color: var(--color-brand-instagram);
+}
+
+.share-icon-pinterest {
+  --share-icon-color: var(--color-brand-pinterest);
+}
+
+.share-icon-whatsapp {
+  --share-icon-color: var(--color-brand-whatsapp);
+}
+
+.share-icon-reddit {
+  --share-icon-color: var(--color-brand-reddit);
+}
+
+.inverse .share-widget > summary,
+.inverse .share-link {
+  color: var(--style-color-on-primary);
+}
+
+.inverse :is([class*="share-icon-"], .share-link > :first-child) {
+  color: var(--share-icon-color, var(--style-color-on-primary));
+}
+
+.inverse .share-widget > summary:focus-visible,
+.inverse .share-link:focus-visible {
+  outline-color: var(--style-color-on-primary);
+}

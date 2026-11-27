@@ -3,6 +3,7 @@
 @import './styleTokens.css';
 @import './defaults.css';
 @import './typography.css';
+@import './icon.css';
 @import './generics.css';
 @import './button.css';
 @import './form.css';
