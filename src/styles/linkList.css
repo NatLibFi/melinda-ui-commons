@@ -1,0 +1,230 @@
+/* ---------------------------------------------------------------------------- */
+/* Link list element                                                            */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.39. Highlighted groups of icon links L (iconLink.css) on  */
+/* a coloured background. Each group can have its own heading, or the whole     */
+/* element can have one main heading. Three columns on wide containers, one     */
+/* column on narrow ones (container query, below 48 rem).                       */
+/*                                                                              */
+/*   <section class="link-list" aria-labelledby="...">                          */
+/*     <h2 class="link-list-heading" id="...">List heading</h2>   (optional)    */
+/*     <div class="link-list-groups">                                           */
+/*       <div class="link-list-group">                                          */
+/*         <h3 class="link-list-group-heading">Group heading</h3> (optional)    */
+/*         <ul class="link-list-links">                                         */
+/*           <li>                                                               */
+/*             <a class="link-l icon-link" href="...">                          */
+/*               <i class="fa-light fa-arrow-right icon-link-icon"              */
+/*                  aria-hidden="true"></i>                                     */
+/*               <span class="icon-link-text">Link text</span>                  */
+/*             </a>                                                             */
+/*           </li>                                                              */
+/*         </ul>                                                                */
+/*       </div>                                                                 */
+/*     </div>                                                                   */
+/*   </section>                                                                 */
+/*                                                                              */
+/*   Links                Link L (icon link L), 8 px padding, full width        */
+/*   Headings             Heading L                                             */
+/*   Heading - links      24 px                                                 */
+/*   Between link groups  40 px (one column), 48 px between columns             */
+/*   Lines between links  1 px: one shade darker or lighter than the            */
+/*                        background on wide containers, two shades on narrow   */
+/*                                                                              */
+/* Groups without headings (one main heading for the element) join into one     */
+/* continuous list in one column.                                               */
+/*                                                                              */
+/* Colours                                                                      */
+/*   .link-list           Grey 20, lines Grey 40 / Grey 60, Blue 100 text       */
+/*   .link-list.inverse   Blue 100, lines Blue 80 / Blue 60, white text         */
+/*   .link-list-red       Red 60, lines Red 80 / Red 100, Blue 100 text         */
+/* Other backgrounds: set --link-list-background, --link-list-border (one       */
+/* shade) and --link-list-border-narrow (two shades) on the .link-list.         */
+/*                                                                              */
+/* States come from link.css and iconLink.css: hover and focus underline the    */
+/* text; focus draws a 2 px Blue 100 (inverse White) outline with 6 px corners  */
+/* around the whole row. Links have no disabled state.                          */
+/*                                                                              */
+/* The colours of the element do not depend on its surroundings: a light link   */
+/* list keeps its Blue 100 text also inside an .inverse section.                */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-neutral-20/40/60, --style-color-primary(-80/-60),            */
+/*   --style-color-error(-80/-60), --style-color-heading,                       */
+/*   --style-color-link-strong, --style-color-link-focus,                       */
+/*   --style-color-on-primary                                                   */
+/* ---------------------------------------------------------------------------- */
+
+
+.link-list {
+  --link-list-background: var(--style-color-neutral-20);
+  --link-list-border: var(--style-color-neutral-40);
+  --link-list-border-narrow: var(--style-color-neutral-60);
+  --link-list-text: var(--style-color-heading);
+  --link-list-link: var(--style-color-link-strong);
+  --link-list-focus: var(--style-color-link-focus);
+  --link-list-padding-block: var(--spacing-24);
+  --link-list-padding-inline: var(--spacing-24);
+
+  container: link-list / inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: var(--link-list-background);
+  color: var(--link-list-text);
+
+  /* The padding is on the children, so that the container query below can */
+  /* change it (a container query does not style the container itself)    */
+  > * {
+    margin: 0 var(--link-list-padding-inline);
+  }
+
+  > :first-child {
+    margin-top: var(--link-list-padding-block);
+  }
+
+  > :last-child {
+    margin-bottom: var(--link-list-padding-block);
+  }
+}
+
+.link-list.inverse {
+  --link-list-background: var(--style-color-primary);
+  --link-list-border: var(--style-color-primary-80);
+  --link-list-border-narrow: var(--style-color-primary-60);
+  --link-list-text: var(--style-color-on-primary);
+  --link-list-link: var(--style-color-on-primary);
+  --link-list-focus: var(--style-color-on-primary);
+}
+
+.link-list-red {
+  --link-list-background: var(--style-color-error-60);
+  --link-list-border: var(--style-color-error-80);
+  --link-list-border-narrow: var(--style-color-error);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Headings: Heading L                                                          */
+
+.link-list :is(.link-list-heading, .link-list-group-heading) {
+  color: var(--link-list-text);
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-heading-l);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-heading-l);
+  letter-spacing: 0;
+  hyphens: auto;
+}
+
+.link-list .link-list-group-heading {
+  margin: 0;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Groups: one column, 40 px apart                                              */
+
+.link-list-groups {
+  --link-list-line: var(--link-list-border-narrow);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-40);
+}
+
+.link-list-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+  min-width: 0;
+  margin: 0;
+}
+
+/* Groups without headings join into one list in one column */
+.link-list-group:not(:has(> .link-list-group-heading)) + .link-list-group:not(:has(> .link-list-group-heading)) {
+  margin-top: calc(var(--spacing-40) * -1);
+
+  > .link-list-links {
+    border-top: 1px solid var(--link-list-line);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Links: full-width icon links L with 8 px padding and a line between them     */
+
+.link-list-links {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    margin: 0;
+  }
+
+  > li + li {
+    border-top: 1px solid var(--link-list-line);
+  }
+}
+
+/* Focus outline on the row edges (no offset), 6 px corners */
+.link-list .link-list-links .icon-link {
+  --link-focus-offset: 0px;
+  --link-focus-radius: 6px;
+
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--spacing-8);
+  color: var(--link-list-link);
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    color: var(--link-list-link);
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline-color: var(--link-list-focus);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Wide containers: three columns, thinner contrast on the lines                */
+
+@container link-list (min-width: 48rem) {
+
+  .link-list > * {
+    margin-inline: var(--spacing-64);
+  }
+
+  .link-list > :first-child {
+    margin-top: var(--spacing-40);
+  }
+
+  .link-list > :last-child {
+    margin-bottom: var(--spacing-40);
+  }
+
+  .link-list-groups {
+    --link-list-line: var(--link-list-border);
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-40) var(--spacing-48);
+  }
+
+  .link-list-group:not(:has(> .link-list-group-heading)) + .link-list-group:not(:has(> .link-list-group-heading)) {
+    margin-top: 0;
+
+    > .link-list-links {
+      border-top: 0;
+    }
+  }
+}
