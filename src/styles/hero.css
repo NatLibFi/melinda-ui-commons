@@ -1,0 +1,389 @@
+/* ---------------------------------------------------------------------------- */
+/* Hero element                                                                 */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.44-45 (and the page mockups p.66-68). The hero is the     */
+/* first section of a page: breadcrumb, main heading, ingress and an optional   */
+/* CTA link, search, image or opening hours. It is a .layout-section-like band  */
+/* with a .layout-container and a .layout-grid (layout.css).                    */
+/*                                                                              */
+/*   <section class="hero hero-light" aria-labelledby="page-title">             */
+/*     <div class="layout-container">                                           */
+/*       <div class="layout-grid">                                              */
+/*         <div class="hero-content layout-span-7">                             */
+/*           <nav class="breadcrumb" aria-label="Breadcrumb">...</nav>          */
+/*           <h1 class="heading-xxl" id="page-title">Page title</h1>            */
+/*           <p class="body-l">Ingress</p>                                      */
+/*           <div class="hero-actions">                                         */
+/*             <a class="link icon-link outlined-link" href="...">...</a>       */
+/*           </div>                                                             */
+/*         </div>                                                               */
+/*         <div class="hero-media layout-span-5">                               */
+/*           <img class="hero-image" src="..." alt="">                          */
+/*         </div>                                                               */
+/*       </div>                                                                 */
+/*     </div>                                                                   */
+/*   </section>                                                                 */
+/*                                                                              */
+/* Spacing                         Desktop          Mobile (hero < 48 rem)      */
+/*   Padding top, breadcrumb       32 px            24 px                       */
+/*   Padding top, no breadcrumb    64 px            48 px                       */
+/*   Padding bottom                64 px            48 px                       */
+/*   Between breadcrumb, title,    32 px            24 px                       */
+/*   ingress, CTA and search                                                    */
+/*   Search field and button       16 px, side by side   16 px, stacked         */
+/*   Text and opening hours        24 px columns    32 px, stacked              */
+/*   Page margin                   layout.css       16 px                       */
+/*                                                                              */
+/* The main heading is Heading XXL on desktop and Heading XL on mobile (p.45).  */
+/* Mobile is a container query on .hero, so a narrow hero (an example box, a    */
+/* column) gets the mobile layout too.                                          */
+/*                                                                              */
+/* Backgrounds:                                                                 */
+/*   .hero-light            Primary 20 (Blue 20)                                */
+/*   .hero.inverse          Primary (Blue 100), white text                      */
+/*   .hero-teal.inverse     Teal 100, white text                                */
+/*   .hero-yellow           Yellow 60, primary text                             */
+/*   .hero-gradient         image under a gradient overlay (gradient.css        */
+/*                          colours: .gradient-teal-60 etc., add .inverse with  */
+/*                          dark gradients). Set the image with --gradient-image*/
+/*                                                                              */
+/* Optional parts:                                                              */
+/*   .hero-media / .hero-image       image in the 5 right columns (p.66)        */
+/*   .hero-opening-hours             opening hours in the 4 right columns (p.44)*/
+/*   .hero-search                    search form (p.44, p.68)                   */
+/*                                                                              */
+/* The hero itself has no interactive states; links, breadcrumbs, the search    */
+/* field and button have their own states (2 px focus outline, rounded         */
+/* corners). Colours come from style tokens (--style-color-primary(-20),        */
+/* --style-color-on-primary, --style-color-primary-80, --style-color-link-focus,*/
+/* --style-color-gradient) and the Kansalliskirjasto palette (Teal 100,         */
+/* Yellow 60), the same in both styles.                                         */
+/* ---------------------------------------------------------------------------- */
+
+
+.hero {
+  --hero-background: transparent;
+  --hero-text: inherit;
+  --hero-padding-top: var(--spacing-32);
+  --hero-padding-top-no-breadcrumb: var(--spacing-64);
+  --hero-padding-bottom: var(--spacing-64);
+  --hero-gap: var(--spacing-32);
+
+  container: hero / inline-size;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: var(--hero-background);
+  color: var(--hero-text);
+
+  > .layout-container {
+    padding-top: var(--hero-padding-top);
+    padding-bottom: var(--hero-padding-bottom);
+  }
+
+  > .layout-container > .layout-grid {
+    align-items: start;
+  }
+}
+
+.hero:not(:has(.breadcrumb)) > .layout-container {
+  padding-top: var(--hero-padding-top-no-breadcrumb);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Backgrounds                                                                  */
+
+.hero-light {
+  --hero-background: var(--style-color-primary-20);
+}
+
+.hero.inverse {
+  --hero-background: var(--style-color-primary);
+  --hero-text: var(--style-color-on-primary);
+}
+
+.hero.hero-teal {
+  --hero-background: var(--color-teal-100);
+}
+
+.hero.hero-yellow {
+  --hero-background: var(--color-yellow-60);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Content: breadcrumb, title, ingress, CTA, search                             */
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hero-gap);
+
+  > * {
+    margin: 0;
+  }
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-16);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Image in the right columns (p.66)                                            */
+/* Desktop: 5 columns next to the text, centred vertically. Mobile: full width  */
+/* under the text, 16:10.                                                       */
+
+.hero-media {
+  align-self: center;
+}
+
+.hero-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Image under a gradient overlay (p.45, p.67)                                  */
+/* Desktop: gradient from left to right, text in the 7 left columns, image      */
+/* focal point on the right. Mobile: gradient from top to bottom, image focal   */
+/* point in the bottom centre, 208 px image area under the text.               */
+
+.hero-gradient {
+  --gradient-color: var(--style-color-gradient);
+  --gradient-text-color: var(--style-color-gradient-text);
+  --hero-text-shadow: 0 0 6px color-mix(in srgb, var(--gradient-color) 85%, transparent);
+
+  background-color: var(--gradient-color);
+
+  /* The gradient is drawn on the container, which is stretched to the full   */
+  /* hero width (content still centred, at most --layout-content-width), so   */
+  /* the mobile container query below can change its direction.              */
+  > .layout-container {
+    max-width: none;
+    min-height: 20rem;
+    padding-inline: max(var(--layout-page-margin), calc((100% - var(--layout-content-width)) / 2));
+    background-image:
+      linear-gradient(to right,
+        var(--gradient-color) 0%,
+        color-mix(in srgb, var(--gradient-color) 85%, transparent) 50%,
+        transparent 100%),
+      var(--gradient-image, none);
+    background-position: center, right center;
+    background-size: cover, cover;
+    background-repeat: no-repeat;
+  }
+
+  .hero-content > :is(.heading-xxl, .heading-xl, .body-l, .body-m) {
+    color: var(--gradient-text-color);
+    text-shadow: var(--hero-text-shadow);
+  }
+}
+
+/* The gradient colour classes of gradient.css (.gradient-teal-60 ...) set      */
+/* --gradient-color and --gradient-text-color on the same element.             */
+
+
+/* ---------------------------------------------------------------------------- */
+/* Opening hours (p.44-45)                                                      */
+/*   <aside class="hero-opening-hours layout-span-4" aria-labelledby="oh">      */
+/*     <h2 class="heading-s" id="oh">Opening hours</h2>                         */
+/*     <p class="hero-opening-hours-week"><a class="link" href="...">Week 9     */
+/*       <i class="fa-light fa-chevron-right" aria-hidden="true"></i></a></p>  */
+/*     <table class="hero-opening-hours-table">                                 */
+/*       <caption class="visually-hidden">Opening hours, week 9</caption>       */
+/*       <tr aria-current="date"> <th scope="row">3.2.</th>                     */
+/*         <td>Wednesday<span>Staff present</span></td>                         */
+/*         <td>11-16<span>12-14</span></td> </tr>                               */
+/*     </table>                                                                 */
+/*   </aside>                                                                   */
+/* Today (aria-current="date") is highlighted: Primary 80 background, white   */
+/* Semibold text.                                                               */
+
+.hero-opening-hours {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+
+  > * {
+    margin: 0;
+  }
+}
+
+.hero-opening-hours-week .link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  font-weight: 600;
+}
+
+.hero-opening-hours-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-body-s);
+  line-height: 1.4;
+  color: inherit;
+
+  th,
+  td {
+    padding: var(--spacing-2) var(--spacing-4);
+    font-weight: inherit;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  tr:first-child > * {
+    padding-top: var(--spacing-8);
+  }
+
+  tr:last-child > * {
+    padding-bottom: var(--spacing-8);
+  }
+
+  th {
+    width: 3.5em;
+    white-space: nowrap;
+  }
+
+  td:last-child {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  td > span {
+    display: block;
+  }
+
+  tr[aria-current] {
+    background-color: var(--style-color-primary-80);
+    color: var(--style-color-on-primary);
+    font-weight: 600;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Search (p.44-45)                                                             */
+/*   <form class="hero-search" role="search" action="...">                      */
+/*     <label class="visually-hidden" for="hero-q">Search the site</label>      */
+/*     <input class="hero-search-input" id="hero-q" type="search" name="q"      */
+/*            placeholder="Search the site">                                    */
+/*     <button class="hero-search-button" type="submit">                        */
+/*       <i class="fa-light fa-magnifying-glass" aria-hidden="true"></i>Search  */
+/*     </button>                                                                */
+/*   </form>                                                                    */
+/* Desktop: field and button side by side (16 px), at most 41 rem wide.         */
+/* Mobile: stacked, the button takes the full width.                            */
+
+.hero-search {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+  width: 100%;
+  max-width: 41rem;
+  margin: 0;
+}
+
+.hero-search-input {
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  min-width: 0;
+  height: var(--spacing-48);
+  padding: 0 var(--spacing-16);
+  border: 1px solid var(--style-color-primary);
+  border-radius: 6px;
+  background-color: var(--style-color-background);
+  color: var(--style-color-primary);
+  font-family: var(--font-family-input);
+  font-size: var(--font-size-input-medium);
+  font-weight: var(--font-weight-input);
+
+  &::placeholder {
+    color: var(--style-color-primary-80);
+    opacity: 1;
+  }
+
+  &:is(:hover, .state-hover) {
+    box-shadow: inset 0 0 0 1px var(--style-color-primary);
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline: 2px solid var(--style-color-link-focus);
+    outline-offset: var(--spacing-2);
+  }
+}
+
+.hero-search-button {
+  flex: 0 0 auto;
+  gap: var(--spacing-12);
+
+  > i {
+    font-size: var(--icon-size-m, 1.5rem);
+  }
+}
+
+.inverse .hero-search-input:is(:focus-visible, .state-focus) {
+  outline-color: var(--style-color-on-primary);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Mobile: hero narrower than 48 rem (p.45)                                     */
+
+@container hero (max-width: 47.999rem) {
+
+  .hero > .layout-container {
+    --layout-page-margin: var(--spacing-16);
+    --layout-stacked-row-gap: var(--spacing-32);
+    padding-top: var(--spacing-24);
+    padding-bottom: var(--spacing-48);
+  }
+
+  .hero:not(:has(.breadcrumb)) > .layout-container {
+    padding-top: var(--spacing-48);
+  }
+
+  .hero-content {
+    gap: var(--spacing-24);
+  }
+
+  .hero-content > .heading-xxl {
+    font-size: var(--font-size-heading-xl);
+    line-height: var(--font-line-height-heading-xl);
+  }
+
+  .hero-image {
+    aspect-ratio: 16 / 10;
+  }
+
+  .hero-gradient > .layout-container {
+    min-height: 0;
+    padding-bottom: var(--spacing-208);
+    background-image:
+      linear-gradient(to bottom,
+        var(--gradient-color) 0%,
+        color-mix(in srgb, var(--gradient-color) 85%, transparent) 55%,
+        transparent 100%),
+      var(--gradient-image, none);
+    background-position: center, center bottom;
+  }
+
+  .hero-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-search-button {
+    width: 100%;
+  }
+}
