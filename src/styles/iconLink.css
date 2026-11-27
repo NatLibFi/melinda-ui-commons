@@ -1,0 +1,129 @@
+/* ---------------------------------------------------------------------------- */
+/* Icon links                                                                   */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.16. An icon link is a main link (link.css) with an icon:  */
+/* add .icon-link to a link size class. Colours, hover, focus, inverse and      */
+/* external links come from link.css.                                           */
+/*                                                                              */
+/*   Size          Classes            Icon            Space icon - text         */
+/*   M (default)   .link .icon-link   M 20 px Light   16 px                     */
+/*   L             .link-l .icon-link L 24 px Light   24 px (Blue 100)          */
+/*   S             .link-s .icon-link S 16 px Regular  8 px                     */
+/*                                                                              */
+/*   <a class="link icon-link" href="...">                                      */
+/*     <i class="fa-light fa-arrow-right icon-link-icon" aria-hidden="true"></i>*/
+/*     <span class="icon-link-text">Link text</span>                            */
+/*   </a>                                                                       */
+/*                                                                              */
+/* The icon stays next to the first line when the text wraps, and only the      */
+/* text is underlined on hover and focus. An icon can also follow the text      */
+/* (Week 16 >) and a link can have two icons (Share page v). A small trailing   */
+/* chevron that opens or closes content gets .icon-link-indicator (XS 14 px,    */
+/* Regular). For external icon links put the link-external-icon and the hidden  */
+/* text inside .icon-link-text. A control that shows or hides content is a      */
+/* <button class="link icon-link" aria-expanded="false">.                       */
+/*                                                                              */
+/*   Group         .icon-link-group: stacked icon links, 16 px apart            */
+/*                                                                              */
+/* The icon works both as a Font Awesome web font glyph and as an inline SVG    */
+/* (Font Awesome kits can replace the <i> with an <svg>): both are one icon     */
+/* size high, centred on the first line with a top margin.                      */
+/* ---------------------------------------------------------------------------- */
+
+
+.icon-link {
+  --icon-link-icon-size: var(--icon-size-m);
+  --icon-link-gap: var(--spacing-16);
+  --icon-link-line-height: var(--font-line-height-interactive-m);
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--icon-link-gap);
+  max-width: 100%;
+
+  /* The underline is drawn on the text only, not under the icon */
+  &,
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    text-decoration-line: none;
+  }
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) .icon-link-text {
+    text-decoration-line: underline;
+  }
+}
+
+.link-l.icon-link {
+  --icon-link-icon-size: var(--icon-size-l);
+  --icon-link-gap: var(--spacing-24);
+  --icon-link-line-height: var(--font-line-height-interactive-l);
+}
+
+/* S: no underline on focus, as in link.css */
+.link-s.icon-link {
+  --icon-link-icon-size: var(--icon-size-s);
+  --icon-link-gap: var(--spacing-8);
+  --icon-link-line-height: var(--font-line-height-interactive-s);
+
+  &:is(:focus-visible:not(:hover), .state-focus) .icon-link-text {
+    text-decoration-line: none;
+  }
+}
+
+.icon-link-text {
+  min-width: 0;
+  text-decoration-thickness: 1px;
+}
+
+.icon-link .icon-link-icon {
+  flex: none;
+  margin-top: calc((var(--icon-link-line-height) - var(--icon-link-icon-size)) / 2);
+  /* Fixed width (Font Awesome 7 default, fa-fw in 6) lines up the texts of */
+  /* stacked icon links whatever the icon */
+  width: 1.25em;
+  height: var(--icon-link-icon-size);
+  font-size: var(--icon-link-icon-size);
+  line-height: 1;
+  text-align: center;
+}
+
+/* Trailing chevron that shows or hides content: XS, Regular */
+.icon-link .icon-link-indicator {
+  --icon-link-icon-size: var(--icon-size-xs);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Stacked icon links                                                           */
+
+.icon-link-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Buttons with the icon link look: a control that shows or hides content on    */
+/* the page (Show more, Share page) is a <button aria-expanded>, not a link     */
+
+/* button.css styles every button: reset them, also in the hover and active     */
+/* states, so that the button looks like an icon link                           */
+button.icon-link,
+button.icon-link:is(:hover, :active) {
+  display: inline-flex;
+  justify-content: flex-start;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
+button.icon-link:active:not(:focus-visible) {
+  outline: none;
+}
