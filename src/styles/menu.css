@@ -1,0 +1,619 @@
+/* ---------------------------------------------------------------------------- */
+/* Navigation menus                                                             */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.56-58: the menus that the header (header.css) menu links  */
+/* and mobile icon buttons open. scripts/menu.js opens and closes them.         */
+/*                                                                              */
+/*   Dropdown menu        .menu-dropdown        (p.57, traditional dropdown)    */
+/*   Modal dropdown menu  .menu-modal           (p.57-58, search, language)     */
+/*   Mega menu            .mega-menu            (p.56, desktop main menu)       */
+/*   Mobile main menu     .mobile-menu          (p.58)                          */
+/*                                                                              */
+/* Dropdown menu: a menu dropdown link and the list it opens in one <li>:      */
+/*                                                                              */
+/*   <li class="menu-dropdown-container">                                       */
+/*     <button class="menu-link menu-link-dropdown" type="button"               */
+/*             aria-expanded="false" aria-controls="services-menu"              */
+/*             data-menu-toggle>                                                */
+/*       <span class="menu-link-text">Services</span>                           */
+/*       <i class="fa-regular fa-chevron-down menu-link-chevron" ...></i>       */
+/*     </button>                                                                */
+/*     <ul class="menu-dropdown" id="services-menu" hidden>                     */
+/*       <li><a class="menu-link" href="..."><span class="menu-link-text">      */
+/*         Option</span></a></li>                                               */
+/*     </ul>                                                                    */
+/*   </li>                                                                      */
+/*                                                                              */
+/* Modal menus and the mega menu are the last children of header.site-header   */
+/* and open under the menu bars, the full width of the header:                  */
+/*                                                                              */
+/*   <div class="menu-modal" id="site-search" role="region"                     */
+/*        aria-labelledby="site-search-title" hidden>                           */
+/*     <div class="menu-modal-header">                                          */
+/*       <h2 class="heading-m" id="site-search-title">Search the site</h2>      */
+/*       <button class="small minimal menu-close" type="button"                 */
+/*               data-menu-close>Close <i class="fa-regular fa-xmark"           */
+/*               aria-hidden="true"></i></button>                               */
+/*     </div>                                                                   */
+/*     <form class="menu-search" role="search">...</form>                       */
+/*     or <ul class="menu-language-options">...</ul>                            */
+/*   </div>                                                                     */
+/*                                                                              */
+/*   <div class="mega-menu" id="main-menu" role="region" aria-label="Menu"      */
+/*        hidden>                                                               */
+/*     <div class="mega-menu-header"><button ... data-menu-close>Close          */
+/*     </button></div>                                                          */
+/*     <div class="mega-menu-content">                                          */
+/*       <nav class="mega-menu-quick-links" aria-labelledby="...">              */
+/*         <h2 class="mega-menu-quick-links-title">Quick links</h2>             */
+/*         <ul><li><a class="mega-menu-quick-link" href="...">...</a></li></ul> */
+/*       </nav>                                                                 */
+/*       <nav class="mega-menu-sections" aria-label="Sections">                 */
+/*         <div class="mega-menu-section">                                      */
+/*           <a class="mega-menu-section-link" href="...">                      */
+/*             <span class="mega-menu-section-text">Services</span>             */
+/*             <i class="fa-light fa-arrow-right" aria-hidden="true"></i></a>   */
+/*           <ul><li><a class="mega-menu-link" href="...">...</a></li></ul>     */
+/*         </div>                                                               */
+/*       </nav>                                                                 */
+/*     </div>                                                                   */
+/*   </div>                                                                     */
+/*                                                                              */
+/* Mobile main menu: under the mobile menu bar, in the page flow:               */
+/*                                                                              */
+/*   <nav class="mobile-menu" id="mobile-menu" aria-label="Menu" hidden>        */
+/*     <div class="mobile-menu-quick-links">                                    */
+/*       <h2 class="mobile-menu-quick-links-title">Quick links</h2>             */
+/*       <ul><li><a class="mobile-menu-quick-link" href="...">...</a></li></ul> */
+/*     </div>                                                                   */
+/*     <ul class="mobile-menu-links">                                           */
+/*       <li>                                                                   */
+/*         <div class="mobile-menu-item">                                       */
+/*           <a class="mobile-menu-link" href="...">Services</a>                */
+/*           <button class="mobile-menu-expand" type="button"                   */
+/*                   aria-expanded="false" aria-controls="m-services"           */
+/*                   aria-label="Services, sub-menu" data-menu-expand>          */
+/*             <i class="fa-light fa-plus" aria-hidden="true"></i></button>     */
+/*         </div>                                                               */
+/*         <ul class="mobile-menu-submenu" id="m-services" hidden>              */
+/*           <li><a class="mobile-menu-sublink" href="...">...</a></li>         */
+/*         </ul>                                                                */
+/*       </li>                                                                  */
+/*     </ul>                                                                    */
+/*   </nav>                                                                     */
+/*                                                                              */
+/* Menus are never opened on mouse-over: a click, Enter or Space opens them,    */
+/* Esc and the close button close them, and only one is open at a time.         */
+/*                                                                              */
+/* Specs:                                                                       */
+/*   Dropdown  white, 1 px Blue 40 border, drop shadow Silver 100 25% blur 8,   */
+/*             menu links 16 px apart                                           */
+/*   Modal     Blue 20, 1 px Blue 40 border, the same shadow, padding 24 40 32  */
+/*             40, Heading M over a 1 px Blue 100 line, close button minimal S, */
+/*             Button M (current language: Button M alternate)                  */
+/*   Mega menu Blue 20 (.mega-menu-white: white), the same shadow, padding at   */
+/*             least 24 px. Quick links: Heading M, Link L, 1 px Blue 100 line  */
+/*             8 px under the heading, 16 px between links, 1 px Blue 60        */
+/*             separator. Sections: Link L with Icon L arrow, 1 px Blue 100     */
+/*             line 10 px under it, Link M sub-section links 16 px apart        */
+/*   Mobile    16 px padding, quick links Blue 20 (Heading M, Link L, 20 px     */
+/*             apart), main links 56 px high with 1 px Blue 40 lines, Icon M    */
+/*             expand buttons (open: Blue 20), Blue 40 hover background, Blue   */
+/*             20 sub-menus with Link L 20 px apart. Modal search: padding 16   */
+/*             16 24 16, shadow Silver 80 25% Y 3 blur 8, full width button     */
+/*                                                                              */
+/* Focus: 2 px Blue 100 outline with rounded corners (mobile menu rows: inside  */
+/* the row). .state-hover and .state-focus show the states without              */
+/* interaction, for documentation pages only.                                   */
+/*                                                                              */
+/* The menus look the same in both styles: the menu surfaces are white and      */
+/* Blue 20 also in the Melinda style, where the menu bar links are white, so   */
+/* the menus set their own link colours. Colours come from style tokens:        */
+/*   --style-color-background, --style-color-primary(-20, -40, -60, -80),       */
+/*   --style-color-link, --style-color-link-strong, --style-color-neutral-*     */
+/* ---------------------------------------------------------------------------- */
+
+
+/* The menus open under the header */
+.site-header {
+  position: relative;
+}
+
+.menu-dropdown,
+.menu-modal,
+.mega-menu,
+.mobile-menu {
+  --menu-link-color: var(--style-color-link-strong);
+  --menu-link-hover-color: var(--style-color-link);
+  --menu-shadow: 0 0 8px color-mix(in srgb, var(--style-color-neutral-100) 25%, transparent);
+  --menu-focus-outline: 2px solid var(--style-color-link-strong);
+  box-sizing: border-box;
+  color: var(--style-color-link-strong);
+  font-family: var(--font-family-link);
+  text-align: left;
+
+  &[hidden] {
+    display: none;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Dropdown menu (p.57): white, 1 px Blue 40 border, menu links 16 px apart     */
+
+.menu-dropdown-container {
+  position: relative;
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: calc(100% + var(--spacing-12));
+  left: calc(-1 * var(--spacing-16));
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  min-width: 13rem;
+  margin: 0;
+  padding: var(--spacing-12) var(--spacing-8);
+  list-style: none;
+  border: 1px solid var(--style-color-primary-40);
+  background-color: var(--style-color-background);
+  box-shadow: var(--menu-shadow);
+
+  /* The focus outline takes the width of the menu (p.57) */
+  .menu-link {
+    display: flex;
+    width: 100%;
+    padding: var(--spacing-4) var(--spacing-8);
+    white-space: normal;
+
+    &:is(:focus-visible, .state-focus) {
+      outline: var(--menu-focus-outline);
+      outline-offset: 0;
+    }
+  }
+}
+
+/* Dropdown on the right edge of the header: open to the left */
+.menu-dropdown.menu-dropdown-end {
+  right: calc(-1 * var(--spacing-16));
+  left: auto;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Modal dropdown menu (p.57): Blue 20, Heading M, close button, search or      */
+/* language buttons                                                             */
+
+.menu-modal {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 20;
+  padding: var(--spacing-24) var(--spacing-40) var(--spacing-32);
+  border: 1px solid var(--style-color-primary-40);
+  background-color: var(--style-color-primary-20);
+  box-shadow: var(--menu-shadow);
+}
+
+.menu-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-16);
+  margin-bottom: var(--spacing-24);
+  padding-bottom: var(--spacing-16);
+  border-bottom: 1px solid var(--style-color-link-strong);
+
+  .heading-m {
+    margin: 0;
+  }
+}
+
+/* Close button: Button minimal S with the close icon after the text */
+.menu-close {
+  flex-shrink: 0;
+  gap: var(--spacing-8);
+}
+
+/* Search: field and Button M on one row, stacked on mobile */
+.menu-search {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  margin: 0;
+}
+
+.menu-search-input {
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  min-width: 0;
+  height: var(--spacing-48);
+  padding: 0 var(--spacing-16);
+  border: 1px solid var(--style-color-primary);
+  border-radius: 6px;
+  background-color: var(--style-color-background);
+  color: var(--style-color-primary);
+  font-family: var(--font-family-input);
+  font-size: var(--font-size-input-medium);
+  font-weight: var(--font-weight-input);
+
+  &::placeholder {
+    color: var(--style-color-primary-80);
+    opacity: 1;
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline: var(--menu-focus-outline);
+    outline-offset: var(--spacing-2);
+  }
+}
+
+.menu-search-button {
+  flex: 0 0 auto;
+  gap: var(--spacing-12);
+
+  > i {
+    font-size: var(--icon-size-m);
+  }
+}
+
+/* Language buttons: Button M, the current language Button M alternate with */
+/* a check icon */
+.menu-language-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-16);
+
+  button {
+    gap: var(--spacing-12);
+    min-width: 6rem;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Mega menu (p.56): the desktop main menu, quick links and all sections        */
+
+.mega-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 20;
+  padding: var(--spacing-24) var(--spacing-40) var(--spacing-48);
+  background-color: var(--style-color-primary-20);
+  box-shadow: var(--menu-shadow);
+}
+
+.mega-menu.mega-menu-white {
+  background-color: var(--style-color-background);
+}
+
+.mega-menu-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-8);
+}
+
+.mega-menu-content {
+  display: grid;
+  grid-template-columns: minmax(14rem, 1fr) 4fr;
+}
+
+/* Quick links: Heading M and Link L in Blue 80, 1 px Blue 60 separator */
+.mega-menu-quick-links {
+  padding-right: var(--spacing-40);
+  border-right: 1px solid var(--style-color-primary-60);
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+  }
+}
+
+.mega-menu-quick-links-title,
+.mobile-menu-quick-links-title {
+  margin: 0 0 var(--spacing-16);
+  padding-bottom: var(--spacing-8);
+  border-bottom: 1px solid var(--style-color-link-strong);
+  color: var(--style-color-primary-80);
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-heading-m);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-heading-m);
+}
+
+/* Sections: three columns of a section page link and sub-section links */
+.mega-menu-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: var(--spacing-48) var(--spacing-40);
+  padding-left: var(--spacing-40);
+}
+
+.mega-menu-section ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+}
+
+/* Shared link states: no underline by default, underlined on hover, */
+/* underlined with a 2 px Blue 100 outline on focus */
+.mega-menu-quick-link,
+.mega-menu-section-link,
+.mega-menu-link,
+.mobile-menu-quick-link,
+.mobile-menu-link,
+.mobile-menu-sublink {
+  border-radius: 4px;
+  font-family: var(--font-family-link);
+  font-weight: var(--font-weight-link);
+  text-decoration-line: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    text-decoration-line: underline;
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline: var(--menu-focus-outline);
+    outline-offset: var(--spacing-4);
+  }
+}
+
+.mega-menu-quick-link,
+.mobile-menu-quick-link {
+  color: var(--style-color-primary-80);
+  font-size: var(--font-size-interactive-l);
+  line-height: var(--font-line-height-interactive-l);
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    color: var(--style-color-primary-80);
+  }
+}
+
+/* Section page link: Link L, arrow Icon L on the right, 1 px Blue 100 line */
+/* 10 px under it. The focus outline goes around the text and the arrow */
+.mega-menu-section-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-16);
+  margin-bottom: var(--spacing-16);
+  padding: var(--spacing-4) 0 10px;
+  border-bottom: 1px solid var(--style-color-link-strong);
+  border-radius: 0;
+  color: var(--style-color-link-strong);
+  font-size: var(--font-size-interactive-l);
+  line-height: var(--font-line-height-interactive-l);
+  text-decoration-line: none;
+
+  i {
+    flex-shrink: 0;
+    font-size: var(--icon-size-l);
+  }
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    color: var(--style-color-link-strong);
+    text-decoration-line: none;
+
+    .mega-menu-section-text {
+      text-decoration-line: underline;
+    }
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    border-radius: 6px;
+    outline-offset: var(--spacing-4);
+  }
+}
+
+.mega-menu-section-text {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+/* Sub-section links: Link M, Blue 100 */
+.mega-menu-link {
+  color: var(--style-color-link-strong);
+  font-size: var(--font-size-interactive-m);
+  line-height: var(--font-line-height-interactive-m);
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    color: var(--style-color-link-strong);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Mobile main menu (p.58)                                                      */
+
+.mobile-menu {
+  display: none;
+  background-color: var(--style-color-background);
+}
+
+.mobile-menu-quick-links {
+  padding: var(--spacing-16);
+  background-color: var(--style-color-primary-20);
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-20);
+  }
+}
+
+.mobile-menu-quick-links-title {
+  padding-bottom: var(--spacing-16);
+}
+
+.mobile-menu-quick-link {
+  display: inline-block;
+}
+
+.mobile-menu-links > li {
+  border-top: 1px solid var(--style-color-primary-40);
+
+  &:last-child {
+    border-bottom: 1px solid var(--style-color-primary-40);
+  }
+}
+
+/* Main link row: 56 px, the link and an expand button */
+.mobile-menu-item {
+  display: flex;
+  align-items: stretch;
+  min-height: var(--spacing-56);
+}
+
+.mobile-menu-link,
+.mobile-menu-sublink {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  box-sizing: border-box;
+  padding: var(--spacing-12) var(--spacing-16);
+  border-radius: 6px;
+  color: var(--style-color-link-strong);
+  font-size: var(--font-size-interactive-l);
+  line-height: var(--font-line-height-interactive-l);
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    background-color: var(--style-color-primary-40);
+    color: var(--style-color-link-strong);
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline-offset: calc(-1 * var(--spacing-2));
+  }
+}
+
+.mobile-menu-link {
+  border-radius: 0;
+
+  &:is(:focus-visible, .state-focus) {
+    border-radius: 6px;
+  }
+}
+
+/* Expand button: Icon M plus / minus, 56 x 56 px. Open: Blue 20 */
+button.mobile-menu-expand {
+  flex: 0 0 auto;
+  width: var(--spacing-56);
+  height: auto;
+  min-height: var(--spacing-56);
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--style-color-link-strong);
+  font-size: var(--icon-size-m);
+
+  &:is(:hover, :active, .state-hover) {
+    border-color: transparent;
+    background-color: var(--style-color-primary-40);
+    color: var(--style-color-link-strong);
+  }
+
+  &:active:not(:focus-visible, .state-focus) {
+    outline: none;
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    border-radius: 6px;
+    outline: var(--menu-focus-outline);
+    outline-offset: calc(-1 * var(--spacing-2));
+  }
+
+  &[aria-expanded="true"]:not(:hover, .state-hover) {
+    background-color: var(--style-color-primary-20);
+  }
+}
+
+/* Sub-menu: Blue 20, Link L, 20 px between the links */
+.mobile-menu-submenu {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-8) 0;
+  background-color: var(--style-color-primary-20);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.mobile-menu-sublink {
+  padding: var(--spacing-8) var(--spacing-16);
+  border-radius: 0;
+
+  &:is(:focus-visible, .state-focus) {
+    border-radius: 6px;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Mobile: header narrower than 48 rem. The mobile menu replaces the mega menu  */
+/* and the dropdowns; modal menus get less padding and a stacked search         */
+
+@container site-header (max-width: 48rem) {
+
+  .mobile-menu:not([hidden]) {
+    display: block;
+  }
+
+  .mega-menu,
+  .menu-dropdown {
+    display: none;
+  }
+
+  .menu-modal {
+    padding: var(--spacing-16) var(--spacing-16) var(--spacing-24);
+    border: none;
+    box-shadow: 0 3px 8px color-mix(in srgb, var(--style-color-neutral-80) 25%, transparent);
+  }
+
+  .menu-modal-header {
+    margin-bottom: var(--spacing-16);
+  }
+
+  .menu-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .menu-search-button {
+    width: 100%;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Windows high contrast: keep the menu edges and focus outlines visible        */
+
+@media (forced-colors: active) {
+  .menu-dropdown,
+  .menu-modal,
+  .mega-menu {
+    border: 1px solid CanvasText;
+  }
+
+  :is(.menu-dropdown, .menu-modal, .mega-menu, .mobile-menu) :is(a, button, input):is(:focus-visible, .state-focus) {
+    outline-color: Highlight;
+  }
+}
