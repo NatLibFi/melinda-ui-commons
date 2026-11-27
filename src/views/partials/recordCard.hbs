@@ -1,0 +1,30 @@
+{{!-- Record card (styles/recordCard.css, scripts/recordCard.js): one MARC record with a title,
+  optional actions and a record info (note) that the toggle button shows and hides.
+
+  {{> sharedPartials/recordCard id="record1" title="Sisääntuleva tietue"
+      showLabel="Näytä tietueinfo" hideLabel="Piilota tietueinfo" emptyLabel="Ei tietuetta"}}
+
+  Actions (for example a select) go in a partial block:
+
+  {{#> sharedPartials/recordCard id="record4" title="Vastaava Melinda-tietue"}}
+    <select id="match" aria-label="Vastaava tietue"></select>
+  {{/sharedPartials/recordCard}}
+
+  setRecordCard(card, {title, note, record}) of scripts/recordCard.js fills the card. --}}
+<div class="record-card"{{#if id}} id="{{id}}"{{/if}}{{#if showLabel}} data-show-label="{{showLabel}}"{{/if}}{{#if hideLabel}} data-hide-label="{{hideLabel}}"{{/if}}{{#if emptyLabel}} data-empty-label="{{emptyLabel}}"{{/if}}>
+  <div class="record-card-header">
+    <h3 class="record-card-title">{{title}}</h3>
+    {{#if @partial-block}}
+    <div class="record-card-actions">
+      {{> @partial-block}}
+    </div>
+    {{/if}}
+    <button class="record-card-toggle" type="button" aria-expanded="false" hidden>
+      <i class="fa-light fa-chevron-down" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="record-card-note"{{#if id}} id="{{id}}-note"{{/if}} hidden></div>
+  <div class="record-card-content">
+    <div class="marc-record"></div>
+  </div>
+</div>

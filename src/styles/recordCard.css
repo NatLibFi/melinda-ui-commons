@@ -1,0 +1,253 @@
+/* ---------------------------------------------------------------------------- */
+/* Record card                                                                  */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* A card that shows one MARC record: a header with the title, optional actions */
+/* and a button that shows and hides the record info (note), the note and the   */
+/* record. Melinda specific, not in the style guide: it uses the look of the    */
+/* page liftup / panel (style guide p.36). Moved from melinda-ui-viewer.        */
+/*                                                                              */
+/*   <div class="record-cards">                                                 */
+/*     <div class="record-card" id="record1">                                   */
+/*       <div class="record-card-header">                                       */
+/*         <h3 class="record-card-title">Incoming record</h3>                   */
+/*         <div class="record-card-actions"><select>...</select></div>          */
+/*         <button class="record-card-toggle" type="button" hidden>             */
+/*           <i class="fa-light fa-chevron-down" aria-hidden="true"></i>        */
+/*         </button>                                                            */
+/*       </div>                                                                 */
+/*       <div class="record-card-note" hidden></div>                            */
+/*       <div class="record-card-content">                                      */
+/*         <div class="marc-record"></div>                                      */
+/*       </div>                                                                 */
+/*     </div>                                                                   */
+/*   </div>                                                                     */
+/*                                                                              */
+/* The same markup is in the shared partial views/partials/recordCard.hbs.      */
+/* scripts/recordCard.js setRecordCard(card, {title, note, record}) fills it.   */
+/* The MARC fields are styled by marc.css.                                      */
+/*                                                                              */
+/* Specs:                                                                       */
+/*   Cards     .record-cards is a grid: as many 320 px or wider columns as fit, */
+/*             gap 16 px. One card per row on narrow screens                    */
+/*   Card      Background colour, 1 px Primary 40 (Blue 40) border              */
+/*   Header    min height 56 px, padding 8 px 8 px 8 px 24 px, 1 px Primary 40  */
+/*             bottom border. Title Heading XS                                  */
+/*   Toggle    40 x 40 px icon button, fa-light fa-chevron-down 16 px in        */
+/*             Primary, turned up when the note is open. Hover Primary 40       */
+/*             background, pressed Primary 60, focus 2 px outline               */
+/*   Note      Primary 20 (Blue 20) background, padding 16 px 24 px, Body S,    */
+/*             <b> labels bold, 1 px Primary 40 bottom border                   */
+/*   Content   padding 16 px 24px 24 px. "No record" text in Grey 100           */
+/*                                                                              */
+/* .state-hover and .state-focus on the toggle show the states on documentation */
+/* pages only.                                                                  */
+/* ---------------------------------------------------------------------------- */
+
+
+.record-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  align-items: start;
+  gap: var(--spacing-16);
+  width: 100%;
+}
+
+.record-card {
+  --record-card-border: 1px solid var(--style-color-primary-40);
+  --record-card-padding-inline: var(--spacing-24);
+  --record-card-button-size: 40px;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: var(--record-card-border);
+  background-color: var(--style-color-background);
+  text-align: left;
+}
+
+.record-card .record-card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-8);
+  min-height: 56px;
+  box-sizing: border-box;
+  padding: var(--spacing-8) var(--spacing-8) var(--spacing-8) var(--record-card-padding-inline);
+  border-bottom: var(--record-card-border);
+}
+
+.record-card .record-card-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  color: var(--style-color-heading);
+  font-family: var(--font-family-headline);
+  font-weight: var(--font-weight-headline);
+  font-size: var(--font-size-heading-xs);
+  line-height: var(--font-line-height-heading-xs);
+  overflow-wrap: anywhere;
+}
+
+.record-card .record-card-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-8);
+
+  select {
+    min-height: var(--record-card-button-size);
+    padding: 0 var(--spacing-8);
+    border: 1px solid var(--style-color-primary);
+    border-radius: 4px;
+    background-color: var(--style-color-background);
+    color: var(--style-color-primary);
+    font-family: var(--font-family-label);
+    font-size: 14px;
+  }
+
+  select:focus-visible {
+    outline: 2px solid var(--style-color-link-focus);
+    outline-offset: 1px;
+  }
+}
+
+.record-card .record-card-toggle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--record-card-button-size);
+  height: var(--record-card-button-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--style-color-primary);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+
+  i {
+    transition: transform 0.2s ease;
+  }
+
+  &[aria-expanded="true"] i {
+    transform: rotate(180deg);
+  }
+
+  &:is(:hover, .state-hover) {
+    background-color: var(--style-color-primary-40);
+  }
+
+  &:active {
+    background-color: var(--style-color-primary-60);
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline: 2px solid var(--style-color-link-focus);
+    outline-offset: -2px;
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.record-card .record-card-note {
+  box-sizing: border-box;
+  padding: var(--spacing-16) var(--record-card-padding-inline);
+  border-bottom: var(--record-card-border);
+  background-color: var(--style-color-primary-20);
+  color: var(--style-color-primary);
+  font-family: var(--font-family-content);
+  font-weight: var(--font-weight-content);
+  font-size: 14px;
+  line-height: 22px;
+  overflow-wrap: anywhere;
+
+  &[hidden] {
+    display: none;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: var(--spacing-24);
+  }
+
+  > ul {
+    padding-left: 0;
+    list-style: none;
+  }
+
+  li {
+    margin: 0 0 var(--spacing-4) 0;
+  }
+
+  li > ul > li {
+    margin-bottom: 0;
+  }
+
+  b,
+  strong {
+    font-family: var(--style-font-family-sans-semibold);
+    font-weight: var(--font-weight-bold);
+  }
+}
+
+.record-card .record-card-content {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: var(--spacing-16) var(--record-card-padding-inline) var(--spacing-24) var(--record-card-padding-inline);
+
+  .marc-record:empty {
+    display: none;
+  }
+
+  /* Long fields wrap under the field content (hanging indent) instead of moving */
+  /* whole subfields or values to the next line: the tag (3 characters) and the  */
+  /* indicators (2 characters) each have a 9 pt right margin in marc.css        */
+  .marc-record .row {
+    --record-card-field-indent: calc(5ch + 18pt);
+
+    display: block;
+    padding-left: calc(8px + var(--record-card-field-indent));
+    text-indent: calc(-1 * var(--record-card-field-indent));
+  }
+
+  .marc-record .row > * {
+    text-indent: 0;
+  }
+
+  /* There is no space between the subfield spans: a zero width space lets a  */
+  /* line break between subfields, so words inside them are not broken. It is */
+  /* generated content, so it is not in textContent or copied text            */
+  .marc-record .row .subfield::before {
+    content: "\200B";
+  }
+
+  .marc-record .row .subfield {
+    overflow-wrap: break-word;
+  }
+
+  /* Control field values (008) have no spaces: break them anywhere */
+  .marc-record .row > .value {
+    overflow-wrap: anywhere;
+  }
+}
+
+.record-card .record-card-empty {
+  margin: 0;
+  color: var(--color-grey-100);
+  font-family: var(--font-family-content);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .record-card .record-card-toggle i {
+    transition: none;
+  }
+}
