@@ -1,0 +1,157 @@
+/* ---------------------------------------------------------------------------- */
+/* Page layout: sections, content container and 12-column grid                  */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.41-43. A page is a stack of full width sections (header,  */
+/* hero, content, image area, footer). Each section has a centred content       */
+/* container, and the content is laid out on a 12-column grid.                  */
+/*                                                                              */
+/*   <section class="layout-section">                    (full width band)      */
+/*     <div class="layout-container">                    (centred content)      */
+/*       <div class="layout-grid">                       (12 columns)           */
+/*         <div class="layout-span-8">Content</div>                             */
+/*         <aside class="layout-span-4">Sidebar</aside>                         */
+/*       </div>                                                                 */
+/*     </div>                                                                   */
+/*   </section>                                                                 */
+/*                                                                              */
+/*   Content width       at most 1200 px (75 rem), centred                      */
+/*   Page margin         16 px up to 600 px windows, 40 px above                */
+/*   Column spacing      24 px (style guide p.46)                               */
+/*   Row spacing         24 px; 40 px when the columns are stacked              */
+/*   Section padding     48 px top, 64 px bottom; 40 / 48 px up to 600 px       */
+/*                                                                              */
+/* Column arrangements of p.43 (spans of each row add up to 12):                */
+/*   12                  full width (header, image area, footer)                */
+/*   7 + 5               breadcrumb, title and ingress + hero image             */
+/*   8 + 4               content + right sidebar                                */
+/*   4 + 8               left sidebar + content                                 */
+/*   4 + 4 + 4           three thirds                                           */
+/*   3 + 6 + 3           quarter sidebars + half content                        */
+/*   3 + 3 + 3 + 3       four quarters                                          */
+/*                                                                              */
+/* Responsive behaviour (container query on .layout-container):                 */
+/*   below 48 rem        one column: every span is full width, in source order  */
+/*   48 - 64 rem         quarters (span 3) take half the width (span 6),        */
+/*                       other spans as on desktop                              */
+/*   from 64 rem         spans as given                                         */
+/*                                                                              */
+/* Section backgrounds:                                                         */
+/*   .layout-section                 transparent (page background)              */
+/*   .layout-section-light           Primary 20 (Blue 20)                       */
+/*   .layout-section-neutral         Neutral 20 (Grey 20)                       */
+/*   .layout-section.inverse         Primary (Blue 100), white text             */
+/* .layout-section-flush removes the vertical padding (full width images,       */
+/* sections whose content has its own padding).                                 */
+/*                                                                              */
+/* The layout has no interactive states. The scale is the same in the           */
+/* Kansalliskirjasto and Melinda styles; the section colours come from style    */
+/* tokens: --style-color-primary(-20), --style-color-neutral-20,                */
+/* --style-color-on-primary.                                                    */
+/* ---------------------------------------------------------------------------- */
+
+
+:root {
+  --layout-content-width: 75rem;
+  --layout-page-margin: var(--spacing-40);
+  --layout-column-gap: var(--spacing-24);
+  --layout-row-gap: var(--spacing-24);
+  --layout-stacked-row-gap: var(--spacing-40);
+  --layout-section-padding-top: var(--spacing-48);
+  --layout-section-padding-bottom: var(--spacing-64);
+}
+
+@media (max-width: 600px) {
+  :root {
+    --layout-page-margin: var(--spacing-16);
+    --layout-section-padding-top: var(--spacing-40);
+    --layout-section-padding-bottom: var(--spacing-48);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Sections                                                                     */
+
+.layout-section {
+  box-sizing: border-box;
+  width: 100%;
+  padding-top: var(--layout-section-padding-top);
+  padding-bottom: var(--layout-section-padding-bottom);
+  background-color: var(--layout-section-background, transparent);
+  color: var(--layout-section-text, inherit);
+}
+
+.layout-section-light {
+  --layout-section-background: var(--style-color-primary-20);
+}
+
+.layout-section-neutral {
+  --layout-section-background: var(--style-color-neutral-20);
+}
+
+.layout-section.inverse {
+  --layout-section-background: var(--style-color-primary);
+  --layout-section-text: var(--style-color-on-primary);
+}
+
+.layout-section-flush {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Content container                                                            */
+
+.layout-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--layout-content-width) + 2 * var(--layout-page-margin));
+  margin-inline: auto;
+  padding-inline: var(--layout-page-margin);
+  container: layout / inline-size;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* 12-column grid                                                               */
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--layout-stacked-row-gap);
+  column-gap: var(--layout-column-gap);
+
+  > * {
+    min-width: 0;
+  }
+}
+
+@container layout (min-width: 48rem) {
+
+  .layout-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    row-gap: var(--layout-row-gap);
+
+    > * {
+      grid-column: span 12;
+    }
+
+    > .layout-span-3 { grid-column: span 6; }
+    > .layout-span-4 { grid-column: span 4; }
+    > .layout-span-5 { grid-column: span 5; }
+    > .layout-span-6 { grid-column: span 6; }
+    > .layout-span-7 { grid-column: span 7; }
+    > .layout-span-8 { grid-column: span 8; }
+    > .layout-span-9 { grid-column: span 9; }
+    > .layout-span-12 { grid-column: span 12; }
+  }
+}
+
+@container layout (min-width: 64rem) {
+
+  .layout-grid > .layout-span-3 {
+    grid-column: span 3;
+  }
+}
