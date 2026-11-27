@@ -1,0 +1,55 @@
+/* ---------------------------------------------------------------------------- */
+/* Spacing scale                                                                */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.42. Use these tokens for margin, padding and gap instead  */
+/* of hard-coded values:                                                        */
+/*   .card { padding: var(--spacing-24); gap: var(--spacing-8); }               */
+/*                                                                              */
+/* Token names are the size in px with a 16 px base font size, values are rem.  */
+/* Spacing is generally a multiple of 8 px (0.5 rem). Below 40 px (2.5 rem)     */
+/* 4 px and 2 px steps are allowed: --spacing-2 is for those fine adjustments.   */
+/*                                                                              */
+/* Groups:                                                                      */
+/*   4-36     typography and elements: icon-text gap, padding, margin            */
+/*   40-72    layout: between larger elements, titles and paragraphs, columns,  */
+/*            page margin and padding on desktop and tablet                     */
+/*   80-112   layout on desktop only, too large for mobile                      */
+/*   144-208  white space, seldom used (208 = minimum mobile hero image area)   */
+/*                                                                              */
+/* The scale is the same in the Kansalliskirjasto and Melinda styles, so the    */
+/* tokens are not style tokens.                                                 */
+/* ---------------------------------------------------------------------------- */
+
+:root {
+
+  /* Typography and elements */
+  --spacing-2: 0.125rem;
+  --spacing-4: 0.25rem;
+  --spacing-6: 0.375rem;
+  --spacing-8: 0.5rem;
+  --spacing-12: 0.75rem;
+  --spacing-16: 1rem;
+  --spacing-20: 1.25rem;
+  --spacing-24: 1.5rem;
+  --spacing-28: 1.75rem;
+  --spacing-32: 2rem;
+  --spacing-36: 2.25rem;
+
+  /* Layout */
+  --spacing-40: 2.5rem;
+  --spacing-48: 3rem;
+  --spacing-56: 3.5rem;
+  --spacing-64: 4rem;
+  --spacing-72: 4.5rem;
+
+  /* Layout, desktop only */
+  --spacing-80: 5rem;
+  --spacing-96: 6rem;
+  --spacing-112: 7rem;
+
+  /* White space */
+  --spacing-144: 9rem;
+  --spacing-176: 11rem;
+  --spacing-208: 13rem;
+}

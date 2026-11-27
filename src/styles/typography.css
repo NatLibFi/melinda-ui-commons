@@ -138,7 +138,7 @@
 .body-l + .body-l,
 .body-m + .body-m,
 .body-s + .body-s {
-  margin-top: 1rem;
+  margin-top: var(--spacing-16);
 }
 
 /* Bold is Public Sans Bold, semibold is reserved for links */
@@ -158,7 +158,7 @@
 
 .typography-list {
   margin: 0;
-  padding-left: 2rem;
+  padding-left: var(--spacing-32);
   color: var(--style-color-text);
   font-family: var(--font-family-content);
   font-size: var(--font-size-body-m);
@@ -166,7 +166,7 @@
   line-height: var(--font-line-height-body-m);
 
   li {
-    padding-left: 0.5rem;
+    padding-left: var(--spacing-8);
     font: inherit;
     line-height: inherit;
   }
@@ -174,13 +174,13 @@
   li + li,
   li > ul,
   li > ol {
-    margin-top: 1rem;
+    margin-top: var(--spacing-16);
   }
 
   ul,
   ol {
     margin-bottom: 0;
-    padding-left: 2rem;
+    padding-left: var(--spacing-32);
     font: inherit;
     line-height: inherit;
   }
@@ -203,7 +203,7 @@
   .typography-list,
   .typography-list ul,
   .typography-list ol {
-    padding-left: 1rem;
+    padding-left: var(--spacing-16);
   }
 }
 
@@ -216,7 +216,7 @@
 .block-quote {
   max-width: 85%;
   margin: 0;
-  padding: 0 0 0 1.5rem;
+  padding: 0 0 0 var(--spacing-24);
   border-left: 2px solid var(--style-color-quote-line);
   box-sizing: border-box;
   color: var(--style-color-text);
@@ -247,7 +247,7 @@
 
 .image-caption {
   margin: 0;
-  padding: 0.75rem 1rem;
+  padding: var(--spacing-12) var(--spacing-16);
   background-color: var(--style-color-caption-background);
   color: var(--style-color-text);
   font-family: var(--font-family-content);
@@ -386,7 +386,7 @@ figure:has(> .image-caption) {
   }
 
   > * + * {
-    margin-top: 2.5rem;
+    margin-top: var(--spacing-40);
   }
 
   > :is(.heading-xxl, .heading-xl, .heading-l, .heading-m, .heading-s, .heading-xs, .heading-xxs) + *,
@@ -394,19 +394,19 @@ figure:has(> .image-caption) {
   > .block-quote + *,
   > figure,
   > figure + * {
-    margin-top: 1.5rem;
+    margin-top: var(--spacing-24);
   }
 
   > :is(.body-m, .body-s) + :is(.body-m, .body-s, .typography-list) {
-    margin-top: 1rem;
+    margin-top: var(--spacing-16);
   }
 
   > :is(.heading-xxl, .heading-xl, .heading-l, .heading-m, .heading-s, .heading-xs, .heading-xxs):not(:first-child) {
-    margin-top: 2.5rem;
+    margin-top: var(--spacing-40);
   }
 
   > .article-meta {
-    margin-top: 1.5rem;
+    margin-top: var(--spacing-24);
   }
 }
 

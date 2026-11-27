@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   min-height: 9rem;
-  padding: 1.5rem 3.5rem;
+  padding: var(--spacing-24) var(--spacing-56);
   box-sizing: border-box;
   background-color: transparent;
   background-image:
@@ -55,7 +55,7 @@
 
   .gradient-overlay {
     min-height: 7rem;
-    padding: 1rem 1.25rem;
+    padding: var(--spacing-16) var(--spacing-20);
   }
 
   .gradient-overlay-text {
