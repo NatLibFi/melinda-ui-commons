@@ -1,0 +1,187 @@
+/* ---------------------------------------------------------------------------- */
+/* Links                                                                        */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.14-15, main link styles. All links are Public Sans        */
+/* Semibold, Link Blue by default and white on dark backgrounds (.inverse).     */
+/*                                                                              */
+/*   Standalone    .link (M, default) .link-l .link-s                           */
+/*   Inline        .link-inline (size from the surrounding text, dashed         */
+/*                 underline)                                                   */
+/*   Blue 100      .link-strong (header and footer navigation, headings that    */
+/*                 are links). .link-l is always Blue 100.                      */
+/*   External      .link-external with an icon .link-external-icon after the    */
+/*                 text and visually hidden text for screen readers:            */
+/*                                                                              */
+/*   <a class="link link-external" href="https://..." target="_blank">          */
+/*     Link text                                                                */
+/*     <span class="visually-hidden">(external site, opens in a new tab)</span> */
+/*     <i class="fa-regular fa-arrow-up-right-from-square link-external-icon"   */
+/*        aria-hidden="true"></i>                                               */
+/*   </a>                                                                       */
+/*                                                                              */
+/* States: no underline by default, always underlined on hover, focus outline   */
+/* 2 px Blue 100 (white on dark backgrounds) with rounded corners, 4 px away    */
+/* from the text (S and inline 3 px). M and L links are underlined on focus,    */
+/* S and inline links are not. Links have no disabled state: show unavailable   */
+/* targets as plain text.                                                       */
+/*                                                                              */
+/* .state-hover and .state-focus show the hover and focus states without        */
+/* interaction, for documentation and style guide pages only.                   */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-link, --style-color-link-hover, --style-color-link-strong,   */
+/*   --style-color-link-focus, --style-color-on-primary                         */
+/* ---------------------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------------------- */
+/* Base link: shared by all sizes                                               */
+
+.link,
+.link-l,
+.link-s,
+.link-inline {
+  /* Focus outline: space around the text and visible corner radius.          */
+  /* Browsers draw the outline corner as border-radius + outline-offset, so   */
+  /* the border radius is the visible radius minus the offset.                */
+  --link-focus-offset: var(--spacing-4);
+  --link-focus-radius: 6px;
+  border-radius: calc(var(--link-focus-radius) - var(--link-focus-offset));
+  color: var(--style-color-link);
+  font-family: var(--font-family-link);
+  font-weight: var(--font-weight-link);
+  text-decoration-line: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+
+  &:hover,
+  &:active,
+  &.state-hover {
+    color: var(--style-color-link-hover);
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+  }
+
+  &:focus-visible,
+  &.state-focus {
+    outline: 2px solid var(--style-color-link-focus);
+    outline-offset: var(--link-focus-offset);
+    text-decoration-line: underline;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Sizes                                                                        */
+
+/* M: 16/24 px, default size, medium icon and CTA links */
+.link {
+  font-size: var(--font-size-interactive-m);
+  line-height: var(--font-line-height-interactive-m);
+}
+
+/* L: 18/26 px, link list element, large icon and CTA links. Always Blue 100, */
+/* because large links can be used on any background colour */
+.link-l {
+  color: var(--style-color-link-strong);
+  font-size: var(--font-size-interactive-l);
+  line-height: var(--font-line-height-interactive-l);
+}
+
+/* S: 14/20 px, used sparingly: tags, tooltips, small icon and CTA links. */
+/* Hover stays Link Blue, no underline on focus, 4 px focus corner radius */
+.link-s {
+  --link-focus-offset: 3px;
+  --link-focus-radius: 4px;
+  font-size: var(--font-size-interactive-s);
+  line-height: var(--font-line-height-interactive-s);
+
+  &:hover,
+  &:active,
+  &.state-hover {
+    color: var(--style-color-link);
+  }
+
+  &:focus-visible:not(:hover),
+  &.state-focus {
+    text-decoration-line: none;
+  }
+}
+
+/* Inline: size of the surrounding text, dashed 1 px underline (dash 2, gap 2) */
+/* to stand out from the text. Solid underline on hover, none on focus. */
+.link-inline {
+  --link-focus-offset: 3px;
+  --link-focus-radius: 4px;
+  font-size: inherit;
+  line-height: inherit;
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+
+  &:hover,
+  &:active,
+  &.state-hover {
+    color: var(--style-color-link);
+  }
+
+  &:focus-visible:not(:hover),
+  &.state-focus {
+    text-decoration-line: none;
+  }
+}
+
+/* Blue 100: links in header and footer navigation and headings that are links */
+.link-strong,
+.link-strong:is(:hover, :active, .state-hover) {
+  color: var(--style-color-link-strong);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* External links: Font Awesome arrow-up-right-from-square (f08e) after the     */
+/* text, set higher than the baseline. Icon size and space depend on the link   */
+/* size: M icon XXS + 8 px, L icon XS + 10 px, S icon XXS + 6 px, inline links  */
+/* scale with the font size. Open in a new tab.                                 */
+
+.link-external-icon {
+  margin-left: var(--spacing-8);
+  font-size: var(--icon-size-xxs);
+  line-height: 1;
+  vertical-align: super;
+}
+
+.link-l .link-external-icon {
+  margin-left: calc(var(--spacing-8) + var(--spacing-2));
+  font-size: var(--icon-size-xs);
+}
+
+.link-s .link-external-icon {
+  margin-left: var(--spacing-6);
+}
+
+.link-inline .link-external-icon {
+  margin-left: 0.375em;
+  font-size: 0.75em;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse: on dark backgrounds all links are white in all states               */
+
+.inverse :is(.link, .link-l, .link-s, .link-inline, .link-strong),
+:is(.link, .link-l, .link-s, .link-inline, .link-strong).inverse {
+  color: var(--style-color-on-primary);
+
+  &:hover,
+  &:active,
+  &.state-hover {
+    color: var(--style-color-on-primary);
+  }
+
+  &:focus-visible,
+  &.state-focus {
+    outline-color: var(--style-color-on-primary);
+  }
+}

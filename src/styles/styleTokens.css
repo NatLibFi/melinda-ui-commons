@@ -47,6 +47,11 @@
   --style-color-link-hover: var(--color-primary-blue);
   --style-color-focus: var(--color-functional-blue);
 
+  /* LINKS (link.css): Blue 100 navigation, heading and L links, */
+  /* Blue 100 link focus outline (style guide p.15) */
+  --style-color-link-strong: var(--color-blue-100);
+  --style-color-link-focus: var(--color-blue-100);
+
   /* ACTION HOVER: hover and active state of primary buttons */
   --style-color-action-hover: var(--color-blue-100);
 
