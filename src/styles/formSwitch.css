@@ -1,0 +1,257 @@
+/* ---------------------------------------------------------------------------- */
+/* SWITCH                                                                       */
+/*                                                                              */
+/* Kansalliskirjasto.fi style guide 2021, pages 25-26. The Melinda style uses   */
+/* the same design, colours come from the style tokens.                         */
+/*                                                                              */
+/* A native checkbox with role="switch", so it works with the keyboard (Tab,    */
+/* Space) and screen readers read it as a switch that is on or off:             */
+/*                                                                              */
+/*   <label class="switch">                                                     */
+/*     <input type="checkbox" role="switch" class="switch-input">              */
+/*     <span class="switch-control" aria-hidden="true"></span>                  */
+/*     <span class="switch-label">Notifications</span>                          */
+/*   </label>                                                                   */
+/*                                                                              */
+/* Sizes: M (default) 52 x 24 px, .small 40 x 20 px, button 16 px in both.      */
+/* Off: Blue 100 button on the left, X icon on the right.                       */
+/* On: Link Blue button on the right with a white check icon.                   */
+/* Hover: 2 px border, the button tugs towards the state it would go to once    */
+/* clicked (on: Blue 100 button). Focus: 2 px Blue 100 outline around both the  */
+/* switch and the label, rounded corners. Disabled: add disabled to the input.  */
+/* Dark backgrounds: add .inverse.                                              */
+/*                                                                              */
+/* .state-hover and .state-focus show the hover and focus states without        */
+/* interaction, for documentation and style guide pages only.                   */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-primary(-20/-60/-80), --style-color-link,                    */
+/*   --style-color-link-focus, --style-color-background,                        */
+/*   --style-color-on-primary, --style-color-neutral-80                         */
+/* ---------------------------------------------------------------------------- */
+
+
+.switch {
+  --switch-width: 52px;
+  --switch-height: 24px;
+  --switch-button-size: 16px;
+  --switch-icon-size: 10px;
+  --switch-inset: 3px;
+  --switch-tug: 4px;
+
+  --switch-border-color: var(--style-color-primary);
+  --switch-background: var(--style-color-background);
+  --switch-button-color: var(--style-color-primary);
+  --switch-off-icon-color: var(--style-color-primary);
+  --switch-on-button-color: var(--style-color-link);
+  --switch-on-icon-color: var(--style-color-on-primary);
+  --switch-hover-on-button-color: var(--style-color-primary);
+  --switch-label-color: var(--style-color-primary);
+  --switch-focus-color: var(--style-color-link-focus);
+
+  /* Focus outline: space around the switch and label, visible corner radius */
+  --switch-focus-offset: var(--spacing-4);
+  --switch-focus-radius: 6px;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-16);
+  border-radius: calc(var(--switch-focus-radius) - var(--switch-focus-offset));
+  color: var(--switch-label-color);
+  font-family: var(--font-family-label);
+  font-size: var(--font-size-label-medium);
+  font-weight: var(--font-weight-label);
+  line-height: var(--font-line-height-label-medium);
+  cursor: pointer;
+}
+
+.switch.small {
+  --switch-width: 40px;
+  --switch-height: 20px;
+  --switch-icon-size: 8px;
+  --switch-inset: 1px;
+  --switch-tug: 3px;
+  gap: var(--spacing-12);
+  font-size: var(--font-size-label-small);
+  line-height: var(--font-line-height-label-small);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Native input: hidden visually, kept focusable and on top of the control      */
+
+.switch .switch-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--switch-width);
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Control: track with the round button (::before) and the icon (::after)       */
+
+.switch .switch-control {
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--switch-width);
+  height: var(--switch-height);
+  border: 1px solid var(--switch-border-color);
+  border-radius: calc(var(--switch-height) / 2);
+  background-color: var(--switch-background);
+}
+
+.switch .switch-control::before,
+.switch .switch-control::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transition: left 150ms ease-out, transform 150ms ease-out;
+}
+
+/* Button: left when off */
+.switch .switch-control::before {
+  left: var(--switch-inset);
+  width: var(--switch-button-size);
+  height: var(--switch-button-size);
+  border-radius: 50%;
+  background-color: var(--switch-button-color);
+  transform: translate(0, -50%);
+}
+
+/* Icon: X on the right when off */
+.switch .switch-control::after {
+  left: calc(100% - var(--switch-inset) - (var(--switch-button-size) + var(--switch-icon-size)) / 2);
+  width: var(--switch-icon-size);
+  height: var(--switch-icon-size);
+  background-color: var(--switch-off-icon-color);
+  transform: translate(0, -50%);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1.5 1.5l7 7M8.5 1.5l-7 7' stroke='black' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* On: button on the right, check icon on the button */
+.switch .switch-input:checked + .switch-control::before {
+  left: calc(100% - var(--switch-inset) - var(--switch-button-size));
+  background-color: var(--switch-on-button-color);
+}
+
+.switch .switch-input:checked + .switch-control::after {
+  left: calc(100% - var(--switch-inset) - (var(--switch-button-size) + var(--switch-icon-size)) / 2);
+  background-color: var(--switch-on-icon-color);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1.5 5.25l2.25 2.25 4.75-5' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Hover: 2 px border, the button tugs towards the next state                   */
+
+.switch:is(:hover, .state-hover):not(:has(.switch-input:disabled)) {
+
+  & .switch-control {
+    box-shadow: inset 0 0 0 1px var(--switch-border-color);
+  }
+
+  & .switch-input:not(:checked) + .switch-control::before {
+    transform: translate(var(--switch-tug), -50%);
+  }
+
+  & .switch-input:checked + .switch-control::before {
+    background-color: var(--switch-hover-on-button-color);
+  }
+
+  & .switch-input:checked + .switch-control::before,
+  & .switch-input:checked + .switch-control::after {
+    transform: translate(calc(var(--switch-tug) * -1), -50%);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Focus: 2 px outline around both the switch and the label                     */
+
+.switch:has(.switch-input:focus-visible),
+.switch.state-focus {
+  outline: 2px solid var(--switch-focus-color);
+  outline-offset: var(--switch-focus-offset);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Disabled: Blue 20 background, 1 px Blue 60 border, Light Silver 80 label     */
+
+.switch:has(.switch-input:disabled) {
+  --switch-border-color: var(--style-color-primary-60);
+  --switch-background: var(--style-color-primary-20);
+  --switch-button-color: var(--style-color-primary-60);
+  --switch-off-icon-color: var(--style-color-primary-60);
+  --switch-on-button-color: var(--style-color-primary-60);
+  --switch-on-icon-color: var(--style-color-primary-20);
+  --switch-label-color: var(--style-color-neutral-80);
+  font-weight: 300;
+  cursor: not-allowed;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse: dark backgrounds. No background, white border, button and label,    */
+/* the check icon in the background colour. Disabled as inverse checkboxes.     */
+
+.switch.inverse {
+  --switch-border-color: var(--style-color-on-primary);
+  --switch-background: transparent;
+  --switch-button-color: var(--style-color-on-primary);
+  --switch-off-icon-color: var(--style-color-on-primary);
+  --switch-on-button-color: var(--style-color-on-primary);
+  --switch-on-icon-color: var(--style-color-primary);
+  --switch-hover-on-button-color: var(--style-color-on-primary);
+  --switch-label-color: var(--style-color-on-primary);
+  --switch-focus-color: var(--style-color-on-primary);
+}
+
+.switch.inverse:has(.switch-input:disabled) {
+  --switch-border-color: var(--style-color-primary-60);
+  --switch-background: var(--style-color-primary-80);
+  --switch-button-color: var(--style-color-primary-60);
+  --switch-off-icon-color: var(--style-color-primary-60);
+  --switch-on-button-color: var(--style-color-primary-60);
+  --switch-on-icon-color: var(--style-color-primary-80);
+  --switch-label-color: var(--style-color-neutral-80);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Reduced motion and forced colours                                            */
+
+@media (prefers-reduced-motion: reduce) {
+  .switch .switch-control::before,
+  .switch .switch-control::after {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .switch .switch-control::before,
+  .switch .switch-control::after {
+    forced-color-adjust: none;
+    background-color: CanvasText;
+  }
+
+  .switch .switch-input:checked + .switch-control::after {
+    background-color: Canvas;
+  }
+
+  .switch:has(.switch-input:disabled) .switch-control::before,
+  .switch:has(.switch-input:disabled) .switch-control::after {
+    background-color: GrayText;
+  }
+
+  .switch:has(.switch-input:disabled) .switch-input:checked + .switch-control::after {
+    background-color: Canvas;
+  }
+}

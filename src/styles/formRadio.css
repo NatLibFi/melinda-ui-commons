@@ -45,9 +45,21 @@
   background-color: transparent;
 }
 
-/* Hiding the default radio */
+/* Hiding the default radio visually. The input stays focusable, so the     */
+/* radio works with the keyboard, and lies under the custom radio.       */
+.form-field-container.radio .input-wrapper {
+  position: relative;
+}
+
 .form-field-container.radio .input-wrapper input {
-  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
 }
 
 /* Custom radio */
@@ -79,13 +91,12 @@
   border: none;
 }
 
-.form-field-container.radio:focus-within .input-wrapper span {
-  outline-style: solid;
-  outline-color: var(--style-color-focus);
-  border-color: var(--style-color-focus);
-  border-style: solid;
-  border-width: 1px;
-  outline-width: 2px;
+/* Focus: 2 px Blue 100 outline around both the radio and the label        */
+.form-field-container.radio:has(.input-wrapper input:focus-visible) .label-wrapper label,
+.form-field-container.radio.state-focus .label-wrapper label {
+  outline: 2px solid var(--style-color-link-focus);
+  outline-offset: var(--spacing-4);
+  border-radius: 2px;
 }
 
 .form-field-container.radio .outer-link a {
@@ -127,13 +138,13 @@
 /* ---------------------------------------------------------------------------- */
 /* Input radio hover state */
 
-.form-field-container.radio:hover .input-wrapper>input[type="radio"]+span {
+.form-field-container.radio:is(:hover, .state-hover) .input-wrapper>input[type="radio"]+span {
   outline-color: var(--style-color-primary);
   outline-style: solid;
   outline-width: 1px;
 }
 
-.form-field-container.radio:hover .input-wrapper>input[type="radio"]:checked+span:before {
+.form-field-container.radio:is(:hover, .state-hover) .input-wrapper>input[type="radio"]:checked+span:before {
   background-color: var(--style-color-primary);
   outline-color: var(--style-color-primary);
   outline-style: solid;
@@ -172,7 +183,7 @@
 }
 
 .form-field-container.radio[disabled=true] .input-wrapper>input[type="radio"]+span:before {
-  color: white;
+  color: var(--style-color-primary-20);
   background-color: var(--style-color-primary-60);
   outline: none;
   border-color: var(--style-color-primary-60);
@@ -183,14 +194,14 @@
   font-weight: 300;
 }
 
-.form-field-container.radio[disabled=true]:hover .input-wrapper>input[type="radio"]+span {
+.form-field-container.radio[disabled=true]:is(:hover, .state-hover) .input-wrapper>input[type="radio"]+span {
   background-color: var(--style-color-primary-20);
   outline: none;
   border-color: var(--style-color-primary-60);
 }
 
-.form-field-container.radio[disabled=true]:hover .input-wrapper>input[type="radio"]:checked+span:before {
-  color: white;
+.form-field-container.radio[disabled=true]:is(:hover, .state-hover) .input-wrapper>input[type="radio"]:checked+span:before {
+  color: var(--style-color-primary-20);
   background-color: var(--style-color-primary-60);
   outline: none;
   border-color: var(--style-color-primary-60);
@@ -211,21 +222,29 @@
   color: var(--style-color-primary);
 }
 
-.form-field-container.radio.inverse:hover .input-wrapper>input[type="radio"]:checked+span:before {
+.form-field-container.radio.inverse:is(:hover, .state-hover) .input-wrapper>input[type="radio"]:checked+span:before {
   background-color: var(--style-color-background);
   color: var(--style-color-primary);
 }
 
 /* ---------------------------------------------------------------------------- */
+/* Inverse colored input radio focus state */
+
+.form-field-container.radio.inverse:has(.input-wrapper input:focus-visible) .label-wrapper label,
+.form-field-container.radio.inverse.state-focus .label-wrapper label {
+  outline-color: var(--style-color-on-primary);
+}
+
+/* ---------------------------------------------------------------------------- */
 /* Inverse colored input radio hover state */
 
-.form-field-container.radio.inverse:hover .input-wrapper>input[type="radio"]+span {
+.form-field-container.radio.inverse:is(:hover, .state-hover) .input-wrapper>input[type="radio"]+span {
   outline-color: var(--style-color-on-primary);
   outline-style: solid;
   outline-width: 1px;
 }
 
-.form-field-container.radio.inverse:hover .input-wrapper>input[type="radio"]:checked+span:before {
+.form-field-container.radio.inverse:is(:hover, .state-hover) .input-wrapper>input[type="radio"]:checked+span:before {
   outline-color: var(--style-color-on-primary);
   outline-style: solid;
   outline-width: 1px;
@@ -256,17 +275,17 @@
 /* ---------------------------------------------------------------------------- */
 /* Inverse colored input radio disabled hover state */
 
-.form-field-container.radio.inverse[disabled=true]:hover .input-wrapper span {
+.form-field-container.radio.inverse[disabled=true]:is(:hover, .state-hover) .input-wrapper span {
   border-color: var(--style-color-primary-60);
   background-color: var(--style-color-primary-80);
 }
 
-.form-field-container.radio.inverse[disabled=true]:hover .input-wrapper>input[type="radio"]+span {
+.form-field-container.radio.inverse[disabled=true]:is(:hover, .state-hover) .input-wrapper>input[type="radio"]+span {
   outline: none;
   background-color: var(--style-color-primary-80);
 }
 
-.form-field-container.radio.inverse[disabled=true]:hover .input-wrapper>input[type="radio"]:checked+span:before {
+.form-field-container.radio.inverse[disabled=true]:is(:hover, .state-hover) .input-wrapper>input[type="radio"]:checked+span:before {
   background-color: var(--style-color-primary-60);
   outline: none;
 }

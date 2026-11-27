@@ -15,6 +15,7 @@
 @import './formInput.css';
 @import './formCheckbox.css';
 @import './formRadio.css';
+@import './formSwitch.css';
 @import './formTextarea.css';
 @import './slider.css';
 @import './formSelect.css';
