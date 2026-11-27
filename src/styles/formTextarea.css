@@ -23,7 +23,7 @@
   overflow: auto;
   font-family: var(--font-family-input);
   font-size: var(--font-size-input-medium);
-  color: var(--color-blue-100);
+  color: var(--style-color-primary);
   border: none;
   flex-grow: 1;
   padding-top: 12px;
@@ -33,7 +33,7 @@
 /* ---------------------------------------------------------------------------- */
 /* Placeholder text in textarea input fields */
 .input-wrapper textarea::placeholder {
-  color: var(--color-blue-80);
+  color: var(--style-color-primary-80);
   font-family: var(--font-family-placeholder);
 }
 
@@ -45,7 +45,7 @@
 }
 
 .form-field-container[disabled=true] .input-wrapper textarea::placeholder {
-  color: var(--color-blue-60);
+  color: var(--style-color-primary-60);
 }
 
 /* ---------------------------------------------------------------------------- */

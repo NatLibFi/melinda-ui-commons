@@ -57,7 +57,7 @@
 
 #bodywrapper {
   display: flex;
-  background-color: var(--color-primary-white);
+  background-color: var(--style-color-background);
 }
 
 

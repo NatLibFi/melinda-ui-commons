@@ -9,7 +9,7 @@
 }
 
 .progress-bar-inactive.grey-20 {
-  background-color: var(--color-grey-20);
+  background-color: var(--style-color-neutral-20);
 }
 
 .progress-bar,
@@ -20,12 +20,12 @@
 }
 
 .progress-bar {
-  background-color: var(--color-melinda-green-custom);
+  background-color: var(--style-color-accent);
   display: flex;
 }
 
 .progress-bar:before {
-  background-color: var(--color-melinda-lightblue-custom);
+  background-color: var(--style-color-accent-secondary);
   content: '';
   animation: running-progress 1s linear infinite;
 }

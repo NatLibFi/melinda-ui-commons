@@ -23,11 +23,11 @@
   font-family: var(--font-family-input);
   font-size: var(--font-size-input-medium);
   font-weight: var(--font-weight-input);
-  background-color: var(--color-primary-white);
+  background-color: var(--style-color-background);
   height: 46px;
   border-style: solid;
   border-radius: 5px;
-  border-color: var(--color-blue-100);
+  border-color: var(--style-color-primary);
   border-width: 1px;
   padding-left: 16px;
   margin-left: 2px;
@@ -39,7 +39,7 @@
 
 .input-wrapper input {
   font-size: var(--font-size-input-medium);
-  color: var(--color-blue-100);
+  color: var(--style-color-primary);
   border: none;
   flex-grow: 1;
   padding-right: 12px;
@@ -49,7 +49,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--color-blue-100);
+  color: var(--style-color-primary);
   background-color: transparent;
 }
 
@@ -73,14 +73,14 @@
 }
 
 .form-field-container .input-wrapper button.icon-only {
-  color: var(--color-blue-100);
+  color: var(--style-color-primary);
   background-color: transparent;
   border-color: transparent;
 }
 
 /* Placeholder text in input fields */
 .input-wrapper input::placeholder {
-  color: var(--color-blue-80);
+  color: var(--style-color-primary-80);
   font-family: var(--font-family-placeholder);
 }
 
@@ -96,7 +96,7 @@
 .input-wrapper input:-webkit-autofill:hover,
 .input-wrapper input:-webkit-autofill:focus,
 .input-wrapper input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px var(--color-primary-white) inset !important;
+  -webkit-box-shadow: 0 0 0 30px var(--style-color-on-primary) inset !important;
   margin-right: 16px;
 }
 
@@ -144,10 +144,10 @@
 /* Input wrapper has hover style */
 .form-field-container .input-wrapper:hover {
   border-width: 1px;
-  border-color: var(--color-blue-100);
+  border-color: var(--style-color-primary);
   border-style: solid;
   outline-width: 1px;
-  outline-color: var(--color-blue-100);
+  outline-color: var(--style-color-primary);
   outline-style: solid;
 }
 
@@ -157,10 +157,10 @@
 /* when form field is focused */
 .form-field-container:focus-within .input-wrapper {
   border-width: 1px;
-  border-color: var(--color-functional-blue);
+  border-color: var(--style-color-focus);
   border-style: solid;
   outline-width: 2px;
-  outline-color: var(--color-functional-blue);
+  outline-color: var(--style-color-focus);
   outline-style: solid;
 }
 
@@ -178,16 +178,16 @@
 
 .input-wrapper button.icon-only:hover span.material-icons {
   cursor: pointer;
-  color: var(--color-red-100);
+  color: var(--style-color-error);
 }
 
 .input-wrapper button.icon-only:active {
   outline: none;
-  background-color: var(--color-red-100);
+  background-color: var(--style-color-error);
 }
 
 .input-wrapper button.icon-only:active span.material-icons {
-  color: var(--color-primary-white);
+  color: var(--style-color-on-primary);
 }
 
 
@@ -199,32 +199,32 @@
 
 .form-field-container:focus-within[disabled=true] .input-wrapper {
   outline: none;
-  border-color: var(--color-blue-60);
+  border-color: var(--style-color-primary-60);
 }
 
 .form-field-container[disabled=true] .input-wrapper {
   pointer-events: none;
-  border-color: var(--color-blue-60);
-  background-color: var(--color-grey-20);
+  border-color: var(--style-color-primary-60);
+  background-color: var(--style-color-neutral-20);
 }
 
 .form-field-container[disabled=true] .input-wrapper input[type] {
   pointer-events: none;
-  background-color: var(--color-grey-20);
+  background-color: var(--style-color-neutral-20);
 }
 
 .form-field-container[disabled=true] .input-wrapper span {
-  color: var(--color-blue-80);
+  color: var(--style-color-primary-80);
 }
 
 .form-field-container[disabled=true] .input-wrapper input::placeholder {
-  color: var(--color-blue-60);
+  color: var(--style-color-primary-60);
 }
 
 .form-field-container[disabled=true] .input-wrapper button {
-  color: var(--color-grey-20);
-  background-color: var(--color-blue-60);
-  border-color: var(--color-blue-60);
+  color: var(--style-color-neutral-20);
+  background-color: var(--style-color-primary-60);
+  border-color: var(--style-color-primary-60);
 }
 
 
@@ -236,32 +236,32 @@
 
 .form-field-container.success .input-wrapper {
   border-width: 1px;
-  border-color: var(--color-functional-green);
+  border-color: var(--style-color-success);
   border-style: solid;
   outline-width: 2px;
-  outline-color: var(--color-functional-green);
+  outline-color: var(--style-color-success);
   outline-style: solid;
 }
 
 .form-field-container.success .input-wrapper>span.material-icons:last-child {
-  color: var(--color-functional-green);
+  color: var(--style-color-success);
 }
 
 .form-field-container.error .input-wrapper {
   border-width: 1px;
-  border-color: var(--color-functional-red);
+  border-color: var(--style-color-error);
   border-style: solid;
   outline-width: 2px;
-  outline-color: var(--color-functional-red);
+  outline-color: var(--style-color-error);
   outline-style: solid;
 }
 
 .form-field-container.error .input-wrapper>span.material-icons:last-child {
-  color: var(--color-functional-red);
+  color: var(--style-color-error);
 }
 
 .form-field-container.error .hint-wrapper {
-  color: var(--color-functional-red);
+  color: var(--style-color-error);
   margin-left: 2px;
   margin-right: 2px;
 }
@@ -273,11 +273,11 @@
 
 /* TODO: check this hover style */
 .form-field-container.inverse .input-wrapper:hover {
-  border-color: var(--color-blue-80);
-  outline-color: var(--color-blue-80);
+  border-color: var(--style-color-primary-80);
+  outline-color: var(--style-color-primary-80);
 }
 
 .form-field-container.inverse:focus-within .input-wrapper {
-  border-color: var(--color-blue-60);
-  outline-color: var(--color-blue-60);
+  border-color: var(--style-color-primary-60);
+  outline-color: var(--style-color-primary-60);
 }

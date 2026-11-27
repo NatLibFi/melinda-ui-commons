@@ -14,7 +14,7 @@
 .marc-record .row {
   display: flex;
   flex-wrap: wrap;
-  border: 1px var(--color-primary-white) solid;
+  border: 1px var(--style-color-on-primary) solid;
   padding-left: 8px;
   padding-right: 4px;
   padding-top: 2px;
@@ -24,7 +24,7 @@
 }
 
 .marc-record .row:hover {
-  border: 1px dashed var(--color-grey-80)
+  border: 1px dashed var(--style-color-neutral-80)
 }
 
 .marc-record .error {
@@ -54,12 +54,12 @@
 }
 
 .marc-record .tag {
-  color: var(--color-melinda-green-custom);
+  color: var(--style-color-accent);
   margin-right: 9pt;
 }
 
 .marc-record .inds {
-  color: var(--color-melinda-green-custom);
+  color: var(--style-color-accent);
   margin-right: 9pt;
 }
 
@@ -69,7 +69,7 @@
 }
 
 .marc-record .subfield .code {
-  color: var(--color-melinda-lightblue-custom);
+  color: var(--style-color-accent-secondary);
   margin-right: 2px;
 }
 
@@ -81,7 +81,7 @@
 }
 
 .fieldedit .editable {
-  border: 1px solid var(--color-grey-60);
+  border: 1px solid var(--style-color-neutral-60);
   border-radius: 4px;
   padding: 4px 8px;
 }
@@ -98,7 +98,7 @@
 }
 
 .fieldedit .subfield[disabled] {
-  color: var(--color-grey-60);
+  color: var(--style-color-neutral-60);
 }
 
 .fieldedit .ghost-row {
@@ -115,7 +115,7 @@
 }
 
 .fieldedit button.material-icons:disabled {
-  color: var(--color-grey-80);
+  color: var(--style-color-neutral-80);
   cursor: default;
 }
 

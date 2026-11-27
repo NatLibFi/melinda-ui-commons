@@ -32,14 +32,14 @@
   padding-left: 16px;
   border: none;
   outline: none;
-  background-color: var(--color-primary-white);
+  background-color: var(--style-color-background);
   font-family: var(--font-family-input);
   font-size: var(--font-size-input-medium);
-  color: var(--color-blue-100);
+  color: var(--style-color-primary);
 }
 
 .form-field-container.select .input-wrapper select:has(option[value=""]:checked) {
-  color: var(--color-blue-80);
+  color: var(--style-color-primary-80);
   font-family: var(--font-family-placeholder);
 }
 
@@ -49,7 +49,7 @@
   font-family: var(--font-family-placeholder);
   font-size: var(--font-size-input-medium);
   font-weight: var(--font-weight-placeholder);
-  color: var(--color-blue-100);
+  color: var(--style-color-primary);
 }
 
 .form-field-container.select .input-wrapper select option:not([value=""]):checked {

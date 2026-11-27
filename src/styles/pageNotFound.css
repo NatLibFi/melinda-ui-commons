@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  background-color: var(--color-grey-20);
+  background-color: var(--style-color-neutral-20);
 }
 
 @media screen and (min-width: 1800px) {
@@ -34,8 +34,8 @@
   flex-direction: column;
   flex-grow: 1;
   justify-content: center;
-  /*   background-color: var(--color-primary-white); */
-  color: var(--color-primary-blue);
+  /*   background-color: var(--style-color-background); */
+  color: var(--style-color-primary);
   padding: 25px;
   margin: 25px;
   gap: 25px;

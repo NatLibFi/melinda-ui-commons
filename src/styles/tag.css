@@ -18,8 +18,8 @@
 
 .tag-wrapper {
   display: flex;
-  color: var(--color-primary-blue);
-  background-color: var(--color-blue-40);
+  color: var(--style-color-primary);
+  background-color: var(--style-color-primary-40);
   font-size: var(--font-size-label-small);
   font-family: var(--font-family-label);
   font-weight: var(--font-weight-label);
@@ -49,7 +49,7 @@
   &:hover,
   &:focus {
     border-style: solid;
-    border-color: var(--color-blue-100);
+    border-color: var(--style-color-primary);
     border-width: 2px;
     cursor: pointer;
 
@@ -57,23 +57,23 @@
 
   &:active {
     border-style: solid;
-    border-color: var(--color-blue-100);
+    border-color: var(--style-color-primary);
     border-width: 2px;
     outline-offset: 2px;
-    outline-color: var(--color-blue-100);
+    outline-color: var(--style-color-primary);
     outline-width: 2px;
     outline-style: solid;
 
     span {
 
       &.icon-close {
-        color: var(--color-primary-white);
-        background-color: var(--color-functional-red);
+        color: var(--style-color-on-primary);
+        background-color: var(--style-color-error);
       }
 
       &.icon-check {
-        color: var(--color-primary-white);
-        background-color: var(--color-functional-green);
+        color: var(--style-color-on-primary);
+        background-color: var(--style-color-success);
       }
 
     }
@@ -81,18 +81,18 @@
   }
 
   &.static {
-    border-color: var(--color-blue-60);
+    border-color: var(--style-color-primary-60);
 
     &:hover,
     &:focus {
-      background-color: var(--color-blue-60);
-      border-color: var(--color-blue-60);
+      background-color: var(--style-color-primary-60);
+      border-color: var(--style-color-primary-60);
       cursor: default;
     }
 
     &:active {
-      background-color: var(--color-blue-60);
-      border-color: var(--color-blue-60);
+      background-color: var(--style-color-primary-60);
+      border-color: var(--style-color-primary-60);
       cursor: default;
       outline: none;
     }
@@ -107,8 +107,8 @@
 
       &.icon-close {
         display: flex;
-        color: var(--color-blue-100);
-        border-color: var(--color-blue-100);
+        color: var(--style-color-primary);
+        border-color: var(--style-color-primary);
         justify-content: center;
         align-items: center;
         text-align: center;
@@ -128,9 +128,9 @@
       span {
 
         &.icon-close {
-          color: var(--color-primary-white);
-          background-color: var(--color-functional-red);
-          border-color: var(--color-functional-red);
+          color: var(--style-color-on-primary);
+          background-color: var(--style-color-error);
+          border-color: var(--style-color-error);
         }
 
       }
@@ -145,9 +145,9 @@
 
       &.icon-check {
         display: flex;
-        color: var(--color-primary-white);
-        background-color: var(--color-functional-green);
-        border-color: var(--color-functional-green);
+        color: var(--style-color-on-primary);
+        background-color: var(--style-color-success);
+        border-color: var(--style-color-success);
         justify-content: center;
         align-items: center;
         text-align: center;
@@ -163,20 +163,20 @@
   }
 
   &.selected {
-    color: var(--color-primary-white);
-    background-color: var(--color-blue-100);
+    color: var(--style-color-on-primary);
+    background-color: var(--style-color-primary);
 
     &:hover,
     &:focus {
       outline-offset: 2px;
-      outline-color: var(--color-blue-80);
+      outline-color: var(--style-color-primary-80);
       outline-width: 2px;
       outline-style: solid;
     }
 
     &:active {
       outline-offset: 2px;
-      outline-color: var(--color-blue-100);
+      outline-color: var(--style-color-primary);
       outline-width: 2px;
       outline-style: solid;
     }

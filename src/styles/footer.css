@@ -33,12 +33,12 @@
   }
   
   .footer-heading-small {
-    color: var(--color-primary-white);
+    color: var(--style-color-footer-text);
     padding-top: 16px;
   }
   
   .footer-text {
-    color: var(--color-primary-white);
+    color: var(--style-color-footer-text);
   }
   
   .footer-paragraph {
@@ -57,7 +57,7 @@
   .footer a .footer-email {
     font-size: var(--font-size-link-large);
     font-weight: var(--font-weight-link);
-    color: var(--color-primary-white);
+    color: var(--style-color-footer-text);
   }
   
   .footer-link {
@@ -72,20 +72,20 @@
     font-size: var(--font-size-link-large);
     font-weight: var(--font-weight-link);
     display: flex;
-    color: var(--color-primary-white);
+    color: var(--style-color-footer-text);
     cursor: pointer;
     text-decoration: none;
   }
   
   .footer-link-text {
-    color: var(--color-primary-white);
+    color: var(--style-color-footer-text);
     font-size: var(--font-size-link-large);
   }
   
   .footer-link-text a {
     font-size: var(--font-size-link-large);
     display: flex;
-    color: var(--color-primary-white);
+    color: var(--style-color-footer-text);
   }
   
   .footer-link:hover .footer-link-text,
@@ -130,8 +130,8 @@
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    color: var(--color-primary-white);
-    background-color: var(--color-melinda-green);
+    color: var(--style-color-footer-text);
+    background-color: var(--style-color-footer-banner-background);
     padding: 48px;
     gap: 25px;
   }
@@ -173,14 +173,14 @@
   .melinda-banner a:hover .footer-link-text,
   .melinda-banner a:hover .footer-link-icon,
   .melinda-banner a:hover .footer-email {
-    color: var(--color-primary-blue);
-    text-decoration-color: var(--color-primary-blue);
+    color: var(--style-color-footer-banner-text-hover);
+    text-decoration-color: var(--style-color-footer-banner-text-hover);
   }
   
   .melinda-banner a:active .footer-link,
   .melinda-banner .footer-email:active,
   .melinda-logo a:active {
-    outline-color: var(--color-primary-white);
+    outline-color: var(--style-color-footer-text);
     outline-style: solid;
     outline-width: 0.2rem;
   }
@@ -205,8 +205,8 @@
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    color: var(--color-primary-white);
-    background-color: var(--color-primary-blue);
+    color: var(--style-color-footer-text);
+    background-color: var(--style-color-footer-background);
     gap: 40px;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -245,13 +245,13 @@
   
   .natlib-banner .footer-link:hover .footer-link-text,
   .natlib-banner .footer-link:hover .footer-link-icon {
-    color: var(--color-red-80);
-    text-decoration-color: var(--color-red-80);
+    color: var(--style-color-error-80);
+    text-decoration-color: var(--style-color-error-80);
   }
   
   .natlib-logo a:active,
   .natlib-link a:active {
-    outline-color: var(--color-primary-white);
+    outline-color: var(--style-color-footer-text);
     outline-style: solid;
     outline-width: 0.2rem;
   }

@@ -26,7 +26,7 @@
 .snackbar-container {
   display: none;
   align-items: center;
-  background-color: var(--style-background-color, var(--color-blue-60));
+  background-color: var(--style-background-color, var(--style-color-primary-60));
   min-width: 550px;
   max-height: 68px;
   overflow: auto;
@@ -41,7 +41,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--style-icon-color, var(--color-blue-100));
+  color: var(--style-icon-color, var(--style-color-primary));
 }
 
 .snackbar-icon span.material-icons {
@@ -59,7 +59,7 @@
   align-items: center;
   font-family: var(--font-family-label);
   font-size: var(--font-size-label-large);
-  color: var(--color-primary-blue);
+  color: var(--style-color-primary);
   padding-right: 16px;
 }
 
@@ -72,8 +72,8 @@
 .snackbar-link button {
   border: none;
   background-color: transparent;
-  color: var(--color-functional-blue);
-  text-decoration: underline dotted var(--color-functional-blue) 0.1rem;
+  color: var(--style-color-link);
+  text-decoration: underline dotted var(--style-color-link) 0.1rem;
   font-family: var(--font-family-link);
   font-weight: var(--font-weight-link);
   font-size: var(--font-size-link-large);
@@ -91,7 +91,7 @@
   font-family: var(--font-family-link);
   font-weight: var(--font-weight-link);
   font-size: var(--font-size-link-medium);
-  color: var(--color-primary-blue);
+  color: var(--style-color-primary);
   letter-spacing: 1px;
 }
 
@@ -106,26 +106,26 @@
 }
 
 .snackbar-link button:hover {
-  color: var(--color-primary-blue);
-  text-decoration: underline solid var(--color-primary-blue) 0.1rem;
+  color: var(--style-color-primary);
+  text-decoration: underline solid var(--style-color-primary) 0.1rem;
 }
 
 .snackbar-close:hover {
-  color: var(--color-functional-blue);
+  color: var(--style-color-link);
 }
 
 .snackbar-close:hover .snackbar-close-text {
-  text-decoration: underline solid var(--color-functional-blue) 0.1rem;
+  text-decoration: underline solid var(--style-color-link) 0.1rem;
 }
 
 .snackbar-close:active,
 .snackbar-link button:active {
-  color: var(--color-primary-blue);
+  color: var(--style-color-primary);
 }
 
 .snackbar-link button:active,
 .snackbar-close:active .snackbar-close-text {
-  text-decoration: underline solid var(--color-primary-blue) 0.1rem;
+  text-decoration: underline solid var(--style-color-primary) 0.1rem;
 }
 
 /* Snackbar is shown with animations */

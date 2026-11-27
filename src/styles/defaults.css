@@ -30,7 +30,7 @@ option,
 }
 
 a {
-  color: var(--color-functional-blue);
+  color: var(--style-color-link);
   font-family: var(--font-family-link);
   font-size: var(--font-size-link-medium);
   font-weight: var(--font-weight-link);

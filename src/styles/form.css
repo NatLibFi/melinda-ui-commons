@@ -34,7 +34,7 @@
   font-size: var(--font-size-headline-medium);
   font-weight: var(--font-weight-headline);
   line-height: var(--font-line-height-headline-medium);
-  color: var(--color-primary-blue);
+  color: var(--style-color-primary);
 }
 
 /* form-content is a wrapper for form-content-sections */
@@ -116,7 +116,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  color: var(--color-blue-100);
+  color: var(--style-color-primary);
   background-color: transparent;
   box-sizing: border-box;
   width: fit-content;

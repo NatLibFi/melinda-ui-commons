@@ -1,0 +1,132 @@
+/* ---------------------------------------------------------------------------- */
+/* Style tokens                                                                 */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Every element can be rendered in two styles:                                 */
+/*   - melinda            Melinda service style (default)                       */
+/*   - kansalliskirjasto  Kansalliskirjasto.fi style guide 2021                 */
+/*                                                                              */
+/* Select the style with the data-style attribute, usually on <html>:           */
+/*   <html data-style="kansalliskirjasto">                                      */
+/* Without the attribute the Melinda style is used.                             */
+/* The attribute also works on any element, styling just that subtree.          */
+/*                                                                              */
+/* Component styles must use these --style-* tokens, not the fixed palette      */
+/* colours from colors.css. Palette colours are only used here, to give each    */
+/* token its value per style.                                                   */
+/* ---------------------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------------------- */
+/* Tokens shared by both styles                                                 */
+/* Override in a style block below when a style needs a different value.        */
+
+:root {
+
+  /* PRIMARY: brand colour family, primary text and icons */
+  --style-color-primary: var(--color-primary-blue);
+  --style-color-primary-80: var(--color-blue-80);
+  --style-color-primary-60: var(--color-blue-60);
+  --style-color-primary-40: var(--color-blue-40);
+  --style-color-primary-20: var(--color-blue-20);
+
+  /* BACKGROUND AND TEXT ON PRIMARY */
+  --style-color-background: var(--color-primary-white);
+  --style-color-on-primary: var(--color-primary-white);
+  --style-color-black: var(--color-primary-black);
+
+  /* NEUTRAL: grey (silver) colour family */
+  --style-color-neutral-100: var(--color-grey-100);
+  --style-color-neutral-80: var(--color-grey-80);
+  --style-color-neutral-60: var(--color-grey-60);
+  --style-color-neutral-40: var(--color-grey-40);
+  --style-color-neutral-20: var(--color-grey-20);
+
+  /* LINK AND FOCUS */
+  --style-color-link: var(--color-functional-blue);
+  --style-color-link-hover: var(--color-primary-blue);
+  --style-color-focus: var(--color-functional-blue);
+
+  /* ACTION HOVER: hover and active state of primary buttons */
+  --style-color-action-hover: var(--color-blue-100);
+
+  /* STATUS: error (red), success (green), warning (yellow) */
+  --style-color-error: var(--color-functional-red);
+  --style-color-error-80: var(--color-red-80);
+  --style-color-error-60: var(--color-red-60);
+  --style-color-error-40: var(--color-red-40);
+  --style-color-error-20: var(--color-red-20);
+
+  --style-color-success: var(--color-functional-green);
+  --style-color-success-80: var(--color-green-80);
+  --style-color-success-60: var(--color-green-60);
+  --style-color-success-40: var(--color-green-40);
+  --style-color-success-20: var(--color-green-20);
+
+  --style-color-warning: var(--color-functional-yellow);
+  --style-color-warning-100: var(--color-yellow-100);
+  --style-color-warning-80: var(--color-yellow-80);
+  --style-color-warning-40: var(--color-yellow-40);
+  --style-color-warning-20: var(--color-yellow-20);
+
+  /* FOOTER: dark blue is always the National Library footer colour */
+  --style-color-footer-background: var(--color-primary-blue);
+  --style-color-footer-text: var(--color-primary-white);
+
+  /* FONT FAMILIES */
+  --style-font-family-brand: 'DM Serif Text', 'DM Serif Text Regular (file)', serif;
+  --style-font-family-sans-light: 'Public Sans', 'Public Sans Light (file)', sans-serif;
+  --style-font-family-sans-medium: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
+  --style-font-family-sans-semibold: 'Public Sans', 'Public Sans SemiBold (file)', sans-serif;
+  --style-font-family-mono: 'Noto Sans Mono', 'Noto Sans Mono Regular (file)', monospace;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Melinda style (default)                                                      */
+/* Melinda brand colours on top of the Kansalliskirjasto palette.               */
+
+:root,
+[data-style="melinda"] {
+
+  /* ACTION: primary button background */
+  --style-color-action: var(--color-melinda-lightblue-custom);
+
+  /* ACCENT: highlights, progress, decorative borders */
+  --style-color-accent: var(--color-melinda-green-custom);
+  --style-color-accent-secondary: var(--color-melinda-lightblue-custom);
+
+  /* HEADER: primary menu bar */
+  --style-color-header-background: var(--color-melinda-lightblue);
+  --style-color-header-text: var(--color-primary-white);
+  --style-color-header-text-hover: var(--color-primary-blue);
+
+  /* FOOTER: service banner above the National Library banner */
+  --style-color-footer-banner-background: var(--color-melinda-green);
+  --style-color-footer-banner-text-hover: var(--color-primary-blue);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Kansalliskirjasto style                                                      */
+/* Style guide 2021: dark blue and white brand colours, link blue for links     */
+/* and buttons, no Melinda brand colours.                                       */
+
+[data-style="kansalliskirjasto"] {
+
+  /* ACTION: link blue is the primary link and button colour */
+  --style-color-action: var(--color-functional-blue);
+
+  /* ACCENT */
+  --style-color-accent: var(--color-blue-80);
+  --style-color-accent-secondary: var(--color-functional-blue);
+
+  /* HEADER: white menu bar with dark blue text */
+  --style-color-header-background: var(--color-primary-white);
+  --style-color-header-text: var(--color-primary-blue);
+  --style-color-header-text-hover: var(--color-functional-blue);
+
+  /* FOOTER */
+  --style-color-footer-banner-background: var(--color-primary-blue);
+  --style-color-footer-banner-text-hover: var(--color-blue-40);
+}

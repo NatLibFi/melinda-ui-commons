@@ -6,8 +6,8 @@
 
   /* Keep until color theme is designed */
   button {
-    background-color: var(--color-primary-blue);
-    border-color: var(--color-primary-blue);
+    background-color: var(--style-color-primary);
+    border-color: var(--style-color-primary);
   }
 
   .panel-container {
@@ -46,13 +46,13 @@
                 }
 
                 &:hover {
-                  background-color: var(--color-blue-100);
-                  border-color: var(--color-blue-100);
+                  background-color: var(--style-color-primary);
+                  border-color: var(--style-color-primary);
 
                   span {
-                    color: var(--color-primary-white);
-                    background-color: var(--color-blue-100);
-                    border-color: var(--color-blue-100);
+                    color: var(--style-color-on-primary);
+                    background-color: var(--style-color-primary);
+                    border-color: var(--style-color-primary);
                   }
                 }
 
@@ -71,7 +71,7 @@
         .info {
           flex-direction: column;
           padding: 64px;
-          color: var(--color-blue-100);
+          color: var(--style-color-primary);
 
           .accordion {
 
@@ -82,7 +82,7 @@
           }
 
           .info-text {
-            color: var(--color-primary-blue);
+            color: var(--style-color-primary);
             font-weight: 500;
             line-height: 24px;
 
@@ -96,7 +96,7 @@
                   white-space: nowrap;
 
                   &:hover {
-                    color: var(--color-primary-blue);
+                    color: var(--style-color-primary);
                   }
 
                 }
@@ -107,14 +107,14 @@
 
                 a {
                   text-decoration-line: underline;
-                  text-decoration-color: var(--color-functional-blue);
+                  text-decoration-color: var(--style-color-link);
                   text-decoration-style: dotted;
                   text-decoration-thickness: 2px;
                   text-underline-offset: 2px;
 
 
                   &:hover {
-                    text-decoration-color: var(--color-primary-blue);
+                    text-decoration-color: var(--style-color-primary);
                     text-decoration-style: solid;
                   }
 
@@ -142,7 +142,7 @@
               font-size: var(--font-size-headline-medium);
               font-weight: var(--font-weight-headline);
               line-height: var(--font-line-height-headline-medium);
-              color: var(--color-primary-blue);
+              color: var(--style-color-primary);
               padding-bottom: 40px;
 
               &.outer-link,

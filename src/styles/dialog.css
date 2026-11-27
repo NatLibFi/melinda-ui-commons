@@ -32,7 +32,7 @@ dialog:hover {
 dialog:modal {
   display: flex;
   flex-direction: column;
-  color: var(--color-primary-black);
+  color: var(--style-color-black);
 }
 
 /* Dialog can have icon: informative picture on top */
@@ -61,7 +61,7 @@ dialog:modal {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  color: var(--color-grey-100);
+  color: var(--style-color-neutral-100);
   padding-left: 0.5em;
   padding-right: 0.5em;
   padding-top: 25px;

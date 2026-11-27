@@ -21,14 +21,14 @@ button {
   font-family: var(--font-family-button);
   font-size: var(--font-size-button-medium);
   font-weight: var(--font-weight-button);
-  background-color: var(--color-melinda-lightblue-custom);
-  color: var(--color-primary-white);
+  background-color: var(--style-color-action);
+  color: var(--style-color-on-primary);
   padding-left: 16px;
   padding-right: 16px;
   height: 48px;
   align-items: center;
   justify-content: center;
-  border-color: var(--color-melinda-lightblue-custom);
+  border-color: var(--style-color-action);
   border-radius: 6px;
   border-style: solid;
   border-width: 2px;
@@ -94,22 +94,22 @@ button.small.icon-only {
 button.alternate-red,
 button.alternate-green,
 button.alternate-blue {
-  background-color: var(--color-primary-white);
+  background-color: var(--style-color-background);
 }
 
 button.alternate-red {
-  color: var(--color-red-100);
-  border-color: var(--color-red-100);
+  color: var(--style-color-error);
+  border-color: var(--style-color-error);
 }
 
 button.alternate-green {
-  color: var(--color-green-100);
-  border-color: var(--color-green-100);
+  color: var(--style-color-success);
+  border-color: var(--style-color-success);
 }
 
 button.alternate-blue {
-  color: var(--color-blue-100);
-  border-color: var(--color-blue-100);
+  color: var(--style-color-primary);
+  border-color: var(--style-color-primary);
 }
 
 
@@ -117,25 +117,25 @@ button.alternate-blue {
 /* ---------------------------------------------------------------------------- */
 /* Minimal buttons for closing modals, clearing form subfield etc.              */
 button.minimal {
-  color: var(--color-blue-100);
+  color: var(--style-color-primary);
   border-color: transparent;
   background-color: transparent;
 }
 
 button.alternate-red.minimal {
-  color: var(--color-red-100);
+  color: var(--style-color-error);
   border-color: transparent;
   background-color: transparent;
 }
 
 button.alternate-green.minimal {
-  color: var(--color-green-100);
+  color: var(--style-color-success);
   border-color: transparent;
   background-color: transparent;
 }
 
 button.alternate-blue.minimal {
-  color: var(--color-blue-100);
+  color: var(--style-color-primary);
   border-color: transparent;
   background-color: transparent;
 }
@@ -146,32 +146,32 @@ button.alternate-blue.minimal {
 /* Inverse colored button for dark backgrounds                                  */
 
 button.inverse {
-  color: var(--color-blue-100);
-  background-color: var(--color-blue-40);
-  border-color: var(--color-blue-40);
+  color: var(--style-color-primary);
+  background-color: var(--style-color-primary-40);
+  border-color: var(--style-color-primary-40);
 }
 
 button.alternate-red.inverse,
 button.alternate-green.inverse,
 button.alternate-blue.inverse {
-  background-color: var(--color-primary-white);
+  background-color: var(--style-color-background);
   border-color: transparent;
 }
 
 button.alternate-red.inverse {
-  color: var(--color-red-100);
+  color: var(--style-color-error);
 }
 
 button.alternate-green.inverse {
-  color: var(--color-green-100);
+  color: var(--style-color-success);
 }
 
 button.alternate-blue.inverse {
-  color: var(--color-blue-100);
+  color: var(--style-color-primary);
 }
 
 button.minimal.inverse {
-  color: var(--color-primary-white);
+  color: var(--style-color-on-primary);
 }
 
 
@@ -180,35 +180,35 @@ button.minimal.inverse {
 /* Button hover effects                                                         */
 
 button:hover {
-  color: var(--color-primary-white);
-  background-color: var(--color-blue-100);
-  border-color: var(--color-blue-100);
+  color: var(--style-color-on-primary);
+  background-color: var(--style-color-primary);
+  border-color: var(--style-color-primary);
 }
 
 button.inverse:hover {
-  border-color: var(--color-primary-white);
+  border-color: var(--style-color-on-primary);
 }
 
 
 /* melinda specific alternate red hover style */
 button.alternate-red:hover {
-  color: var(--color-primary-white);
-  background-color: var(--color-red-100);
-  border-color: var(--color-red-100);
+  color: var(--style-color-on-primary);
+  background-color: var(--style-color-error);
+  border-color: var(--style-color-error);
 }
 
 /* melinda specific alternate green hover style */
 button.alternate-green:hover {
-  color: var(--color-primary-white);
-  background-color: var(--color-green-100);
-  border-color: var(--color-green-100);
+  color: var(--style-color-on-primary);
+  background-color: var(--style-color-success);
+  border-color: var(--style-color-success);
 }
 
 /* melinda specific alternate blue hover style */
 button.alternate-blue:hover {
-  color: var(--color-primary-white);
-  background-color: var(--color-blue-100);
-  border-color: var(--color-blue-100);
+  color: var(--style-color-on-primary);
+  background-color: var(--style-color-primary);
+  border-color: var(--style-color-primary);
 }
 
 
@@ -216,32 +216,32 @@ button.alternate-blue:hover {
 /* Button active effects                                                        */
 
 button:active {
-  color: var(--color-primary-white);
-  background-color: var(--color-blue-100);
-  border-color: var(--color-blue-100);
-  outline-color: var(--color-blue-100);
+  color: var(--style-color-on-primary);
+  background-color: var(--style-color-primary);
+  border-color: var(--style-color-primary);
+  outline-color: var(--style-color-primary);
   outline-style: solid;
   outline-width: 2px;
   outline-offset: 2px;
 }
 
 button.inverse:active {
-  outline-color: var(--color-primary-white);
+  outline-color: var(--style-color-on-primary);
 }
 
 /* melinda specific alternate red hover style */
 button.alternate-red:active {
-  outline-color: var(--color-red-100);
+  outline-color: var(--style-color-error);
 }
 
 /* melinda specific alternate green hover style */
 button.alternate-green:active {
-  outline-color: var(--color-green-100);
+  outline-color: var(--style-color-success);
 }
 
 /* melinda specific alternate blue hover style */
 button.alternate-blue:active {
-  outline-color: var(--color-blue-100);
+  outline-color: var(--style-color-primary);
 }
 
 
@@ -253,14 +253,14 @@ button.alternate-blue:active {
 
 button:disabled {
   pointer-events: none;
-  color: var(--color-blue-60);
-  background-color: var(--color-blue-20);
-  border-color: var(--color-blue-20);
+  color: var(--style-color-primary-60);
+  background-color: var(--style-color-primary-20);
+  border-color: var(--style-color-primary-20);
 }
 
 button.inverse:disabled {
-  background-color: var(--color-blue-80);
-  border-color: var(--color-blue-80);
+  background-color: var(--style-color-primary-80);
+  border-color: var(--style-color-primary-80);
 }
 
 ------------------------------------------------------------------------ */
@@ -276,7 +276,7 @@ button.inverse:disabled {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  border-color: var(--color-primary-white);
+  border-color: var(--style-color-on-primary);
 }
 
 /* Segmented button class is used with element <button> */
@@ -285,7 +285,7 @@ button.inverse:disabled {
   border-radius: 6px 0px 0px 6px;
   margin-right: 0px;
   border-right: none;
-  border-color: var(--color-primary-white);
+  border-color: var(--style-color-on-primary);
 }
 
 .segmented-button:nth-child(n):not(:first-child, :last-child) {
@@ -293,12 +293,12 @@ button.inverse:disabled {
   margin-right: 0px;
   border-radius: 0px 0px 0px 0px;
   border-right: none;
-  border-color: var(--color-primary-white);
+  border-color: var(--style-color-on-primary);
 }
 
 .segmented-button:last-child {
   border-radius: 0px 6px 6px 0px;
-  border-color: var(--color-primary-white);
+  border-color: var(--style-color-on-primary);
   margin-left: 0px;
 }
 
@@ -324,9 +324,9 @@ button.inverse:disabled {
 /* Helper class for html readibility, used for marking a button as select button */
 /* Select button in unselected state has unselected button style*/
 .select-button {
-  color: var(--color-primary-white);
-  background-color: var(--color-grey-80);
-  border-color: var(--color-primary-white);
+  color: var(--style-color-on-primary);
+  background-color: var(--style-color-neutral-80);
+  border-color: var(--style-color-on-primary);
 }
 
 /* Select button inner container for content */
@@ -350,9 +350,9 @@ button.inverse:disabled {
 
 /* Select button has selected style when it is selected */
 .select-button-selected {
-  color: var(--color-primary-white);
-  background-color: var(--color-functional-green);
-  border-color: var(--color-functional-green);
+  color: var(--style-color-on-primary);
+  background-color: var(--style-color-success);
+  border-color: var(--style-color-success);
 }
 
 /* When the select button is unselected, the icon is hidden */

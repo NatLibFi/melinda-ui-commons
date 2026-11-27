@@ -7,7 +7,7 @@
 
 @keyframes highlight {
   50% {
-    background-color: var(--highlightcolor, var(--color-yellow-60));
+    background-color: var(--highlightcolor, var(--style-color-warning));
     border-radius: 1em;
   }
 }

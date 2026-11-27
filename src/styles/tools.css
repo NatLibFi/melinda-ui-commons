@@ -14,7 +14,7 @@
 }
 
 .tools .highlight-border {
-  border: 2px solid var(--color-melinda-green-custom);
+  border: 2px solid var(--style-color-accent);
   border-radius: 1em;
   padding-left: 1.5em;
   padding-right: 1em;

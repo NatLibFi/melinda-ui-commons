@@ -81,7 +81,9 @@
 /******************************************************************************************************************************************/
 /* Root variables */
 
-:root {
+/* Declared also on [data-style] so that a nested style subtree resolves the style font tokens */
+:root,
+[data-style] {
 
   /* ----------------------------------------------------------------------------------------------------------------------*/
   /* Font family variable definitions: */
@@ -89,17 +91,17 @@
   /*    - first fallback: self-hosted font (loaded from .ttf file) */
   /*    - second fallback: local system font (any suitable monospace, serif or sans-serif font available in user's system) */
 
-  --font-family-brand: 'DM Serif Text', 'DM Serif Text Regular (file)', serif;
-  --font-family-mono: 'Noto Sans Mono', 'Noto Sans Mono Regular (file)', monospace;
-  --font-family-button: 'Public Sans', 'Public Sans SemiBold (file)', sans-serif;
-  --font-family-content: 'Public Sans', 'Public Sans Light (file)', sans-serif;
-  --font-family-headline: 'Public Sans', 'Public Sans SemiBold (file)', sans-serif;
-  --font-family-input: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
-  --font-family-label: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
-  --font-family-link: 'Public Sans', 'Public Sans SemiBold (file)', sans-serif;
-  --font-family-list: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
-  --font-family-placeholder: 'Public Sans', 'Public Sans Light (file)', sans-serif;
-  --font-family-title: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
+  --font-family-brand: var(--style-font-family-brand);
+  --font-family-mono: var(--style-font-family-mono);
+  --font-family-button: var(--style-font-family-sans-semibold);
+  --font-family-content: var(--style-font-family-sans-light);
+  --font-family-headline: var(--style-font-family-sans-semibold);
+  --font-family-input: var(--style-font-family-sans-medium);
+  --font-family-label: var(--style-font-family-sans-medium);
+  --font-family-link: var(--style-font-family-sans-semibold);
+  --font-family-list: var(--style-font-family-sans-medium);
+  --font-family-placeholder: var(--style-font-family-sans-light);
+  --font-family-title: var(--style-font-family-sans-medium);
 
 
 
