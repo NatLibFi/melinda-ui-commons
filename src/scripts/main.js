@@ -5,6 +5,7 @@ import './form.js';
 import './uiUtils.js';
 import './elements.js';
 import './progressbar.js';
+import './slider.js';
 import './snackbar.js';
 import './marcRecordUi.js';
 import './panelTabs.js';

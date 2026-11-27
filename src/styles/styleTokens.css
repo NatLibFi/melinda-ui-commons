@@ -78,6 +78,16 @@
   --style-color-footer-background: var(--color-primary-blue);
   --style-color-footer-text: var(--color-primary-white);
 
+  /* DATA: categories and highlighted / other values in data shown with      */
+  /* components, e.g. slider scale segments and histograms (slider.css).     */
+  /* Order of the categories from the style guide p.25 scale example.        */
+  --style-color-data-1: var(--color-red-80);
+  --style-color-data-2: var(--color-yellow-80);
+  --style-color-data-3: var(--color-teal-80);
+  --style-color-data-4: var(--color-green-80);
+  --style-color-data-highlight: var(--color-teal-100);
+  --style-color-data-muted: var(--color-teal-60);
+
   /* FONT FAMILIES */
   --style-font-family-brand: 'DM Serif Text', 'DM Serif Text Regular (file)', serif;
   --style-font-family-sans-light: 'Public Sans', 'Public Sans Light (file)', sans-serif;

@@ -1,0 +1,587 @@
+/* ---------------------------------------------------------------------------- */
+/* Sliders                                                                      */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.25: single value and range sliders in Link Blue. Labels,  */
+/* the min and max values and the current value are always visible as text,    */
+/* so colour is never the only indicator of a value.                            */
+/*                                                                              */
+/*   Single value  .slider with one <input type="range"> in .slider-track       */
+/*   Range         .slider.slider-range with two inputs (lower first)           */
+/*   Scale         .slider.slider-scale: steps with tick marks, labels at the   */
+/*                 ends and optional step icons (.slider-scale-steps)           */
+/*   Coloured      .slider-scale.slider-scale-colored: a colour per segment     */
+/*   Histogram     .slider-histogram: bars of the data above the track          */
+/*   Values below  .slider-values-below shows the current values under the      */
+/*                 track instead of above the thumbs                            */
+/*                                                                              */
+/*   <div class="slider">                                                       */
+/*     <label class="slider-label label-text-m" for="volume">Volume</label>     */
+/*     <div class="slider-row">                                                 */
+/*       <span class="slider-limit">0%</span>                                   */
+/*       <div class="slider-track">                                             */
+/*         <input type="range" id="volume" min="0" max="100" value="43"         */
+/*                data-slider-unit="%">                                         */
+/*         <output class="slider-value" for="volume">43%</output>               */
+/*       </div>                                                                 */
+/*       <span class="slider-limit">100%</span>                                 */
+/*     </div>                                                                   */
+/*   </div>                                                                     */
+/*                                                                              */
+/* scripts/slider.js (initializeSliders) keeps the fill, the value texts and    */
+/* aria-valuetext in sync with the inputs and stops range thumbs from crossing. */
+/*                                                                              */
+/* Track 12 px, thumb 24 px (measured from the p.25 examples). Hover: Blue 100  */
+/* thumb. Focus: 2 px outline 2 px outside the round thumb. Disabled: silver.   */
+/* White thumb and fill on dark backgrounds (.inverse).                         */
+/*                                                                              */
+/* .state-hover and .state-focus on .slider show the states without            */
+/* interaction, for documentation and style guide pages only.                   */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-link, --style-color-link-hover, --style-color-link-focus,    */
+/*   --style-color-primary-60, --style-color-primary-80, --style-color-text,    */
+/*   --style-color-neutral-*, --style-color-background, --style-color-on-primary*/
+/* ---------------------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------------------- */
+/* Container, label and the row with min and max values                         */
+
+.slider {
+  --slider-thumb-size: 24px;
+  --slider-thumb-radius: calc(var(--slider-thumb-size) / 2);
+  --slider-track-height: 12px;
+  --slider-hit-height: 48px;
+
+  --slider-color-track: var(--style-color-primary-60);
+  --slider-color-fill: var(--style-color-link);
+  --slider-color-thumb: var(--style-color-link);
+  --slider-color-thumb-hover: var(--style-color-link-hover);
+  --slider-color-focus: var(--style-color-link-focus);
+  --slider-color-focus-gap: var(--style-color-background);
+  --slider-color-tick: var(--style-color-text);
+  --slider-color-text: var(--style-color-text);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  width: 100%;
+  max-width: 40rem;
+  color: var(--slider-color-text);
+}
+
+.slider-label {
+  color: var(--slider-color-text);
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+  /* Room for the current value above the thumbs */
+  padding-top: var(--spacing-24);
+}
+
+.slider-values-below .slider-row,
+.slider-scale .slider-row {
+  padding-top: 0;
+}
+
+.slider-values-below .slider-row {
+  padding-bottom: var(--spacing-24);
+}
+
+.slider-limit,
+.slider-value {
+  color: var(--slider-color-text);
+  font-family: var(--font-family-label);
+  font-weight: var(--font-weight-label);
+  font-size: var(--font-size-label-medium);
+  line-height: var(--font-line-height-label-medium);
+  white-space: nowrap;
+}
+
+.slider-limit {
+  flex: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Track and fill                                                               */
+/*                                                                              */
+/* The thumb centre moves from one thumb radius from the left edge to one       */
+/* radius from the right edge. Fill and value positions use the same range:     */
+/* left = radius + (100% - 2 * radius) * position, position 0 ... 1.            */
+/* slider.js sets --slider-start and --slider-end (0 ... 1).                    */
+
+.slider-track {
+  --slider-start: 0;
+  --slider-end: 0;
+  --slider-travel: calc(100% - var(--slider-thumb-size));
+
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 8rem;
+  height: var(--slider-hit-height);
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    height: var(--slider-track-height);
+    border-radius: calc(var(--slider-track-height) / 2);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  /* Track */
+  &::before {
+    left: 0;
+    right: 0;
+    background-color: var(--slider-color-track);
+  }
+
+  /* Fill: from the start of the track to the thumb, or between the range thumbs */
+  &::after {
+    left: 0;
+    width: calc(var(--slider-thumb-radius) + var(--slider-travel) * var(--slider-end));
+    background-color: var(--slider-color-fill);
+  }
+}
+
+.slider-range .slider-track::after {
+  left: calc(var(--slider-thumb-radius) + var(--slider-travel) * var(--slider-start));
+  width: calc(var(--slider-travel) * (var(--slider-end) - var(--slider-start)));
+  border-radius: 0;
+}
+
+/* Scale: thin track without fill, the thumb and the ticks show the value */
+.slider-scale {
+  --slider-track-height: 4px;
+  --slider-thumb-width: 12px;
+  --slider-thumb-height: 28px;
+
+  .slider-track::after {
+    display: none;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Range input and thumb                                                        */
+/*                                                                              */
+/* The native input lies over the whole track with a transparent track of its  */
+/* own. Thumb rules are repeated for WebKit/Blink and Firefox: one selector     */
+/* list with both pseudo-elements would be dropped by both browsers.            */
+
+.slider-track input[type="range"] {
+  --slider-thumb-color: var(--slider-color-thumb);
+  --slider-thumb-ring: 0 1px 3px color-mix(in srgb, var(--style-color-black) 25%, transparent);
+
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-webkit-slider-runnable-track {
+    height: 100%;
+    background: transparent;
+    border: none;
+  }
+
+  &::-moz-range-track {
+    height: 100%;
+    background: transparent;
+    border: none;
+  }
+
+  &::-moz-range-progress {
+    background: transparent;
+  }
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: var(--slider-thumb-width, var(--slider-thumb-size));
+    height: var(--slider-thumb-height, var(--slider-thumb-size));
+    margin-top: calc((var(--slider-hit-height) - var(--slider-thumb-height, var(--slider-thumb-size))) / 2);
+    border: none;
+    border-radius: var(--slider-thumb-size);
+    background-color: var(--slider-thumb-color);
+    box-shadow: var(--slider-thumb-ring);
+    cursor: grab;
+  }
+
+  &::-moz-range-thumb {
+    width: var(--slider-thumb-width, var(--slider-thumb-size));
+    height: var(--slider-thumb-height, var(--slider-thumb-size));
+    border: none;
+    border-radius: var(--slider-thumb-size);
+    background-color: var(--slider-thumb-color);
+    box-shadow: var(--slider-thumb-ring);
+    cursor: grab;
+  }
+
+  &:active::-webkit-slider-thumb {
+    cursor: grabbing;
+  }
+
+  &:active::-moz-range-thumb {
+    cursor: grabbing;
+  }
+
+  /* Hover and active: Blue 100 thumb */
+  &:hover,
+  &:active {
+    --slider-thumb-color: var(--slider-color-thumb-hover);
+  }
+
+  /* Focus: 2 px outline 2 px outside the thumb, rounded like the thumb */
+  &:focus-visible {
+    --slider-thumb-color: var(--slider-color-thumb-hover);
+    --slider-thumb-ring: 0 0 0 2px var(--slider-color-focus-gap), 0 0 0 4px var(--slider-color-focus);
+  }
+}
+
+/* Documentation states */
+.slider.state-hover .slider-track input[type="range"] {
+  --slider-thumb-color: var(--slider-color-thumb-hover);
+}
+
+.slider.state-focus .slider-track input[type="range"] {
+  --slider-thumb-color: var(--slider-color-thumb-hover);
+  --slider-thumb-ring: 0 0 0 2px var(--slider-color-focus-gap), 0 0 0 4px var(--slider-color-focus);
+}
+
+/* Range: only the thumbs take pointer events, so both thumbs can be dragged */
+.slider-range .slider-track input[type="range"] {
+  pointer-events: none;
+
+  &::-webkit-slider-thumb {
+    pointer-events: auto;
+  }
+
+  &::-moz-range-thumb {
+    pointer-events: auto;
+  }
+
+  /* slider.js raises the lower thumb when it is past the middle, */
+  /* so thumbs on top of each other can always be pulled apart */
+  &.slider-input-raised {
+    z-index: 2;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Current values                                                               */
+
+.slider-value {
+  position: absolute;
+  bottom: calc(50% + var(--slider-thumb-radius) + var(--spacing-4));
+  left: calc(var(--slider-thumb-radius) + var(--slider-travel) * var(--slider-end));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.slider-value-start {
+  left: calc(var(--slider-thumb-radius) + var(--slider-travel) * var(--slider-start));
+}
+
+.slider-values-below .slider-value {
+  top: calc(50% + var(--slider-thumb-radius) + var(--spacing-4));
+  bottom: auto;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Scale: tick marks and step labels or icons                                   */
+/*                                                                              */
+/*   <div class="slider-ticks" aria-hidden="true">                              */
+/*     <span></span> ... one per step                                           */
+/*   </div>                                                                     */
+/*   <div class="slider-ticks slider-ticks-minor" aria-hidden="true">           */
+/*     <span></span> ... one per value, for scales with values between points  */
+/*   </div>                                                                     */
+/*   <ul class="slider-scale-steps" aria-hidden="true">                         */
+/*     <li><i class="fa-light fa-face-tired"></i></li> ... one per step         */
+/*   </ul>                                                                      */
+/*                                                                              */
+/* The ticks and steps are spread over the thumb travel, so step n of N is      */
+/* under the thumb at value n.                                                  */
+
+.slider-ticks {
+  position: absolute;
+  top: 50%;
+  left: var(--slider-thumb-radius);
+  right: var(--slider-thumb-radius);
+  display: flex;
+  justify-content: space-between;
+  height: var(--slider-thumb-size);
+  transform: translateY(-50%);
+  pointer-events: none;
+
+  span {
+    width: 1px;
+    height: 100%;
+    background-color: var(--slider-color-tick);
+  }
+}
+
+/* Minor ticks: a short tick per value, e.g. 0-10, under the labelled points */
+.slider-ticks-minor {
+  align-items: center;
+
+  span {
+    height: calc(var(--slider-track-height) + var(--spacing-8));
+  }
+}
+
+/* A scale with a current value above the thumb, for values between points */
+.slider-scale:has(.slider-value) .slider-row {
+  padding-top: var(--spacing-24);
+}
+
+.slider-scale-steps {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--slider-color-text);
+
+  li {
+    font-size: var(--icon-size-l);
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+    width: 0;
+    white-space: nowrap;
+  }
+}
+
+/* Line the steps up with the ticks: skip the end labels and the thumb radius */
+.slider-scale-steps-row {
+  display: flex;
+  gap: var(--spacing-16);
+
+  .slider-scale-steps {
+    flex: 1 1 auto;
+    min-width: 8rem;
+    padding: 0 var(--slider-thumb-radius);
+  }
+
+  .slider-limit {
+    visibility: hidden;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Coloured scale: a colour per segment between the ticks (p.25 example)        */
+/*                                                                              */
+/*   <div class="slider slider-scale slider-scale-colored" ...>                 */
+/*     ... in .slider-track, before the ticks:                                  */
+/*     <div class="slider-segments" aria-hidden="true">                         */
+/*       <span></span> ... one per segment (steps - 1)                          */
+/*     </div>                                                                   */
+/*                                                                              */
+/* Segments take the data colours 1-4 in turn (Red 80, Yellow 80, Teal 80,     */
+/* Green 80). Set --slider-segment-color on a segment to change its colour.     */
+/* The ticks, step texts and icons carry the meaning, not the colours. Blue 100 */
+/* thumb, so it stands out from all segment colours.                            */
+
+.slider-scale-colored {
+  --slider-color-track: transparent;
+  --slider-color-thumb: var(--style-color-primary);
+}
+
+.slider-segments {
+  position: absolute;
+  top: 50%;
+  left: var(--slider-thumb-radius);
+  right: var(--slider-thumb-radius);
+  display: flex;
+  height: var(--slider-track-height);
+  transform: translateY(-50%);
+  pointer-events: none;
+
+  span {
+    flex: 1 1 0;
+    background-color: var(--slider-segment-color);
+  }
+
+  span:nth-child(4n + 1) { --slider-segment-color: var(--style-color-data-1); }
+  span:nth-child(4n + 2) { --slider-segment-color: var(--style-color-data-2); }
+  span:nth-child(4n + 3) { --slider-segment-color: var(--style-color-data-3); }
+  span:nth-child(4n + 4) { --slider-segment-color: var(--style-color-data-4); }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Histogram: bars of the data above the track (p.25 price range example)      */
+/*                                                                              */
+/*   <div class="slider slider-range slider-values-below slider-histogram" ...> */
+/*     <span class="slider-label ...">Price</span>                              */
+/*     <div class="slider-histogram-row" aria-hidden="true">                    */
+/*       <span class="slider-limit">0 €</span>                                  */
+/*       <div class="slider-histogram-bars"                                     */
+/*            data-slider-histogram="2,5,9,7,..."></div>                        */
+/*       <span class="slider-limit">1000 €</span>                               */
+/*     </div>                                                                   */
+/*     <div class="slider-row"> ... range inputs ... </div>                     */
+/*     <p class="body-s" aria-live="polite">                                    */
+/*       <span class="slider-histogram-total"></span> products in the range     */
+/*     </p>                                                                     */
+/*   </div>                                                                     */
+/*                                                                              */
+/* data-slider-histogram: counts of equal-width bins from min to max. slider.js */
+/* draws a bar per bin, highlights the bins inside the selected range (Teal     */
+/* 100, others Teal 60) and writes the sum of the highlighted counts to        */
+/* .slider-histogram-total, so the selection is also given as text.             */
+
+.slider-histogram {
+  --slider-histogram-height: 5rem;
+}
+
+.slider-histogram-row {
+  display: flex;
+  gap: var(--spacing-16);
+  /* Bars stand on the track: pull the track row up by the space above the track */
+  margin-bottom: calc((var(--slider-track-height) - var(--slider-hit-height)) / 2 - var(--spacing-8));
+
+  .slider-limit {
+    visibility: hidden;
+  }
+}
+
+.slider-histogram-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  flex: 1 1 auto;
+  min-width: 8rem;
+  height: var(--slider-histogram-height);
+  padding: 0 var(--slider-thumb-radius);
+
+  span {
+    flex: 1 1 0;
+    height: calc(var(--slider-bar-height, 0) * 100%);
+    background-color: var(--slider-color-data-muted);
+  }
+
+  .slider-histogram-bar-selected {
+    background-color: var(--slider-color-data-highlight);
+  }
+}
+
+.slider {
+  --slider-color-data-highlight: var(--style-color-data-highlight);
+  --slider-color-data-muted: var(--style-color-data-muted);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Disabled: silver track, thumb and texts                                      */
+
+.slider:has(input[type="range"]:disabled) {
+  --slider-color-track: var(--style-color-neutral-40);
+  --slider-color-fill: var(--style-color-neutral-80);
+  --slider-color-thumb: var(--style-color-neutral-80);
+  --slider-color-thumb-hover: var(--style-color-neutral-80);
+  --slider-color-tick: var(--style-color-neutral-80);
+  --slider-color-text: var(--style-color-neutral-100);
+  --slider-color-data-highlight: var(--style-color-neutral-80);
+  --slider-color-data-muted: var(--style-color-neutral-40);
+
+  .slider-segments {
+    display: none;
+  }
+
+  .slider-track input[type="range"] {
+    cursor: not-allowed;
+
+    &::-webkit-slider-thumb {
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    &::-moz-range-thumb {
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse: white thumb and fill on dark backgrounds                            */
+
+.inverse .slider,
+.slider.inverse {
+  --slider-color-track: var(--style-color-primary-80);
+  --slider-color-fill: var(--style-color-on-primary);
+  --slider-color-thumb: var(--style-color-on-primary);
+  --slider-color-thumb-hover: var(--style-color-on-primary);
+  --slider-color-focus: var(--style-color-on-primary);
+  --slider-color-focus-gap: var(--style-color-primary);
+  --slider-color-tick: var(--style-color-on-primary);
+  --slider-color-text: var(--style-color-on-primary);
+  --slider-color-data-highlight: var(--style-color-on-primary);
+  --slider-color-data-muted: var(--style-color-primary-80);
+}
+
+.inverse .slider:has(input[type="range"]:disabled),
+.slider.inverse:has(input[type="range"]:disabled) {
+  --slider-color-track: var(--style-color-primary-80);
+  --slider-color-fill: var(--style-color-primary-60);
+  --slider-color-thumb: var(--style-color-primary-60);
+  --slider-color-thumb-hover: var(--style-color-primary-60);
+  --slider-color-tick: var(--style-color-primary-60);
+  --slider-color-text: var(--style-color-primary-60);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Mobile: min and max values under the track ends, track full width            */
+
+@media (max-width: 480px) {
+  .slider-row {
+    flex-wrap: wrap;
+    row-gap: 0;
+  }
+
+  .slider-track {
+    order: -1;
+    flex-basis: 100%;
+  }
+
+  .slider-row .slider-limit:last-child {
+    margin-left: auto;
+  }
+
+  /* Values below the track: min and max values under the current values */
+  .slider-values-below .slider-row {
+    padding-bottom: 0;
+  }
+
+  .slider-values-below .slider-limit {
+    margin-top: var(--spacing-24);
+  }
+
+  .slider-scale-steps-row .slider-limit,
+  .slider-histogram-row .slider-limit {
+    display: none;
+  }
+}
