@@ -74,6 +74,19 @@
   --style-color-warning-40: var(--color-yellow-40);
   --style-color-warning-20: var(--color-yellow-20);
 
+  /* STATUS MESSAGES: alert banner and status message (status.css) background */
+  /* and icon per message type (style guide p.48). Melinda uses the           */
+  /* Kansalliskirjasto colours; the notification (snackbar) has its own       */
+  /* --style-color-message-* tokens below.                                    */
+  --style-color-status-error-background: var(--color-red-40);
+  --style-color-status-error-icon: var(--color-red-100);
+  --style-color-status-alert-background: var(--color-yellow-60);
+  --style-color-status-alert-icon: var(--color-blue-100);
+  --style-color-status-success-background: var(--color-green-40);
+  --style-color-status-success-icon: var(--color-green-100);
+  --style-color-status-info-background: var(--color-blue-40);
+  --style-color-status-info-icon: var(--color-blue-100);
+
   /* FOOTER: dark blue is always the National Library footer colour */
   --style-color-footer-background: var(--color-primary-blue);
   --style-color-footer-text: var(--color-primary-white);

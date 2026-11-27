@@ -1,0 +1,252 @@
+/* ---------------------------------------------------------------------------- */
+/* Alert banners and status messages                                            */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.48. A coloured message box for a crisis banner on top of  */
+/* the page, information before or after a form submission, or a cookie bar.   */
+/* Not the floating notification (snackbar.css), which disappears by itself.    */
+/*                                                                              */
+/* Status banner: one line with an icon, text with an optional link and an      */
+/* optional button on the right. Below 36 rem the button moves under the text.  */
+/*                                                                              */
+/*   <div class="status-banner status-error">                                   */
+/*     <div class="status-banner-layout">                                       */
+/*       <i class="fa-light fa-hexagon-exclamation status-icon"                 */
+/*          aria-hidden="true"></i>                                             */
+/*       <p class="status-text">                                                */
+/*         <span class="visually-hidden">Error:</span>                          */
+/*         Error message. <a class="link-inline" href="...">Link to more info</a>*/
+/*       </p>                                                                   */
+/*       <div class="status-actions">                                           */
+/*         <button class="small alternate-red" type="button">I understand       */
+/*         </button>                                                            */
+/*       </div>                                                                 */
+/*     </div>                                                                   */
+/*   </div>                                                                     */
+/*                                                                              */
+/* Status message: icon and Heading XXS on top, a close button on the right,    */
+/* longer text under them.                                                      */
+/*                                                                              */
+/*   <section class="status-message status-alert"                               */
+/*            aria-labelledby="attention-heading">                              */
+/*     <div class="status-message-header">                                      */
+/*       <i class="fa-light fa-circle-info status-icon" aria-hidden="true"></i> */
+/*       <h2 class="status-heading" id="attention-heading">Attention</h2>       */
+/*       <button class="small minimal status-close" type="button">             */
+/*         Close <i class="fa-regular fa-xmark" aria-hidden="true"></i>         */
+/*       </button>                                                              */
+/*     </div>                                                                   */
+/*     <p class="status-text">Message text. <a class="link-inline" ...>...</a></p>*/
+/*   </section>                                                                 */
+/*                                                                              */
+/* Types (background / icon, the same in both styles):                          */
+/*   .status-error     Red 40 / Red 100, fa-hexagon-exclamation                 */
+/*   .status-alert     Yellow 60 / Blue 100, fa-triangle-exclamation            */
+/*   .status-success   Green 40 / Green 100, fa-circle-check                    */
+/*   .status-info      Blue 40 / Blue 100, fa-circle-info                       */
+/*                                                                              */
+/* Specs: padding 16 px, icon XL (32 px), 16 px between icon and text or        */
+/* heading, text and links Body M, buttons S, close button Button minimal S.    */
+/*                                                                              */
+/* Buttons use button.css: primary (consent, "Ok, thanks!"), .alternate-red     */
+/* (error acknowledgement), .minimal (optional close). Focus: 2 px outline with */
+/* rounded corners, 2 px away. .state-hover and .state-focus show the states    */
+/* on documentation pages only.                                                 */
+/*                                                                              */
+/* The style guide defines no inverse message: the colours do not depend on     */
+/* the surroundings, so a message keeps its look inside an .inverse section.    */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-status-<type>-background, --style-color-status-<type>-icon,  */
+/*   --style-color-text, --style-color-heading, --style-color-link,             */
+/*   --style-color-link-hover, --style-color-link-focus                         */
+/* ---------------------------------------------------------------------------- */
+
+
+.status-banner,
+.status-message {
+  --status-background: var(--style-color-status-info-background);
+  --status-icon: var(--style-color-status-info-icon);
+
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: var(--spacing-16);
+  background-color: var(--status-background);
+  color: var(--style-color-text);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-body-m);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Types                                                                        */
+
+.status-error {
+  --status-background: var(--style-color-status-error-background);
+  --status-icon: var(--style-color-status-error-icon);
+}
+
+.status-alert {
+  --status-background: var(--style-color-status-alert-background);
+  --status-icon: var(--style-color-status-alert-icon);
+}
+
+.status-success {
+  --status-background: var(--style-color-status-success-background);
+  --status-icon: var(--style-color-status-success-icon);
+}
+
+.status-info {
+  --status-background: var(--style-color-status-info-background);
+  --status-icon: var(--style-color-status-info-icon);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Shared parts                                                                 */
+
+.status-icon {
+  flex: none;
+  color: var(--status-icon);
+  font-size: var(--icon-size-xl);
+  line-height: 1;
+}
+
+.status-text {
+  margin: 0;
+  color: var(--style-color-text);
+}
+
+.status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-8);
+}
+
+/* Buttons: S size, focus outline 2 px with rounded corners */
+:is(.status-banner, .status-message) button {
+  gap: var(--spacing-8);
+  white-space: nowrap;
+
+  &:is(:focus-visible, .state-focus) {
+    outline: 2px solid var(--style-color-link-focus);
+    outline-offset: 2px;
+  }
+}
+
+/* Minimal close button: no background on hover, underlined text instead */
+:is(.status-banner, .status-message) button.minimal {
+  color: var(--style-color-text);
+
+  &:is(:hover, :active, .state-hover) {
+    color: var(--style-color-link-hover);
+    background-color: transparent;
+    border-color: transparent;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  &:active {
+    outline: none;
+  }
+}
+
+/* Links keep their light background colours also inside an .inverse section */
+:is(.status-banner, .status-message) :is(.link, .link-inline) {
+  color: var(--style-color-link);
+
+  &:is(:hover, :active, .state-hover) {
+    color: var(--style-color-link-hover);
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline-color: var(--style-color-link-focus);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Status banner                                                                */
+
+.status-banner {
+  container: status-banner / inline-size;
+}
+
+.status-banner-layout {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "icon text actions";
+  align-items: center;
+  column-gap: var(--spacing-16);
+  row-gap: var(--spacing-12);
+
+  > .status-icon {
+    grid-area: icon;
+  }
+
+  > .status-text {
+    grid-area: text;
+  }
+
+  > .status-actions {
+    grid-area: actions;
+    justify-content: flex-end;
+  }
+}
+
+/* Banner without a button */
+.status-banner-layout:not(:has(.status-actions)) {
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "icon text";
+}
+
+/* Narrow banners: the button under the text */
+@container status-banner (max-width: 36rem) {
+
+  .status-banner-layout {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "icon text"
+      ".    actions";
+    align-items: start;
+
+    > .status-actions {
+      justify-content: flex-start;
+    }
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Status message                                                               */
+
+.status-message {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+}
+
+.status-message-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+
+  > .status-close {
+    margin-left: auto;
+    align-self: flex-start;
+  }
+}
+
+.status-heading {
+  margin: 0;
+  color: var(--style-color-heading);
+  font-family: var(--font-family-headline);
+  font-weight: var(--font-weight-headline);
+  font-size: var(--font-size-heading-xxs);
+  line-height: var(--font-line-height-heading-xxs);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
