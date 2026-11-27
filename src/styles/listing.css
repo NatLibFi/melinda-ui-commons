@@ -1,0 +1,180 @@
+/* ---------------------------------------------------------------------------- */
+/* Blog post and page listings                                                  */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.38. A compact form of the page liftup for archives and    */
+/* lists of pages: heading, then Author | Date or Tag | Date, and optionally a  */
+/* summary. No image, no background, no icon. Only the heading is a link and   */
+/* only the heading is clickable, as in liftups (liftup.css).                   */
+/*                                                                              */
+/*   <ul class="listing">                                                       */
+/*     <li>                                                                     */
+/*       <article class="listing-item">                                         */
+/*         <h3 class="listing-heading">                                         */
+/*           <a class="listing-link" href="...">Heading</a>                     */
+/*         </h3>                                                                */
+/*         <p class="listing-meta">                                             */
+/*           <span>Maija Meikäläinen</span>                                     */
+/*           <time datetime="2021-02-12">12.02.2021</time>                      */
+/*         </p>                                                                 */
+/*         <p class="listing-summary">Summary text</p>                          */
+/*       </article>                                                             */
+/*     </li>                                                                    */
+/*   </ul>                                                                      */
+/*                                                                              */
+/* The heading comes first, then the date and author, so that screen readers   */
+/* read the title first (p.38).                                                 */
+/*                                                                              */
+/*   Heading           Heading M                                                */
+/*   Author/Tag | Date Heading XXS, all caps, 12 px on each side of a 1 px     */
+/*                     Grey 60 line                                             */
+/*   Summary           Body M, optional. Do not mix listings with and without   */
+/*                     summaries in one list.                                   */
+/*   Vertical space between heading, meta and summary: 16 px                    */
+/*   Space between listed items: 32 px                                          */
+/*                                                                              */
+/* Inverse: .inverse on an ancestor or on .listing / .listing-item: white text  */
+/* and white focus outline.                                                     */
+/*                                                                              */
+/* States (not in the style guide, as in liftups p.37): hovering or focusing   */
+/* the heading link turns the heading Link Blue (inverse: White) and underlines*/
+/* it. Focus draws a 2 px Blue 100 (inverse White) outline with 6 px corners    */
+/* 10 px outside the whole item. Listings have no disabled state.               */
+/*                                                                              */
+/* .state-hover and .state-focus show the states without interaction, for       */
+/* documentation pages only.                                                    */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-link, --style-color-link-strong, --style-color-link-focus,   */
+/*   --style-color-neutral-60, --style-color-on-primary                         */
+/* ---------------------------------------------------------------------------- */
+
+
+.listing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-32);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    margin: 0;
+  }
+}
+
+.listing-item {
+  --listing-color: var(--style-color-link-strong);
+  --listing-hover-color: var(--style-color-link);
+  --listing-focus-color: var(--style-color-link-focus);
+  --listing-focus-offset: 10px;
+  --listing-focus-radius: 6px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  margin: 0;
+  color: var(--listing-color);
+
+  > * {
+    margin: 0;
+  }
+}
+
+.inverse .listing-item,
+.listing.inverse .listing-item,
+.listing-item.inverse {
+  --listing-color: var(--style-color-on-primary);
+  --listing-hover-color: var(--style-color-on-primary);
+  --listing-focus-color: var(--style-color-on-primary);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Parts                                                                        */
+
+.listing-heading {
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-heading-m);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-heading-m);
+  color: inherit;
+}
+
+/* font: inherit overrides the default link font (defaults.css a) */
+.listing-link {
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+
+  /* The focus outline is drawn around the whole item */
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+/* Author | Date or Tag | Date (Heading XXS, all caps), 1 px line between.    */
+/* Every part has the line on its left. The meta is moved left by the line    */
+/* and its spacing and clipped there, so the line of the first part on each   */
+/* row is hidden: no line at the start of a row when the parts wrap (mobile). */
+.listing-meta {
+  --listing-meta-separator: calc(var(--spacing-12) * 2 + 1px);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: var(--spacing-4);
+  clip-path: inset(0 0 0 var(--listing-meta-separator));
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-heading-xxs);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-heading-xxs);
+  text-transform: uppercase;
+
+  > * {
+    margin-left: var(--spacing-12);
+    padding-left: var(--spacing-12);
+    border-left: 1px solid var(--style-color-neutral-60);
+  }
+}
+
+/* Two classes, so that page rules such as p { margin: 0 } do not win */
+.listing-item > .listing-meta {
+  margin: 0 0 0 calc(var(--listing-meta-separator) * -1);
+}
+
+.listing-summary {
+  color: inherit;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-body-m);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Hover and focus                                                              */
+
+.listing-item:is(:has(.listing-link:is(:hover, :active)), .state-hover, :has(.listing-link:focus-visible), .state-focus) {
+
+  .listing-heading {
+    color: var(--listing-hover-color);
+  }
+
+  .listing-link {
+    text-decoration-line: underline;
+  }
+}
+
+/* Drawn in ::before so that the outline goes around the whole item */
+.listing-item:is(:has(.listing-link:focus-visible), .state-focus)::before {
+  content: '';
+  position: absolute;
+  inset: calc((var(--listing-focus-offset) + 2px) * -1);
+  border: 2px solid var(--listing-focus-color);
+  border-radius: var(--listing-focus-radius);
+  pointer-events: none;
+}
