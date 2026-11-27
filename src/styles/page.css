@@ -1,0 +1,244 @@
+/* ---------------------------------------------------------------------------- */
+/* Page parts for the page templates                                            */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.65-78 (page mockups). A page is a stack of sections       */
+/* (layout.css) built from the components: header, hero, link list, contact    */
+/* card, liftups, carousel, search results, footer. This file has the parts of  */
+/* the mockups that are not components of their own:                            */
+/*                                                                              */
+/*   .page-search-bar      Search band under the header on search sub-pages     */
+/*                         (p.69): Primary background, search field and button  */
+/*                         (hero.css .hero-search) and an outlined link S.      */
+/*                         16 px padding, 24 px between the parts.              */
+/*   .page-quick-links     Band of quick links under the search hero (p.68):    */
+/*                         Primary background, icon links on the left, an       */
+/*                         outlined link on the right. 16 px padding, 32 px      */
+/*                         between the links.                                   */
+/*   .page-text            Body text of a content page (p.66, p.69): Heading L  */
+/*                         section headings (48 px above), Body M paragraphs    */
+/*                         and lists, 16 px between paragraphs.                 */
+/*   .page-link-groups     Sidebar link groups (p.66): Heading XXS group        */
+/*                         headings, icon links M 16 px apart, 40 px between    */
+/*                         the groups.                                          */
+/*   .page-section-heading Heading M section heading with a 1 px Primary line   */
+/*                         above it (p.66 contact and more information).        */
+/*   .page-info            Information in two columns (p.66): Heading XXS       */
+/*                         labels and Body S text, 32 px between the items, 40  */
+/*                         px between the columns. One column below 48 rem.     */
+/*   .page-tags            Keyword and index term tags (p.66): Heading XXS      */
+/*                         label, tag.css tags 8 px apart.                      */
+/*   .page-share           Share link row (p.66): 1 px Neutral 40 line above,   */
+/*                         24 px padding, icon link M.                          */
+/*   .page-anchor-nav      "On this page" anchor links (p.69): Heading XXS      */
+/*                         label, icon links M with an arrow down.              */
+/*                                                                              */
+/* Interactive states come from the components (link.css, iconLink.css,         */
+/* outlinedLink.css, hero.css): hover underlines, focus draws the 2 px focus    */
+/* outline with rounded corners, white on the Primary bands (.inverse).         */
+/*                                                                              */
+/* Mobile: the bands and columns stack under 48 rem (container queries on       */
+/* .layout-container, so a narrow page gets the mobile layout too).             */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-primary, --style-color-on-primary, --style-color-heading,    */
+/*   --style-color-text, --style-color-neutral-40                               */
+/* ---------------------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------------------- */
+/* Search band (p.69)                                                           */
+
+.page-search-bar {
+  padding-block: var(--spacing-16);
+  background-color: var(--style-color-primary);
+  color: var(--style-color-on-primary);
+
+  .layout-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-16) var(--spacing-24);
+  }
+
+  .hero-search {
+    flex: 1 1 24rem;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Quick links band (p.68)                                                      */
+
+.page-quick-links {
+  padding-block: var(--spacing-16);
+  background-color: var(--style-color-primary);
+  color: var(--style-color-on-primary);
+
+  .layout-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-16) var(--spacing-32);
+  }
+}
+
+.page-quick-links-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-16) var(--spacing-32);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Body text (p.66, p.69)                                                       */
+
+.page-text {
+  color: var(--style-color-text);
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* Only the direct children: components inside the text keep their own spacing */
+  > :is(h2, h3) {
+    margin: var(--spacing-48) 0 var(--spacing-24);
+    color: var(--style-color-heading);
+  }
+
+  > :is(p, ul, ol) {
+    margin: 0 0 var(--spacing-16);
+  }
+
+  > .typography-list li + li {
+    margin-top: var(--spacing-8);
+  }
+
+  > hr {
+    margin: var(--spacing-40) 0;
+    border: 0;
+    border-top: 1px solid var(--style-color-primary);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Group labels (p.66 sidebar, info, tags, p.69): add to .heading-xxs           */
+
+.heading-xxs.page-label {
+  margin: 0 0 var(--spacing-16);
+  text-transform: uppercase;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Sidebar link groups (p.66) and anchor links (p.69)                           */
+
+.page-link-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-40);
+}
+
+:is(.page-link-group, .page-anchor-nav) ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Section heading with a line (p.66)                                           */
+
+.page-section-heading {
+  margin: 0 0 var(--spacing-32);
+  padding-top: var(--spacing-24);
+  border-top: 1px solid var(--style-color-primary);
+  color: var(--style-color-heading);
+}
+
+.page-section-heading:not(:first-child) {
+  margin-top: var(--spacing-48);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Information in two columns (p.66)                                            */
+
+.page-info {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-32) var(--spacing-40);
+  margin: 0;
+  color: var(--style-color-text);
+
+  > div {
+    min-width: 0;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  dd + dd {
+    margin-top: var(--spacing-8);
+  }
+
+  :is(ul, p) {
+    margin: 0;
+  }
+}
+
+@container layout (min-width: 48rem) {
+
+  .page-info {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Tags (p.66) and share link (p.66)                                            */
+
+.page-tags {
+  margin-top: var(--spacing-40);
+  padding-top: var(--spacing-32);
+  border-top: 1px solid var(--style-color-primary);
+
+  .tag-container {
+    padding: 0;
+    gap: var(--spacing-8);
+    margin-bottom: var(--spacing-32);
+  }
+}
+
+.page-share {
+  margin-top: var(--spacing-8);
+  padding-top: var(--spacing-24);
+  border-top: 1px solid var(--style-color-neutral-40);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Section title above a carousel or a liftup list (p.68): 32 px under it       */
+
+.page-section-title {
+  margin: 0 0 var(--spacing-32);
+  color: var(--style-color-heading);
+}
+
+/* Keyword and index term tags as links (tag.css): no link underline */
+.page-tags a.tag-wrapper {
+  text-decoration: none;
+}
