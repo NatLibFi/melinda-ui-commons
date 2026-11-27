@@ -1,0 +1,462 @@
+/* ---------------------------------------------------------------------------- */
+/* Site footer                                                                  */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.61-64. The footer is built from sections that are used    */
+/* as needed, always in this order: logo and contact information, service       */
+/* description or opening hours, groups of links and social media links. All    */
+/* National Library services use four columns; a column without content (for   */
+/* example social media) is left out. Under the footer of a service with its    */
+/* own brand identity is the National Library identifier banner.                */
+/*                                                                              */
+/*   <footer class="site-footer">                                               */
+/*     <div class="site-footer-main inverse">                                   */
+/*       <div class="site-footer-sections">                                     */
+/*         <div class="site-footer-section">                                    */
+/*           <a class="site-footer-logo" href="/"><img alt="..."></a>           */
+/*           <dl class="site-footer-contact">                                   */
+/*             <div><dt>Email:</dt>                                             */
+/*               <dd><a class="link" href="mailto:...">...</a></dd></div>       */
+/*             <div><dt>Postal address:</dt><dd>...<br>...</dd></div>           */
+/*           </dl>                                                              */
+/*         </div>                                                               */
+/*         <section class="site-footer-section site-footer-section-wide"        */
+/*                  aria-labelledby="...">                                      */
+/*           <h2 class="site-footer-heading" id="...">Melinda</h2>              */
+/*           <p class="site-footer-text">...</p>                                */
+/*         </section>                                                           */
+/*         <nav class="site-footer-section" aria-labelledby="...">             */
+/*           <h2 class="site-footer-heading" id="...">Links</h2>                */
+/*           <ul class="site-footer-links">                                     */
+/*             <li><a class="link icon-link" href="...">                        */
+/*               <i class="fa-light fa-arrow-right icon-link-icon" ...></i>     */
+/*               <span class="icon-link-text">FAQ</span></a></li>               */
+/*           </ul>                                                              */
+/*         </nav>                                                               */
+/*         <section class="site-footer-section social-media-links" ...>         */
+/*           <h2 class="site-footer-heading">Follow us</h2>                     */
+/*           <ul>...</ul>                       (icon.css social media links)   */
+/*         </section>                                                           */
+/*       </div>                                                                 */
+/*     </div>                                                                   */
+/*     <div class="natlib-identifier">...</div>          (own brand services)   */
+/*   </footer>                                                                  */
+/*                                                                              */
+/* Sections                                                                     */
+/*   Logo                 .site-footer-logo, max height 120 px                  */
+/*   Contact              .site-footer-contact: label Body M, value bold link   */
+/*                        or text                                               */
+/*   Heading              .site-footer-heading, Heading M                       */
+/*   Description          .site-footer-text, Body M                             */
+/*   Opening hours        .site-footer-hours (week link, open / closed status,  */
+/*                        table, today highlighted)                             */
+/*   Links                .site-footer-links: icon links M with an arrow, or    */
+/*                        plain links (.site-footer-links-plain, p.63 Finna)    */
+/*   Social media         .social-media-links (icon.css)                        */
+/*   Wide section         .site-footer-section-wide: 1.5 x the column width,    */
+/*                        for the description or the opening hours             */
+/*   Partner logos        .site-footer-partners: logos on the bottom of the     */
+/*                        footer on a Blue 20 band (p.63 Finna)                 */
+/*                                                                              */
+/* Layout: the footer is a size container.                                      */
+/*   Desktop (from 56 rem)  four columns aligned to the top, padding 48 px,     */
+/*                          40 px between sections                              */
+/*   Tablet (48-56 rem)     two columns                                         */
+/*   Mobile (under 48 rem)  one column aligned left, padding 24 / 16 / 32 /     */
+/*                          16 px, 24 px between sections                       */
+/*                                                                              */
+/* National Library identifier banner (.natlib-identifier): Blue 100, National  */
+/* Library logo, "Palvelun tarjoaa Kansalliskirjasto" in DM Serif Text and an   */
+/* external link to kansalliskirjasto.fi.                                       */
+/*   Desktop  logo 84 px, text 1.5 rem / 24 px, padding 16 / 48 px, Link L,     */
+/*            icon XS                                                           */
+/*   Mobile   logo 40 px, text 1 rem / 16 px, padding 16 px, Link S, icon XXS   */
+/*                                                                              */
+/* Colours: the footer is always dark, so .site-footer-main is .inverse and all */
+/* links come from link.css in white (hover underline, 2 px white focus         */
+/* outline). The background comes from --style-color-footer-banner-background: */
+/* Kansalliskirjasto Blue 100, Melinda the Melinda green (a service with its    */
+/* own brand colour, p.64). A service with a light brand colour uses            */
+/* .site-footer-main-light without .inverse and sets --site-footer-background.  */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-footer-banner-background, --style-color-footer-background,   */
+/*   --style-color-footer-text, --style-color-primary-80/-60/-20,               */
+/*   --style-color-success-60, --style-color-text, --style-color-heading        */
+/* ---------------------------------------------------------------------------- */
+
+
+.site-footer {
+  container: site-footer / inline-size;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--font-family-content);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Footer area and sections                                                     */
+
+.site-footer-main {
+  --site-footer-background: var(--style-color-footer-banner-background);
+  --site-footer-text: var(--style-color-footer-text);
+  --site-footer-line: var(--style-color-primary-60);
+  padding: var(--spacing-48);
+  background-color: var(--site-footer-background);
+  color: var(--site-footer-text);
+}
+
+/* Light brand colour (p.64 Finto): dark text and links, no .inverse */
+.site-footer-main-light {
+  --site-footer-background: var(--style-color-primary-20);
+  --site-footer-text: var(--style-color-text);
+  --site-footer-line: var(--style-color-primary-80);
+
+  .site-footer-heading {
+    color: var(--style-color-heading);
+  }
+
+  .site-footer-links a,
+  .site-footer-contact a {
+    color: var(--style-color-link-strong);
+  }
+}
+
+.site-footer-sections {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-40);
+}
+
+.site-footer-section {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.site-footer-section-wide {
+  flex-grow: 1.5;
+}
+
+.site-footer-heading {
+  margin: 0 0 var(--spacing-16) 0;
+  color: inherit;
+  font-family: var(--font-family-headline);
+  font-weight: var(--font-weight-headline);
+  font-size: var(--font-size-heading-m);
+  line-height: var(--font-line-height-heading-m);
+}
+
+.site-footer-text {
+  margin: 0 0 var(--spacing-16) 0;
+  font-size: var(--font-size-body-m);
+  line-height: var(--font-line-height-body-m);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Logo and contact information                                                 */
+
+.site-footer-logo {
+  display: inline-flex;
+  align-self: flex-start;
+  margin-bottom: var(--spacing-24);
+  border-radius: 2px;
+
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 120px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: var(--spacing-8);
+  }
+}
+
+.site-footer-main.inverse .site-footer-logo {
+  color: var(--style-color-on-primary);
+}
+
+.site-footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  margin: 0;
+  font-size: var(--font-size-body-m);
+  line-height: var(--font-line-height-body-m);
+
+  dt {
+    font-family: var(--font-family-content);
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  /* Contact values that are not links: bold like the links */
+  dd.site-footer-contact-strong {
+    font-family: var(--font-family-link);
+    font-weight: var(--font-weight-link);
+  }
+
+  a {
+    overflow-wrap: anywhere;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Links                                                                        */
+
+.site-footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer-links-plain {
+  gap: var(--spacing-12);
+}
+
+/* Social media links: same heading colour and spacing as the other sections */
+.site-footer .social-media-links {
+  color: inherit;
+
+  ul {
+    gap: var(--spacing-16);
+  }
+}
+
+.site-footer-main-light .social-media-links a,
+.site-footer-main-light .social-media-links a > :first-child {
+  color: var(--style-color-link-strong);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Opening hours (p.63): week link, open / closed status and the week table.    */
+/* Today is highlighted with Blue 80; lines Blue 60.                            */
+
+.site-footer-hours {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 22.5rem;
+}
+
+.site-footer-hours-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-16);
+  padding-bottom: var(--spacing-12);
+  border-bottom: 1px solid var(--site-footer-line);
+}
+
+.site-footer-hours-status {
+  font-family: var(--font-family-link);
+  font-weight: var(--font-weight-link);
+  font-size: var(--font-size-body-s);
+  line-height: var(--font-line-height-body-s);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--style-color-success-60);
+}
+
+.site-footer-hours-status-closed {
+  color: inherit;
+}
+
+.site-footer-hours-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom: 1px solid var(--site-footer-line);
+  font-size: var(--font-size-body-m);
+  line-height: var(--font-line-height-body-m);
+  font-variant-numeric: tabular-nums;
+
+  th,
+  td {
+    padding: var(--spacing-4);
+    text-align: left;
+    vertical-align: top;
+    font-family: var(--font-family-content);
+    font-weight: normal;
+  }
+
+  td:last-child {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  tr:first-child :is(th, td) {
+    padding-top: var(--spacing-12);
+  }
+
+  tr:last-child :is(th, td) {
+    padding-bottom: var(--spacing-12);
+  }
+
+  .site-footer-hours-date {
+    width: 3.5em;
+  }
+
+  .site-footer-hours-note {
+    display: block;
+    font-size: var(--font-size-body-s);
+    line-height: var(--font-line-height-body-s);
+  }
+
+  .site-footer-hours-today :is(th, td) {
+    background-color: var(--style-color-primary-80);
+    color: var(--style-color-on-primary);
+    font-family: var(--font-family-link);
+    font-weight: var(--font-weight-link);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Partner logos (p.63): extra logos on the bottom of the footer, Blue 20 band  */
+
+.site-footer-partners {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-32);
+  padding: var(--spacing-24) var(--spacing-48);
+  background-color: var(--style-color-primary-20);
+
+  img {
+    display: block;
+    max-height: 48px;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* National Library identifier banner                                           */
+
+.natlib-identifier {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-32);
+  padding: var(--spacing-16) var(--spacing-48);
+  background-color: var(--style-color-footer-background);
+  color: var(--style-color-footer-text);
+
+  .natlib-identifier-logo {
+    display: inline-flex;
+    flex-shrink: 0;
+    border-radius: 2px;
+
+    img {
+      display: block;
+      height: 84px;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--style-color-on-primary);
+      outline-offset: var(--spacing-4);
+    }
+  }
+
+  .natlib-identifier-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-8) var(--spacing-32);
+  }
+
+  .natlib-identifier-text {
+    margin: 0;
+    font-family: var(--font-family-brand);
+    font-weight: normal;
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Tablet: two columns                                                          */
+
+@container site-footer (max-width: 56rem) {
+
+  .site-footer-sections {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-40);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Mobile (p.62): one column, padding 24 / 16 / 32 / 16 px, 24 px between       */
+/* sections. Identifier banner: logo 40 px, text 16 px, Link S, icon XXS.       */
+
+@container site-footer (max-width: 48rem) {
+
+  .site-footer-main {
+    padding: var(--spacing-24) var(--spacing-16) var(--spacing-32) var(--spacing-16);
+  }
+
+  .site-footer-sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-24);
+  }
+
+  .site-footer-section {
+    flex: none;
+    width: 100%;
+  }
+
+  .site-footer-partners {
+    padding: var(--spacing-16);
+  }
+
+  .natlib-identifier {
+    align-items: flex-start;
+    gap: var(--spacing-16);
+    padding: var(--spacing-16);
+
+    .natlib-identifier-logo img {
+      height: 40px;
+    }
+
+    .natlib-identifier-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+
+    .natlib-identifier-text {
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+
+    .link-l {
+      font-size: var(--font-size-interactive-s);
+      line-height: var(--font-line-height-interactive-s);
+
+      .link-external-icon {
+        font-size: var(--icon-size-xxs);
+      }
+    }
+  }
+}
