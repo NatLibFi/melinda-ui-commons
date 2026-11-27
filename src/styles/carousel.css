@@ -1,0 +1,361 @@
+/* ---------------------------------------------------------------------------- */
+/* Carousel                                                                     */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.32. A row of liftups that scrolls sideways, with          */
+/* previous and next buttons on the sides and page indicators below.            */
+/*                                                                              */
+/*   <section class="carousel" aria-roledescription="carousel"                  */
+/*            aria-label="Collections">                                         */
+/*     <div class="carousel-viewport">                                          */
+/*       <button type="button" class="carousel-button carousel-previous         */
+/*               icon-only alternate-blue" aria-controls="collections-track">   */
+/*         <i class="fa-light fa-chevron-left" aria-hidden="true"></i>          */
+/*         <span class="visually-hidden">Previous</span>                        */
+/*       </button>                                                              */
+/*       <ul class="carousel-track" id="collections-track">                     */
+/*         <li class="carousel-item">                                           */
+/*           <a class="carousel-liftup" href="...">                             */
+/*             <span class="carousel-liftup-image"><img src="..." alt=""></span>*/
+/*             <span class="carousel-liftup-text">                              */
+/*               <span class="carousel-liftup-heading">Heading</span>           */
+/*             </span>                                                          */
+/*           </a>                                                               */
+/*         </li>                                                                */
+/*         ...                                                                  */
+/*       </ul>                                                                  */
+/*       <button type="button" class="carousel-button carousel-next             */
+/*               icon-only alternate-blue" aria-controls="collections-track">   */
+/*         <i class="fa-light fa-chevron-right" aria-hidden="true"></i>         */
+/*         <span class="visually-hidden">Next</span>                            */
+/*       </button>                                                              */
+/*     </div>                                                                   */
+/*     <div class="carousel-indicators" data-carousel-page-label="Page {page}   */
+/*          of {pages}"></div>                                                  */
+/*   </section>                                                                 */
+/*                                                                              */
+/* scripts/carousel.js scrolls the track with the buttons, disables them at     */
+/* the ends and adds one page indicator button per page.                        */
+/*                                                                              */
+/*   Carousel L (default)   .carousel                                           */
+/*                          Icon Only M buttons, liftups M (Heading XS),        */
+/*                          16 px between liftups, 12 x 12 px indicators        */
+/*   Carousel S             .carousel.carousel-s (+ small on the buttons)       */
+/*                          Icon Only S buttons, liftups S (Body S),            */
+/*                          12 px between liftups, 10 x 10 px indicators        */
+/*   Inverse                .inverse .carousel or .carousel.inverse             */
+/*                          (+ inverse on the buttons): white indicators and    */
+/*                          focus outlines. Liftups stay white.                 */
+/*                                                                              */
+/* Liftup states: heading Link Blue and underlined on hover and focus, image    */
+/* under a translucent Link Blue overlay. Focus: 2 px Blue 100 (inverse White)  */
+/* outline around the whole liftup, 6 px corner radius.                         */
+/* Page indicators: 1 px Blue 100 (White) border, filled when current, hovered  */
+/* or focused, 2 px focus outline 2 px away. 24 px between the circles.         */
+/*                                                                              */
+/* External liftups: add the ext icon and hidden text in the heading, as in     */
+/* links. The style guide recommends not placing external liftups in carousels. */
+/* No content is hidden behind hover.                                           */
+/*                                                                              */
+/* .state-hover and .state-focus show the states without interaction, for       */
+/* documentation pages only.                                                    */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-link, --style-color-link-strong, --style-color-link-focus,   */
+/*   --style-color-background, --style-color-primary-20,                        */
+/*   --style-color-on-primary                                                   */
+/* ---------------------------------------------------------------------------- */
+
+
+.carousel {
+  --carousel-gap: var(--spacing-16);
+  --carousel-liftup-width: 13.75rem;
+  --carousel-liftup-height: 17.5rem;
+  --carousel-button-size: 3rem;
+  --carousel-button-icon-size: var(--icon-size-l);
+  /* How far the buttons reach outside the liftups */
+  --carousel-button-overhang: var(--spacing-16);
+  --carousel-indicator-size: 0.75rem;
+  --carousel-focus-color: var(--style-color-link-focus);
+  --carousel-focus-offset: 6px;
+  --carousel-focus-radius: 6px;
+  /* Room for the focus outline inside the scrolling track */
+  --carousel-focus-room: calc(var(--carousel-focus-offset) + 2px);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+  min-width: 0;
+}
+
+.carousel-s {
+  --carousel-gap: var(--spacing-12);
+  --carousel-liftup-width: 9.5rem;
+  --carousel-liftup-height: 11.75rem;
+  --carousel-button-size: 2rem;
+  --carousel-button-icon-size: var(--icon-size-s);
+  --carousel-button-overhang: var(--spacing-12);
+  --carousel-indicator-size: 0.625rem;
+}
+
+.inverse .carousel,
+.carousel.inverse {
+  --carousel-focus-color: var(--style-color-on-primary);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Track: liftups in a row, scrolled sideways                                   */
+
+.carousel-viewport {
+  position: relative;
+  padding-inline: var(--carousel-button-overhang);
+}
+
+.carousel-track {
+  display: flex;
+  gap: var(--carousel-gap);
+  /* The padding keeps the focus outline of the liftups inside the scrolling */
+  /* area; the negative margin keeps the liftups where they would be without */
+  margin: calc(var(--carousel-focus-room) * -1);
+  padding: var(--carousel-focus-room);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--carousel-focus-room);
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .carousel-track {
+    scroll-behavior: smooth;
+  }
+}
+
+.carousel-item {
+  flex: 0 0 var(--carousel-liftup-width);
+  margin: 0;
+  padding: 0;
+  scroll-snap-align: start;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Previous and next buttons: Icon Only M (S in .carousel-s), white with a      */
+/* Blue 100 border (button.alternate-blue), centred on the liftups              */
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: var(--carousel-button-size);
+  height: var(--carousel-button-size);
+  padding: 0;
+  transform: translateY(-50%);
+
+  > i {
+    font-size: var(--carousel-button-icon-size);
+  }
+
+  &:focus-visible,
+  &.state-focus {
+    outline: 2px solid var(--carousel-focus-color);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.carousel-previous {
+  left: 0;
+}
+
+.carousel-next {
+  right: 0;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Carousel liftup: image on top, heading (and text) in a white text area       */
+/* below it. All liftups are as high: the image takes the space the text leaves.*/
+/*   Liftup M   Heading XS, ext icon XS, text area padding 12 px                */
+/*   Liftup S   Body S (heading Semibold), ext icon XXS, padding 12 px          */
+/*   Optional .carousel-liftup-summary: Body S text below the heading          */
+
+.carousel-liftup {
+  display: flex;
+  flex-direction: column;
+  height: var(--carousel-liftup-height);
+  border-radius: calc(var(--carousel-focus-radius) - var(--carousel-focus-offset));
+  color: var(--style-color-link-strong);
+  background-color: var(--style-color-background);
+  text-decoration: none;
+
+  &:focus-visible,
+  &.state-focus {
+    outline: 2px solid var(--carousel-focus-color);
+    outline-offset: var(--carousel-focus-offset);
+  }
+
+  &:is(:hover, :active, :focus-visible, .state-hover, .state-focus) {
+    color: var(--style-color-link);
+
+    .carousel-liftup-heading {
+      text-decoration-line: underline;
+    }
+
+    .carousel-liftup-image::after {
+      opacity: 1;
+    }
+  }
+}
+
+.carousel-liftup-image {
+  position: relative;
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+
+  > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Hover and focus: translucent Link Blue overlay */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: color-mix(in srgb, var(--style-color-link) 40%, transparent);
+    opacity: 0;
+  }
+}
+
+.carousel-liftup-text {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  padding: var(--spacing-12);
+}
+
+.carousel-liftup-heading {
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-heading-xs);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-heading-xs);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+
+  .link-external-icon {
+    margin-left: var(--spacing-8);
+    font-size: var(--icon-size-xs);
+  }
+}
+
+.carousel-liftup-summary {
+  color: var(--style-color-text);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-body-s);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-body-s);
+}
+
+.carousel-s {
+
+  .carousel-liftup-heading {
+    font-size: var(--font-size-body-s);
+    line-height: var(--font-line-height-body-s);
+
+    .link-external-icon {
+      margin-left: var(--spacing-4);
+      font-size: var(--icon-size-xxs);
+    }
+  }
+
+  .carousel-liftup-text {
+    gap: 0;
+  }
+
+  /* Hover: Blue 20 text area, as on p.32 */
+  .carousel-liftup:is(:hover, :active, .state-hover) .carousel-liftup-text {
+    background-color: var(--style-color-primary-20);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Page indicators: one button per page, added by carousel.js.                  */
+/* The 24 x 24 px button is the click target; the circle is drawn in ::before.  */
+
+.carousel-indicators {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* 24 px between circles */
+  gap: calc(var(--spacing-24) - (1.5rem - var(--carousel-indicator-size)));
+
+  &:empty {
+    display: none;
+  }
+}
+
+.carousel-indicator {
+  --carousel-indicator-color: var(--style-color-link-strong);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    width: var(--carousel-indicator-size);
+    height: var(--carousel-indicator-size);
+    box-sizing: border-box;
+    border: 1px solid var(--carousel-indicator-color);
+    border-radius: 50%;
+  }
+
+  &:is(:hover, :active, :focus-visible, .state-hover, .state-focus, [aria-current="true"])::before {
+    background-color: var(--carousel-indicator-color);
+  }
+
+  &:focus-visible,
+  &.state-focus {
+    outline: none;
+
+    &::before {
+      outline: 2px solid var(--carousel-indicator-color);
+      outline-offset: 2px;
+    }
+  }
+
+  /* button.css hover, active and focus styles do not apply to indicators */
+  &:is(:hover, :active) {
+    border: 0;
+    outline: none;
+    background: none;
+  }
+}
+
+.inverse .carousel-indicator,
+.carousel.inverse .carousel-indicator {
+  --carousel-indicator-color: var(--style-color-on-primary);
+}
