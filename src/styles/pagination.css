@@ -1,0 +1,260 @@
+/* ---------------------------------------------------------------------------- */
+/* Pagination                                                                   */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.29. Previous and next links side by side, then the page   */
+/* numbers. All are links; the current page is a link with aria-current.        */
+/*                                                                              */
+/*   <nav class="pagination" aria-label="Pagination">                           */
+/*     <div class="pagination-steps">                                           */
+/*       <a class="pagination-step" href="?page=6" rel="prev">                  */
+/*         <i class="fa-light fa-chevron-left pagination-step-icon"             */
+/*            aria-hidden="true"></i>                                           */
+/*         <span class="pagination-step-text">Previous<span                     */
+/*           class="visually-hidden"> page</span></span>                        */
+/*       </a>                                                                   */
+/*       <span class="pagination-step-separator" aria-hidden="true"></span>     */
+/*       <a class="pagination-step" href="?page=8" rel="next">                  */
+/*         <span class="pagination-step-text">Next<span                         */
+/*           class="visually-hidden"> page</span></span>                        */
+/*         <i class="fa-light fa-chevron-right pagination-step-icon"            */
+/*            aria-hidden="true"></i>                                           */
+/*       </a>                                                                   */
+/*     </div>                                                                   */
+/*     <ol class="pagination-pages">                                            */
+/*       <li><a class="pagination-page" href="?page=1"><span                    */
+/*         class="visually-hidden">Page </span>1</a></li>                       */
+/*       <li><a class="pagination-page" href="?page=7" aria-current="page">     */
+/*         <span class="visually-hidden">Page </span>7</a></li>                 */
+/*       <li class="pagination-ellipsis" aria-hidden="true">…</li>              */
+/*       <li><a class="pagination-page" href="?page=14"><span                   */
+/*         class="visually-hidden">Page </span>14</a></li>                      */
+/*     </ol>                                                                    */
+/*   </nav>                                                                     */
+/*                                                                              */
+/* Previous and next are not shown on the first and last page: leave the link   */
+/* out. The separator is shown only between two links, so it can stay in the   */
+/* markup.                                                                      */
+/*                                                                              */
+/* Previous / next  Icon link M: Link Text M, Link Blue, icon M (20 px, Light), */
+/*                  16 px between icon, text and the Blue 40 separator          */
+/* Page numbers     Link Text M, Link Blue, 32 px between one-digit numbers     */
+/*                  (32 x 32 px boxes 8 px apart), 24 px on mobile (0 px)       */
+/* Current page     1 px Blue 100 border, Blue 20 background, Blue 100 text,    */
+/*                  4 px corner radius                                          */
+/* Hover            Blue 100, underlined                                        */
+/* Focus            2 px Blue 100 outline outside, Blue 100 text, underlined.   */
+/*                  Previous / next: 4 px offset, 6 px radius (as links).      */
+/*                  Page numbers: around the box, 0 px offset, 4 px radius     */
+/*                                                                              */
+/* A 1 px Blue 100 line above, 16 px away. Mobile (pagination 600 px wide or    */
+/* less, a container query): previous and next on the first row, page numbers  */
+/* on the second, both centred. The container query makes .pagination take its */
+/* width from its parent: use it as a block (full width).                      */
+/*                                                                              */
+/* No inverse variant: the style guide shows pagination on white only.          */
+/* .state-hover and .state-focus show the states without interaction, for       */
+/* documentation pages only.                                                    */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-link, --style-color-link-strong, --style-color-link-focus,   */
+/*   --style-color-primary-40, --style-color-primary-20, --style-color-text     */
+/* ---------------------------------------------------------------------------- */
+
+
+.pagination {
+  --pagination-box-size: var(--spacing-32);
+  --pagination-page-gap: var(--spacing-8);
+  --pagination-step-gap: var(--spacing-16);
+  --pagination-icon-size: var(--icon-size-m);
+
+  container: pagination / inline-size;
+  border-top: 1px solid var(--style-color-link-strong);
+  padding-top: var(--spacing-16);
+  font-family: var(--font-family-link);
+  font-size: var(--font-size-interactive-m);
+  font-weight: var(--font-weight-link);
+  line-height: var(--font-line-height-interactive-m);
+
+  /* Steps left, page numbers right; rows 8 px apart when they wrap */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-8) var(--spacing-48);
+}
+
+.pagination-steps,
+.pagination-pages {
+  display: flex;
+  align-items: center;
+  min-height: var(--pagination-box-size);
+  margin: 0;
+  padding: 0;
+}
+
+.pagination-steps {
+  gap: var(--pagination-step-gap);
+}
+
+.pagination-pages {
+  flex-wrap: wrap;
+  gap: var(--pagination-page-gap);
+  list-style: none;
+
+  & > li {
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Shared link states                                                           */
+
+.pagination-step,
+.pagination-page {
+  color: var(--style-color-link);
+  text-decoration-line: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    color: var(--style-color-link-strong);
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline: 2px solid var(--style-color-link-focus);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Previous and next                                                            */
+
+.pagination-step {
+  /* Focus outline as in the main links (link.css): 4 px away from the link, */
+  /* 6 px visible corner radius (border radius + offset)                    */
+  --pagination-focus-offset: var(--spacing-4);
+  --pagination-focus-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pagination-step-gap);
+  border-radius: calc(var(--pagination-focus-radius) - var(--pagination-focus-offset));
+  outline-offset: var(--pagination-focus-offset);
+
+  /* The fixed-width icon leaves about 8 px of space beside the chevron: add */
+  /* the same space on the text side, so the focus outline is as far from   */
+  /* the text as from the icon. The negative margin keeps the layout.       */
+  --pagination-step-text-inset: var(--spacing-8);
+
+  &:has(> .pagination-step-text:last-child) {
+    padding-right: var(--pagination-step-text-inset);
+    margin-right: calc(-1 * var(--pagination-step-text-inset));
+  }
+
+  &:has(> .pagination-step-text:first-child) {
+    padding-left: var(--pagination-step-text-inset);
+    margin-left: calc(-1 * var(--pagination-step-text-inset));
+  }
+
+  /* Only the text is underlined, not the icon */
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) .pagination-step-text {
+    text-decoration-line: underline;
+  }
+}
+
+.pagination-step-text {
+  text-decoration-thickness: 1px;
+}
+
+.pagination-step-icon {
+  flex: none;
+  /* Fixed width as in icon links (fa-fw) */
+  width: 1.25em;
+  height: var(--pagination-icon-size);
+  font-size: var(--pagination-icon-size);
+  line-height: 1;
+  text-align: center;
+}
+
+/* Blue 40 line between previous and next, hidden when one of them is left out */
+.pagination-step-separator {
+  flex: none;
+  width: 2px;
+  height: var(--pagination-icon-size);
+  background-color: var(--style-color-primary-40);
+
+  &:first-child,
+  &:last-child {
+    display: none;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Page numbers                                                                 */
+
+.pagination-page {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--pagination-box-size);
+  height: var(--pagination-box-size);
+  padding: 0 var(--spacing-4);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  outline-offset: 0;
+
+  &:is(:hover, :active, .state-hover, :focus-visible, .state-focus) {
+    text-decoration-line: underline;
+  }
+
+  &[aria-current="page"] {
+    border-color: var(--style-color-link-strong);
+    background-color: var(--style-color-primary-20);
+    color: var(--style-color-link-strong);
+  }
+}
+
+.pagination-ellipsis {
+  align-items: center;
+  justify-content: center;
+  min-width: var(--pagination-box-size);
+  color: var(--style-color-text);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Mobile: two centred rows, 24 px between one-digit numbers                    */
+
+@container pagination (max-width: 600px) {
+
+  .pagination-steps,
+  .pagination-pages {
+    flex-basis: 100%;
+    justify-content: center;
+  }
+
+  .pagination-pages {
+    --pagination-page-gap: 0px;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Windows high contrast: keep the focus outline and current page visible       */
+
+@media (forced-colors: active) {
+
+  :is(.pagination-step, .pagination-page):is(:focus-visible, .state-focus) {
+    outline-color: Highlight;
+  }
+
+  .pagination-page[aria-current="page"] {
+    border-color: CanvasText;
+  }
+}
