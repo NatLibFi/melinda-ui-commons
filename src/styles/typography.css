@@ -1,0 +1,429 @@
+/* ---------------------------------------------------------------------------- */
+/* Typography scale                                                             */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.9-13. Text style classes for content pages:               */
+/*   Headings      .heading-xxl .heading-xl .heading-l .heading-m               */
+/*                 .heading-s .heading-xs .heading-xxs                          */
+/*   Body text     .body-l .body-m .body-s, .text-bold .text-italic             */
+/*   Lists         .typography-list (on ul or ol, max three levels)             */
+/*   Quote         .block-quote                                                 */
+/*   Image caption .image-caption, .image-caption-credit                        */
+/*   Interactive   .interactive-text-l .interactive-text-m .interactive-text-s  */
+/*   Forms         .label-text-m .label-text-s .input-text-m .input-text-s      */
+/*                 .placeholder-text .filled-text .disabled-text                */
+/*                 .help-text .error-text                                       */
+/*   Article       .typography-article (spacing between combined text styles)   */
+/*                                                                              */
+/* The classes do not change the default h1-h6, p and label element styles in  */
+/* defaults.css. Heading level and visual size are independent:                 */
+/*   <h2 class="heading-l">Section title</h2>                                   */
+/*                                                                              */
+/* Use .text-bold and .text-italic instead of <strong>, <b> or <i>.             */
+/* Inside .inverse (dark background) text is white.                             */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-text, --style-color-heading, --style-color-quote-line,       */
+/*   --style-color-caption-background                                           */
+/* ---------------------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------------------- */
+/* Headings: XXL and XL in the brand font, L to XXS in Public Sans Semibold.    */
+/* XXL is the desktop H1, it becomes XL on mobile. Hyphenate large headings.    */
+
+.heading-xxl,
+.heading-xl,
+.heading-l,
+.heading-m,
+.heading-s,
+.heading-xs,
+.heading-xxs {
+  margin: 0;
+  color: var(--style-color-heading);
+  letter-spacing: 0;
+}
+
+.heading-xxl,
+.heading-xl {
+  font-family: var(--font-family-brand);
+  font-weight: var(--font-weight-brand);
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+.heading-xxl {
+  font-size: var(--font-size-heading-xxl);
+  line-height: var(--font-line-height-heading-xxl);
+}
+
+.heading-xl {
+  font-size: var(--font-size-heading-xl);
+  line-height: var(--font-line-height-heading-xl);
+}
+
+.heading-l,
+.heading-m,
+.heading-s,
+.heading-xs,
+.heading-xxs {
+  font-family: var(--font-family-headline);
+  font-weight: var(--font-weight-headline);
+}
+
+.heading-l {
+  font-size: var(--font-size-heading-l);
+  line-height: var(--font-line-height-heading-l);
+  hyphens: auto;
+}
+
+.heading-m {
+  font-size: var(--font-size-heading-m);
+  line-height: var(--font-line-height-heading-m);
+}
+
+.heading-s {
+  font-size: var(--font-size-heading-s);
+  line-height: var(--font-line-height-heading-s);
+}
+
+.heading-xs {
+  font-size: var(--font-size-heading-xs);
+  line-height: var(--font-line-height-heading-xs);
+}
+
+.heading-xxs {
+  font-size: var(--font-size-heading-xxs);
+  line-height: var(--font-line-height-heading-xxs);
+  text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+
+  .heading-xxl {
+    font-size: var(--font-size-heading-xl);
+    line-height: var(--font-line-height-heading-xl);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Body text: Public Sans Light. Body M is the default (1 rem, 16 px).          */
+/* Space after paragraph 1 rem.                                                 */
+
+.body-l,
+.body-m,
+.body-s {
+  margin: 0;
+  color: var(--style-color-text);
+  font-family: var(--font-family-content);
+  font-weight: var(--font-weight-content);
+}
+
+.body-l {
+  font-size: var(--font-size-body-l);
+  line-height: var(--font-line-height-body-l);
+}
+
+.body-m {
+  font-size: var(--font-size-body-m);
+  line-height: var(--font-line-height-body-m);
+}
+
+.body-s {
+  font-size: var(--font-size-body-s);
+  line-height: var(--font-line-height-body-s);
+}
+
+.body-l + .body-l,
+.body-m + .body-m,
+.body-s + .body-s {
+  margin-top: 1rem;
+}
+
+/* Bold is Public Sans Bold, semibold is reserved for links */
+.text-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Italic only for short pieces of text */
+.text-italic {
+  font-style: italic;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Lists: max three levels. Indent 1 rem on narrow and 2 rem on wide screens,   */
+/* 1 rem between items. Bullets: disc, circle, dash.                            */
+
+.typography-list {
+  margin: 0;
+  padding-left: 2rem;
+  color: var(--style-color-text);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-body-m);
+
+  li {
+    padding-left: 0.5rem;
+    font: inherit;
+    line-height: inherit;
+  }
+
+  li + li,
+  li > ul,
+  li > ol {
+    margin-top: 1rem;
+  }
+
+  ul,
+  ol {
+    margin-bottom: 0;
+    padding-left: 2rem;
+    font: inherit;
+    line-height: inherit;
+  }
+
+  &:is(ul) {
+    list-style-type: disc;
+
+    ul {
+      list-style-type: circle;
+
+      ul {
+        list-style-type: '\2013';
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+
+  .typography-list,
+  .typography-list ul,
+  .typography-list ol {
+    padding-left: 1rem;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Block quote: Public Sans Bold 20 px, 2 px line in a brand colour,            */
+/* 1.5 rem between line and text. About 85% of the content width on desktop,   */
+/* full width on mobile.                                                        */
+
+.block-quote {
+  max-width: 85%;
+  margin: 0;
+  padding: 0 0 0 1.5rem;
+  border-left: 2px solid var(--style-color-quote-line);
+  box-sizing: border-box;
+  color: var(--style-color-text);
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-quote);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--font-line-height-quote);
+
+  p {
+    margin: 0;
+    font: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .block-quote {
+    max-width: 100%;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Image caption: Body S on a shade 20 background, padding 12/16/12/16 px.      */
+/* Photo credit in Public Sans Medium. Not the same text as the image alt.      */
+
+.image-caption {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background-color: var(--style-color-caption-background);
+  color: var(--style-color-text);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-body-s);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-body-s);
+}
+
+.image-caption-credit {
+  font-family: var(--font-family-label);
+  font-weight: var(--font-weight-label);
+}
+
+figure:has(> .image-caption) {
+  margin: 0;
+
+  img {
+    display: block;
+    width: 100%;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Interactive text: links, buttons, form controls, header and footer           */
+/* navigation. Always Public Sans Semibold. M is the default.                   */
+
+.interactive-text-l,
+.interactive-text-m,
+.interactive-text-s {
+  color: var(--style-color-text);
+  font-family: var(--font-family-link);
+  font-weight: var(--font-weight-link);
+}
+
+.interactive-text-l {
+  font-size: var(--font-size-interactive-l);
+  line-height: var(--font-line-height-interactive-l);
+}
+
+.interactive-text-m {
+  font-size: var(--font-size-interactive-m);
+  line-height: var(--font-line-height-interactive-m);
+}
+
+.interactive-text-s {
+  font-size: var(--font-size-interactive-s);
+  line-height: var(--font-line-height-interactive-s);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Text in forms (style guide p.12 and p.21-22)                                 */
+/*   Label M / S:     Public Sans Medium, Blue 100                              */
+/*   Input M / S:     Public Sans Medium, Blue 100                              */
+/*   Placeholder:     Public Sans Light, Blue 80                                */
+/*   Disabled:        Public Sans Medium, Silver 60                             */
+/*   Error message:   Body M, Red 100                                           */
+/*   Help text:       Body S, Blue 80 (not in the guide, follows placeholder)   */
+
+.label-text-m,
+.label-text-s,
+.input-text-m,
+.input-text-s,
+.filled-text,
+.disabled-text {
+  color: var(--style-color-text);
+  font-family: var(--font-family-label);
+  font-weight: var(--font-weight-label);
+}
+
+.label-text-m {
+  font-size: var(--font-size-label-medium);
+  line-height: var(--font-line-height-label-medium);
+}
+
+.label-text-s {
+  font-size: var(--font-size-label-small);
+  line-height: var(--font-line-height-label-small);
+}
+
+.input-text-m {
+  font-size: var(--font-size-input-medium);
+  line-height: var(--font-line-height-input-medium);
+}
+
+.input-text-s {
+  font-size: var(--font-size-input-small);
+  line-height: var(--font-line-height-input-small);
+}
+
+.placeholder-text {
+  color: var(--style-color-primary-80);
+  font-family: var(--font-family-placeholder);
+  font-weight: var(--font-weight-placeholder);
+}
+
+.disabled-text {
+  color: var(--style-color-neutral-60);
+}
+
+.help-text,
+.error-text {
+  display: block;
+  margin: 0;
+  font-family: var(--font-family-content);
+  font-weight: var(--font-weight-content);
+}
+
+.help-text {
+  color: var(--style-color-primary-80);
+  font-size: var(--font-size-body-s);
+  line-height: var(--font-line-height-body-s);
+}
+
+.error-text {
+  color: var(--style-color-error);
+  font-size: var(--font-size-body-m);
+  line-height: var(--font-line-height-body-m);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Combining typography (style guide p.13): example article page.               */
+/*   2.5 rem / 40 px  after sections and paragraph groups, before headings      */
+/*   1.5 rem / 24 px  after headings, before and after quotes and images        */
+/*   1 rem / 16 px    between list items and consecutive body paragraphs       */
+/* Keep paragraphs narrow for easier reading.                                   */
+
+.typography-article {
+  max-width: 45rem;
+
+  > * {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  > * + * {
+    margin-top: 2.5rem;
+  }
+
+  > :is(.heading-xxl, .heading-xl, .heading-l, .heading-m, .heading-s, .heading-xs, .heading-xxs) + *,
+  > .block-quote,
+  > .block-quote + *,
+  > figure,
+  > figure + * {
+    margin-top: 1.5rem;
+  }
+
+  > :is(.body-m, .body-s) + :is(.body-m, .body-s, .typography-list) {
+    margin-top: 1rem;
+  }
+
+  > :is(.heading-xxl, .heading-xl, .heading-l, .heading-m, .heading-s, .heading-xs, .heading-xxs):not(:first-child) {
+    margin-top: 2.5rem;
+  }
+
+  > .article-meta {
+    margin-top: 1.5rem;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse: white text on dark backgrounds                                      */
+
+.inverse {
+
+  :is(.heading-xxl, .heading-xl, .heading-l, .heading-m, .heading-s, .heading-xs, .heading-xxs,
+      .body-l, .body-m, .body-s, .typography-list, .block-quote,
+      .interactive-text-l, .interactive-text-m, .interactive-text-s,
+      .label-text-m, .label-text-s, .help-text) {
+    color: var(--style-color-on-primary);
+  }
+
+  .block-quote {
+    border-left-color: var(--style-color-primary-60);
+  }
+}

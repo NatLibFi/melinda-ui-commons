@@ -217,6 +217,45 @@
   --font-line-height-title-small: 1.25rem;
 
 
+  /* ----------------------------------------------------------------------------------------------------------------------*/
+  /* Typography scale from the style guide 2021 p.9-12 (used by typography.css) */
+  /* Values are font size / line height in rem. Where the guide's rem and px values disagree, rem values are used, */
+  /* except for Body L line height (guide: 2.65 rem, a typo for 33 px = 2.0625 rem). */
+
+  --font-size-heading-xxl: var(--font-size-brand);              /* 45 px, desktop H1 */
+  --font-line-height-heading-xxl: var(--font-line-height-brand);
+  --font-size-heading-xl: 2.125rem;                             /* 34 px, mobile H1 */
+  --font-line-height-heading-xl: 2.75rem;
+  --font-size-heading-l: 1.75rem;                               /* 28 px, H2 */
+  --font-line-height-heading-l: 2.375rem;
+  --font-size-heading-m: 1.4375rem;                             /* 23 px, H3 */
+  --font-line-height-heading-m: 1.95rem;
+  --font-size-heading-s: 1.25rem;                               /* 20 px, H4 */
+  --font-line-height-heading-s: 1.625rem;
+  --font-size-heading-xs: 1.0625rem;                            /* 17 px, H5 */
+  --font-line-height-heading-xs: 1.375rem;
+  --font-size-heading-xxs: 0.95rem;                             /* 15 px, H6, all caps */
+  --font-line-height-heading-xxs: 1.375rem;
+
+  --font-size-body-l: 1.375rem;                                 /* 22 px, ingress / summary */
+  --font-line-height-body-l: 2.0625rem;
+  --font-size-body-m: 1rem;                                     /* 16 px, body text */
+  --font-line-height-body-m: 1.5rem;
+  --font-size-body-s: 0.875rem;                                 /* 14 px, captions, meta texts */
+  --font-line-height-body-s: 1.25rem;
+
+  --font-size-quote: 1.25rem;                                   /* 20 px, block quote */
+  --font-line-height-quote: 1.875rem;
+
+  --font-size-interactive-l: 1.125rem;                          /* 18 px */
+  --font-line-height-interactive-l: 1.625rem;
+  --font-size-interactive-m: 1rem;                              /* 16 px, default */
+  --font-line-height-interactive-m: 1.5rem;
+  --font-size-interactive-s: 0.875rem;                          /* 14 px */
+  --font-line-height-interactive-s: 1.25rem;
+
+  --font-weight-bold: 700;
+
 }
 
 /* ----------------------------------------------------------------------------------------------------------------------*/

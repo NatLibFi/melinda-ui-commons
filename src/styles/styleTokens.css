@@ -109,6 +109,14 @@
   --style-color-gradient: var(--color-melinda-darkblue);
   --style-color-gradient-text: var(--color-primary-white);
 
+  /* TYPOGRAPHY: text colours (typography.css) */
+  /* Melinda dark blue headings, block quote line in Melinda green, */
+  /* image caption background is a 20% tint of Melinda green */
+  --style-color-text: var(--color-primary-blue);
+  --style-color-heading: var(--color-melinda-darkblue);
+  --style-color-quote-line: var(--color-melinda-green-custom);
+  --style-color-caption-background: color-mix(in srgb, var(--color-melinda-green) 20%, var(--color-primary-white));
+
   /* HIGHLIGHT: flash effect on an element that needs attention */
   --style-color-highlight: var(--color-functional-yellow);
   --style-highlight-radius: 1em;
@@ -151,6 +159,13 @@
   /* GRADIENT: Blue 100 gradient overlay with white text (style guide p.7) */
   --style-color-gradient: var(--color-blue-100);
   --style-color-gradient-text: var(--color-primary-white);
+
+  /* TYPOGRAPHY: Blue 100 text and headings (style guide p.9-13), */
+  /* brand colour quote line and caption background in shade 20 */
+  --style-color-text: var(--color-blue-100);
+  --style-color-heading: var(--color-blue-100);
+  --style-color-quote-line: var(--color-blue-80);
+  --style-color-caption-background: var(--color-blue-20);
 
   /* HIGHLIGHT: highlighted cell colour Blue 40 (style guide p.48), 4 px radius */
   --style-color-highlight: var(--color-blue-40);
