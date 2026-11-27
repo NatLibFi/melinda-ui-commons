@@ -1,0 +1,128 @@
+/* ---------------------------------------------------------------------------- */
+/* Gradient overlays                                                            */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.7: gradient overlays are used on top of images in hero    */
+/* elements to make text legible. The gradient runs from left to right:         */
+/*   100% opacity -> 85% opacity (middle) -> 0% opacity                         */
+/*                                                                              */
+/* Text on a gradient is large and bold, with a drop shadow in the gradient     */
+/* colour (A:85% X:0 Y:0 B:6).                                                  */
+/*                                                                              */
+/* Usage:                                                                       */
+/*   <div class="gradient-overlay gradient-teal-60"                             */
+/*        style="--gradient-image: url('/images/hero.jpg')">                    */
+/*     <p class="gradient-overlay-text">With text and image</p>                 */
+/*   </div>                                                                     */
+/*                                                                              */
+/* Without a colour class the style token --style-color-gradient is used        */
+/* (Blue 100 in Kansalliskirjasto, Melinda dark blue in Melinda style).         */
+/* Choose dark images for dark gradients and light images for light gradients. */
+/* ---------------------------------------------------------------------------- */
+
+.gradient-overlay {
+  --gradient-color: var(--style-color-gradient);
+  --gradient-text-color: var(--style-color-gradient-text);
+
+  display: flex;
+  align-items: center;
+  min-height: 9rem;
+  padding: 1.5rem 3.5rem;
+  box-sizing: border-box;
+  background-color: transparent;
+  background-image:
+    linear-gradient(to right,
+      var(--gradient-color) 0%,
+      color-mix(in srgb, var(--gradient-color) 85%, transparent) 50%,
+      transparent 100%),
+    var(--gradient-image, none);
+  background-position: center, right center;
+  background-size: cover, cover;
+  background-repeat: no-repeat;
+}
+
+.gradient-overlay-text {
+  margin: 0;
+  font-family: var(--style-font-family-brand);
+  font-size: var(--font-size-brand);
+  font-weight: bold;
+  line-height: 1.2;
+  color: var(--gradient-text-color);
+  text-shadow: 0 0 6px color-mix(in srgb, var(--gradient-color) 85%, transparent);
+}
+
+@media (max-width: 600px) {
+
+  .gradient-overlay {
+    min-height: 7rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .gradient-overlay-text {
+    font-size: var(--font-size-headline-extra-large);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Kansalliskirjasto gradient colours (style guide p.7)                         */
+/* Dark gradient: white text. Light gradients: primary blue text.               */
+/* Note: the style guide labels Teal 60 as "Teal 50" and Silver 60 as           */
+/* "Silver 40"; the colours used in the guide are Teal 60 and Silver 60.        */
+
+.gradient-blue-100 {
+  --gradient-color: var(--color-blue-100);
+  --gradient-text-color: var(--style-color-on-primary);
+}
+
+.gradient-teal-60 {
+  --gradient-color: var(--color-teal-60);
+  --gradient-text-color: var(--style-color-primary);
+}
+
+.gradient-red-60 {
+  --gradient-color: var(--color-red-60);
+  --gradient-text-color: var(--style-color-primary);
+}
+
+.gradient-silver-60 {
+  --gradient-color: var(--color-grey-60);
+  --gradient-text-color: var(--style-color-primary);
+}
+
+.gradient-gold-60 {
+  --gradient-color: var(--color-brown-60);
+  --gradient-text-color: var(--style-color-primary);
+}
+
+.gradient-yellow-80 {
+  --gradient-color: var(--color-yellow-80);
+  --gradient-text-color: var(--style-color-primary);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Melinda gradient colours (unofficial, not in the style guide)                */
+/* Tints are mixed from the Melinda brand colours with white, matching the      */
+/* Melinda colour scales on the color foundation page.                          */
+/* White text only on colours with enough contrast for large bold text.        */
+
+.gradient-melinda-darkblue {
+  --gradient-color: var(--color-melinda-darkblue);
+  --gradient-text-color: var(--style-color-on-primary);
+}
+
+.gradient-melinda-green {
+  --gradient-color: var(--color-melinda-green-custom);
+  --gradient-text-color: var(--style-color-on-primary);
+}
+
+.gradient-melinda-lightblue-60 {
+  --gradient-color: color-mix(in srgb, var(--color-melinda-lightblue) 60%, var(--color-primary-white));
+  --gradient-text-color: var(--style-color-primary);
+}
+
+.gradient-melinda-green-40 {
+  --gradient-color: color-mix(in srgb, var(--color-melinda-green) 40%, var(--color-primary-white));
+  --gradient-text-color: var(--style-color-primary);
+}

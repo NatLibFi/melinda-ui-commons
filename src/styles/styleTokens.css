@@ -105,6 +105,10 @@
   --style-color-footer-banner-background: var(--color-melinda-green);
   --style-color-footer-banner-text-hover: var(--color-primary-blue);
 
+  /* GRADIENT: default gradient overlay colour and text (gradient.css) */
+  --style-color-gradient: var(--color-melinda-darkblue);
+  --style-color-gradient-text: var(--color-primary-white);
+
   /* HIGHLIGHT: flash effect on an element that needs attention */
   --style-color-highlight: var(--color-functional-yellow);
   --style-highlight-radius: 1em;
@@ -143,6 +147,10 @@
   /* FOOTER */
   --style-color-footer-banner-background: var(--color-primary-blue);
   --style-color-footer-banner-text-hover: var(--color-blue-40);
+
+  /* GRADIENT: Blue 100 gradient overlay with white text (style guide p.7) */
+  --style-color-gradient: var(--color-blue-100);
+  --style-color-gradient-text: var(--color-primary-white);
 
   /* HIGHLIGHT: highlighted cell colour Blue 40 (style guide p.48), 4 px radius */
   --style-color-highlight: var(--color-blue-40);
