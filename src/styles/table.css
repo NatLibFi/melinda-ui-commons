@@ -1,0 +1,277 @@
+/* ---------------------------------------------------------------------------- */
+/* Table                                                                        */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.48. A table for tabular data. Use tables sparingly, keep  */
+/* them short in both directions, split large data into several tables and do  */
+/* not merge cells (colspan, rowspan): they are hard to use with a screen       */
+/* reader.                                                                      */
+/*                                                                              */
+/*   <div class="table-wrapper" role="region" aria-labelledby="t1" tabindex="0">*/
+/*     <table class="table">                                                    */
+/*       <caption id="t1">Records by format</caption>                           */
+/*       <thead>                                                                */
+/*         <tr> <th scope="col">Format</th>                                     */
+/*              <th scope="col" class="table-highlight">2025</th> ... </tr>     */
+/*       </thead>                                                               */
+/*       <tbody>                                                                */
+/*         <tr> <th scope="row">Books</th>                                      */
+/*              <td class="table-highlight table-numeric">1 234</td> ... </tr>  */
+/*       </tbody>                                                               */
+/*       <tfoot>                                                                */
+/*         <tr> <th scope="row">Total</th>                                      */
+/*              <td class="table-highlight table-numeric">5 678</td> ... </tr>  */
+/*       </tfoot>                                                               */
+/*     </table>                                                                 */
+/*   </div>                                                                     */
+/*                                                                              */
+/* Specs:                                                                       */
+/*   Table          border 1 px Primary 60 (Blue 60), cell padding 16 px        */
+/*   Header rows    <thead> <th>: Heading S, white background,                  */
+/*                  border bottom 1 px Primary (Blue 100)                       */
+/*   Header columns <th scope="row"> in <tbody>: Heading S, white background,   */
+/*                  border right 1 px Primary (Blue 100)                        */
+/*   Default cells  Body M                                                      */
+/*   Highlighted    .table-highlight: Primary 20 (Blue 20) background,          */
+/*                  .table-highlight-strong: Primary 40 (Blue 40). In the       */
+/*                  footer .table-highlight is Primary 40, as in the picture    */
+/*   Footer row     <tfoot>: Body M Medium on Primary 20 (Blue 20), border top  */
+/*                  1 px Primary (Blue 100)                                     */
+/*   .table-numeric right aligned tabular numbers                               */
+/*   .table-compact 8 px cell padding and Heading XS headers for dense data     */
+/*                  in applications (not in the style guide)                    */
+/*   .table-sort    sortable column: a button in the header cell, sorted by    */
+/*                  scripts/table.js (not in the style guide), see below        */
+/*                                                                              */
+/* Small viewports: the .table-wrapper scrolls the table sideways instead of   */
+/* the page. Give it role="region", a name (aria-labelledby the caption) and    */
+/* tabindex="0" so that keyboard users can scroll it. Focus: 2 px outline with  */
+/* rounded corners, 2 px away. .state-focus shows the focus on documentation    */
+/* pages only.                                                                  */
+/*                                                                              */
+/* The style guide defines no inverse table: the table keeps its white          */
+/* background and colours inside an .inverse section; only the parts on the    */
+/* dark page turn white: a visible caption and the wrapper focus outline.       */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-primary, --style-color-primary-60, --style-color-primary-40, */
+/*   --style-color-primary-20, --style-color-background, --style-color-text,    */
+/*   --style-color-heading, --style-color-link-focus, --style-color-on-primary  */
+/* ---------------------------------------------------------------------------- */
+
+
+.table {
+  --table-border-color: var(--style-color-primary-60);
+  --table-header-border-color: var(--style-color-primary);
+  --table-cell-padding: var(--spacing-16);
+
+  width: 100%;
+  margin: 0;
+  border: 1px solid var(--table-border-color);
+  border-collapse: collapse;
+  background-color: var(--style-color-background);
+  color: var(--style-color-text);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-body-m);
+  text-align: left;
+
+  caption {
+    padding-bottom: var(--spacing-8);
+    caption-side: top;
+    color: var(--style-color-heading);
+    font-family: var(--font-family-headline);
+    font-size: var(--font-size-heading-xs);
+    font-weight: var(--font-weight-headline);
+    line-height: var(--font-line-height-heading-xs);
+    text-align: left;
+  }
+
+  :is(th, td) {
+    padding: var(--table-cell-padding);
+    border: 1px solid var(--table-border-color);
+    text-align: inherit;
+    vertical-align: top;
+  }
+
+  /* Header rows and header columns: Heading S on white */
+  th {
+    background-color: var(--style-color-background);
+    color: var(--style-color-heading);
+    font-family: var(--font-family-headline);
+    font-size: var(--font-size-heading-s);
+    font-weight: var(--font-weight-headline);
+    line-height: var(--font-line-height-heading-s);
+  }
+
+  thead th {
+    border-bottom-color: var(--table-header-border-color);
+    vertical-align: bottom;
+  }
+
+  tbody th[scope="row"] {
+    border-right-color: var(--table-header-border-color);
+  }
+
+  /* Highlighted cells: shade 20, or 40 for a stronger highlight */
+  .table-highlight {
+    background-color: var(--style-color-primary-20);
+  }
+
+  .table-highlight-strong {
+    background-color: var(--style-color-primary-40);
+  }
+
+  /* Footer row: Body M Medium on shade 20, Blue 100 line above it */
+  tfoot :is(th, td) {
+    border-top-color: var(--table-header-border-color);
+    background-color: var(--style-color-primary-20);
+    color: var(--style-color-text);
+    font-family: var(--style-font-family-sans-medium);
+    font-size: var(--font-size-body-m);
+    font-weight: var(--font-weight-label);
+    line-height: var(--font-line-height-body-m);
+  }
+
+  tfoot :is(.table-highlight, .table-highlight-strong) {
+    background-color: var(--style-color-primary-40);
+  }
+
+  .table-numeric {
+    text-align: right;
+  }
+
+  td.table-numeric {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Links keep their light background colours also inside an .inverse section */
+.table :is(.link, .link-inline) {
+  color: var(--style-color-link);
+
+  &:is(:hover, :active, .state-hover) {
+    color: var(--style-color-link-hover);
+  }
+
+  &:is(:focus-visible, .state-focus) {
+    outline-color: var(--style-color-link-focus);
+  }
+}
+
+/* Dense data in applications: smaller padding and headers */
+.table.table-compact {
+  --table-cell-padding: var(--spacing-8);
+
+  th:not(tfoot th) {
+    font-size: var(--font-size-heading-xs);
+    line-height: var(--font-line-height-heading-xs);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Sortable columns (not in the style guide): a .table-sort button fills the    */
+/* header cell content. scripts/table.js sorts the <tbody> rows, sets           */
+/* aria-sort on the header cell and swaps the icon.                             */
+/*                                                                              */
+/*   <th scope="col">                                                           */
+/*     <button class="table-sort" type="button" data-sort-type="number">        */
+/*       2025 <i class="fa-light fa-arrow-up-arrow-down table-sort-icon"        */
+/*               aria-hidden="true"></i>                                        */
+/*     </button>                                                                */
+/*   </th>                                                                      */
+/*                                                                              */
+/* The button keeps the header look (Heading S, heading colour) with an icon S  */
+/* 8 px after the text: fa-arrow-up-arrow-down when unsorted, fa-arrow-up /     */
+/* fa-arrow-down in the sorted column, where the icon is Link Blue.             */
+/* Hover: underlined. Focus: 2 px outline with rounded corners, 2 px away.      */
+/* Right aligned (.table-numeric) headers put the icon before the text.         */
+
+.table .table-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+
+  &:hover,
+  &.state-hover {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  &:focus-visible,
+  &.state-focus {
+    outline: 2px solid var(--style-color-link-focus);
+    outline-offset: 2px;
+  }
+}
+
+.table .table-numeric .table-sort {
+  flex-direction: row-reverse;
+}
+
+.table .table-sort-icon {
+  flex: none;
+  font-size: var(--font-size-icon-extra-small);
+}
+
+.table th[aria-sort] .table-sort-icon {
+  color: var(--style-color-link);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Wrapper: scrolls a wide table sideways on small viewports                    */
+
+.table-wrapper {
+  --table-wrapper-focus-color: var(--style-color-link-focus);
+
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: 2px;
+
+  &:focus-visible,
+  &.state-focus {
+    outline: 2px solid var(--table-wrapper-focus-color);
+    outline-offset: 2px;
+  }
+}
+
+.inverse .table-wrapper,
+.table-wrapper.inverse {
+  --table-wrapper-focus-color: var(--style-color-on-primary);
+}
+
+/* The caption is outside the white table, on the dark page: white text */
+.inverse .table caption,
+.table.inverse caption {
+  color: var(--style-color-on-primary);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Windows high contrast: keep the borders and focus outline visible            */
+
+@media (forced-colors: active) {
+
+  .table :is(th, td) {
+    border-color: CanvasText;
+  }
+
+  .table-wrapper:is(:focus-visible, .state-focus) {
+    outline-color: Highlight;
+  }
+}
