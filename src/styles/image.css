@@ -1,0 +1,230 @@
+/* ---------------------------------------------------------------------------- */
+/* Images                                                                       */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.49-53: image crops and sizes.                             */
+/*   .image-gradient-overlay   image under a gradient overlay (hero), p.50-51   */
+/*   .image-liftup             liftup image 16:10, p.52                          */
+/*   .image-liftup-highlighted highlighted liftup: image half of the width, p.52 */
+/*   .image-carousel-liftup    carousel liftup: image height varies, p.52        */
+/*   .image-round              contact, author and location image, 1:1, p.53     */
+/*   .image-decorative         decorative image 5:1, max 200 px high, p.53      */
+/*                                                                              */
+/* Informative images need a descriptive alt text. Decorative images must be    */
+/* hidden from screen readers: alt="" on <img>, or a CSS background image.      */
+/*                                                                              */
+/* The image styles are the same in the Kansalliskirjasto and Melinda styles.   */
+/* Only colours come from style tokens (gradient, liftup text background).       */
+/* ---------------------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------------------- */
+/* Image under gradient overlay (p.50-51)                                       */
+/*                                                                              */
+/* Used with .gradient-overlay and an optional gradient colour class from       */
+/* gradient.css. Decorative only, no essential information in the image.        */
+/*   <div class="gradient-overlay image-gradient-overlay gradient-yellow-80"    */
+/*        style="--gradient-image: url('/images/hero.jpg')">                    */
+/*     <div class="image-gradient-overlay-content">                             */
+/*       <h2 class="heading-xl">Title</h2>                                      */
+/*       <p class="body-l">Text</p>                                             */
+/*     </div>                                                                   */
+/*   </div>                                                                     */
+/*                                                                              */
+/* Desktop: gradient from the top left corner to the bottom right, image focal  */
+/* point in the bottom right corner, text area on the left.                     */
+/* Mobile: vertical crop, gradient from top to bottom, image focal point in the */
+/* bottom centre, a large bottom padding (--spacing-208) keeps the image area   */
+/* visible below the text.                                                      */
+
+.gradient-overlay.image-gradient-overlay {
+  align-items: flex-start;
+  min-height: 22rem;
+  padding: var(--spacing-72) var(--spacing-72);
+  background-image:
+    linear-gradient(to bottom right,
+      var(--gradient-color) 0%,
+      color-mix(in srgb, var(--gradient-color) 85%, transparent) 45%,
+      transparent 100%),
+    var(--gradient-image, none);
+  background-position: center, right bottom;
+}
+
+.image-gradient-overlay-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+  max-width: 40rem;
+  color: var(--gradient-text-color);
+
+  > * {
+    margin: 0;
+    color: inherit;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .gradient-overlay.image-gradient-overlay {
+    min-height: 0;
+    padding: var(--spacing-40) var(--spacing-20) var(--spacing-208) var(--spacing-20);
+    background-image:
+      linear-gradient(to bottom,
+        var(--gradient-color) 0%,
+        color-mix(in srgb, var(--gradient-color) 85%, transparent) 55%,
+        transparent 100%),
+      var(--gradient-image, none);
+    background-position: center, center bottom;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Liftup images (p.52)                                                         */
+/*                                                                              */
+/* Current (news, events) and page liftups: aspect ratio 16:10, minimum width   */
+/* 300 px on desktop, content width on mobile.                                  */
+/*   <img class="image-liftup" src="..." alt="...">                             */
+
+.image-liftup {
+  display: block;
+  width: 100%;
+  min-width: min(18.75rem, 100%);
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+
+/* Highlighted current liftup                                                   */
+/* Desktop: text in the left half, image from the centre of the element to its  */
+/* right edge, minimum image height 300 px. Place the element so that its right */
+/* edge is the page edge: the image stretches with the viewport.                */
+/* Mobile: image on top, 16:10, page width with no margins, text below.         */
+/*   <div class="image-liftup-highlighted">                                     */
+/*     <div class="image-liftup-highlighted-text">...</div>                     */
+/*     <img src="..." alt="...">                                                */
+/*   </div>                                                                     */
+
+.image-liftup-highlighted {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+
+  > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 18.75rem;
+    object-fit: cover;
+  }
+}
+
+.image-liftup-highlighted-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-16);
+  padding: var(--spacing-40);
+  color: var(--style-color-text);
+  background-image: linear-gradient(to right, transparent, var(--style-color-neutral-20));
+
+  > * {
+    margin: 0;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .image-liftup-highlighted {
+    grid-template-columns: 1fr;
+
+    > img {
+      grid-row: 1;
+      height: auto;
+      min-height: 0;
+      aspect-ratio: 16 / 10;
+    }
+  }
+
+  .image-liftup-highlighted-text {
+    padding: var(--spacing-24) var(--spacing-20);
+    background-image: linear-gradient(to bottom, transparent, var(--style-color-neutral-20));
+  }
+}
+
+
+/* Carousel liftup                                                              */
+/* Carousel liftups have the same height: the image takes the space the heading */
+/* leaves, so a longer heading makes the image lower.                           */
+/*   <div class="image-carousel-liftup">                                        */
+/*     <img src="..." alt="">                                                   */
+/*     <p class="heading-xs">Carousel liftup</p>                                */
+/*   </div>                                                                     */
+
+.image-carousel-liftup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  width: 13.75rem;
+  height: 17.5rem;
+
+  > img {
+    display: block;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+    object-fit: cover;
+  }
+
+  > :not(img) {
+    flex: 0 0 auto;
+    margin: 0 var(--spacing-12);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Contact, author and location images (p.53)                                   */
+/*                                                                              */
+/* Square image masked by a circle, size example 105 x 105 px.                 */
+/* Crop the image so that the information is in the centre of the square:      */
+/* people above the shoulders, locations close to their most recognisable       */
+/* feature. Set another size with --image-round-size.                           */
+/*   <img class="image-round" src="..." alt="Firstname Lastname">               */
+
+.image-round {
+  display: block;
+  width: var(--image-round-size, 6.5625rem);
+  height: var(--image-round-size, 6.5625rem);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Decorative image (p.53)                                                      */
+/*                                                                              */
+/* Aspect ratio 5:1 (size example 2400 x 480 px), maximum displayed height      */
+/* 200 px. Used on landing pages to separate blocks of information or at the    */
+/* bottom of a block. On mobile the image is cropped from the centre.           */
+/*   <img class="image-decorative" src="..." alt="">                            */
+
+.image-decorative {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 12.5rem;
+  aspect-ratio: 5 / 1;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 600px) {
+
+  .image-decorative {
+    aspect-ratio: 3 / 1;
+  }
+}
