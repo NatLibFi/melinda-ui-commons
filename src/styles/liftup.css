@@ -1,0 +1,436 @@
+/* ---------------------------------------------------------------------------- */
+/* Liftups                                                                      */
+/* ---------------------------------------------------------------------------- */
+/*                                                                              */
+/* Style guide 2021 p.33-37. Cards that lift up news, events, blog posts and    */
+/* pages. Only the heading is a link and only the heading is clickable: the     */
+/* link text is short for screen readers, and the heading is found with heading */
+/* navigation. Hovering or focusing the heading link shows the liftup states.   */
+/*                                                                              */
+/*   <article class="liftup">                                                   */
+/*     <h3 class="liftup-heading">                                              */
+/*       <a class="liftup-link" href="...">Heading</a>                          */
+/*     </h3>                                                                    */
+/*     <p class="liftup-meta">                                                  */
+/*       <span class="liftup-type">News</span>                                  */
+/*       <time class="liftup-date" datetime="2022-02-12">12.02.2022</time>      */
+/*     </p>                                                                     */
+/*     <span class="liftup-image"><img src="..." alt=""></span>                 */
+/*     <i class="fa-light fa-arrow-right liftup-icon" aria-hidden="true"></i>   */
+/*   </article>                                                                 */
+/*                                                                              */
+/* The heading comes first in the source. The image and the Type | Date row     */
+/* are moved above it with CSS order, as in the style guide.                    */
+/*                                                                              */
+/*   Current liftup (news, blog, event)   .liftup                               */
+/*       Image 16:10 on top, Type | Date (Heading XXS), heading (Heading M),    */
+/*       arrow Icon L. No background. 24 px between items. p.34                 */
+/*       Event: no arrow; .liftup-event-date (Body M Medium, calendar Icon M)   */
+/*   Highlighted liftup                   .liftup.liftup-highlighted            */
+/*       Desktop: white text area and image side by side, 50 / 50, image at     */
+/*       least 300 px high. Add .liftup-image-start for the image on the left.  */
+/*       In .liftup-list-highlighted the image alternates right and left.       */
+/*       Heading L, summary Body M, event date Body L, icons L, arrow XL,       */
+/*       text area padding 32 px. Mobile: image on top, full width. p.35        */
+/*   Page liftup                          .liftup.liftup-page                   */
+/*       White background, image optional, heading (Heading M), date, summary */
+/*       Body M, arrow or ext icon Icon L. Text area padding 24 px (mobile     */
+/*       16 px), 16 px between items. p.36                                      */
+/*                                                                              */
+/*   Lists        .liftup-list: three in a row on desktop, one per row on      */
+/*                mobile. .liftup-list-highlighted: one per row, no gap.        */
+/*   Inverse      .inverse on an ancestor or .liftup.inverse: current liftups   */
+/*                get white text, all liftups a white focus outline. Page and   */
+/*                highlighted liftups keep their white background.             */
+/*                                                                              */
+/* States (p.37), when the heading link is hovered or focused: heading Link    */
+/* Blue (inverse current liftup: White) and underlined, Link Blue translucent   */
+/* overlay on the image.                                                        */
+/* Focus: 2 px Blue 100 (inverse White) outline around the whole liftup,        */
+/* 6 px corner radius, 10 px outside. .liftup-focus-inside puts it 4 px inside, */
+/* for liftups that run edge to edge (highlighted liftups on mobile do this     */
+/* automatically). The arrow moves a little to the right on hover unless the    */
+/* user has asked for reduced motion.                                           */
+/*                                                                              */
+/* External liftups: use the ext icon fa-arrow-up-right-from-square in place of */
+/* the arrow, and add a visually hidden "(external site, opens in a new tab)"   */
+/* inside the link.                                                             */
+/*                                                                              */
+/* .state-hover and .state-focus show the states without interaction, for       */
+/* documentation pages only.                                                    */
+/*                                                                              */
+/* Colours come from style tokens:                                              */
+/*   --style-color-link, --style-color-link-strong, --style-color-link-focus,   */
+/*   --style-color-background, --style-color-neutral-60, --style-color-on-primary*/
+/* ---------------------------------------------------------------------------- */
+
+
+.liftup {
+  --liftup-color: var(--style-color-link-strong);
+  --liftup-hover-color: var(--style-color-link);
+  --liftup-focus-color: var(--style-color-link-focus);
+  --liftup-focus-offset: 10px;
+  --liftup-focus-radius: 6px;
+  --liftup-gap: var(--spacing-24);
+  --liftup-padding: 0;
+  --liftup-heading-size: var(--font-size-heading-m);
+  --liftup-heading-line-height: var(--font-line-height-heading-m);
+  --liftup-icon-size: var(--icon-size-l);
+  --liftup-date-icon-size: var(--icon-size-m);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--liftup-gap);
+  margin: 0;
+  padding: var(--liftup-padding);
+  color: var(--liftup-color);
+
+  > * {
+    margin: 0;
+  }
+}
+
+.inverse .liftup,
+.liftup.inverse {
+  --liftup-color: var(--style-color-on-primary);
+  --liftup-hover-color: var(--style-color-on-primary);
+  --liftup-focus-color: var(--style-color-on-primary);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Parts                                                                        */
+
+.liftup-image {
+  position: relative;
+  display: block;
+  order: -2;
+  overflow: hidden;
+
+  > img {
+    display: block;
+    width: 100%;
+    min-width: min(18.75rem, 100%);
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  /* Hover and focus: translucent Link Blue overlay */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: color-mix(in srgb, var(--style-color-link) 40%, transparent);
+    opacity: 0;
+  }
+}
+
+/* Type | Date (Heading XXS, all caps), 1 px line between the two */
+.liftup-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  order: -1;
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-heading-xxs);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-heading-xxs);
+  text-transform: uppercase;
+
+  > * + * {
+    margin-left: var(--spacing-12);
+    padding-left: var(--spacing-12);
+    border-left: 1px solid var(--style-color-neutral-60);
+  }
+}
+
+.liftup-heading {
+  font-family: var(--font-family-headline);
+  font-size: var(--liftup-heading-size);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--liftup-heading-line-height);
+  color: inherit;
+}
+
+/* font: inherit overrides the default link font (defaults.css a) */
+.liftup-link {
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+
+  /* The focus outline is drawn around the whole liftup */
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.liftup-summary {
+  color: inherit;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-body-m);
+}
+
+/* Event date and time: Body M Medium, calendar / clock icon M */
+.liftup-event-date {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-family-label);
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-label);
+  line-height: var(--font-line-height-body-m);
+
+  > li,
+  > span {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+    margin: 0;
+  }
+
+  i {
+    flex: 0 0 auto;
+    font-size: var(--liftup-date-icon-size);
+  }
+}
+
+/* Arrow or ext icon at the bottom */
+.liftup-icon {
+  align-self: flex-start;
+  font-size: var(--liftup-icon-size);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .liftup-icon.fa-arrow-right {
+    transition: transform 0.2s ease-out;
+  }
+
+  .liftup:is(:has(.liftup-link:hover), .state-hover, :has(.liftup-link:focus-visible), .state-focus) .liftup-icon.fa-arrow-right {
+    transform: translateX(var(--spacing-8));
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Hover and focus                                                              */
+
+.liftup:is(:has(.liftup-link:is(:hover, :active)), .state-hover, :has(.liftup-link:focus-visible), .state-focus) {
+
+  .liftup-heading {
+    color: var(--liftup-hover-color);
+  }
+
+  .liftup-link {
+    text-decoration-line: underline;
+  }
+
+  .liftup-image::after {
+    opacity: 1;
+  }
+}
+
+/* The focus outline is drawn in ::before, so that it can have rounded corners */
+/* while the liftup itself has square ones. --liftup-focus-offset works like   */
+/* outline-offset: 10 px outside, or -4 px (inside) for edge-to-edge liftups.  */
+.liftup:is(:has(.liftup-link:focus-visible), .state-focus)::before {
+  content: '';
+  position: absolute;
+  inset: calc((var(--liftup-focus-offset) + 2px) * -1);
+  z-index: 1;
+  border: 2px solid var(--liftup-focus-color);
+  border-radius: var(--liftup-focus-radius);
+  pointer-events: none;
+}
+
+/* Edge-to-edge liftups: the focus outline inside, drawn above the image.      */
+/* Highlighted liftups get this on mobile (see below).                         */
+.liftup.liftup-focus-inside {
+  --liftup-focus-offset: -4px;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Page liftup (p.36): white card, image optional                               */
+/* Text area padding 24 px (mobile 16 px). The image runs to the card edges.    */
+
+.liftup-page {
+  --liftup-color: var(--style-color-link-strong);
+  --liftup-hover-color: var(--style-color-link);
+  --liftup-gap: var(--spacing-16);
+  --liftup-padding: var(--spacing-24);
+
+  background-color: var(--style-color-background);
+
+  /* The date of a page liftup is below the heading, not above it */
+  .liftup-meta {
+    order: 0;
+  }
+
+  /* 24 px (mobile 16 px) between the image and the heading */
+  > .liftup-image {
+    margin: calc(var(--liftup-padding) * -1) calc(var(--liftup-padding) * -1) calc(var(--liftup-padding) - var(--liftup-gap));
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Highlighted liftup (p.35)                                                    */
+/* Desktop: text in one half with 32 px padding, the image fills the other     */
+/* half (at least 300 px high). Mobile: image on top, edge to edge.             */
+
+.liftup-highlighted {
+  --liftup-color: var(--style-color-link-strong);
+  --liftup-hover-color: var(--style-color-link);
+  --liftup-padding: var(--spacing-32);
+  --liftup-heading-size: var(--font-size-heading-l);
+  --liftup-heading-line-height: var(--font-line-height-heading-l);
+  --liftup-icon-size: var(--icon-size-xl);
+  --liftup-date-icon-size: var(--icon-size-l);
+
+  justify-content: center;
+  min-height: 18.75rem;
+  padding-right: calc(50% + var(--liftup-padding));
+  background-color: var(--style-color-background);
+
+  > .liftup-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+
+    > img {
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      aspect-ratio: auto;
+    }
+  }
+
+  .liftup-event-date {
+    font-family: var(--font-family-content);
+    font-size: var(--font-size-body-l);
+    font-weight: var(--font-weight-content);
+    line-height: var(--font-line-height-body-l);
+  }
+}
+
+/* Image on the left: .liftup-image-start, or every second liftup in a list */
+.liftup-highlighted.liftup-image-start,
+.liftup-list-highlighted > :nth-child(even) > .liftup-highlighted {
+  padding-right: var(--liftup-padding);
+  padding-left: calc(50% + var(--liftup-padding));
+
+  > .liftup-image {
+    right: auto;
+    left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .liftup-page {
+    --liftup-padding: var(--spacing-16);
+  }
+
+  /* Image on top, edge to edge; the focus outline is inside */
+  .liftup-highlighted,
+  .liftup-highlighted.liftup-image-start,
+  .liftup-list-highlighted > :nth-child(even) > .liftup-highlighted {
+    --liftup-focus-offset: -4px;
+    --liftup-focus-color: var(--style-color-link-focus);
+
+    min-height: 0;
+    padding: var(--liftup-padding);
+
+    > .liftup-image {
+      position: relative;
+      inset: auto;
+      width: auto;
+      margin: calc(var(--liftup-padding) * -1) calc(var(--liftup-padding) * -1) 0;
+
+      > img {
+        height: auto;
+        aspect-ratio: 16 / 10;
+      }
+    }
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Page and highlighted liftups on a dark background: the white card keeps     */
+/* the Blue 100 text, only the outside focus outline is white                   */
+
+.inverse :is(.liftup-page, .liftup-highlighted),
+:is(.liftup-page, .liftup-highlighted).inverse {
+  --liftup-color: var(--style-color-link-strong);
+  --liftup-hover-color: var(--style-color-link);
+}
+
+/* Inside the white card a white outline would not show: Blue 100, as on p.37 */
+.inverse .liftup.liftup-focus-inside,
+.liftup.liftup-focus-inside.inverse {
+  --liftup-focus-color: var(--style-color-link-focus);
+}
+
+@media (max-width: 600px) {
+
+  .inverse .liftup.liftup-highlighted,
+  .liftup.liftup-highlighted.inverse {
+    --liftup-focus-color: var(--style-color-link-focus);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Lists                                                                        */
+/* Current and page liftups: three in a row on desktop (each at least 300 px), */
+/* one per row on mobile. Room around the liftups for the outside focus outline.*/
+
+.liftup-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(18.75rem, 100%), 1fr));
+  gap: var(--spacing-48) var(--spacing-32);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    display: flex;
+    margin: 0;
+
+    > .liftup {
+      flex: 1 1 auto;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+
+  .liftup-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Highlighted liftups: one per row, stacked, image alternating sides */
+.liftup-list-highlighted {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    margin: 0;
+  }
+}
